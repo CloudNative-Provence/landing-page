@@ -8,15 +8,15 @@ export default {
   items: [
     {
       title: 'Support général',
-      description: `Pour toute question sur l'événement, la participation, ou la logistique.`,
+      description: `Pour toute question sur l'association, nos événements, ou comment nous rejoindre.`,
     },
     {
       title: 'Sponsoring',
-      description: "Pour plus d'infos sur les options de sponsoring ou pour proposer une idée partenaire.",
+      description: "Pour plus d'infos sur les options de sponsoring de KCD Provence 2026 ou pour proposer une idée partenaire.",
     },
     {
       title: 'Communauté',
-      description: "Rejoignez l'organisation ou proposez un atelier, une conférence ou un stand communautaire.",
+      description: "Rejoignez l'association ou proposez un atelier, une conférence ou un stand communautaire.",
     },
     {
       title: 'Email',
@@ -24,8 +24,8 @@ export default {
       icon: 'tabler:mail',
     },
     {
-      title: "Lieu de l'événement",
-      description: 'Aix-en-Provence (lieu exact communiqué prochainement)',
+      title: 'Localisation',
+      description: 'Région Provence, France',
       icon: 'tabler:map-pin',
     },
   ],

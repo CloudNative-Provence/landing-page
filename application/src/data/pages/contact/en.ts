@@ -8,15 +8,15 @@ export default {
   items: [
     {
       title: 'General support',
-      description: `For any questions about the event, participation, or logistics.`,
+      description: `For any questions about the association, our events, or how to get involved.`,
     },
     {
       title: 'Sponsoring',
-      description: 'For more info on sponsorship options or to propose a partnership idea.',
+      description: 'For more info on sponsorship options for KCD Provence 2026 or to propose a partnership idea.',
     },
     {
       title: 'Community',
-      description: 'Join the organization or propose a workshop, conference or community booth.',
+      description: 'Join the association or propose a workshop, conference or community booth.',
     },
     {
       title: 'Email',
@@ -24,8 +24,8 @@ export default {
       icon: 'tabler:mail',
     },
     {
-      title: 'Event location',
-      description: 'Aix-en-Provence (exact location to be announced soon)',
+      title: 'Location',
+      description: 'Provence region, France',
       icon: 'tabler:map-pin',
     },
   ],

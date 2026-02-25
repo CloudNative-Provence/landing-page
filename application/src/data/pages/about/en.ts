@@ -3,10 +3,10 @@ export default {
     title: 'About',
   },
   hero: {
-    tagline: 'Cloud Native Provence 2026',
-    title: 'The Cloud Native community <br /><span class="text-accent dark:text-white">in the heart of Provence</span>',
+    tagline: 'Cloud Native Provence',
+    title: 'The association behind <br /><span class="text-accent dark:text-white">Cloud Native events in Provence</span>',
     subtitle:
-      'On December 10, 2026 in Aix-en-Provence, join us for an immersive day of conferences, workshops and discussions around Kubernetes, DevOps and Cloud Native.',
+      'Cloud Native Provence is a non-profit association whose main purpose is to organize technical events dedicated to knowledge sharing and exchanges around Cloud Native technologies.',
     imageAlt: 'Cloud Native & Kubernetes',
   },
   team: {
@@ -15,24 +15,25 @@ export default {
     tagline: 'Team',
   },
   objectives: {
-    title: 'Our objectives',
+    title: 'Our mission',
     subtitle:
-      'Cloud Native Provence aims to bring together the local tech community around modern and collaborative technologies.',
+      'Cloud Native Provence organizes technical events to bring together the local community around Cloud Native technologies.',
     items: [
       {
+        title: 'Technical events',
+        description:
+          'Organizing events dedicated to knowledge sharing and exchanges around Cloud Native technologies, such as KCD Provence.',
+        icon: 'tabler:calendar-event',
+      },
+      {
         title: 'Knowledge sharing',
-        description: 'Technical talks to discover, learn and deepen Cloud Native practices.',
+        description: 'Technical talks to discover, learn and deepen Cloud Native practices at all levels.',
         icon: 'tabler:book',
       },
       {
-        title: 'Community meetings',
-        description: 'Encourage exchanges between developers, engineers, architects and enthusiasts.',
+        title: 'Community building',
+        description: 'Encouraging exchanges between developers, engineers, architects and enthusiasts in Provence.',
         icon: 'tabler:users',
-      },
-      {
-        title: 'Visibility for sponsors',
-        description: 'An opportunity to show your commitment to a dynamic technical community.',
-        icon: 'tabler:speakerphone',
       },
     ],
   },
@@ -42,25 +43,25 @@ export default {
     items: [
       {
         title: 'Community',
-        description: 'Non-profit event, organized by volunteers and open to all enthusiasts.',
+        description: 'Non-profit association, run by volunteers and open to all enthusiasts.',
       },
       {
         title: 'Accessibility',
-        description: 'An affordable day with accessible tickets and sponsors who make it possible.',
+        description: 'Events accessible to everyone, from beginners to experts.',
       },
       {
         title: 'Quality',
-        description: 'Carefully selected presentations, without intrusive commercial approach.',
+        description: 'Carefully curated content, without intrusive commercial approach.',
       },
     ],
   },
   location: {
-    title: 'Location',
-    tagline: 'Join us in Aix-en-Provence',
+    title: 'Where we operate',
+    tagline: 'Based in Provence',
     items: [
       {
-        title: 'Aix-en-Provence',
-        description: 'Exact location to come. Accessible by train, car and local transport.',
+        title: 'Provence region, France',
+        description: 'The association organizes its events in the Provence region, with Aix-en-Provence as its main hub.',
       },
     ],
   },
