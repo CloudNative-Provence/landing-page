@@ -6,8 +6,9 @@ export default {
   },
   hero: {
     tagline: 'Sponsoring',
-    title: 'Support Cloud Native Provence 2026',
-    subtitle: 'Join us to make this day a collective and community success.',
+    title: 'Sponsor KCD Provence 2026',
+    subtitle:
+      'Support Kubernetes Community Days Provence 2026, organized by the Cloud Native Provence association, and make this day a collective and community success.',
   },
   pricing: {
     title: 'Our sponsorship packages',
@@ -90,7 +91,7 @@ export default {
     ],
   },
   features: {
-    title: 'Why sponsor Cloud Native Provence?',
+    title: 'Why sponsor KCD Provence 2026?',
     subtitle: 'A high-impact partnership for tech companies',
     items: [
       {
@@ -175,8 +176,8 @@ export default {
     ],
   },
   callToAction: {
-    title: 'Ready to join the Cloud Native Provence adventure?',
-    subtitle: 'Contact us to sponsor the event or learn more.',
+    title: 'Ready to sponsor KCD Provence 2026?',
+    subtitle: 'Contact us to sponsor the event or learn more about the Cloud Native Provence association.',
     actions: [
       {
         variant: 'primary',

@@ -3,10 +3,10 @@ export default {
     title: 'À propos',
   },
   hero: {
-    tagline: 'Cloud Native Provence 2026',
-    title: 'La communauté Cloud Native <br /><span class="text-accent dark:text-white">au cœur de la Provence</span>',
+    tagline: 'Cloud Native Provence',
+    title: "L'association derrière <br /><span class=\"text-accent dark:text-white\">les événements Cloud Native en Provence</span>",
     subtitle:
-      "Le 10 décembre 2026 à Aix-en-Provence, rejoignez-nous pour une journée immersive de conférences, d'ateliers et d'échanges autour de Kubernetes, DevOps et du Cloud Native.",
+      "Cloud Native Provence est une association à but non lucratif dont l'objet principal est l'organisation d'événements techniques dédiés au partage de connaissances et aux échanges autour des technologies Cloud Native.",
     imageAlt: 'Cloud Native & Kubernetes',
   },
   team: {
@@ -15,53 +15,54 @@ export default {
     tagline: 'Équipe',
   },
   objectives: {
-    title: 'Nos objectifs',
+    title: 'Notre mission',
     subtitle:
-      'Cloud Native Provence vise à rassembler la communauté tech locale autour de technologies modernes et collaboratives.',
+      "Cloud Native Provence organise des événements techniques pour rassembler la communauté autour des technologies Cloud Native.",
     items: [
       {
+        title: 'Événements techniques',
+        description:
+          "Organisation d'événements dédiés au partage de connaissances et aux échanges autour des technologies Cloud Native, comme le KCD Provence.",
+        icon: 'tabler:calendar-event',
+      },
+      {
         title: 'Partage de connaissances',
-        description: 'Des talks techniques pour découvrir, apprendre et approfondir les pratiques Cloud Native.',
+        description: 'Des contenus techniques pour découvrir, apprendre et approfondir les pratiques Cloud Native, pour tous les niveaux.',
         icon: 'tabler:book',
       },
       {
-        title: 'Rencontres communautaires',
-        description: 'Favoriser les échanges entre développeurs, ingénieurs, architectes et passionnés.',
+        title: 'Vie communautaire',
+        description: 'Favoriser les échanges entre développeurs, ingénieurs, architectes et passionnés en Provence.',
         icon: 'tabler:users',
-      },
-      {
-        title: 'Visibilité pour les sponsors',
-        description: "Une opportunité de montrer votre engagement auprès d'une communauté technique dynamique.",
-        icon: 'tabler:speakerphone',
       },
     ],
   },
   values: {
     title: 'Nos valeurs',
     subtitle:
-      "Porté par la communauté, Cloud Native Provence défend des valeurs de partage, d'inclusivité et d'ouverture.",
+      "Portée par la communauté, Cloud Native Provence défend des valeurs de partage, d'inclusivité et d'ouverture.",
     items: [
       {
         title: 'Communauté',
-        description: 'Événement à but non lucratif, organisé par des bénévoles et ouvert à tous les passionnés.',
+        description: "Association à but non lucratif, animée par des bénévoles et ouverte à tous les passionnés.",
       },
       {
         title: 'Accessibilité',
-        description: 'Une journée abordable avec des tickets accessibles et des sponsors qui rendent cela possible.',
+        description: 'Des événements accessibles à toutes et tous, du débutant à l\'expert.',
       },
       {
         title: 'Qualité',
-        description: 'Des interventions sélectionnées avec soin, sans démarche commerciale intrusive.',
+        description: 'Des contenus sélectionnés avec soin, sans démarche commerciale intrusive.',
       },
     ],
   },
   location: {
-    title: 'Localisation',
-    tagline: 'Rejoignez-nous à Aix-en-Provence',
+    title: 'Notre territoire',
+    tagline: 'Basés en Provence',
     items: [
       {
-        title: 'Aix-en-Provence',
-        description: 'Lieu exact à venir. Accessible en train, voiture et transport local.',
+        title: 'Région Provence, France',
+        description: "L'association organise ses événements en région Provence, avec Aix-en-Provence comme principal centre d'activité.",
       },
     ],
   },
