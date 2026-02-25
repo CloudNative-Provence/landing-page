@@ -16,7 +16,7 @@ export default {
       {
         title: 'Platinum',
         subtitle: "Visibilité maximale sur tout l'événement",
-        price: 15000,
+        price: 10000,
         period: 'HT',
         items: [
           { description: 'Stand 9 m² + mobilier' },
@@ -37,7 +37,7 @@ export default {
       {
         title: 'Gold',
         subtitle: 'Excellent compromis visibilité/coût',
-        price: 8000,
+        price: 6000,
         period: 'HT',
         items: [
           { description: 'Stand 6 m² + mobilier' },
