@@ -101,9 +101,9 @@ export default {
     importantDates: {
       title: 'Important Dates',
       items: [
-        { label: 'CFP Opens', date: 'TBD' },
-        { label: 'CFP Closes', date: 'TBD' },
-        { label: 'Speakers Notified', date: 'TBD' },
+        { label: 'CFP Opens', date: 'May 15, 2026' },
+        { label: 'CFP Closes', date: 'July 15, 2026' },
+        { label: 'Speakers Notified', date: 'September 15, 2026' },
         { label: 'Event Day', date: 'December 10, 2026' },
       ],
     },
