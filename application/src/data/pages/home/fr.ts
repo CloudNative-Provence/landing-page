@@ -152,6 +152,7 @@ export default {
       ],
     },
     cta: 'Soumettre via Conference HALL',
+    ctaHref: 'https://conference-hall.io/cloud-native-provence-2026',
     image: {
       src: '~/assets/images/event.jpg',
       alt: 'Appel à conférenciers',
