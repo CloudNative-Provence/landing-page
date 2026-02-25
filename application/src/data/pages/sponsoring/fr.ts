@@ -139,19 +139,27 @@ export default {
   },
   materials: {
     title: 'Matériel de sponsoring',
-    subtitle: 'Les dossiers de sponsoring seront bientôt disponibles en téléchargement',
+    subtitle: 'Téléchargez nos dossiers de sponsoring',
     items: [
       {
         title: 'Dossier de sponsoring (FR)',
-        description:
-          'Le dossier complet en français avec toutes les informations sur les différentes formules sera disponible prochainement.',
+        description: 'Le dossier complet en français avec toutes les informations sur les différentes formules.',
         icon: 'tabler:file-text',
+        callToAction: {
+          text: 'Télécharger (FR)',
+          href: 'https://kutt.it/sponsors-fr',
+          target: '_blank',
+        },
       },
       {
         title: 'Sponsorship Package (EN)',
-        description:
-          'The complete sponsorship package in English with all the information about the different options will be available soon.',
+        description: 'The complete sponsorship package in English with all the information about the different options.',
         icon: 'tabler:file-text',
+        callToAction: {
+          text: 'Télécharger (EN)',
+          href: 'https://kutt.it/sponsors-en',
+          target: '_blank',
+        },
       },
     ],
   },
