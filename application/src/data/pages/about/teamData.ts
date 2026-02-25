@@ -31,4 +31,8 @@ export const teamMembers = [
     title: 'Rémi Verchère',
     image: { src: '~/assets/images/team/remi-verchere.jpg' },
   },
+  {
+    title: 'Donia Chaiehloudj',
+    image: { src: '~/assets/images/team/donia-chaiehloudj.jpg' },
+  },
 ];
