@@ -139,7 +139,7 @@ export default {
   },
   materials: {
     title: 'Matériel de sponsoring',
-    subtitle: 'Téléchargez nos dossiers de sponsoring',
+    subtitle: 'Téléchargez notre dossier de sponsoring',
     items: [
       {
         title: 'Dossier de sponsoring (FR)',
