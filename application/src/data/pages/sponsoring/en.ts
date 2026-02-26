@@ -16,7 +16,7 @@ export default {
       {
         title: 'Platinum',
         subtitle: 'Maximum visibility throughout the event',
-        price: 15000,
+        price: 10000,
         period: 'excl. VAT',
         items: [
           { description: '9 m² booth + furniture' },
@@ -37,7 +37,7 @@ export default {
       {
         title: 'Gold',
         subtitle: 'Excellent visibility/cost compromise',
-        price: 8000,
+        price: 6000,
         period: 'excl. VAT',
         items: [
           { description: '6 m² booth + furniture' },
