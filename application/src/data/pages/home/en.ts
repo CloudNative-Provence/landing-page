@@ -97,7 +97,7 @@ export default {
     title: 'Call for Papers',
     intro:
       'Now is your chance to become a speaker at KCD Provence! Send us your talk proposals and share your cloud native expertise with the community.',
-    status: 'Opening Soon',
+    status: 'Opens 15th of May',
     importantDates: {
       title: 'Important Dates',
       items: [
