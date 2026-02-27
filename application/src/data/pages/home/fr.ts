@@ -103,7 +103,7 @@ export default {
       title: 'Dates importantes',
       items: [
         { label: 'Ouverture du CFP', date: '15 mai 2026' },
-        { label: 'Clôture du CFP', date: '15 juillet 2026' },
+        { label: 'Clôture du CFP', date: '1er septembre 2026' },
         { label: 'Notification des speakers', date: '15 septembre 2026' },
         { label: 'Jour J', date: '10 décembre 2026' },
       ],
