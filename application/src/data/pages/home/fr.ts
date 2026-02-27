@@ -98,7 +98,7 @@ export default {
     title: 'Appel à conférenciers',
     intro:
       "C'est le moment de devenir speaker au KCD Provence ! Envoyez-nous vos propositions de talks et partagez votre expertise avec la communauté Cloud Native.",
-    status: 'Bientôt ouvert',
+    status: 'Ouvre le 15 mai',
     importantDates: {
       title: 'Dates importantes',
       items: [
