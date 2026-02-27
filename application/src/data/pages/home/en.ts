@@ -124,12 +124,19 @@ export default {
       title: 'Accepted Formats',
       items: [
         {
-          title: 'Lightning Talk (15 min)',
-          description: 'Lightning Talk on a technical topic',
+          title: 'Conference (30 minutes)',
+          description:
+            'Come share your Cloud Native passion in this 30 minutes presentation format. From your Return On Experience with Platform Engineering to showing us the latest and coolest OSS Tool, there is room for a lot of topics.',
         },
         {
-          title: 'Talk (30 min)',
-          description: 'Classic presentation, real-world experience, or technical deep-dive.',
+          title: 'Short talk (10 minutes)',
+          description:
+            'Challenging format where you need to focus on one topic that matters for you, from doing a live coding demo to sharing tips on how to be a happier developer.',
+        },
+        {
+          title: 'Lightning Talk (5 minutes)',
+          description:
+            'The most challenging format, 5 minutes is short but you would be amazed by the amount of info or passion you can transmit in such a short time. Take the challenge.',
         },
       ],
     },
