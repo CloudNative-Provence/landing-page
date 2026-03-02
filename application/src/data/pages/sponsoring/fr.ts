@@ -148,7 +148,7 @@ export default {
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (FR)',
-          href: 'https://kutt.it/sponsors-fr',
+          href: 'https://kutt.to/sponsors-fr',
           target: '_blank',
         },
       },
@@ -158,7 +158,7 @@ export default {
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (EN)',
-          href: 'https://kutt.it/sponsors-en',
+          href: 'https://kutt.to/sponsors-en',
           target: '_blank',
         },
       },
