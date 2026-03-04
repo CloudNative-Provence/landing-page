@@ -17,7 +17,7 @@ metadata:
   openGraph:
     site_name: Cloud Native Provence
     images:
-      - url: '~/assets/images/hero-image.png'
+      - url: '~/assets/images/logos/logo-kcd-provence-primary.svg'
         width: 1200
         height: 628
     type: website

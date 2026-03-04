@@ -154,7 +154,8 @@ export default {
       },
       {
         title: 'Sponsorship Package (EN)',
-        description: 'The complete sponsorship package in English with all the information about the different options.',
+        description:
+          'The complete sponsorship package in English with all the information about the different options.',
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (EN)',

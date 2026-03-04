@@ -4,10 +4,16 @@ export default {
   },
   hero: {
     tagline: 'Cloud Native Provence',
-    title: "L'association derrière <br /><span class=\"text-accent dark:text-white\">les événements Cloud Native en Provence</span>",
+    title:
+      'L\'association derrière <br /><span class="text-accent dark:text-white">les événements Cloud Native en Provence</span>',
     subtitle:
       "Cloud Native Provence est une association à but non lucratif dont l'objet principal est l'organisation d'événements techniques dédiés au partage de connaissances et aux échanges autour des technologies Cloud Native.",
-    imageAlt: 'Cloud Native & Kubernetes',
+    image: {
+      src: '~/assets/images/logos/logo-primary.svg',
+      alt: 'Cloud Native & Kubernetes',
+      width: 2360,
+      height: 690,
+    },
   },
   team: {
     title: 'Qui sommes-nous ?',
@@ -17,7 +23,7 @@ export default {
   objectives: {
     title: 'Notre mission',
     subtitle:
-      "Cloud Native Provence organise des événements techniques pour rassembler la communauté autour des technologies Cloud Native.",
+      'Cloud Native Provence organise des événements techniques pour rassembler la communauté autour des technologies Cloud Native.',
     items: [
       {
         title: 'Événements techniques',
@@ -27,7 +33,8 @@ export default {
       },
       {
         title: 'Partage de connaissances',
-        description: 'Des contenus techniques pour découvrir, apprendre et approfondir les pratiques Cloud Native, pour tous les niveaux.',
+        description:
+          'Des contenus techniques pour découvrir, apprendre et approfondir les pratiques Cloud Native, pour tous les niveaux.',
         icon: 'tabler:book',
       },
       {
@@ -44,11 +51,11 @@ export default {
     items: [
       {
         title: 'Communauté',
-        description: "Association à but non lucratif, animée par des bénévoles et ouverte à tous les passionnés.",
+        description: 'Association à but non lucratif, animée par des bénévoles et ouverte à tous les passionnés.',
       },
       {
         title: 'Accessibilité',
-        description: 'Des événements accessibles à toutes et tous, du débutant à l\'expert.',
+        description: "Des événements accessibles à toutes et tous, du débutant à l'expert.",
       },
       {
         title: 'Qualité',
@@ -62,7 +69,8 @@ export default {
     items: [
       {
         title: 'Région Provence, France',
-        description: "L'association organise ses événements en région Provence, avec Aix-en-Provence comme principal centre d'activité.",
+        description:
+          "L'association organise ses événements en région Provence, avec Aix-en-Provence comme principal centre d'activité.",
       },
     ],
   },

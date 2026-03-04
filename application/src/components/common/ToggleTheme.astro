@@ -8,6 +8,7 @@ export interface Props {
   class?: string;
   iconClass?: string;
   iconName?: string;
+  darkIconName?: string;
 }
 
 const {
@@ -16,13 +17,19 @@ const {
     className = 'text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center',
   iconClass = 'w-6 h-6',
   iconName = 'tabler:sun',
+  darkIconName = 'tabler:moon',
 } = Astro.props;
 ---
 
 {
   !(UI.theme && UI.theme.endsWith(':only')) && (
     <button type="button" class={className} aria-label={label} data-aw-toggle-color-scheme>
-      <Icon name={iconName} class={iconClass} />
+      <span class="inline dark:hidden" aria-hidden="true">
+        <Icon name={iconName} class={iconClass} />
+      </span>
+      <span class="hidden dark:inline" aria-hidden="true">
+        <Icon name={darkIconName} class={iconClass} />
+      </span>
     </button>
   )
 }

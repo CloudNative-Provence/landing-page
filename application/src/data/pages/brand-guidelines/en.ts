@@ -104,6 +104,27 @@ export const enContent = {
           download: true,
         },
       },
+      {
+        title: 'KCD Provence Logo (Primary)',
+        description:
+          'KCD Provence variant in primary colors. Vector format, ideal for web and print without quality loss.',
+        icon: 'tabler:file-vector',
+        callToAction: {
+          text: 'Download SVG',
+          href: '/logos/logo-kcd-provence-primary.svg',
+          download: true,
+        },
+      },
+      {
+        title: 'KCD Provence Logo (Dark Backgrounds)',
+        description: 'KCD Provence white variant for dark backgrounds. Vector format for clean, scalable rendering.',
+        icon: 'tabler:palette',
+        callToAction: {
+          text: 'Download SVG',
+          href: '/logos/logo-kcd-provence-white.svg',
+          download: true,
+        },
+      },
     ],
   },
   usageGuidelines: {

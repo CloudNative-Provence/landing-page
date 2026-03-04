@@ -105,6 +105,27 @@ export const frContent = {
           download: true,
         },
       },
+      {
+        title: 'Logo KCD Provence (Primaire)',
+        description:
+          "Variante KCD Provence en couleurs principales. Format vectoriel, idéal pour le web et l'impression sans perte de qualité.",
+        icon: 'tabler:file-vector',
+        callToAction: {
+          text: 'Télécharger SVG',
+          href: '/logos/logo-kcd-provence-primary.svg',
+          download: true,
+        },
+      },
+      {
+        title: 'Logo KCD Provence (Fonds sombres)',
+        description: 'Variante blanche KCD Provence pour fonds sombres. Format vectoriel propre et redimensionnable.',
+        icon: 'tabler:palette',
+        callToAction: {
+          text: 'Télécharger SVG',
+          href: '/logos/logo-kcd-provence-white.svg',
+          download: true,
+        },
+      },
     ],
   },
   usageGuidelines: {
