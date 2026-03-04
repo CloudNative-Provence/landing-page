@@ -17,7 +17,20 @@ export default {
       },
       { text: 'Submit a Talk', href: '#cfp' },
     ],
-    image: { src: '~/assets/images/hero-image.png', alt: 'Cloud Native Provence Image' },
+    image: {
+      light: {
+        src: '~/assets/images/logos/logo-kcd-provence-primary.svg',
+        alt: 'Cloud Native Provence Image',
+        width: 500,
+        height: 500,
+      },
+      dark: {
+        src: '~/assets/images/logos/logo-kcd-provence-white.svg',
+        alt: 'Cloud Native Provence Image',
+        width: 500,
+        height: 500,
+      },
+    },
     badge: 'December 10, 2026 · Aix-en-Provence',
     title: {
       main: 'Kubernetes Community Days',
@@ -160,7 +173,7 @@ export default {
     cta: 'Submit via Conference HALL',
     ctaHref: 'https://conference-hall.io/cloud-native-provence-2026',
     image: {
-      src: '~/assets/images/event.jpg',
+      src: '~/assets/images/pages/home/event.jpg',
       alt: 'Call for Papers',
     },
   },

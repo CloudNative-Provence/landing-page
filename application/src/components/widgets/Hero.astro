@@ -4,6 +4,9 @@ import Button from '~/components/ui/Button.astro';
 
 import type { Hero as Props } from '~/types';
 
+const isThemeImage = (value: unknown): value is { light: unknown; dark: unknown } =>
+  Boolean(value && typeof value === 'object' && 'light' in value && 'dark' in value);
+
 const {
   title = await Astro.slots.render('title'),
   subtitle = await Astro.slots.render('subtitle'),
@@ -16,6 +19,16 @@ const {
   id,
   bg = await Astro.slots.render('bg'),
 } = Astro.props;
+
+const hasThemeImage = isThemeImage(image);
+
+const heroImageProps = {
+  widths: [400, 768, 1024, 2040],
+  sizes: '(max-width: 767px) 400px, (max-width: 1023px) 768px, (max-width: 2039px) 1024px, 2040px',
+  loading: 'eager' as const,
+  width: 1024,
+  height: 576,
+};
 ---
 
 <section class="relative md:-mt-[76px] not-prose" {...id ? { id } : {}}>
@@ -79,16 +92,29 @@ const {
             <div class="relative m-auto max-w-5xl">
               {typeof image === 'string' ? (
                 <Fragment set:html={image} />
+              ) : hasThemeImage ? (
+                <>
+                  {typeof image.light === 'string' ? (
+                    <div class="dark:hidden">
+                      <Fragment set:html={image.light} />
+                    </div>
+                  ) : (
+                    image.light && (
+                      <Image class="mx-auto rounded-md w-full dark:hidden" {...heroImageProps} {...image.light} />
+                    )
+                  )}
+                  {typeof image.dark === 'string' ? (
+                    <div class="hidden dark:block">
+                      <Fragment set:html={image.dark} />
+                    </div>
+                  ) : (
+                    image.dark && (
+                      <Image class="mx-auto rounded-md w-full hidden dark:block" {...heroImageProps} {...image.dark} />
+                    )
+                  )}
+                </>
               ) : (
-                <Image
-                  class="mx-auto rounded-md w-full"
-                  widths={[400, 768, 1024, 2040]}
-                  sizes="(max-width: 767px) 400px, (max-width: 1023px) 768px, (max-width: 2039px) 1024px, 2040px"
-                  loading="eager"
-                  width={1024}
-                  height={576}
-                  {...image}
-                />
+                <Image class="mx-auto rounded-md w-full" {...heroImageProps} {...image} />
               )}
             </div>
           )

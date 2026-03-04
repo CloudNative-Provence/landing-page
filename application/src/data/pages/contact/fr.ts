@@ -12,7 +12,8 @@ export default {
     },
     {
       title: 'Sponsoring',
-      description: "Pour plus d'infos sur les options de sponsoring de KCD Provence 2026 ou pour proposer une idée partenaire.",
+      description:
+        "Pour plus d'infos sur les options de sponsoring de KCD Provence 2026 ou pour proposer une idée partenaire.",
     },
     {
       title: 'Communauté',

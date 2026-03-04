@@ -17,7 +17,20 @@ export default {
       },
       { text: 'Proposer un talk', href: '#cfp' },
     ],
-    image: { src: '~/assets/images/hero-image.png', alt: 'Image Cloud Native Provence' },
+    image: {
+      light: {
+        src: '~/assets/images/logos/logo-kcd-provence-primary.svg',
+        alt: 'Image Cloud Native Provence',
+        width: 500,
+        height: 500,
+      },
+      dark: {
+        src: '~/assets/images/logos/logo-kcd-provence-white.svg',
+        alt: 'Image Cloud Native Provence',
+        width: 500,
+        height: 500,
+      },
+    },
     badge: '10 décembre 2026 · Aix-en-Provence',
     title: {
       main: 'Kubernetes Community Days',
@@ -127,7 +140,7 @@ export default {
         {
           title: 'Conférence (30 minutes)',
           description:
-            'Venez partager votre passion Cloud Native dans ce format de présentation de 30 minutes. De votre retour d\'expérience sur le Platform Engineering à la présentation du dernier outil OSS tendance, il y a de la place pour de nombreux sujets.',
+            "Venez partager votre passion Cloud Native dans ce format de présentation de 30 minutes. De votre retour d'expérience sur le Platform Engineering à la présentation du dernier outil OSS tendance, il y a de la place pour de nombreux sujets.",
         },
         {
           title: 'Short talk (10 minutes)',
@@ -137,7 +150,7 @@ export default {
         {
           title: 'Lightning Talk (5 minutes)',
           description:
-            'Le format le plus challengeant, 5 minutes c\'est court mais vous seriez surpris de la quantité d\'informations ou de passion que vous pouvez transmettre en si peu de temps. Relevez le défi.',
+            "Le format le plus challengeant, 5 minutes c'est court mais vous seriez surpris de la quantité d'informations ou de passion que vous pouvez transmettre en si peu de temps. Relevez le défi.",
         },
       ],
     },
@@ -161,7 +174,7 @@ export default {
     cta: 'Soumettre via Conference HALL',
     ctaHref: 'https://conference-hall.io/cloud-native-provence-2026',
     image: {
-      src: '~/assets/images/event.jpg',
+      src: '~/assets/images/pages/home/event.jpg',
       alt: 'Appel à conférenciers',
     },
   },

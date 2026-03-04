@@ -12,7 +12,7 @@ export interface Props {
     tagline?: string;
     title?: string;
     subtitle?: string;
-    imageAlt?: string;
+    image?: unknown;
   };
   team: {
     title?: string;
@@ -44,13 +44,7 @@ export interface Props {
 const { hero, team, objectives, values, location, contact } = Astro.props;
 ---
 
-<Hero
-  tagline={hero.tagline}
-  image={{
-    src: '~/assets/images/hero-image.png',
-    alt: hero.imageAlt,
-  }}
->
+<Hero tagline={hero.tagline} image={hero.image}>
   <Fragment slot="title" set:html={hero.title} />
   <Fragment slot="subtitle" set:text={hero.subtitle} />
 </Hero>

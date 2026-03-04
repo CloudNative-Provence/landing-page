@@ -4,10 +4,16 @@ export default {
   },
   hero: {
     tagline: 'Cloud Native Provence',
-    title: 'The association behind <br /><span class="text-accent dark:text-white">Cloud Native events in Provence</span>',
+    title:
+      'The association behind <br /><span class="text-accent dark:text-white">Cloud Native events in Provence</span>',
     subtitle:
       'Cloud Native Provence is a non-profit association whose main purpose is to organize technical events dedicated to knowledge sharing and exchanges around Cloud Native technologies.',
-    imageAlt: 'Cloud Native & Kubernetes',
+    image: {
+      src: '~/assets/images/logos/logo-primary.svg',
+      alt: 'Cloud Native & Kubernetes',
+      width: 2360,
+      height: 690,
+    },
   },
   team: {
     title: 'Who are we?',
@@ -61,7 +67,8 @@ export default {
     items: [
       {
         title: 'Provence region, France',
-        description: 'The association organizes its events in the Provence region, with Aix-en-Provence as its main hub.',
+        description:
+          'The association organizes its events in the Provence region, with Aix-en-Provence as its main hub.',
       },
     ],
   },
