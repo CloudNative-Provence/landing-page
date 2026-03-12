@@ -29,8 +29,12 @@ updates:
           - "@fontsource-variable/*"
       npm-development-dependencies:
         dependency-type: "development"
+        patterns:
+          - "*"
       npm-production-dependencies:
         dependency-type: "production"
+        patterns:
+          - "*"
 
   - package-ecosystem: github-actions
     open-pull-requests-limit: 20
