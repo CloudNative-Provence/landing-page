@@ -29,7 +29,7 @@ test: ## Run tests
 	npm --prefix application run test:ci
 
 ci: ## Run tests in CI mode
-	npm --prefix application audit fix --force || true
+	npm --prefix application audit fix || true
 	cd application && npx update-browserslist-db@latest
 	$(MAKE) lint-fix
 	$(MAKE) build

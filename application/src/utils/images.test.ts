@@ -38,7 +38,7 @@ describe('images helpers', () => {
   });
 
   it('keeps payload unchanged when no open graph images are provided', async () => {
-    const payload = { title: 'Hello' };
+    const payload = { type: 'website' };
     await expect(adaptOpenGraphImages(payload, new URL('https://cloudnative-provence.fr'))).resolves.toEqual(payload);
   });
 

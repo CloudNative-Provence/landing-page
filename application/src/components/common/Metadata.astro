@@ -1,22 +1,33 @@
 ---
 import merge from 'lodash.merge';
-import { AstroSeo } from '@astrolib/seo';
-
-import type { Props as AstroSeoProps } from '@astrolib/seo';
 
 import { SITE, METADATA, I18N } from 'astrowind:config';
-import type { MetaData } from '~/types';
+import type { MetaData, MetaDataOpenGraph, MetaDataTwitter } from '~/types';
 import { getCanonical } from '~/utils/permalinks';
 
 import { adaptOpenGraphImages } from '~/utils/images';
 
+type OpenGraphWithLegacySiteName = MetaDataOpenGraph & {
+  site_name?: string;
+};
+
+interface SeoProps extends MetaData {
+  titleTemplate?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  openGraph?: OpenGraphWithLegacySiteName;
+  twitter?: MetaDataTwitter;
+}
+
 export interface Props extends MetaData {
+  ignoreTitleTemplate?: boolean;
   dontUseTitleTemplate?: boolean;
 }
 
 const {
   title,
-  ignoreTitleTemplate = false,
+  dontUseTitleTemplate = false,
+  ignoreTitleTemplate = dontUseTitleTemplate,
   canonical = String(getCanonical(String(Astro.url.pathname))),
   robots = {},
   description,
@@ -24,7 +35,7 @@ const {
   twitter = {},
 } = Astro.props;
 
-const seoProps: AstroSeoProps = merge(
+const seoProps: SeoProps = merge(
   {
     title: '',
     titleTemplate: '%s',
@@ -63,6 +74,43 @@ const seoProps: AstroSeoProps = merge(
     twitter: twitter,
   }
 );
+
+const adaptedOpenGraph = await adaptOpenGraphImages(seoProps?.openGraph, Astro.site);
+const normalizedOpenGraph = adaptedOpenGraph as OpenGraphWithLegacySiteName | undefined;
+const resolvedTitle = seoProps?.title
+  ? seoProps.titleTemplate?.includes('%s')
+    ? seoProps.titleTemplate.replace('%s', seoProps.title)
+    : seoProps.title
+  : undefined;
+const robotsContent = [seoProps?.noindex ? 'noindex' : 'index', seoProps?.nofollow ? 'nofollow' : 'follow'].join(', ');
+const openGraphSiteName = normalizedOpenGraph?.siteName ?? normalizedOpenGraph?.site_name;
+const twitterImage = normalizedOpenGraph?.images?.[0]?.url;
 ---
 
-<AstroSeo {...{ ...seoProps, openGraph: await adaptOpenGraphImages(seoProps?.openGraph, Astro.site) }} />
+{resolvedTitle ? <title>{resolvedTitle}</title> : null}
+{seoProps?.description ? <meta name="description" content={seoProps.description} /> : null}
+{seoProps?.canonical ? <link rel="canonical" href={seoProps.canonical} /> : null}
+<meta name="robots" content={robotsContent} />
+
+{adaptedOpenGraph?.url ? <meta property="og:url" content={adaptedOpenGraph.url} /> : null}
+{adaptedOpenGraph?.type ? <meta property="og:type" content={adaptedOpenGraph.type} /> : null}
+{openGraphSiteName ? <meta property="og:site_name" content={openGraphSiteName} /> : null}
+{seoProps?.description ? <meta property="og:description" content={seoProps.description} /> : null}
+{resolvedTitle ? <meta property="og:title" content={resolvedTitle} /> : null}
+{adaptedOpenGraph?.locale ? <meta property="og:locale" content={adaptedOpenGraph.locale} /> : null}
+{
+  adaptedOpenGraph?.images?.map((image) => (
+    <>
+      <meta property="og:image" content={image.url} />
+      {image.width ? <meta property="og:image:width" content={String(image.width)} /> : null}
+      {image.height ? <meta property="og:image:height" content={String(image.height)} /> : null}
+    </>
+  ))
+}
+
+{seoProps?.twitter?.cardType ? <meta name="twitter:card" content={seoProps.twitter.cardType} /> : null}
+{seoProps?.twitter?.site ? <meta name="twitter:site" content={seoProps.twitter.site} /> : null}
+{seoProps?.twitter?.handle ? <meta name="twitter:creator" content={seoProps.twitter.handle} /> : null}
+{resolvedTitle ? <meta name="twitter:title" content={resolvedTitle} /> : null}
+{seoProps?.description ? <meta name="twitter:description" content={seoProps.description} /> : null}
+{twitterImage ? <meta name="twitter:image" content={twitterImage} /> : null}

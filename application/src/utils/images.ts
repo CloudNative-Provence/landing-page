@@ -1,11 +1,18 @@
 import { isUnpicCompatible, unpicOptimizer, astroAssetsOptimizer } from './images-optimization';
 import type { ImageMetadata } from 'astro';
-import type { OpenGraph } from '@astrolib/seo';
+import type { MetaDataOpenGraph } from '~/types';
+
+type LocalImageModule = {
+  default: ImageMetadata;
+};
 
 const load = async function () {
-  let images: Record<string, () => Promise<unknown>> | undefined = undefined;
+  let images: Record<string, LocalImageModule> | undefined = undefined;
   try {
-    images = import.meta.glob('~/assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}');
+    images = import.meta.glob(
+      ['../assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}'],
+      { eager: true }
+    ) as Record<string, LocalImageModule>;
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     // continue regardless of error
@@ -13,7 +20,7 @@ const load = async function () {
   return images;
 };
 
-let _images: Record<string, () => Promise<unknown>> | undefined = undefined;
+let _images: Record<string, LocalImageModule> | undefined = undefined;
 
 /** */
 export const fetchLocalImages = async () => {
@@ -41,18 +48,16 @@ export const findImage = async (
   }
 
   const images = await fetchLocalImages();
-  const key = imagePath.replace('~/', '/src/');
+  const key = imagePath.replace('~/assets/images', '../assets/images');
 
-  return images && typeof images[key] === 'function'
-    ? ((await images[key]()) as { default: ImageMetadata })['default']
-    : null;
+  return images?.[key]?.default ?? null;
 };
 
 /** */
 export const adaptOpenGraphImages = async (
-  openGraph: OpenGraph = {},
+  openGraph: MetaDataOpenGraph = {},
   astroSite: URL | undefined = new URL('')
-): Promise<OpenGraph> => {
+): Promise<MetaDataOpenGraph> => {
   if (!openGraph?.images?.length) {
     return openGraph;
   }

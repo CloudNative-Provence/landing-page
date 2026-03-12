@@ -21,9 +21,14 @@ export const createAstroContentRuntimeMock = (options?: { posts?: RuntimePost[];
 const createOptionalChain = () => ({ optional: () => createOptionalChain() });
 
 export const createAstroContentSchemaMock = () => ({
+  defineCollection: vi.fn((input) => input),
+});
+
+export const createAstroZodMock = () => ({
   z: {
     object: () => createOptionalChain(),
-    string: () => ({ ...createOptionalChain(), url: () => createOptionalChain() }),
+    string: () => createOptionalChain(),
+    url: () => createOptionalChain(),
     boolean: () => createOptionalChain(),
     array: () => createOptionalChain(),
     number: () => createOptionalChain(),
@@ -31,7 +36,6 @@ export const createAstroContentSchemaMock = () => ({
     enum: () => createOptionalChain(),
     nativeEnum: () => createOptionalChain(),
   },
-  defineCollection: vi.fn((input) => input),
 });
 
 export const createAstroLoadersMock = () => ({
