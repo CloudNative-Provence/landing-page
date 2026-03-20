@@ -69,6 +69,7 @@ export interface Props {
     };
     cta?: string;
     ctaHref?: string;
+    ctaDisabled?: boolean;
   };
   venue?: {
     title?: string;
@@ -270,13 +271,23 @@ const heroBadge = hero?.badge;
 
         {cfp.cta && (
           <div class="pt-2 text-center">
-            <a
-              href={cfp.ctaHref ?? '#'}
-              class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 font-semibold text-white transition hover:opacity-90"
-              {...(cfp.ctaHref?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-            >
-              {cfp.cta}
-            </a>
+            {cfp.ctaDisabled ? (
+              <span
+                role="button"
+                aria-disabled="true"
+                class="inline-flex cursor-not-allowed items-center justify-center rounded-md bg-gray-400 px-6 py-3 font-semibold text-white opacity-60 dark:bg-gray-600"
+              >
+                {cfp.cta}
+              </span>
+            ) : (
+              <a
+                href={cfp.ctaHref ?? '#'}
+                class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 font-semibold text-white transition hover:opacity-90"
+                {...(cfp.ctaHref?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+              >
+                {cfp.cta}
+              </a>
+            )}
           </div>
         )}
       </div>
