@@ -9,10 +9,10 @@ export default {
     subtitle:
       "Cloud Native Provence est une association à but non lucratif dont l'objet principal est l'organisation d'événements techniques dédiés au partage de connaissances et aux échanges autour des technologies Cloud Native.",
     image: {
-      src: '~/assets/images/logos/logo-primary.svg',
-      alt: 'Cloud Native & Kubernetes',
-      width: 2360,
-      height: 690,
+      src: '~/assets/images/logos/logo-icon.svg',
+      alt: 'Logo Cloud Native Provence',
+      width: 300,
+      height: 300,
     },
   },
   team: {

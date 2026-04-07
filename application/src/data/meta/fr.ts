@@ -1,8 +1,8 @@
 export default {
   meta: {
     title: {
-      default: 'Cloud Native Provence',
-      template: '%s - Cloud Native Provence',
+      default: 'KCD Provence',
+      template: '%s - KCD Provence',
     },
     description: 'La journée Cloud Native & Kubernetes à Aix-en-Provence, organisée par la communauté.',
   },

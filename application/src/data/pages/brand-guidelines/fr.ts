@@ -65,37 +65,6 @@ export const frContent = {
     subtitle: 'Logos disponibles en différents formats pour tous vos besoins',
     items: [
       {
-        title: 'Logo SVG (Primaire)',
-        description:
-          "Format vectoriel, idéal pour le web et l'impression. Fichier léger et redimensionnable sans perte de qualité.",
-        icon: 'tabler:file-vector',
-        callToAction: {
-          text: 'Télécharger SVG',
-          href: '/logos/logo-primary.svg',
-          download: true,
-        },
-      },
-      {
-        title: 'Logo PNG (Haute résolution)',
-        description: 'Format image haute définition, parfait pour les présentations et documents. Fond transparent.',
-        icon: 'tabler:file-type-png',
-        callToAction: {
-          text: 'Télécharger PNG',
-          href: '/logos/logo-primary.png',
-          download: true,
-        },
-      },
-      {
-        title: 'Logo Blanc (Fonds sombres)',
-        description: 'Version blanche du logo pour utilisation sur fonds sombres. Disponible en SVG et PNG.',
-        icon: 'tabler:palette',
-        callToAction: {
-          text: 'Télécharger SVG',
-          href: '/logos/logo-white.svg',
-          download: true,
-        },
-      },
-      {
         title: 'Icône seule',
         description: 'Symbole/icône sans texte, pour les petits formats et les favicons. SVG et PNG.',
         icon: 'tabler:square',

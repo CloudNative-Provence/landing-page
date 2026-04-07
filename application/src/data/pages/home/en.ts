@@ -2,7 +2,7 @@ import { getLocalizedPagePath } from '~/i18n/routes';
 
 export default {
   metadata: {
-    title: 'KCD Provence 2026 - Kubernetes Community Days Provence in Aix-en-Provence',
+    title: 'Kubernetes Community Days Provence in Aix-en-Provence',
     description:
       'Join 600+ cloud native professionals on December 10, 2026 at the Palais des Congrès in Aix-en-Provence for a day of talks, workshops, and networking.',
     ignoreTitleTemplate: true,
@@ -20,13 +20,13 @@ export default {
     image: {
       light: {
         src: '~/assets/images/logos/logo-kcd-provence-primary.svg',
-        alt: 'Cloud Native Provence Image',
+        alt: 'Kubernetes Community Days Provence Primary Logo',
         width: 500,
         height: 500,
       },
       dark: {
         src: '~/assets/images/logos/logo-kcd-provence-white.svg',
-        alt: 'Cloud Native Provence Image',
+        alt: 'Kubernetes Community Days Provence White Logo',
         width: 500,
         height: 500,
       },
