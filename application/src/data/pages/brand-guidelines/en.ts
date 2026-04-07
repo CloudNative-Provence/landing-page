@@ -65,36 +65,6 @@ export const enContent = {
     subtitle: 'Logos available in different formats for all your needs',
     items: [
       {
-        title: 'SVG Logo (Primary)',
-        description: 'Vector format, ideal for web and print. Lightweight and resizable file without quality loss.',
-        icon: 'tabler:file-vector',
-        callToAction: {
-          text: 'Download SVG',
-          href: '/logos/logo-primary.svg',
-          download: true,
-        },
-      },
-      {
-        title: 'PNG Logo (High Resolution)',
-        description: 'High definition image format, perfect for presentations and documents. Transparent background.',
-        icon: 'tabler:file-type-png',
-        callToAction: {
-          text: 'Download PNG',
-          href: '/logos/logo-primary.png',
-          download: true,
-        },
-      },
-      {
-        title: 'White Logo (Dark Backgrounds)',
-        description: 'White version of the logo for use on dark backgrounds. Available in SVG and PNG.',
-        icon: 'tabler:palette',
-        callToAction: {
-          text: 'Download SVG',
-          href: '/logos/logo-white.svg',
-          download: true,
-        },
-      },
-      {
         title: 'Icon Only',
         description: 'Symbol/icon without text, for small formats and favicons. SVG and PNG.',
         icon: 'tabler:square',

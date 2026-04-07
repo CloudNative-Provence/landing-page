@@ -9,10 +9,10 @@ export default {
     subtitle:
       'Cloud Native Provence is a non-profit association whose main purpose is to organize technical events dedicated to knowledge sharing and exchanges around Cloud Native technologies.',
     image: {
-      src: '~/assets/images/logos/logo-primary.svg',
-      alt: 'Cloud Native & Kubernetes',
-      width: 2360,
-      height: 690,
+      src: '~/assets/images/logos/logo-icon.svg',
+      alt: 'Cloud Native Provence Logo',
+      width: 300,
+      height: 300,
     },
   },
   team: {

@@ -1,5 +1,5 @@
 site:
-  name: Cloud Native Provence
+  name: KCD Provence
   site: 'https://cloudnative-provence.fr'
   base: '/'
   trailingSlash: false
@@ -8,14 +8,14 @@ site:
 
 metadata:
   title:
-    default: Cloud Native Provence
-    template: '%s — Cloud Native Provence'
+    default: KCD Provence
+    template: '%s - KCD Provence'
   description: 'La journée Cloud Native & Kubernetes à Aix-en-Provence, organisée par la communauté.'
   robots:
     index: true
     follow: true
   openGraph:
-    site_name: Cloud Native Provence
+    site_name: KCD Provence
     images:
       - url: '~/assets/images/logos/logo-kcd-provence-primary.svg'
         width: 1200
