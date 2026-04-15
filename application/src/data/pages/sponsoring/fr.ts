@@ -148,7 +148,7 @@ export default {
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (FR)',
-          href: 'https://kutt.to/sponsors-fr',
+          href: 'https://docs.google.com/presentation/d/1iq1g1LMoeMhXc8MDdV0ZOD9-w_ru9HxQT0CwFxZhTh4/edit?usp=sharing',
           target: '_blank',
         },
       },
@@ -159,7 +159,7 @@ export default {
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (EN)',
-          href: 'https://kutt.to/sponsors-en',
+          href: 'https://docs.google.com/presentation/d/1HU_xxh5R3BMm121SR7qwKqWa8MsSlqW3Z7e_mofXX9Q/edit?usp=sharing',
           target: '_blank',
         },
       },
