@@ -33,14 +33,14 @@
     "@astrojs/rss": "^4.0.18",
     "@astrojs/sitemap": "^3.7.2",
     "@fontsource/montserrat": "^5.2.8",
-    "astro": "^6.1.9",
+    "astro": "^6.1.10",
     "astro-icon": "^1.1.5",
     "limax": "4.2.3",
     "lodash.merge": "^4.6.2",
     "unpic": "^4.2.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.8",
+    "@astrojs/check": "^0.9.9",
     "@astrojs/mdx": "^5.0.4",
     "@astrojs/partytown": "^2.1.7",
     "@eslint/js": "^10.0.1",
