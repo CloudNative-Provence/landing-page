@@ -1,35 +1,13 @@
 ---
 import Layout from '~/layouts/PageLayout.astro';
 import { languages } from '~/i18n/config';
-import { getRouteKeyFromSlug, routeSlugs, type AppLang, type RouteKey } from '~/i18n/routes';
-
-import aboutEn from '~/data/pages/about/en';
-import aboutFr from '~/data/pages/about/fr';
-import AboutContent from '~/pages/about/_content.astro';
-
-import contactEn from '~/data/pages/contact/en';
-import contactFr from '~/data/pages/contact/fr';
-import ContactContent from '~/pages/contact/_content.astro';
-
-import sponsoringEn from '~/data/pages/sponsoring/en';
-import sponsoringFr from '~/data/pages/sponsoring/fr';
-import SponsoringContent from '~/pages/sponsoring/_content.astro';
-
-import { enContent as brandEnContent } from '~/data/pages/brand-guidelines/en';
-import { frContent as brandFrContent } from '~/data/pages/brand-guidelines/fr';
-import BrandGuidelinesContent from '~/pages/brand-guidelines/_content.astro';
-
-import termsEn from '~/data/pages/terms/en';
-import termsFr from '~/data/pages/terms/fr';
-import TermsContent from '~/pages/terms/_content.astro';
-
-import privacyEn from '~/data/pages/privacy/en';
-import privacyFr from '~/data/pages/privacy/fr';
-import PrivacyContent from '~/pages/privacy/_content.astro';
+import { getRouteKeyFromSlug, routeSlugs, type AppLang } from '~/i18n/routes';
+import { LocalizedPageRegistry } from '~/utils/localized-page-registry';
+import { getEnabledLocalizedRouteKeys } from '~/utils/page-routes';
 
 export function getStaticPaths() {
   const langs = Object.keys(languages) as AppLang[];
-  const routeKeys = Object.keys(routeSlugs) as RouteKey[];
+  const routeKeys = getEnabledLocalizedRouteKeys();
 
   return langs.flatMap((lang) =>
     routeKeys.map((routeKey) => ({
@@ -47,94 +25,16 @@ if (!routeKey) {
   throw new Error(`Unknown localized route: /${lang}/${page}`);
 }
 
-const aboutData = lang === 'en' ? aboutEn : aboutFr;
-const contactData = lang === 'en' ? contactEn : contactFr;
-const sponsoringData = lang === 'en' ? sponsoringEn : sponsoringFr;
-const brandData = lang === 'en' ? brandEnContent : brandFrContent;
-const termsData = lang === 'en' ? termsEn : termsFr;
-const privacyData = lang === 'en' ? privacyEn : privacyFr;
+const pageDefinition = LocalizedPageRegistry.resolve(routeKey, lang);
+const PageContent = pageDefinition.component;
 ---
 
 {
-  routeKey === 'about' && (
-    <Layout metadata={aboutData.metadata}>
-      <AboutContent
-        hero={aboutData.hero}
-        team={aboutData.team}
-        objectives={aboutData.objectives}
-        values={aboutData.values}
-        location={aboutData.location}
-        contact={aboutData.contact}
-      />
+  pageDefinition.layout === 'page' ? (
+    <Layout metadata={pageDefinition.metadata}>
+      <PageContent {...pageDefinition.props} />
     </Layout>
-  )
-}
-
-{
-  routeKey === 'contact' && (
-    <Layout metadata={contactData.metadata}>
-      <ContactContent
-        tagline={contactData.tagline}
-        title={contactData.title}
-        featuresTitle={contactData.featuresTitle}
-        items={contactData.items}
-      />
-    </Layout>
-  )
-}
-
-{
-  routeKey === 'sponsoring' && (
-    <Layout metadata={sponsoringData.metadata}>
-      <SponsoringContent
-        hero={sponsoringData.hero}
-        pricing={sponsoringData.pricing}
-        features={sponsoringData.features}
-        faqs={sponsoringData.faqs}
-        materials={sponsoringData.materials}
-        contact={sponsoringData.contact}
-        callToAction={sponsoringData.callToAction}
-      />
-    </Layout>
-  )
-}
-
-{
-  routeKey === 'brand-guidelines' && (
-    <BrandGuidelinesContent
-      metadata={brandData.metadata}
-      hero={brandData.hero}
-      colorPalette={brandData.colorPalette}
-      typography={brandData.typography}
-      logoDownloads={brandData.logoDownloads}
-      usageGuidelines={brandData.usageGuidelines}
-      note={brandData.note}
-    />
-  )
-}
-
-{
-  routeKey === 'terms' && (
-    <Layout metadata={termsData.metadata}>
-      <TermsContent
-        lastUpdatedLabel={termsData.lastUpdatedLabel}
-        lastUpdated={termsData.lastUpdated}
-        intro={termsData.intro}
-        sections={termsData.sections}
-      />
-    </Layout>
-  )
-}
-
-{
-  routeKey === 'privacy' && (
-    <Layout metadata={privacyData.metadata}>
-      <PrivacyContent
-        lastUpdatedLabel={privacyData.lastUpdatedLabel}
-        lastUpdated={privacyData.lastUpdated}
-        intro={privacyData.intro}
-        sections={privacyData.sections}
-      />
-    </Layout>
+  ) : (
+    <PageContent metadata={pageDefinition.metadata} {...pageDefinition.props} />
   )
 }

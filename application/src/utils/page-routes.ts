@@ -1,0 +1,10 @@
+import { APP_PROGRAM } from 'astrowind:config';
+
+import { routeSlugs, type RouteKey } from '~/i18n/routes';
+
+export const isProgramEnabled = () => APP_PROGRAM.isEnabled;
+
+export const isLocalizedPageEnabled = (routeKey: RouteKey) => routeKey !== 'program' || isProgramEnabled();
+
+export const getEnabledLocalizedRouteKeys = () =>
+  (Object.keys(routeSlugs) as RouteKey[]).filter((routeKey) => isLocalizedPageEnabled(routeKey));

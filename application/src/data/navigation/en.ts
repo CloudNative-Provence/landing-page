@@ -6,6 +6,7 @@ export default {
     team: 'Team',
     sponsors: 'Sponsors',
     tickets: 'Get Tickets',
+    program: 'Program',
     sponsoring: 'Sponsoring',
     about: 'About',
     contact: 'Contact',

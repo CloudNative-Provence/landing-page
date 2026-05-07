@@ -1,0 +1,39 @@
+---
+import type { ProgramHighlight, ProgramScheduleHero } from './program-schedule.types';
+
+interface Props {
+  hero: ProgramScheduleHero;
+  highlights: readonly ProgramHighlight[];
+}
+
+const { hero, highlights } = Astro.props;
+---
+
+<section
+  class="relative overflow-hidden border-b border-gray-200 bg-[radial-gradient(circle_at_top_left,_rgba(14,165,233,0.18),_transparent_32%),radial-gradient(circle_at_top_right,_rgba(168,85,247,0.18),_transparent_28%),linear-gradient(180deg,_rgba(15,23,42,0.98),_rgba(15,23,42,0.92))]"
+>
+  <div class="mx-auto flex w-full max-w-[1600px] flex-col gap-8 px-4 py-12 sm:px-6 xl:px-8 2xl:px-10">
+    <div class="flex flex-col gap-8 xl:flex-row xl:items-end xl:justify-between">
+      <div class="max-w-4xl">
+        <p class="text-sm font-semibold uppercase tracking-[0.24em] text-sky-300">{hero.tagline}</p>
+        <h1 class="mt-4 text-4xl font-bold tracking-tight text-white md:text-5xl">{hero.title}</h1>
+        <p class="mt-5 text-lg text-slate-200">{hero.subtitle}</p>
+        <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-200">
+          <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2">{hero.date}</span>
+          <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2">{hero.venue}</span>
+          <span class="rounded-full border border-white/15 bg-white/10 px-4 py-2">{hero.timezone}</span>
+        </div>
+      </div>
+      <div class="grid gap-4 sm:grid-cols-3 xl:min-w-[32rem]">
+        {
+          highlights.map((highlight) => (
+            <div class="rounded-3xl border border-white/10 bg-white/10 p-5 backdrop-blur">
+              <div class="text-3xl font-bold text-white">{highlight.value}</div>
+              <div class="mt-1 text-sm text-slate-300">{highlight.label}</div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -36,15 +36,19 @@ type AstrowindConfigMock = {
       robots: { index: boolean };
     };
   };
+  APP_PROGRAM: {
+    isEnabled: boolean;
+  };
 };
 
-type AstrowindConfigMockOverrides = Omit<Partial<AstrowindConfigMock>, 'APP_BLOG'> & {
+type AstrowindConfigMockOverrides = Omit<Partial<AstrowindConfigMock>, 'APP_BLOG' | 'APP_PROGRAM'> & {
   APP_BLOG?: Partial<AstrowindConfigMock['APP_BLOG']> & {
     post?: Partial<AstrowindConfigMock['APP_BLOG']['post']>;
     list?: Partial<AstrowindConfigMock['APP_BLOG']['list']>;
     category?: Partial<AstrowindConfigMock['APP_BLOG']['category']>;
     tag?: Partial<AstrowindConfigMock['APP_BLOG']['tag']>;
   };
+  APP_PROGRAM?: Partial<AstrowindConfigMock['APP_PROGRAM']>;
 };
 
 const defaults: AstrowindConfigMock = {
@@ -68,6 +72,9 @@ const defaults: AstrowindConfigMock = {
     list: { pathname: 'blog', isEnabled: false, robots: { index: true } },
     category: { pathname: 'category', isEnabled: false, robots: { index: true } },
     tag: { pathname: 'tag', isEnabled: false, robots: { index: false } },
+  },
+  APP_PROGRAM: {
+    isEnabled: true,
   },
 };
 
@@ -119,5 +126,9 @@ export const createAstrowindConfigMock = (overrides: AstrowindConfigMockOverride
         ...overrides.APP_BLOG?.tag?.robots,
       },
     },
+  },
+  APP_PROGRAM: {
+    ...defaults.APP_PROGRAM,
+    ...overrides.APP_PROGRAM,
   },
 });
