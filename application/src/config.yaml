@@ -62,6 +62,9 @@ apps:
     isRelatedPostsEnabled: false
     relatedPostsCount: 4
 
+  program:
+    isEnabled: false
+
 analytics:
   vendors:
     googleAnalytics:

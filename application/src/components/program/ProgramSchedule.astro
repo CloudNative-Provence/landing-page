@@ -1,0 +1,45 @@
+---
+import ProgramFiltersPanel from './ProgramFiltersPanel.astro';
+import ProgramHero from './ProgramHero.astro';
+import ProgramScheduleGrid from './ProgramScheduleGrid.astro';
+import ProgramSelectionPanel from './ProgramSelectionPanel.astro';
+
+import { ProgramSelectionCodec } from '~/utils/program-selection';
+import type { ProgramScheduleProps } from './program-schedule.types';
+
+const { hero, highlights, filters, selection, labels, tracks, rooms, sessions } = Astro.props as ProgramScheduleProps;
+const sessionIds = sessions.map((session) => session.id);
+---
+
+<ProgramHero hero={hero} highlights={highlights} />
+
+<program-schedule
+  class="mx-auto block w-full max-w-[1600px] px-4 py-8 sm:px-6 xl:px-8 2xl:px-10"
+  data-storage-key="cnp-program-selection"
+  data-session-ids={ProgramSelectionCodec.serialize(sessionIds)}
+  data-share-success={selection.shareSuccessLabel}
+  data-share-unavailable={selection.shareUnavailableLabel}
+  data-export-empty={selection.exportEmptyLabel}
+  data-empty-selection={selection.emptyLabel}
+>
+  <div class="space-y-6">
+    <ProgramFiltersPanel filters={filters} tracks={tracks} rooms={rooms} />
+
+    <ProgramSelectionPanel selection={selection} />
+
+    <div
+      hidden
+      class="rounded-[1.75rem] border border-dashed border-gray-300 bg-white/70 p-8 text-center dark:border-slate-700 dark:bg-slate-900/70"
+      data-empty-state
+    >
+      <p class="text-lg font-semibold text-gray-900 dark:text-white">{labels.noResultsTitle}</p>
+      <p class="mt-2 text-sm text-muted">{labels.noResultsText}</p>
+    </div>
+
+    <ProgramScheduleGrid labels={labels} tracks={tracks} rooms={rooms} sessions={sessions} timezone={hero.timezone} />
+  </div>
+</program-schedule>
+
+<script>
+  import './program-schedule-element';
+</script>

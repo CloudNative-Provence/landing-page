@@ -9,6 +9,8 @@ import contactEn from './contact/en';
 import contactFr from './contact/fr';
 import homeEn from './home/en';
 import homeFr from './home/fr';
+import programEn from './program/en';
+import programFr from './program/fr';
 import privacyEn from './privacy/en';
 import privacyFr from './privacy/fr';
 import sponsoringEn from './sponsoring/en';
@@ -28,6 +30,8 @@ describe('localized page data modules', () => {
       contactFr,
       homeEn,
       homeFr,
+      programEn,
+      programFr,
       privacyEn,
       privacyFr,
       sponsoringEn,
@@ -36,7 +40,7 @@ describe('localized page data modules', () => {
       termsFr,
     ];
 
-    expect(modules).toHaveLength(15);
+    expect(modules).toHaveLength(17);
     modules.forEach((mod) => {
       expect(mod).toBeTruthy();
     });

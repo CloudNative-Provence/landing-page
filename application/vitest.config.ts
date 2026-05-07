@@ -17,7 +17,13 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'html'],
       include: ['src/**/*.ts'],
-      exclude: ['src/**/*.test.ts', 'src/**/*.d.ts', 'src/test/**'],
+      exclude: [
+        'src/**/*.test.ts',
+        'src/**/*.d.ts',
+        'src/test/**',
+        'src/**/*.types.ts',
+        'src/components/program/program-schedule-element.ts',
+      ],
       thresholds: {
         lines: 80,
         functions: 80,

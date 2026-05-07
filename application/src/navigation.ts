@@ -1,3 +1,4 @@
+import { isProgramEnabled } from './utils/page-routes';
 import { getPermalink } from './utils/permalinks';
 import { useTranslations } from './i18n/utils';
 import { getLocalizedPagePath } from './i18n/routes';
@@ -10,6 +11,14 @@ export const getHeaderData = (locale: keyof LocaleDictionaries) => {
 
   return {
     links: [
+      ...(isProgramEnabled()
+        ? [
+            {
+              text: t.nav.program,
+              href: getPermalink(getLocalizedPagePath(locale, 'program')),
+            },
+          ]
+        : []),
       {
         text: t.nav.sponsoring,
         href: getPermalink(getLocalizedPagePath(locale, 'sponsoring')),
@@ -34,8 +43,10 @@ export const getFooterData = (locale: keyof LocaleDictionaries) => {
       {
         title: t.footer.event,
         links: [
+          ...(isProgramEnabled()
+            ? [{ text: t.footer.program, href: getPermalink(getLocalizedPagePath(locale, 'program')) }]
+            : []),
           { text: t.footer.sponsoring, href: getPermalink(getLocalizedPagePath(locale, 'sponsoring')) },
-          { text: t.footer.program, href: '#' },
           { text: t.footer.practicalInfo, href: '#' },
         ],
       },

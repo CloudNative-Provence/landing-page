@@ -6,6 +6,7 @@ export default {
     team: 'Équipe',
     sponsors: 'Sponsors',
     tickets: 'Billetterie',
+    program: 'Programme',
     sponsoring: 'Sponsoring',
     about: 'À propos',
     contact: 'Contact',

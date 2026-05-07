@@ -1,0 +1,65 @@
+---
+import ProgramSchedule from '~/components/program/ProgramSchedule.astro';
+import type { ProgramRoom, ProgramSession, ProgramTrack } from '~/utils/program';
+
+interface Props {
+  hero: {
+    tagline: string;
+    title: string;
+    subtitle: string;
+    date: string;
+    venue: string;
+    timezone: string;
+  };
+  highlights: readonly { label: string; value: string }[];
+  filters: {
+    searchLabel: string;
+    searchPlaceholder: string;
+    trackLabel: string;
+    allTracksLabel: string;
+    roomLabel: string;
+    allRoomsLabel: string;
+    selectedOnlyLabel: string;
+    resetLabel: string;
+  };
+  selection: {
+    title: string;
+    subtitle: string;
+    savedLabel: string;
+    emptyLabel: string;
+    shareLabel: string;
+    exportLabel: string;
+    shareSuccessLabel: string;
+    shareUnavailableLabel: string;
+    exportEmptyLabel: string;
+  };
+  labels: {
+    timeLabel: string;
+    roomLabel: string;
+    speakersLabel: string;
+    globalLabel: string;
+    addLabel: string;
+    removeLabel: string;
+    detailsLabel: string;
+    noResultsTitle: string;
+    noResultsText: string;
+    emptyTrackSlotLabel: string;
+  };
+  tracks: readonly ProgramTrack[];
+  rooms: readonly ProgramRoom[];
+  sessions: readonly ProgramSession[];
+}
+
+const { hero, highlights, filters, selection, labels, tracks, rooms, sessions } = Astro.props;
+---
+
+<ProgramSchedule
+  hero={hero}
+  highlights={highlights}
+  filters={filters}
+  selection={selection}
+  labels={labels}
+  tracks={tracks}
+  rooms={rooms}
+  sessions={sessions}
+/>

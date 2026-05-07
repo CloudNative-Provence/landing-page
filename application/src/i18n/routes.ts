@@ -5,6 +5,7 @@ export type AppLang = keyof typeof languages;
 export const routeSlugs = {
   about: { en: 'about', fr: 'a-propos' },
   contact: { en: 'contact', fr: 'contact' },
+  program: { en: 'program', fr: 'programme' },
   sponsoring: { en: 'sponsoring', fr: 'sponsoring' },
   'brand-guidelines': { en: 'brand-guidelines', fr: 'charte-graphique' },
   terms: { en: 'terms-of-service', fr: 'conditions-generales-utilisation' },

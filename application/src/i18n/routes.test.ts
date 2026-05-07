@@ -5,17 +5,20 @@ import { getLocalizedPagePath, getRouteKeyFromSlug, routeSlugs, translatePathToL
 describe('i18n routes helpers', () => {
   it('builds localized page path from route key', () => {
     expect(getLocalizedPagePath('fr', 'about')).toBe('/fr/a-propos');
+    expect(getLocalizedPagePath('fr', 'program')).toBe('/fr/programme');
     expect(getLocalizedPagePath('en', 'privacy')).toBe('/en/privacy-policy');
   });
 
   it('resolves route key from slug with and without extra slashes', () => {
     expect(getRouteKeyFromSlug('fr', '/charte-graphique/')).toBe('brand-guidelines');
+    expect(getRouteKeyFromSlug('en', 'program')).toBe('program');
     expect(getRouteKeyFromSlug('en', 'terms-of-service')).toBe('terms');
     expect(getRouteKeyFromSlug('en', 'unknown')).toBeUndefined();
   });
 
   it('translates localized route to target language', () => {
     expect(translatePathToLang('/fr/a-propos', 'en')).toBe('/en/about');
+    expect(translatePathToLang('/fr/programme', 'en')).toBe('/en/program');
     expect(translatePathToLang('/en/privacy-policy', 'fr')).toBe('/fr/politique-de-confidentialite');
   });
 
@@ -38,6 +41,6 @@ describe('i18n routes helpers', () => {
 
   it('contains all expected route keys', () => {
     const routeKeys = Object.keys(routeSlugs) as RouteKey[];
-    expect(routeKeys).toEqual(['about', 'contact', 'sponsoring', 'brand-guidelines', 'terms', 'privacy']);
+    expect(routeKeys).toEqual(['about', 'contact', 'program', 'sponsoring', 'brand-guidelines', 'terms', 'privacy']);
   });
 });

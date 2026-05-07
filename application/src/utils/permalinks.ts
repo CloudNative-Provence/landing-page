@@ -105,31 +105,76 @@ export const getAsset = (path: string): string =>
 const definitivePermalink = (permalink: string): string => createPath(BASE_PATHNAME, permalink);
 
 /** */
-export const applyGetPermalinks = (menu: object = {}) => {
+type PermalinkHrefDescriptor = {
+  type?: string;
+  url?: string;
+};
+
+type PermalinkMenuValue =
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | PermalinkMenuValue[]
+  | { [key: string]: PermalinkMenuValue };
+
+const isPermalinkMenuRecord = (value: PermalinkMenuValue): value is { [key: string]: PermalinkMenuValue } =>
+  typeof value === 'object' && value !== null && !Array.isArray(value);
+
+const isPermalinkHrefDescriptor = (value: PermalinkMenuValue): value is PermalinkHrefDescriptor =>
+  isPermalinkMenuRecord(value) &&
+  ('type' in value || 'url' in value) &&
+  (typeof value.type === 'string' || value.type === undefined) &&
+  (typeof value.url === 'string' || value.url === undefined);
+
+const resolvePermalinkHref = (value: PermalinkMenuValue): string | undefined => {
+  if (typeof value === 'string') {
+    return getPermalink(value);
+  }
+
+  if (!isPermalinkHrefDescriptor(value)) {
+    return undefined;
+  }
+
+  if (value.type === 'home') {
+    return getHomePermalink();
+  }
+
+  if (value.type === 'blog') {
+    return getBlogPermalink();
+  }
+
+  if (value.type === 'asset' && value.url) {
+    return getAsset(value.url);
+  }
+
+  if (value.url) {
+    return getPermalink(value.url, value.type);
+  }
+
+  return undefined;
+};
+
+export const applyGetPermalinks = (menu: PermalinkMenuValue = {}): PermalinkMenuValue => {
   if (Array.isArray(menu)) {
     return menu.map((item) => applyGetPermalinks(item));
-  } else if (typeof menu === 'object' && menu !== null) {
-    const obj = {};
-    for (const key in menu) {
+  } else if (isPermalinkMenuRecord(menu)) {
+    const obj: { [key: string]: PermalinkMenuValue } = {};
+
+    for (const [key, value] of Object.entries(menu)) {
       if (key === 'href') {
-        if (typeof menu[key] === 'string') {
-          obj[key] = getPermalink(menu[key]);
-        } else if (typeof menu[key] === 'object') {
-          if (menu[key].type === 'home') {
-            obj[key] = getHomePermalink();
-          } else if (menu[key].type === 'blog') {
-            obj[key] = getBlogPermalink();
-          } else if (menu[key].type === 'asset') {
-            obj[key] = getAsset(menu[key].url);
-          } else if (menu[key].url) {
-            obj[key] = getPermalink(menu[key].url, menu[key].type);
-          }
+        const resolvedHref = resolvePermalinkHref(value);
+        if (resolvedHref !== undefined) {
+          obj[key] = resolvedHref;
         }
       } else {
-        obj[key] = applyGetPermalinks(menu[key]);
+        obj[key] = applyGetPermalinks(value);
       }
     }
+
     return obj;
   }
+
   return menu;
 };
