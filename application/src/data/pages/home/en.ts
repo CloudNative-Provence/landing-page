@@ -109,7 +109,7 @@ export default {
     id: 'cfp',
     title: 'Call for Papers',
     intro:
-      'Now is your chance to become a speaker at KCD Provence! Send us your talk proposals and share your cloud native expertise with the community.',
+      'Share practical feedback, demos, and lessons learned with the cloud native community in Provence. We are looking for short, useful talks that help attendees build, run, and improve modern platforms.',
     status: 'Opens May 15',
     importantDates: {
       title: 'Important Dates',
@@ -122,15 +122,39 @@ export default {
     },
     tracks: {
       title: 'Topics',
-      list: [
-        'Kubernetes & Containers',
-        'Platform Engineering',
-        'Observability & Monitoring',
-        'Security & Policy',
-        'AI/ML & Cloud Native',
-        'Developer Experience',
-        'Cloud Native 101',
-        'Sustainability & FinOps',
+      items: [
+        {
+          title: 'Observability',
+          description: 'Monitoring, tracing, logging, SLOs, and production insights.',
+        },
+        {
+          title: 'Platform Engineering',
+          description: 'Internal platforms, self-service workflows, and golden paths.',
+        },
+        {
+          title: 'Infra, Kubernetes & Cloud',
+          description: 'Infrastructure, clusters, operations, and cloud architecture.',
+        },
+        {
+          title: 'Community',
+          description: 'Open source stories, advocacy, inclusion, and local community life.',
+        },
+        {
+          title: 'Developer Experience',
+          description: 'Tooling, workflows, feedback loops, and happier developers.',
+        },
+        {
+          title: 'AI',
+          description: 'LLMs, AI platforms, inference workloads, and AI in cloud native systems.',
+        },
+        {
+          title: 'Security',
+          description: 'Identity, policy, software supply chain, and runtime protection.',
+        },
+        {
+          title: 'Network',
+          description: 'Ingress, gateways, service networking, traffic, and performance.',
+        },
       ],
     },
     formats: {
@@ -138,18 +162,15 @@ export default {
       items: [
         {
           title: 'Conference (30 minutes)',
-          description:
-            'Come share your Cloud Native passion in this 30 minutes presentation format. From your Return On Experience with Platform Engineering to showing us the latest and coolest OSS Tool, there is room for a lot of topics.',
+          description: '30 minutes to explore a topic in depth with context, demos, and takeaways.',
         },
         {
           title: 'Short talk (10 minutes)',
-          description:
-            'Challenging format where you need to focus on one topic that matters for you, from doing a live coding demo to sharing tips on how to be a happier developer.',
+          description: '10 minutes for one sharp idea, one demo, or one lesson learned.',
         },
         {
           title: 'Lightning Talk (5 minutes)',
-          description:
-            'The most challenging format, 5 minutes is short but you would be amazed by the amount of info or passion you can transmit in such a short time. Take the challenge.',
+          description: '5 minutes to share one insight, one tip, or one story with energy.',
         },
       ],
     },
