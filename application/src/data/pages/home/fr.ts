@@ -110,7 +110,7 @@ export default {
     id: 'cfp',
     title: 'Appel à conférenciers',
     intro:
-      "C'est le moment de devenir speaker au KCD Provence ! Envoyez-nous vos propositions de talks et partagez votre expertise avec la communauté Cloud Native.",
+      "Partagez vos retours d'expérience, démos et apprentissages avec la communauté cloud native en Provence. Nous cherchons des talks courts, concrets et utiles pour aider les participant·es à concevoir, exploiter et améliorer leurs plateformes.",
     status: 'Ouvre le 15 mai',
     importantDates: {
       title: 'Dates importantes',
@@ -123,15 +123,39 @@ export default {
     },
     tracks: {
       title: 'Thématiques',
-      list: [
-        'Kubernetes & Conteneurs',
-        'Platform Engineering',
-        'Observabilité & Monitoring',
-        'Sécurité',
-        'IA/ML & Cloud Native',
-        'Developer Experience',
-        'Cloud Native 101',
-        'Sustainability & FinOps',
+      items: [
+        {
+          title: 'Observabilité',
+          description: 'Monitoring, tracing, logs, SLO et compréhension de la production.',
+        },
+        {
+          title: 'Platform Engineering',
+          description: 'Plateformes internes, self-service et golden paths pour les équipes.',
+        },
+        {
+          title: 'Infra, Kubernetes & Cloud',
+          description: 'Infrastructure, clusters, opérations et architecture cloud.',
+        },
+        {
+          title: 'Communauté',
+          description: 'Open source, transmission, inclusion et vie de la communauté.',
+        },
+        {
+          title: 'Developer Experience',
+          description: 'Outils, workflows, feedback loops et confort des développeur·euses.',
+        },
+        {
+          title: 'IA',
+          description: 'LLM, plateformes IA, inférence et IA dans les systèmes cloud native.',
+        },
+        {
+          title: 'Sécurité',
+          description: 'Identité, policy, supply chain logicielle et protection runtime.',
+        },
+        {
+          title: 'Réseau',
+          description: 'Ingress, gateways, réseau de services, trafic et performance.',
+        },
       ],
     },
     formats: {
@@ -139,18 +163,15 @@ export default {
       items: [
         {
           title: 'Conférence (30 minutes)',
-          description:
-            "Venez partager votre passion Cloud Native dans ce format de présentation de 30 minutes. De votre retour d'expérience sur le Platform Engineering à la présentation du dernier outil OSS tendance, il y a de la place pour de nombreux sujets.",
+          description: '30 minutes pour approfondir un sujet avec du contexte, une démo et des retours utiles.',
         },
         {
           title: 'Short talk (10 minutes)',
-          description:
-            'Format challengeant où vous devez vous concentrer sur un sujet qui vous tient à cœur, que ce soit une démo de live coding ou des conseils pour être un développeur plus heureux.',
+          description: '10 minutes pour partager une idée forte, une démo ou un retour précis.',
         },
         {
           title: 'Lightning Talk (5 minutes)',
-          description:
-            "Le format le plus challengeant, 5 minutes c'est court mais vous seriez surpris de la quantité d'informations ou de passion que vous pouvez transmettre en si peu de temps. Relevez le défi.",
+          description: '5 minutes pour transmettre une idée, une astuce ou une histoire avec énergie.',
         },
       ],
     },

@@ -58,4 +58,22 @@ describe('localized page data modules', () => {
       expect(exportedValues.some((value) => typeof value === 'object' || typeof value === 'function')).toBe(true);
     }
   });
+
+  it('keeps CFP formats and topic descriptions aligned in both locales', () => {
+    expect(homeEn.cfp.formats.items).toHaveLength(3);
+    expect(homeFr.cfp.formats.items).toHaveLength(3);
+
+    expect(homeEn.cfp.tracks.items).toHaveLength(8);
+    expect(homeFr.cfp.tracks.items).toHaveLength(8);
+
+    homeEn.cfp.tracks.items.forEach((item) => {
+      expect(item.title).toBeTruthy();
+      expect(item.description).toBeTruthy();
+    });
+
+    homeFr.cfp.tracks.items.forEach((item) => {
+      expect(item.title).toBeTruthy();
+      expect(item.description).toBeTruthy();
+    });
+  });
 });
