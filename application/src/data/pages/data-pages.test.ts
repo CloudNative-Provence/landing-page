@@ -60,18 +60,33 @@ describe('localized page data modules', () => {
   });
 
   it('keeps CFP formats and topic descriptions aligned in both locales', () => {
+    expect(homeEn.cfp.formats).toHaveProperty('items');
+    expect(homeFr.cfp.formats).toHaveProperty('items');
+    expect(homeEn.cfp.tracks).toHaveProperty('items');
+    expect(homeFr.cfp.tracks).toHaveProperty('items');
+    expect(homeEn.cfp.tracks).not.toHaveProperty('list');
+    expect(homeFr.cfp.tracks).not.toHaveProperty('list');
+
     expect(homeEn.cfp.formats.items).toHaveLength(3);
     expect(homeFr.cfp.formats.items).toHaveLength(3);
 
     expect(homeEn.cfp.tracks.items).toHaveLength(8);
     expect(homeFr.cfp.tracks.items).toHaveLength(8);
 
-    homeEn.cfp.tracks.items.forEach((item) => {
+    homeEn.cfp.formats.items.forEach((item, index) => {
+      expect(homeFr.cfp.formats.items[index]).toBeDefined();
       expect(item.title).toBeTruthy();
       expect(item.description).toBeTruthy();
     });
 
-    homeFr.cfp.tracks.items.forEach((item) => {
+    homeEn.cfp.tracks.items.forEach((item, index) => {
+      expect(homeFr.cfp.tracks.items[index]).toBeDefined();
+      expect(item.title).toBeTruthy();
+      expect(item.description).toBeTruthy();
+    });
+
+    homeFr.cfp.tracks.items.forEach((item, index) => {
+      expect(homeEn.cfp.tracks.items[index]).toBeDefined();
       expect(item.title).toBeTruthy();
       expect(item.description).toBeTruthy();
     });

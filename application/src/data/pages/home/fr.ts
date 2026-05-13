@@ -110,7 +110,7 @@ export default {
     id: 'cfp',
     title: 'Appel à conférenciers',
     intro:
-      "Partagez vos retours d'expérience, démos et apprentissages avec la communauté cloud native en Provence. Nous cherchons des talks courts, concrets et utiles pour aider les participant·es à concevoir, exploiter et améliorer leurs plateformes.",
+      "Partagez vos retours d'expérience, démos et apprentissages avec la communauté cloud native en Provence. Nous cherchons des talks courts, concrets et utiles pour aider les participantes et participants à concevoir, exploiter et améliorer leurs plateformes.",
     status: 'Ouvre le 15 mai',
     importantDates: {
       title: 'Dates importantes',
@@ -142,7 +142,7 @@ export default {
         },
         {
           title: 'Developer Experience',
-          description: 'Outils, workflows, feedback loops et confort des développeur·euses.',
+          description: 'Outils, workflows, feedback loops et confort des développeuses et développeurs.',
         },
         {
           title: 'IA',
