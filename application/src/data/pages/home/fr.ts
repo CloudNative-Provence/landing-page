@@ -121,7 +121,7 @@ export default {
         { label: 'Jour J', date: '10 décembre 2026' },
       ],
     },
-    tracks: {
+    topics: {
       title: 'Thématiques',
       items: [
         {
