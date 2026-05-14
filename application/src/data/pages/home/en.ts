@@ -120,7 +120,7 @@ export default {
         { label: 'Event Day', date: 'December 10, 2026' },
       ],
     },
-    tracks: {
+    topics: {
       title: 'Topics',
       items: [
         {
