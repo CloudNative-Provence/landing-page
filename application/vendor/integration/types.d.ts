@@ -2,6 +2,7 @@ declare module 'astrowind:config' {
   import type {
     SiteConfig,
     I18NConfig,
+    EventConfig,
     MetaDataConfig,
     AppBlogConfig,
     AppProgramConfig,
@@ -11,6 +12,7 @@ declare module 'astrowind:config' {
 
   export const SITE: SiteConfig;
   export const I18N: I18NConfig;
+  export const EVENT: EventConfig;
   export const METADATA: MetaDataConfig;
   export const APP_BLOG: AppBlogConfig;
   export const APP_PROGRAM: AppProgramConfig;

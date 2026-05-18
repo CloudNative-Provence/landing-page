@@ -2,12 +2,14 @@ import { isProgramEnabled } from './utils/page-routes';
 import { getPermalink } from './utils/permalinks';
 import { useTranslations } from './i18n/utils';
 import { getLocalizedPagePath } from './i18n/routes';
+import { isCfpOpen } from './data/meta/event';
 import type { LocaleDictionaries } from './i18n/utils';
 import favIcon from '~/assets/favicons/favicon.svg';
 
 // Function to get locale-aware navigation
-export const getHeaderData = (locale: keyof LocaleDictionaries) => {
+export const getHeaderData = (locale: keyof LocaleDictionaries, now: Date = new Date()) => {
   const t = useTranslations(locale);
+  const cfpOpen = isCfpOpen(now);
 
   return {
     links: [
@@ -16,6 +18,14 @@ export const getHeaderData = (locale: keyof LocaleDictionaries) => {
             {
               text: t.nav.program,
               href: getPermalink(getLocalizedPagePath(locale, 'program')),
+            },
+          ]
+        : []),
+      ...(cfpOpen
+        ? [
+            {
+              text: t.nav.cfp,
+              href: `${getPermalink(`/${locale}`)}#cfp`,
             },
           ]
         : []),

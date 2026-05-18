@@ -6,12 +6,20 @@ import Stats from '~/components/widgets/Stats.astro';
 import CallToAction from '~/components/widgets/CallToAction.astro';
 import CountDown from '~/components/widgets/CountDown.astro';
 import Image from '~/components/common/Image.astro';
+import Button from '~/components/ui/Button.astro';
 import { getPermalink } from '~/utils/permalinks';
+import { resolveCfpPhase, type CfpAvailabilityPhase } from '~/utils/cfp-availability';
 import type { Image as ImageType, Item, Stat } from '~/types';
 
 type ActionItem = {
   href: string;
 } & Record<string, unknown>;
+
+type CfpAvailabilityLabels = {
+  upcoming: string;
+  open: string;
+  closed: string;
+};
 
 export interface Props {
   hero: {
@@ -46,6 +54,11 @@ export interface Props {
     title?: string;
     intro?: string;
     status?: string;
+    availability?: {
+      opensAt: string;
+      closesAt?: string;
+      statuses: CfpAvailabilityLabels;
+    };
     image?: unknown;
     importantDates?: {
       title?: string;
@@ -109,6 +122,11 @@ const callToActionActionsWithPermalinks = callToAction.actions.map((action: Acti
   href: getPermalink(action.href),
 }));
 
+const cfpPhase: CfpAvailabilityPhase | undefined = cfp?.availability ? resolveCfpPhase(cfp.availability) : undefined;
+const cfpStatus = cfp?.availability && cfpPhase ? cfp.availability.statuses[cfpPhase] : cfp?.status;
+const cfpCtaDisabled = cfpPhase ? cfpPhase !== 'open' : (cfp?.ctaDisabled ?? false);
+const cfpCtaTarget = cfp?.ctaHref?.startsWith('http') ? '_blank' : undefined;
+
 const heroTitleHtml =
   typeof hero?.title === 'string'
     ? hero.title
@@ -158,18 +176,45 @@ const heroBadge = hero?.badge;
 
 {
   cfp && (
-    <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-6xl" id={cfp.id}>
+    <section
+      class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-6xl"
+      id={cfp.id}
+      data-cfp-root={cfp.availability ? 'true' : undefined}
+      data-cfp-opens-at={cfp.availability?.opensAt}
+      data-cfp-closes-at={cfp.availability?.closesAt ?? ''}
+      data-cfp-status-upcoming={cfp.availability?.statuses.upcoming}
+      data-cfp-status-open={cfp.availability?.statuses.open}
+      data-cfp-status-closed={cfp.availability?.statuses.closed}
+    >
       <div class="mb-10 md:mx-auto text-center md:mb-12 max-w-3xl">
         <p class="mb-3 text-sm font-semibold tracking-wider uppercase text-primary">CFP</p>
         {cfp.title && (
           <h2 class="text-4xl md:text-5xl font-bold leading-tighter tracking-tighter mb-4 font-heading">{cfp.title}</h2>
         )}
         {cfp.intro && <p class="text-xl text-muted dark:text-slate-300 leading-relaxed">{cfp.intro}</p>}
-        {cfp.status && (
+        {cfpStatus && (
           <div class="mt-6">
-            <span class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary dark:border-primary/30 dark:bg-primary/20 dark:text-primary">
-              {cfp.status}
+            <span
+              data-cfp-status
+              class="inline-flex items-center rounded-full border border-primary/20 bg-primary/10 px-4 py-2 text-sm font-semibold text-primary dark:border-primary/30 dark:bg-primary/20 dark:text-primary"
+            >
+              {cfpStatus}
             </span>
+          </div>
+        )}
+        {cfp.cta && (
+          <div class="mt-8 flex justify-center">
+            <Button
+              data-cfp-link
+              href={cfp.ctaHref ?? '#'}
+              target={cfpCtaTarget}
+              text={cfp.cta}
+              icon="tabler:external-link"
+              variant="primary"
+              aria-hidden={cfpCtaDisabled ? 'true' : 'false'}
+              hidden={cfpCtaDisabled}
+              class="w-full max-w-sm justify-center shadow-lg shadow-primary/20"
+            />
           </div>
         )}
       </div>
@@ -199,7 +244,7 @@ const heroBadge = hero?.badge;
               <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-slate-900">
                 <h3 class="mb-4 text-2xl font-bold">{cfp.importantDates.title}</h3>
                 <ul class="space-y-3">
-                  {cfp.importantDates.items?.map((item) => (
+                  {cfp.importantDates.items?.map((item: { label: string; date: string }) => (
                     <li class="flex items-center justify-between gap-4 rounded-md border border-gray-200 px-4 py-3 dark:border-gray-700">
                       <span class="text-muted dark:text-slate-300">{item.label}</span>
                       <span class="font-semibold text-default dark:text-slate-100">{item.date}</span>
@@ -213,7 +258,7 @@ const heroBadge = hero?.badge;
               <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-slate-900">
                 <h3 class="mb-4 text-2xl font-bold">{cfp.topics.title}</h3>
                 <ul class="grid gap-3 sm:grid-cols-2">
-                  {cfp.topics.items?.map((topic) => (
+                  {cfp.topics.items?.map((topic: Item) => (
                     <li class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-slate-800">
                       <p class="mb-1 font-semibold text-default dark:text-slate-100">{topic.title}</p>
                       <p class="text-sm text-muted dark:text-slate-300">{topic.description}</p>
@@ -229,7 +274,7 @@ const heroBadge = hero?.badge;
           <div>
             <h3 class="mb-4 text-2xl font-bold">{cfp.formats.title}</h3>
             <ul class="grid gap-3 sm:grid-cols-2">
-              {cfp.formats.items?.map((format) => (
+              {cfp.formats.items?.map((format: Item) => (
                 <li class="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-slate-900">
                   <p class="mb-1 font-semibold text-default dark:text-slate-100">{format.title}</p>
                   <p class="text-sm text-muted dark:text-slate-300">{format.description}</p>
@@ -245,7 +290,7 @@ const heroBadge = hero?.badge;
               <div class="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-slate-900">
                 <h3 class="mb-3 text-xl font-bold">{cfp.speakerPerks.title}</h3>
                 <ul class="space-y-2 text-muted dark:text-slate-300">
-                  {cfp.speakerPerks.items?.map((perk) => (
+                  {cfp.speakerPerks.items?.map((perk: string) => (
                     <li class="flex items-start gap-2">
                       <span class="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
                       <span>{perk}</span>
@@ -258,7 +303,7 @@ const heroBadge = hero?.badge;
               <div class="rounded-lg border border-gray-200 bg-white p-5 dark:border-gray-700 dark:bg-slate-900">
                 <h3 class="mb-3 text-xl font-bold">{cfp.guidelines.title}</h3>
                 <ul class="space-y-2 text-muted dark:text-slate-300">
-                  {cfp.guidelines.items?.map((guideline) => (
+                  {cfp.guidelines.items?.map((guideline: string) => (
                     <li class="flex items-start gap-2">
                       <span class="mt-2 h-2 w-2 rounded-full bg-primary" aria-hidden="true" />
                       <span>{guideline}</span>
@@ -272,29 +317,93 @@ const heroBadge = hero?.badge;
 
         {cfp.cta && (
           <div class="pt-2 text-center">
-            {cfp.ctaDisabled ? (
-              <span
-                role="button"
-                aria-disabled="true"
-                class="inline-flex cursor-not-allowed items-center justify-center rounded-md bg-gray-400 px-6 py-3 font-semibold text-white opacity-60 dark:bg-gray-600"
-              >
-                {cfp.cta}
-              </span>
-            ) : (
-              <a
-                href={cfp.ctaHref ?? '#'}
-                class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 font-semibold text-white transition hover:opacity-90"
-                {...(cfp.ctaHref?.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-              >
-                {cfp.cta}
-              </a>
-            )}
+            <span
+              data-cfp-disabled
+              role="button"
+              aria-disabled="true"
+              aria-hidden={cfpCtaDisabled ? 'false' : 'true'}
+              hidden={!cfpCtaDisabled}
+              class="inline-flex cursor-not-allowed items-center justify-center rounded-md bg-gray-400 px-6 py-3 font-semibold text-white opacity-60 dark:bg-gray-600"
+            >
+              {cfp.cta}
+            </span>
+            <a
+              data-cfp-link
+              href={cfp.ctaHref ?? '#'}
+              target={cfpCtaTarget}
+              aria-hidden={cfpCtaDisabled ? 'true' : 'false'}
+              hidden={cfpCtaDisabled}
+              class="inline-flex items-center justify-center rounded-md bg-primary px-6 py-3 font-semibold text-white transition hover:opacity-90"
+              {...(cfp.ctaHref?.startsWith('http') ? { rel: 'noopener noreferrer' } : {})}
+            >
+              {cfp.cta}
+            </a>
           </div>
         )}
       </div>
     </section>
   )
 }
+
+<script>
+  import { resolveCfpPhase, type CfpAvailabilityPhase } from '~/utils/cfp-availability';
+
+  const syncCfpState = (root: HTMLElement) => {
+    const opensAtValue = root.dataset.cfpOpensAt;
+
+    if (!opensAtValue) {
+      return;
+    }
+
+    let phase: CfpAvailabilityPhase;
+
+    try {
+      phase = resolveCfpPhase({
+        opensAt: root.dataset.cfpOpensAt ?? '',
+        closesAt: root.dataset.cfpClosesAt || undefined,
+      });
+    } catch {
+      return;
+    }
+
+    const statusByPhase: Record<CfpAvailabilityPhase, string | undefined> = {
+      upcoming: root.dataset.cfpStatusUpcoming,
+      open: root.dataset.cfpStatusOpen,
+      closed: root.dataset.cfpStatusClosed,
+    };
+
+    const statusElement = root.querySelector<HTMLElement>('[data-cfp-status]');
+    const disabledElements = root.querySelectorAll<HTMLElement>('[data-cfp-disabled]');
+    const linkElements = root.querySelectorAll<HTMLElement>('[data-cfp-link]');
+    const isDisabled = phase !== 'open';
+
+    if (statusElement && statusByPhase[phase]) {
+      statusElement.textContent = statusByPhase[phase] ?? '';
+    }
+
+    disabledElements.forEach((disabledElement) => {
+      disabledElement.hidden = !isDisabled;
+      disabledElement.setAttribute('aria-hidden', String(!isDisabled));
+    });
+
+    linkElements.forEach((linkElement) => {
+      linkElement.hidden = isDisabled;
+      linkElement.setAttribute('aria-hidden', String(isDisabled));
+    });
+  };
+
+  const syncAllCfpStates = () => {
+    document.querySelectorAll<HTMLElement>('[data-cfp-root="true"]').forEach((root) => syncCfpState(root));
+  };
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', syncAllCfpStates, { once: true });
+  } else {
+    syncAllCfpStates();
+  }
+
+  document.addEventListener('astro:page-load', syncAllCfpStates);
+</script>
 
 {
   venue && (

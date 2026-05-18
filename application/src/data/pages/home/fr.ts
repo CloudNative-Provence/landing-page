@@ -1,10 +1,22 @@
 import { getLocalizedPagePath } from '~/i18n/routes';
+import {
+  buildCfpImportantDates,
+  buildCfpStatuses,
+  cfpSchedule,
+  cfpSubmissionUrl,
+  eventMeta,
+  formatEventDate,
+} from '../../meta/event';
+
+const eventDate = formatEventDate('fr');
+const venueDescription = eventMeta.place
+  ? `Le KCD Provence se tiendra au ${eventMeta.venueName}. Vous profiterez de salles de conférence modernes, d'un espace exposition pour les sponsors, et de nombreuses zones de networking. Café et restauration seront disponibles tout au long de la journée, et un afterparty vous attend en fin de journée !`
+  : `Le KCD Provence aura lieu à ${eventMeta.city}. Le lieu exact sera annoncé prochainement, avec les informations pratiques sur l'accès, l'hébergement et l'organisation sur place.`;
 
 export default {
   metadata: {
     title: 'Kubernetes Community Days Provence à Aix-en-Provence',
-    description:
-      "Rejoignez 600+ professionnels du Cloud Native le 10 décembre 2026 au Palais des Congrès d'Aix-en-Provence pour une journée de conférences, workshops et networking.",
+    description: `Rejoignez 600+ professionnels du Cloud Native le ${eventDate} au ${eventMeta.venueName} pour une journée de conférences, workshops et networking.`,
     ignoreTitleTemplate: true,
   },
   hero: {
@@ -31,14 +43,13 @@ export default {
         height: 500,
       },
     },
-    badge: '10 décembre 2026 · Aix-en-Provence',
+    badge: `${eventDate} · ${eventMeta.city}`,
     title: {
       main: 'Kubernetes Community Days',
       subtitle: 'Provence',
     },
-    subtitle:
-      "Réservez la date ! Le 10 décembre 2026, la communauté Cloud Native se retrouve au Palais des Congrès d'Aix-en-Provence pour une journée de talks, de networking et de convivialité sous le soleil de Provence.",
-    eventDate: '2026-12-10T09:00:00',
+    subtitle: `Réservez la date ! Le ${eventDate}, la communauté Cloud Native se retrouve au ${eventMeta.venueName} pour une journée de talks, de networking et de convivialité sous le soleil de Provence.`,
+    eventDate: eventMeta.startsAt,
   },
   note: {
     title: 'Notre philosophie :',
@@ -111,15 +122,18 @@ export default {
     title: 'Appel à conférenciers',
     intro:
       "Partagez vos retours d'expérience, démos et apprentissages avec la communauté cloud native en Provence. Nous cherchons des talks courts, concrets et utiles pour aider les participantes et participants à concevoir, exploiter et améliorer leurs plateformes.",
-    status: 'Ouvre le 15 mai',
+    availability: {
+      ...cfpSchedule,
+      statuses: buildCfpStatuses('fr'),
+    },
     importantDates: {
       title: 'Dates importantes',
-      items: [
-        { label: 'Ouverture du CFP', date: '15 mai 2026' },
-        { label: 'Clôture du CFP', date: '15 juillet 2026' },
-        { label: 'Notification des speakers', date: '1er septembre 2026' },
-        { label: 'Jour J', date: '10 décembre 2026' },
-      ],
+      items: buildCfpImportantDates('fr', {
+        opens: 'Ouverture du CFP',
+        closes: 'Clôture du CFP',
+        speakersNotified: 'Notification des speakers',
+        eventDay: 'Jour J',
+      }),
     },
     topics: {
       title: 'Thématiques',
@@ -193,8 +207,7 @@ export default {
       ],
     },
     cta: 'Soumettre via Conference HALL',
-    ctaHref: 'https://conference-hall.io/cloud-native-provence-2026',
-    ctaDisabled: true,
+    ctaHref: cfpSubmissionUrl,
     image: {
       src: '~/assets/images/pages/home/event.jpg',
       alt: 'Appel à conférenciers',
@@ -203,9 +216,8 @@ export default {
 
   venue: {
     title: 'Le lieu',
-    venueName: 'Palais des Congrès, Aix-en-Provence',
-    description:
-      "Le KCD Provence se tiendra au Palais des Congrès d'Aix-en-Provence. Vous profiterez de salles de conférence modernes, d'un espace exposition pour les sponsors, et de nombreuses zones de networking. Café et restauration seront disponibles tout au long de la journée, et un afterparty vous attend en fin de journée !",
+    venueName: eventMeta.venueName,
+    description: venueDescription,
     howToGetThere: {
       title: 'Comment venir',
       items: [

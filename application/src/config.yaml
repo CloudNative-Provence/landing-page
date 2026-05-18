@@ -30,6 +30,17 @@ i18n:
   language: fr
   textDirection: ltr
 
+event:
+  startsAt: '2026-12-10T09:00:00+01:00'
+  timeZone: 'Europe/Paris'
+  city: 'Aix-en-Provence'
+  place: ''
+  cfp:
+    opensAt: '2026-05-15T00:00:00+02:00'
+    closesAt: '2026-07-16T00:00:00+02:00'
+    speakersNotifiedAt: '2026-09-01T00:00:00+02:00'
+    submissionUrl: 'https://conference-hall.io/kcd-provence-2026'
+
 apps:
   blog:
     isEnabled: false

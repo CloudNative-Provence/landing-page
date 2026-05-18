@@ -6,6 +6,7 @@ export type Config = {
   site?: SiteConfig;
   metadata?: MetaDataConfig;
   i18n?: I18NConfig;
+  event?: EventConfig;
   apps?: {
     blog?: AppBlogConfig;
     program?: AppProgramConfig;
@@ -31,6 +32,19 @@ export interface I18NConfig {
   language: string;
   textDirection: string;
   dateFormatter?: Intl.DateTimeFormat;
+}
+
+export interface EventConfig {
+  startsAt: string;
+  timeZone: string;
+  city: string;
+  place: string;
+  cfp: {
+    opensAt: string;
+    closesAt?: string;
+    speakersNotifiedAt?: string;
+    submissionUrl: string;
+  };
 }
 export interface AppBlogConfig {
   isEnabled: boolean;
@@ -134,6 +148,23 @@ const getI18N = (config: Config) => {
   return value as I18NConfig;
 };
 
+const getEvent = (config: Config) => {
+  const _default = {
+    startsAt: '',
+    timeZone: 'UTC',
+    city: '',
+    place: '',
+    cfp: {
+      opensAt: '',
+      closesAt: undefined,
+      speakersNotifiedAt: undefined,
+      submissionUrl: '',
+    },
+  };
+
+  return merge({}, _default, config?.event ?? {}) as EventConfig;
+};
+
 const getAppBlog = (config: Config) => {
   const _default = {
     isEnabled: false,
@@ -209,6 +240,7 @@ const getAnalytics = (config: Config) => {
 export default (config: Config) => ({
   SITE: getSite(config),
   I18N: getI18N(config),
+  EVENT: getEvent(config),
   METADATA: getMetadata(config),
   APP_BLOG: getAppBlog(config),
   APP_PROGRAM: getAppProgram(config),

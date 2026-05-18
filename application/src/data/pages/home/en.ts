@@ -1,10 +1,22 @@
 import { getLocalizedPagePath } from '~/i18n/routes';
+import {
+  buildCfpImportantDates,
+  buildCfpStatuses,
+  cfpSchedule,
+  cfpSubmissionUrl,
+  eventMeta,
+  formatEventDate,
+} from '../../meta/event';
+
+const eventDate = formatEventDate('en');
+const venueDescription = eventMeta.place
+  ? `KCD Provence will be held at ${eventMeta.venueName}. You'll enjoy modern conference rooms, a sponsor expo area, and plenty of networking spaces. Coffee and food will be available throughout the day, and an afterparty awaits at the end of the day!`
+  : `KCD Provence will take place in ${eventMeta.city}. The exact venue will be announced soon, and practical information about access, accommodation, and on-site logistics will be shared closer to the event.`;
 
 export default {
   metadata: {
     title: 'Kubernetes Community Days Provence in Aix-en-Provence',
-    description:
-      'Join 600+ cloud native professionals on December 10, 2026 at the Palais des Congrès in Aix-en-Provence for a day of talks, workshops, and networking.',
+    description: `Join 600+ cloud native professionals on ${eventDate} at ${eventMeta.venueName} for a day of talks, workshops, and networking.`,
     ignoreTitleTemplate: true,
   },
   hero: {
@@ -31,14 +43,13 @@ export default {
         height: 500,
       },
     },
-    badge: 'December 10, 2026 · Aix-en-Provence',
+    badge: `${eventDate} · ${eventMeta.city}`,
     title: {
       main: 'Kubernetes Community Days',
       subtitle: 'Provence',
     },
-    subtitle:
-      'Mark your calendars! On December 10, 2026, the Cloud Native community gathers at the Palais des Congrès in Aix-en-Provence for a day of exciting talks, networking, and good vibes under the Provençal sun.',
-    eventDate: '2026-12-10T09:00:00',
+    subtitle: `Mark your calendars! On ${eventDate}, the Cloud Native community gathers at ${eventMeta.venueName} for a day of exciting talks, networking, and good vibes under the Provençal sun.`,
+    eventDate: eventMeta.startsAt,
   },
   note: {
     title: 'Our philosophy:',
@@ -110,15 +121,18 @@ export default {
     title: 'Call for Papers',
     intro:
       'Share practical feedback, demos, and lessons learned with the cloud native community in Provence. We are looking for short, useful talks that help attendees build, run, and improve modern platforms.',
-    status: 'Opens May 15',
+    availability: {
+      ...cfpSchedule,
+      statuses: buildCfpStatuses('en'),
+    },
     importantDates: {
       title: 'Important Dates',
-      items: [
-        { label: 'CFP Opens', date: 'May 15, 2026' },
-        { label: 'CFP Closes', date: 'July 15, 2026' },
-        { label: 'Speakers Notified', date: 'September 1, 2026' },
-        { label: 'Event Day', date: 'December 10, 2026' },
-      ],
+      items: buildCfpImportantDates('en', {
+        opens: 'CFP Opens',
+        closes: 'CFP Closes',
+        speakersNotified: 'Speakers Notified',
+        eventDay: 'Event Day',
+      }),
     },
     topics: {
       title: 'Topics',
@@ -192,8 +206,7 @@ export default {
       ],
     },
     cta: 'Submit via Conference HALL',
-    ctaHref: 'https://conference-hall.io/cloud-native-provence-2026',
-    ctaDisabled: true,
+    ctaHref: cfpSubmissionUrl,
     image: {
       src: '~/assets/images/pages/home/event.jpg',
       alt: 'Call for Papers',
@@ -202,9 +215,8 @@ export default {
 
   venue: {
     title: 'Venue',
-    venueName: 'Palais des Congrès, Aix-en-Provence',
-    description:
-      "KCD Provence will be held at the Palais des Congrès in Aix-en-Provence. You'll enjoy modern conference rooms, a sponsor expo area, and plenty of networking spaces. Coffee and food will be available throughout the day, and an afterparty awaits at the end of the day!",
+    venueName: eventMeta.venueName,
+    description: venueDescription,
     howToGetThere: {
       title: 'Getting There',
       items: [

@@ -1,3 +1,5 @@
+import { eventMeta, formatEventDate } from '../../meta/event';
+
 const tracks = [
   { id: 'keynote', label: 'Keynotes & Community', accent: 'from-sky-500 to-cyan-400' },
   { id: 'platform', label: 'Platform Engineering', accent: 'from-emerald-500 to-lime-400' },
@@ -316,9 +318,9 @@ export default {
     title: 'Plan your day at KCD Provence',
     subtitle:
       'Explore the full schedule, compare tracks, save your favorite sessions, share your personal agenda, and export it to your calendar in one click.',
-    date: 'December 10, 2026',
-    venue: 'Palais des Congrès · Aix-en-Provence',
-    timezone: 'Europe/Paris',
+    date: formatEventDate('en'),
+    venue: eventMeta.venueLabel,
+    timezone: eventMeta.timeZone,
   },
   highlights: [
     { label: 'Tracks', value: '3' },
