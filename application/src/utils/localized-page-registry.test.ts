@@ -1,5 +1,20 @@
 import { describe, expect, it, vi } from 'vitest';
 
+vi.mock('astrowind:config', () => ({
+  EVENT: {
+    startsAt: '2026-12-10T09:00:00+01:00',
+    timeZone: 'Europe/Paris',
+    city: 'Aix-en-Provence',
+    place: 'Palais des Congrès',
+    cfp: {
+      opensAt: '2026-05-15T00:00:00+02:00',
+      closesAt: '2026-07-16T00:00:00+02:00',
+      speakersNotifiedAt: '2026-09-01T00:00:00+02:00',
+      submissionUrl: 'https://conference-hall.io/cloud-native-provence-2026',
+    },
+  },
+}));
+
 vi.mock('~/pages/about/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/brand-guidelines/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/contact/_content.astro', () => ({ default: {} }));

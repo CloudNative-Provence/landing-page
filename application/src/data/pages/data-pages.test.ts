@@ -1,4 +1,19 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+vi.mock('astrowind:config', () => ({
+  EVENT: {
+    startsAt: '2026-12-10T09:00:00+01:00',
+    timeZone: 'Europe/Paris',
+    city: 'Aix-en-Provence',
+    place: 'Palais des Congrès',
+    cfp: {
+      opensAt: '2026-05-15T00:00:00+02:00',
+      closesAt: '2026-07-16T00:00:00+02:00',
+      speakersNotifiedAt: '2026-09-01T00:00:00+02:00',
+      submissionUrl: 'https://conference-hall.io/cloud-native-provence-2026',
+    },
+  },
+}));
 
 import aboutEn from './about/en';
 import aboutFr from './about/fr';
@@ -88,5 +103,20 @@ describe('localized page data modules', () => {
       expect(item.title).toBeTruthy();
       expect(item.description).toBeTruthy();
     });
+  });
+
+  it('keeps CFP availability boundaries aligned in both locales', () => {
+    expect(homeEn.cfp.availability).toBeDefined();
+    expect(homeFr.cfp.availability).toBeDefined();
+
+    expect(homeEn.cfp.availability.opensAt).toBe(homeFr.cfp.availability.opensAt);
+    expect(homeEn.cfp.availability.closesAt).toBe(homeFr.cfp.availability.closesAt);
+
+    expect(homeEn.cfp.availability.statuses.upcoming).toBeTruthy();
+    expect(homeEn.cfp.availability.statuses.open).toBeTruthy();
+    expect(homeEn.cfp.availability.statuses.closed).toBeTruthy();
+    expect(homeFr.cfp.availability.statuses.upcoming).toBeTruthy();
+    expect(homeFr.cfp.availability.statuses.open).toBeTruthy();
+    expect(homeFr.cfp.availability.statuses.closed).toBeTruthy();
   });
 });
