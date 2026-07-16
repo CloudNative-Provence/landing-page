@@ -8,7 +8,7 @@ vi.mock('astrowind:config', () => ({
     place: 'Palais des Congrès',
     cfp: {
       opensAt: '2026-05-15T00:00:00+02:00',
-      closesAt: '2026-07-16T00:00:00+02:00',
+      closesAt: '2026-09-17T00:00:00+02:00',
       speakersNotifiedAt: '2026-09-01T00:00:00+02:00',
       submissionUrl: 'https://conference-hall.io/cloud-native-provence-2026',
     },
@@ -22,7 +22,7 @@ import { resolveCfpPhase } from './cfp-availability';
 describe('resolveCfpPhase', () => {
   const availability = {
     opensAt: '2026-05-15T00:00:00+02:00',
-    closesAt: '2026-07-16T00:00:00+02:00',
+    closesAt: '2026-09-17T00:00:00+02:00',
   };
 
   it('returns upcoming before the CFP opens', () => {
@@ -34,8 +34,8 @@ describe('resolveCfpPhase', () => {
   });
 
   it('returns closed from the configured closing boundary', () => {
-    expect(resolveCfpPhase(availability, new Date('2026-07-15T21:59:59Z'))).toBe('open');
-    expect(resolveCfpPhase(availability, new Date('2026-07-15T22:00:00Z'))).toBe('closed');
+    expect(resolveCfpPhase(availability, new Date('2026-09-16T21:59:59Z'))).toBe('open');
+    expect(resolveCfpPhase(availability, new Date('2026-09-16T22:00:00Z'))).toBe('closed');
   });
 
   it('rejects an invalid date range', () => {
@@ -52,13 +52,13 @@ describe('event CFP helpers', () => {
   it('builds localized statuses from the shared event config', () => {
     expect(buildCfpStatuses('en')).toEqual({
       upcoming: 'Opens May 15',
-      open: 'Open until July 15',
+      open: 'Open until September 16',
       closed: 'CFP closed',
     });
 
     expect(buildCfpStatuses('fr')).toEqual({
       upcoming: 'Ouvre le 15 mai',
-      open: "Ouvert jusqu'au 15 juillet",
+      open: "Ouvert jusqu'au 16 septembre",
       closed: 'CFP clos',
     });
   });
@@ -73,7 +73,7 @@ describe('event CFP helpers', () => {
       })
     ).toEqual([
       { label: 'CFP Opens', date: 'May 15, 2026' },
-      { label: 'CFP Closes', date: 'July 15, 2026' },
+      { label: 'CFP Closes', date: 'September 16, 2026' },
       { label: 'Speakers Notified', date: 'September 1, 2026' },
       { label: 'Event Day', date: 'December 10, 2026' },
     ]);
@@ -87,7 +87,7 @@ describe('event CFP helpers', () => {
       })
     ).toEqual([
       { label: 'Ouverture du CFP', date: '15 mai 2026' },
-      { label: 'Clôture du CFP', date: '15 juillet 2026' },
+      { label: 'Clôture du CFP', date: '16 septembre 2026' },
       { label: 'Notification des speakers', date: '1er septembre 2026' },
       { label: 'Jour J', date: '10 décembre 2026' },
     ]);
