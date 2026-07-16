@@ -8,7 +8,7 @@ vi.mock('astrowind:config', () => ({
     place: '',
     cfp: {
       opensAt: '2026-05-15T00:00:00+02:00',
-      closesAt: '2026-07-16T00:00:00+02:00',
+      closesAt: '2026-09-17T00:00:00+02:00',
       speakersNotifiedAt: '2026-09-01T00:00:00+02:00',
       submissionUrl: 'https://conference-hall.io/kcd-provence-2026',
     },
