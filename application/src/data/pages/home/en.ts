@@ -24,7 +24,7 @@ export default {
       {
         variant: 'primary',
         text: 'Get Tickets',
-        href: getLocalizedPagePath('en', 'contact'),
+        href: 'https://community2.cncf.io/events/details/cncf-kcd-provence-presents-kcd-provence-2026/?showTickets=true',
         icon: 'tabler:calendar',
       },
       { text: 'Submit a Talk', href: '#cfp' },
