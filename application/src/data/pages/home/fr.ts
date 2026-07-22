@@ -24,7 +24,7 @@ export default {
       {
         variant: 'primary',
         text: 'Billetterie',
-        href: 'https://community2.cncf.io/events/details/cncf-kcd-provence-presents-kcd-provence-2026/?showTickets=true',
+        href: 'https://community2.cncf.io/events/details/cncf-kcd-provence-presents-kcd-provence-2026/',
         icon: 'tabler:calendar',
       },
       { text: 'Proposer un talk', href: '#cfp' },
