@@ -9,7 +9,7 @@ vi.mock('astrowind:config', () => ({
     cfp: {
       opensAt: '2026-05-15T00:00:00+02:00',
       closesAt: '2026-09-13T23:59:00+02:00',
-      speakersNotifiedAt: '2026-09-01T00:00:00+02:00',
+      speakersNotifiedAt: '2026-09-25T00:00:00+02:00',
       submissionUrl: 'https://conference-hall.io/cloud-native-provence-2026',
     },
   },
@@ -74,7 +74,7 @@ describe('event CFP helpers', () => {
     ).toEqual([
       { label: 'CFP Opens', date: 'May 15, 2026' },
       { label: 'CFP Closes', date: 'September 13, 2026' },
-      { label: 'Speakers Notified', date: 'September 1, 2026' },
+      { label: 'Speakers Notified', date: 'September 25, 2026' },
       { label: 'Event Day', date: 'December 10, 2026' },
     ]);
 
@@ -88,7 +88,7 @@ describe('event CFP helpers', () => {
     ).toEqual([
       { label: 'Ouverture du CFP', date: '15 mai 2026' },
       { label: 'Clôture du CFP', date: '13 septembre 2026' },
-      { label: 'Notification des speakers', date: '1er septembre 2026' },
+      { label: 'Notification des speakers', date: '25 septembre 2026' },
       { label: 'Jour J', date: '10 décembre 2026' },
     ]);
   });
