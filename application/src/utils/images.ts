@@ -76,6 +76,20 @@ export const adaptOpenGraphImages = async (
           };
         }
 
+        const isSvgImage =
+          (typeof resolvedImage === 'string' && resolvedImage.toLowerCase().endsWith('.svg')) ||
+          (typeof resolvedImage !== 'string' && resolvedImage.format === 'svg');
+
+        if (isSvgImage) {
+          const svgUrl = typeof resolvedImage === 'string' ? resolvedImage : resolvedImage.src;
+
+          return {
+            url: String(new URL(svgUrl, astroSite)),
+            width: typeof resolvedImage === 'string' ? image.width : resolvedImage.width,
+            height: typeof resolvedImage === 'string' ? image.height : resolvedImage.height,
+          };
+        }
+
         let _image: object | string | undefined = undefined;
 
         if (

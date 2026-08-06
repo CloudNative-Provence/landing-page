@@ -39,6 +39,14 @@ if (!props.decoding) {
 
 const _image = await findImage(props.src);
 
+const isSvgSource =
+  (typeof _image === 'string' && _image.toLowerCase().endsWith('.svg')) ||
+  (typeof _image !== 'string' && _image?.format === 'svg');
+
+if (isSvgSource && !props.format) {
+  props.format = 'svg';
+}
+
 let image: ImageType | undefined = undefined;
 
 if (

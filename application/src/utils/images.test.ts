@@ -65,4 +65,19 @@ describe('images helpers', () => {
 
     expect(result.images?.[0].url).toContain('https://cloudnative-provence.fr/astro-optimized.jpg');
   });
+
+  it('passes svg Open Graph images through unchanged', async () => {
+    const result = await adaptOpenGraphImages(
+      {
+        images: [{ url: '/logos/logo-kcd-provence-primary.svg', width: 500, height: 500 }],
+      },
+      new URL('https://cloudnative-provence.fr')
+    );
+
+    expect(result.images?.[0]).toEqual({
+      url: 'https://cloudnative-provence.fr/logos/logo-kcd-provence-primary.svg',
+      width: 500,
+      height: 500,
+    });
+  });
 });
