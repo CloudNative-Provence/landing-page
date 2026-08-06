@@ -111,13 +111,7 @@ type PermalinkHrefDescriptor = {
 };
 
 type PermalinkMenuValue =
-  | string
-  | number
-  | boolean
-  | null
-  | undefined
-  | PermalinkMenuValue[]
-  | { [key: string]: PermalinkMenuValue };
+  string | number | boolean | null | undefined | PermalinkMenuValue[] | { [key: string]: PermalinkMenuValue };
 
 const isPermalinkMenuRecord = (value: PermalinkMenuValue): value is { [key: string]: PermalinkMenuValue } =>
   typeof value === 'object' && value !== null && !Array.isArray(value);
