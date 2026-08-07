@@ -2,6 +2,9 @@
   "name": "landing-page",
   "image": "mcr.microsoft.com/devcontainers/base:debian",
   "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "configureZshAsDefaultShell": true
+    },
     "ghcr.io/devcontainers/features/node:2": {
       "version": "22"
     },
@@ -28,9 +31,6 @@
         "esbenp.prettier-vscode",
         "bradlc.vscode-tailwindcss"
       ],
-      "settings": {
-        "terminal.integrated.defaultProfile.linux": "zsh"
-      },
       "mcp": {
         "servers": {
           "playwright": {

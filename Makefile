@@ -28,7 +28,7 @@ test: ## Run tests
 
 ci: ## Run tests in CI mode
 	npm --prefix application audit fix || true
-	cd application && npx update-browserslist-db@latest
+	cd application && npx -y update-browserslist-db@latest
 	$(MAKE) lint-fix
 	$(MAKE) build
 	$(MAKE) test
@@ -41,19 +41,19 @@ linter-fix: ## Execute linting and fix
 		-e FIX_YAML_PRETTIER=true \
 		-e FIX_MARKDOWN=true \
 		-e FIX_MARKDOWN_PRETTIER=true \
-		-e FIX_NATURAL_LANGUAGE=true)
+		-e FIX_NATURAL_LANGUAGE=true \
+	)
 
 define run_linter
 	DEFAULT_WORKSPACE="$(CURDIR)"; \
 	LINTER_IMAGE="linter:latest"; \
 	VOLUME="$$DEFAULT_WORKSPACE:$$DEFAULT_WORKSPACE"; \
-	docker build --build-arg UID=$(shell id -u) --build-arg GID=$(shell id -g) --tag $$LINTER_IMAGE .; \
+	docker build --platform=linux/amd64 --build-arg UID=$(shell id -u) --build-arg GID=$(shell id -g) --tag $$LINTER_IMAGE .; \
 	docker run \
+		--platform=linux/amd64 \
 		-v $$VOLUME \
 		--rm \
-		-w "$$DEFAULT_WORKSPACE" \
 		-e DEFAULT_WORKSPACE="$$DEFAULT_WORKSPACE" \
-		-e GITHUB_WORKSPACE="$$DEFAULT_WORKSPACE" \
 		-e FILTER_REGEX_INCLUDE="$(filter-out $@,$(MAKECMDGOALS))" \
 		-e VALIDATE_TYPESCRIPT_PRETTIER=false \
 		-e VALIDATE_TYPESCRIPT_ES=false \
