@@ -55,7 +55,7 @@
     "@vitest/coverage-v8": "^4.1.10",
     "astro-compress": "2.4.3",
     "astro-eslint-parser": "^3.0.0",
-    "eslint": "^10.8.0",
+    "eslint": "^10.8.1",
     "eslint-plugin-astro": "^3.1.0",
     "globals": "^17.9.0",
     "js-yaml": "^5.2.3",
@@ -66,7 +66,7 @@
     "sharp": "0.35.3",
     "tailwind-merge": "^3.6.0",
     "tailwindcss": "^4.3.3",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "typescript-eslint": "^8.66.0",
     "unist-util-visit": "^5.1.0",
     "vitest": "^4.1.10"
