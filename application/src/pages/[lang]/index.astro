@@ -1,9 +1,9 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import { languages } from '~/i18n/config';
-import type { AppLang } from '~/i18n/routes';
 import homeEn from '~/data/pages/home/en';
 import homeFr from '~/data/pages/home/fr';
+import { languages } from '~/i18n/config';
+import type { AppLang } from '~/i18n/routes';
+import Layout from '~/layouts/PageLayout.astro';
 import Content from '~/pages/home/_content.astro';
 
 export function getStaticPaths() {

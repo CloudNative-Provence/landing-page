@@ -70,25 +70,20 @@ const detailsPopoverId = `program-session-details-${session.id}`;
       <span class="font-medium">{labels.roomLabel}:</span>
       {roomLabel}
     </span>
-    {
-      session.format && (
+    {session.format && (
         <span class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-2.5 py-1 text-gray-700 dark:bg-slate-900 dark:text-slate-300">
           {session.format}
         </span>
-      )
-    }
+      )}
   </div>
 
-  {
-    session.speakers?.length ? (
+  {session.speakers?.length ? (
       <p class="mt-3 text-xs font-medium text-gray-700 dark:text-slate-200 xl:text-sm">
         {labels.speakersLabel}: {session.speakers.join(', ')}
       </p>
-    ) : null
-  }
+    ) : null}
 
-  {
-    session.description || session.tags?.length ? (
+  {session.description || session.tags?.length ? (
       <>
         <div class="mt-3">
           <button
@@ -143,6 +138,5 @@ const detailsPopoverId = `program-session-details-${session.id}`;
           ) : null}
         </div>
       </>
-    ) : null
-  }
+    ) : null}
 </article>

@@ -23,7 +23,7 @@ const { filters, tracks, rooms } = Astro.props;
         type="search"
         placeholder={filters.searchPlaceholder}
         class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-sky-900/30"
-      />
+      >
     </label>
 
     <label class="block">
@@ -49,7 +49,7 @@ const { filters, tracks, rooms } = Astro.props;
     </label>
 
     <label class="flex h-full items-center gap-3 rounded-2xl border border-gray-200 px-4 py-3 dark:border-slate-700">
-      <input data-filter-selected type="checkbox" class="h-4 w-4 rounded border-gray-300 text-sky-500" />
+      <input data-filter-selected type="checkbox" class="h-4 w-4 rounded border-gray-300 text-sky-500">
       <span class="text-sm text-gray-700 dark:text-slate-200">{filters.selectedOnlyLabel}</span>
     </label>
 

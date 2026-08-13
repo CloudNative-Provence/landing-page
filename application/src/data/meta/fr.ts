@@ -1,4 +1,11 @@
 export default {
+  blog: {
+    list: {
+      title: 'Blog',
+      subtitle: "Actualités, annonces, retours d'expérience et moments forts de l'événement KCD Provence.",
+      pageLabel: 'Page',
+    },
+  },
   meta: {
     title: {
       default: 'KCD Provence',

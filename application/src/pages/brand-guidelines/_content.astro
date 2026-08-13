@@ -1,8 +1,8 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
-import Features3 from '~/components/widgets/Features3.astro';
 import ContentWidget from '~/components/widgets/Content.astro';
+import Features3 from '~/components/widgets/Features3.astro';
+import HeroText from '~/components/widgets/HeroText.astro';
+import Layout from '~/layouts/PageLayout.astro';
 import type { Item, MetaData } from '~/types';
 
 interface PaletteColor {
@@ -73,8 +73,7 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-      {
-        [...colorPalette.colors].map((color) => (
+      {[...colorPalette.colors].map((color) => (
           <div class="rounded-lg overflow-hidden shadow-lg">
             <div class="h-32" style={`background-color: ${color.hex};`} />
             <div class="p-4 bg-white dark:bg-slate-800">
@@ -84,8 +83,7 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
               <p class="text-sm text-muted">Usage: {color.usage}</p>
             </div>
           </div>
-        ))
-      }
+        ))}
     </div>
   </section>
 
@@ -103,8 +101,7 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
       <p class="text-lg mb-6">{typography.description}</p>
 
       <div class="space-y-4">
-        {
-          [...typography.examples].map((example) => (
+        {[...typography.examples].map((example) => (
             <div>
               <p class="text-sm text-muted mb-2">{example.label}</p>
               {example.style === 'text-4xl font-bold' && (
@@ -123,8 +120,7 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
                 </p>
               )}
             </div>
-          ))
-        }
+          ))}
       </div>
     </div>
   </section>
@@ -140,26 +136,18 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
   <!-- Usage Guidelines -->
   <ContentWidget tagline={usageGuidelines.tagline} title={usageGuidelines.title} items={[...usageGuidelines.items]}>
     <Fragment slot="content">
-      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">
-        {usageGuidelines.contentTitle}
-      </h3>
-      <p>
-        {usageGuidelines.contentDescription}
-      </p>
+      <h3 class="text-2xl font-bold tracking-tight dark:text-white sm:text-3xl mb-2">{usageGuidelines.contentTitle}</h3>
+      <p>{usageGuidelines.contentDescription}</p>
     </Fragment>
 
-    <Fragment slot="bg">
-      <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div>
-    </Fragment>
+    <Fragment slot="bg"> <div class="absolute inset-0 bg-blue-50 dark:bg-transparent"></div> </Fragment>
   </ContentWidget>
 
   <!-- Note Section -->
   <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-4xl">
     <div class="bg-primary/10 border-l-4 border-primary p-6 rounded-r-lg">
       <h3 class="text-xl font-bold mb-2">{note.title}</h3>
-      <p class="text-muted">
-        {note.content}
-      </p>
+      <p class="text-muted">{note.content}</p>
       <p class="text-muted mt-4">
         {note.contactText}
         <a href={`mailto:${note.email}`} class="text-primary hover:underline">{note.email}</a>

@@ -22,8 +22,7 @@ const {
 
 <astro-countdown data-event-date={eventDate}>
   <div class="flex flex-wrap justify-center gap-6 py-10">
-    {
-      Object.entries(labels).map(([index, label]) => (
+    {Object.entries(labels).map(([index, label]) => (
         <div class="flex flex-col items-center">
           <div
             id={index}
@@ -34,75 +33,74 @@ const {
           </div>
           <div class="mt-2 text-sm font-medium uppercase tracking-widest text-muted">{label}</div>
         </div>
-      ))
-    }
+      ))}
   </div>
 </astro-countdown>
 
 <style>
-  @keyframes flip {
-    0% {
-      transform: rotateX(0);
-    }
-    100% {
-      transform: rotateX(360deg);
-    }
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
   }
-  .animate-flip {
-    animation: flip 1s ease-in-out;
+  100% {
+    transform: rotateX(360deg);
   }
+}
+.animate-flip {
+  animation: flip 1s ease-in-out;
+}
 </style>
 
 <script>
-  class AstroCountdown extends HTMLElement {
-    private _timer: NodeJS.Timeout | null = null;
+class AstroCountdown extends HTMLElement {
+  private _timer: NodeJS.Timeout | null = null;
 
-    connectedCallback() {
-      this.update();
-      this._timer = setInterval(() => this.update(), 1000);
+  connectedCallback() {
+    this.update();
+    this._timer = setInterval(() => this.update(), 1000);
+  }
+
+  disconnectedCallback() {
+    if (this._timer) {
+      clearInterval(this._timer);
     }
+  }
 
-    disconnectedCallback() {
+  update() {
+    const eventDateStr = this.getAttribute('data-event-date');
+    if (!eventDateStr) {
+      return;
+    }
+    const eventDate = new Date(eventDateStr);
+    const now = new Date();
+    const t = eventDate.getTime() - now.getTime();
+
+    if (t <= 0) {
+      this.innerHTML = '';
       if (this._timer) {
         clearInterval(this._timer);
       }
+      return;
     }
 
-    update() {
-      const eventDateStr = this.getAttribute('data-event-date');
-      if (!eventDateStr) {
-        return;
-      }
-      const eventDate = new Date(eventDateStr);
-      const now = new Date();
-      const t = eventDate.getTime() - now.getTime();
+    const seconds = Math.floor((t / 1000) % 60);
+    const minutes = Math.floor((t / 1000 / 60) % 60);
+    const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+    const days = Math.floor(t / (1000 * 60 * 60 * 24));
 
-      if (t <= 0) {
-        this.innerHTML = '';
-        if (this._timer) {
-          clearInterval(this._timer);
-        }
-        return;
-      }
+    const daysEl = this.querySelector('#days')!;
+    const hoursEl = this.querySelector('#hours')!;
+    const minutesEl = this.querySelector('#minutes')!;
+    const secondsEl = this.querySelector('#seconds')!;
 
-      const seconds = Math.floor((t / 1000) % 60);
-      const minutes = Math.floor((t / 1000 / 60) % 60);
-      const hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-      const days = Math.floor(t / (1000 * 60 * 60 * 24));
-
-      const daysEl = this.querySelector('#days')!;
-      const hoursEl = this.querySelector('#hours')!;
-      const minutesEl = this.querySelector('#minutes')!;
-      const secondsEl = this.querySelector('#seconds')!;
-
-      daysEl.textContent = days.toString().padStart(2, '0');
-      hoursEl.textContent = hours.toString().padStart(2, '0');
-      minutesEl.textContent = minutes.toString().padStart(2, '0');
-      secondsEl.textContent = seconds.toString().padStart(2, '0');
-    }
+    daysEl.textContent = days.toString().padStart(2, '0');
+    hoursEl.textContent = hours.toString().padStart(2, '0');
+    minutesEl.textContent = minutes.toString().padStart(2, '0');
+    secondsEl.textContent = seconds.toString().padStart(2, '0');
   }
+}
 
-  if (!customElements.get('astro-countdown')) {
-    customElements.define('astro-countdown', AstroCountdown);
-  }
+if (!customElements.get('astro-countdown')) {
+  customElements.define('astro-countdown', AstroCountdown);
+}
 </script>

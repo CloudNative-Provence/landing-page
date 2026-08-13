@@ -27,8 +27,7 @@ const { lastUpdatedLabel, lastUpdated, intro, sections } = Astro.props;
   <p><em>{lastUpdatedLabel}: {lastUpdated}</em></p>
   <p>{intro}</p>
 
-  {
-    sections.map((section) => (
+  {sections.map((section) => (
       <section>
         <h2>{section.title}</h2>
 
@@ -52,6 +51,5 @@ const { lastUpdatedLabel, lastUpdated, intro, sections } = Astro.props;
           </ul>
         )}
       </section>
-    ))
-  }
+    ))}
 </div>

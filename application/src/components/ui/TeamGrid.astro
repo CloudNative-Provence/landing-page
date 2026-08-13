@@ -1,7 +1,7 @@
 ---
+import Image from '~/components/common/Image.astro';
 import Headline from '~/components/ui/Headline.astro';
 import WidgetWrapper from '~/components/ui/WidgetWrapper.astro';
-import Image from '~/components/common/Image.astro';
 import type { Features as Props } from '~/types';
 
 const {
@@ -14,15 +14,16 @@ const {
   isDark = false,
   classes = {},
   bg = await Astro.slots.render('bg'),
-} = Astro.props;
+} = Astro.props as Props;
+
+const headlineClasses = (classes?.headline ?? {}) as Record<string, string>;
 ---
 
 <WidgetWrapper id={id} isDark={isDark} bg={bg}>
-  <Headline title={title} subtitle={subtitle} tagline={tagline} classes={classes?.headline as Record<string, string>} />
+  <Headline title={title} subtitle={subtitle} tagline={tagline} classes={headlineClasses} />
 
   <div class={`grid gap-10 mt-12 mx-auto text-center sm:gap-12 md:grid-cols-2 lg:grid-cols-${columns} max-w-6xl`}>
-    {
-      items.map(({ title, image }) => (
+    {items.map(({ title, image }) => (
         <div class="flex flex-col items-center">
           {image && (
             <Image
@@ -35,7 +36,6 @@ const {
           )}
           <h3 class="text-lg font-semibold text-default">{title}</h3>
         </div>
-      ))
-    }
+      ))}
   </div>
 </WidgetWrapper>

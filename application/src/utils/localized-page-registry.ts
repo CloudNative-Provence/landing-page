@@ -1,8 +1,4 @@
 import type { AstroComponentFactory } from 'astro/runtime/server/index.js';
-
-import type { RouteKey, AppLang } from '~/i18n/routes';
-import type { MetaData } from '~/types';
-
 import aboutEn from '~/data/pages/about/en';
 import aboutFr from '~/data/pages/about/fr';
 import { enContent as brandEnContent } from '~/data/pages/brand-guidelines/en';
@@ -17,7 +13,7 @@ import sponsoringEn from '~/data/pages/sponsoring/en';
 import sponsoringFr from '~/data/pages/sponsoring/fr';
 import termsEn from '~/data/pages/terms/en';
 import termsFr from '~/data/pages/terms/fr';
-
+import type { AppLang, RouteKey } from '~/i18n/routes';
 import AboutContent from '~/pages/about/_content.astro';
 import BrandGuidelinesContent from '~/pages/brand-guidelines/_content.astro';
 import ContactContent from '~/pages/contact/_content.astro';
@@ -25,6 +21,7 @@ import PrivacyContent from '~/pages/privacy/_content.astro';
 import ProgramContent from '~/pages/program/_content.astro';
 import SponsoringContent from '~/pages/sponsoring/_content.astro';
 import TermsContent from '~/pages/terms/_content.astro';
+import type { MetaData } from '~/types';
 
 type LocalizedPageData = {
   metadata: MetaData;

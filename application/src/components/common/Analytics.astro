@@ -5,18 +5,15 @@ const id = ANALYTICS?.vendors?.googleAnalytics?.id ? String(ANALYTICS.vendors.go
 const usePartytown = Boolean(ANALYTICS?.vendors?.googleAnalytics?.partytown);
 ---
 
-{
-  id ? (
+{id ? (
     <script
       is:inline
       async
       src={`https://www.googletagmanager.com/gtag/js?id=${id}`}
       type={usePartytown ? 'text/partytown' : undefined}
     />
-  ) : null
-}
-{
-  id ? (
+  ) : null}
+{id ? (
     <script
       is:inline
       type={usePartytown ? 'text/partytown' : undefined}
@@ -25,5 +22,4 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', ${JSON.stringify(id)});`}
     />
-  ) : null
-}
+  ) : null}

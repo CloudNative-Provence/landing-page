@@ -1,9 +1,8 @@
+import { APP_BLOG, METADATA, SITE } from 'astrowind:config';
 import { getRssString } from '@astrojs/rss';
-
-import { SITE, METADATA, APP_BLOG } from 'astrowind:config';
+import { defaultLang } from '~/i18n/config';
 import { fetchPosts } from '~/utils/blog';
 import { getPermalink } from '~/utils/permalinks';
-import { defaultLang } from '~/i18n/config';
 
 export const GET = async () => {
   const posts = APP_BLOG.isEnabled ? (await fetchPosts()).filter((post) => post.locale === defaultLang) : [];

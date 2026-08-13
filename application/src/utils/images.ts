@@ -1,6 +1,6 @@
-import { isUnpicCompatible, unpicOptimizer, astroAssetsOptimizer } from './images-optimization';
 import type { ImageMetadata } from 'astro';
 import type { MetaDataOpenGraph } from '~/types';
+import { astroAssetsOptimizer, isUnpicCompatible, unpicOptimizer } from './images-optimization';
 
 type LocalImageModule = {
   default: ImageMetadata;
@@ -13,8 +13,7 @@ const load = async function () {
       ['../assets/images/**/*.{jpeg,jpg,png,tiff,webp,gif,svg,JPEG,JPG,PNG,TIFF,WEBP,GIF,SVG}'],
       { eager: true }
     ) as Record<string, LocalImageModule>;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  } catch (error) {
+  } catch {
     // continue regardless of error
   }
   return images;

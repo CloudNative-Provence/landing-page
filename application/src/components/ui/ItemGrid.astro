@@ -1,10 +1,10 @@
 ---
-import type { ItemGrid as Props } from '~/types';
-import { twMerge } from 'tailwind-merge';
-import Button from './Button.astro';
 import { Icon } from 'astro-icon/components';
+import { twMerge } from 'tailwind-merge';
+import type { ItemGrid as Props } from '~/types';
+import Button from './Button.astro';
 
-const { items = [], columns, defaultIcon = '', classes = {} } = Astro.props;
+const { items = [], columns, defaultIcon = '', classes = {} } = Astro.props as Props;
 
 const {
   container: containerClass = '',
@@ -16,8 +16,7 @@ const {
 } = classes;
 ---
 
-{
-  items && items.length > 0 && (
+{items && items.length > 0 && (
     <div
       class={twMerge(
         `grid mx-auto gap-8 md:gap-y-12 ${
@@ -61,5 +60,4 @@ const {
         </div>
       ))}
     </div>
-  )
-}
+  )}

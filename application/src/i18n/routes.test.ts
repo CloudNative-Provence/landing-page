@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { getLocalizedPagePath, getRouteKeyFromSlug, routeSlugs, translatePathToLang, type RouteKey } from './routes';
+import { getLocalizedPagePath, getRouteKeyFromSlug, type RouteKey, routeSlugs, translatePathToLang } from './routes';
 
 describe('i18n routes helpers', () => {
   it('builds localized page path from route key', () => {

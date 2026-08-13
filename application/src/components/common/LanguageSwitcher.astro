@@ -1,7 +1,7 @@
 ---
 import { languages } from '~/i18n/config';
-import { getLangFromUrl } from '~/i18n/utils';
 import { translatePathToLang } from '~/i18n/routes';
+import { getLangFromUrl } from '~/i18n/utils';
 import { findLocalizedBlogPath } from '~/utils/blog';
 
 const lang = getLangFromUrl(Astro.url);
@@ -21,8 +21,7 @@ const languageLinks = await Promise.all(
 
 <div class="relative inline-block text-left">
   <div class="flex items-center space-x-2">
-    {
-      languageLinks.map(({ langCode, href }) => (
+    {languageLinks.map(({ langCode, href }) => (
         <a
           href={href}
           class:list={[
@@ -35,7 +34,6 @@ const languageLinks = await Promise.all(
         >
           {langCode.toUpperCase()}
         </a>
-      ))
-    }
+      ))}
   </div>
 </div>

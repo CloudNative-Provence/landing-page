@@ -1,11 +1,11 @@
-import type { PaginateFunction } from 'astro';
-import { getCollection, render } from 'astro:content';
 import type { CollectionEntry } from 'astro:content';
-import type { Post } from '~/types';
+import { getCollection, render } from 'astro:content';
 import { APP_BLOG } from 'astrowind:config';
+import type { PaginateFunction } from 'astro';
 import { defaultLang, languages } from '~/i18n/config';
 import type { AppLang } from '~/i18n/routes';
-import { cleanSlug, trimSlash, BLOG_BASE, POST_PERMALINK_PATTERN, CATEGORY_BASE, TAG_BASE } from './permalinks';
+import type { Post } from '~/types';
+import { BLOG_BASE, CATEGORY_BASE, cleanSlug, POST_PERMALINK_PATTERN, TAG_BASE, trimSlash } from './permalinks';
 
 type PostCollectionData = CollectionEntry<'post'>['data'];
 type PreparedEntry = {

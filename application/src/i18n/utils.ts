@@ -1,8 +1,8 @@
-import { defaultLang } from './config';
-import navigationFr from '../data/navigation/fr';
-import navigationEn from '../data/navigation/en';
-import metaFr from '../data/meta/fr';
 import metaEn from '../data/meta/en';
+import metaFr from '../data/meta/fr';
+import navigationEn from '../data/navigation/en';
+import navigationFr from '../data/navigation/fr';
+import { defaultLang } from './config';
 
 export const sourceLocales = {
   fr: {

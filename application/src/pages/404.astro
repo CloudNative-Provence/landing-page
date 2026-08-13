@@ -1,8 +1,8 @@
 ---
-import Layout from '~/layouts/Layout.astro';
-import { getLangFromUrl } from '~/i18n/utils';
 import notFoundEn from '~/data/pages/not-found/en';
 import notFoundFr from '~/data/pages/not-found/fr';
+import { getLangFromUrl } from '~/i18n/utils';
+import Layout from '~/layouts/Layout.astro';
 
 const lang = getLangFromUrl(Astro.url);
 const t = lang === 'en' ? notFoundEn.notFound : notFoundFr.notFound;
@@ -17,9 +17,7 @@ const t = lang === 'en' ? notFoundEn.notFound : notFoundFr.notFound;
           <span class="text-primary">404</span>
         </h2>
         <p class="text-3xl font-semibold md:text-3xl">{t.heading}</p>
-        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">
-          {t.message}
-        </p>
+        <p class="mt-4 mb-8 text-lg text-muted dark:text-slate-400">{t.message}</p>
         <a rel="noopener noreferrer" href={`/${lang}/`} class="btn ml-4">{t.backToHome}</a>
       </div>
     </div>
