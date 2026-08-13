@@ -1,6 +1,5 @@
+import { APP_BLOG, SITE } from 'astrowind:config';
 import slugify from 'limax';
-
-import { SITE, APP_BLOG } from 'astrowind:config';
 
 import type { AppLang } from '~/i18n/routes';
 import { trim } from '~/utils/utils';
@@ -111,7 +110,13 @@ type PermalinkHrefDescriptor = {
 };
 
 type PermalinkMenuValue =
-  string | number | boolean | null | undefined | PermalinkMenuValue[] | { [key: string]: PermalinkMenuValue };
+  | string
+  | number
+  | boolean
+  | null
+  | undefined
+  | PermalinkMenuValue[]
+  | { [key: string]: PermalinkMenuValue };
 
 const isPermalinkMenuRecord = (value: PermalinkMenuValue): value is { [key: string]: PermalinkMenuValue } =>
   typeof value === 'object' && value !== null && !Array.isArray(value);

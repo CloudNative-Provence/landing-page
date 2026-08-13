@@ -1,7 +1,7 @@
 ---
-import Layout from '~/layouts/PageLayout.astro';
 import { languages } from '~/i18n/config';
-import { getRouteKeyFromSlug, routeSlugs, type AppLang } from '~/i18n/routes';
+import { type AppLang, getRouteKeyFromSlug, routeSlugs } from '~/i18n/routes';
+import Layout from '~/layouts/PageLayout.astro';
 import { LocalizedPageRegistry } from '~/utils/localized-page-registry';
 import { getEnabledLocalizedRouteKeys } from '~/utils/page-routes';
 
@@ -29,12 +29,10 @@ const pageDefinition = LocalizedPageRegistry.resolve(routeKey, lang);
 const PageContent = pageDefinition.component;
 ---
 
-{
-  pageDefinition.layout === 'page' ? (
+{pageDefinition.layout === 'page' ? (
     <Layout metadata={pageDefinition.metadata}>
       <PageContent {...pageDefinition.props} />
     </Layout>
   ) : (
     <PageContent metadata={pageDefinition.metadata} {...pageDefinition.props} />
-  )
-}
+  )}

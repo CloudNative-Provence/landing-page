@@ -1,7 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components';
-
 import { UI } from 'astrowind:config';
+import { Icon } from 'astro-icon/components';
 
 export interface Props {
   label?: string;
@@ -21,8 +20,7 @@ const {
 } = Astro.props;
 ---
 
-{
-  !(UI.theme && UI.theme.endsWith(':only')) && (
+{!(UI.theme && UI.theme.endsWith(':only')) && (
     <button type="button" class={className} aria-label={label} data-aw-toggle-color-scheme>
       <span class="inline dark:hidden" aria-hidden="true">
         <Icon name={iconName} class={iconClass} />
@@ -31,5 +29,4 @@ const {
         <Icon name={darkIconName} class={iconClass} />
       </span>
     </button>
-  )
-}
+  )}

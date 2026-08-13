@@ -1,0 +1,6 @@
+application/.astro/
+application/astro-report.txt
+application/biome-report.sarif
+application/coverage/
+application/dist/
+application/node_modules/

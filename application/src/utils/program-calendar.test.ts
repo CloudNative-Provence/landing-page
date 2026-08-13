@@ -1,4 +1,17 @@
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
+
+import { createAstrowindConfigMock } from '~/test/mocks/astrowind-config';
+
+vi.mock('astrowind:config', () =>
+  createAstrowindConfigMock({
+    SITE: {
+      name: 'KCD Provence',
+      site: 'https://conference.cloudnative-provence.fr',
+      base: '/',
+      trailingSlash: false,
+    },
+  })
+);
 
 import { ProgramCalendarExporter } from './program-calendar';
 
@@ -22,7 +35,8 @@ describe('ProgramCalendarExporter', () => {
     const lines = calendar.split('\r\n');
 
     expect(calendar).toContain('BEGIN:VCALENDAR');
-    expect(calendar).toContain('UID:opening-keynote@cloudnative-provence.fr');
+    expect(calendar).toContain('PRODID:-//KCD Provence//Program Planner//EN');
+    expect(calendar).toContain('UID:opening-keynote@conference.cloudnative-provence.fr');
     expect(calendar).toContain('DTSTAMP:20260101T100000Z');
     expect(lines.some((line) => line.startsWith(' '))).toBe(true);
     expect(lines.every((line) => new TextEncoder().encode(line).length <= 75)).toBe(true);

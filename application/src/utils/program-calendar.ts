@@ -1,3 +1,5 @@
+import { SITE } from 'astrowind:config';
+
 export interface ProgramCalendarEvent {
   id: string;
   title: string;
@@ -12,12 +14,14 @@ export class ProgramCalendarExporter {
 
   private static readonly lineByteLimit = 75;
 
+  private static readonly calendarUidHost = new URL(SITE.site).hostname;
+
   static build(events: readonly ProgramCalendarEvent[], generatedAt: Date = new Date()): string {
     const generatedAtValue = this.formatDate(generatedAt.toISOString());
     const lines = [
       'BEGIN:VCALENDAR',
       'VERSION:2.0',
-      'PRODID:-//Cloud Native Provence//Program Planner//EN',
+      `PRODID:-//${SITE.name}//Program Planner//EN`,
       'CALSCALE:GREGORIAN',
       ...events.flatMap((event) => this.buildEventLines(event, generatedAtValue)),
       'END:VCALENDAR',
@@ -29,7 +33,7 @@ export class ProgramCalendarExporter {
   private static buildEventLines(event: ProgramCalendarEvent, generatedAtValue: string): string[] {
     return [
       'BEGIN:VEVENT',
-      `UID:${event.id}@cloudnative-provence.fr`,
+      `UID:${event.id}@${this.calendarUidHost}`,
       `DTSTAMP:${generatedAtValue}`,
       `DTSTART:${this.formatDate(event.startsAt)}`,
       `DTEND:${this.formatDate(event.endsAt)}`,

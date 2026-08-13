@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { createAstrowindConfigMock } from '~/test/mocks/astrowind-config';
 import { createAstroContentRuntimeMock } from '~/test/mocks/astro-content';
+import { createAstrowindConfigMock } from '~/test/mocks/astrowind-config';
 import type { Post } from '~/types';
 
 function getSamplePosts() {
@@ -97,6 +97,7 @@ vi.mock('astro:content', () => createAstroContentRuntimeMock({ posts: [...getSam
 import {
   fetchPosts,
   findLatestPosts,
+  findLocalizedBlogPath,
   findPostsByIds,
   findPostsBySlugs,
   getRelatedPosts,
@@ -104,7 +105,6 @@ import {
   getStaticPathsBlogList,
   getStaticPathsBlogPost,
   getStaticPathsBlogTag,
-  findLocalizedBlogPath,
   translateBlogPermalinkForLocale,
 } from './blog';
 

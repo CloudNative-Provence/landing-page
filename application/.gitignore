@@ -15,8 +15,6 @@ pnpm-debug.log*
 junit.xml
 coverage/
 astro-report.txt
-eslint-report.json
-prettier-report.txt
 
 # environment variables
 .env

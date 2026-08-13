@@ -1,6 +1,6 @@
 import { APP_PROGRAM } from 'astrowind:config';
 
-import { routeSlugs, type RouteKey } from '~/i18n/routes';
+import { type RouteKey, routeSlugs } from '~/i18n/routes';
 
 export const isProgramEnabled = () => APP_PROGRAM.isEnabled;
 

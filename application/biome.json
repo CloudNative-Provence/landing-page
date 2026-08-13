@@ -1,0 +1,16 @@
+{
+  "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "root": false,
+  "extends": ["../biome.json"],
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!src/assets/styles/tailwind.css",
+      "!src/assets/images/brand/logo/*.svg",
+      "!!**/.astro",
+      "!!**/coverage",
+      "!!**/dist"
+    ]
+  }
+}

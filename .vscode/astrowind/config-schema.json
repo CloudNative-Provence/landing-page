@@ -231,14 +231,7 @@
               "required": ["isEnabled", "pathname", "robots"]
             }
           },
-          "required": [
-            "isEnabled",
-            "postsPerPage",
-            "post",
-            "list",
-            "category",
-            "tag"
-          ]
+          "required": ["isEnabled", "postsPerPage", "post", "list", "category", "tag"]
         }
       },
       "required": ["blog"]

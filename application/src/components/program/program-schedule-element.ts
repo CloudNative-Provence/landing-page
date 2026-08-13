@@ -1,4 +1,4 @@
-import { ProgramCalendarExporter, type ProgramCalendarEvent } from '~/utils/program-calendar';
+import { type ProgramCalendarEvent, ProgramCalendarExporter } from '~/utils/program-calendar';
 import { ProgramSearchTextNormalizer } from '~/utils/program-search';
 import { ProgramSelectionCodec } from '~/utils/program-selection';
 

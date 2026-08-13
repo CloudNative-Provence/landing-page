@@ -27,8 +27,7 @@
         "github.vscode-github-actions",
         "ms-vscode.makefile-tools",
         "astro-build.astro-vscode",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
+        "biomejs.biome",
         "bradlc.vscode-tailwindcss"
       ],
       "mcp": {

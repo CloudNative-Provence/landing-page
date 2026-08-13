@@ -48,7 +48,7 @@ The dev container provides:
 - Node.js 22
 - Docker-in-Docker
 - GitHub CLI
-- Visual Studio Code extensions for Astro, ESLint, Prettier, Tailwind, Makefile, Copilot
+- Visual Studio Code extensions for Astro, Biome, Tailwind, Makefile, Copilot
 
 The app is available on port `4321`.
 

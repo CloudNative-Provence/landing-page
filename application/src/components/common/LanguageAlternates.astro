@@ -1,5 +1,5 @@
 ---
-import { languages, defaultLang } from '~/i18n/config';
+import { defaultLang, languages } from '~/i18n/config';
 import { translatePathToLang } from '~/i18n/routes';
 import { findLocalizedBlogPath } from '~/utils/blog';
 
@@ -22,7 +22,8 @@ const alternateLinks = await Promise.all(
   })
 );
 const defaultAlternate = alternateLinks.find((entry) => entry.lang === defaultLang);
+const defaultAlternatePath = defaultAlternate?.path || `/${defaultLang}`;
 ---
 
 {alternateLinks.map(({ lang, path }) => <link rel="alternate" hreflang={lang} href={`${baseUrl}${path}`} />)}
-<link rel="alternate" hreflang="x-default" href={`${baseUrl}${defaultAlternate?.path || `/${defaultLang}`}`} />
+<link rel="alternate" hreflang="x-default" href={`${baseUrl}${defaultAlternatePath}`}>

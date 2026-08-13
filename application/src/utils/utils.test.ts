@@ -1,5 +1,4 @@
-import { describe, expect, it } from 'vitest';
-import { vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { createAstrowindConfigMock } from '~/test/mocks/astrowind-config';
 
 vi.mock('astrowind:config', () => createAstrowindConfigMock());

@@ -1,15 +1,15 @@
 ---
-import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
-import Features from '~/components/widgets/Features.astro';
-import Stats from '~/components/widgets/Stats.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import CountDown from '~/components/widgets/CountDown.astro';
 import Image from '~/components/common/Image.astro';
 import Button from '~/components/ui/Button.astro';
-import { getPermalink } from '~/utils/permalinks';
-import { resolveCfpPhase, type CfpAvailabilityPhase } from '~/utils/cfp-availability';
+import CallToAction from '~/components/widgets/CallToAction.astro';
+import CountDown from '~/components/widgets/CountDown.astro';
+import Features from '~/components/widgets/Features.astro';
+import Hero from '~/components/widgets/Hero.astro';
+import Note from '~/components/widgets/Note.astro';
+import Stats from '~/components/widgets/Stats.astro';
 import type { Image as ImageType, Item, Stat } from '~/types';
+import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/utils/cfp-availability';
+import { getPermalink } from '~/utils/permalinks';
 
 type ActionItem = {
   href: string;
@@ -133,6 +133,7 @@ const heroTitleHtml =
     : [hero?.title?.main, hero?.title?.subtitle].filter(Boolean).join('<br class="block" />');
 
 const heroBadge = hero?.badge;
+const cfpImage = cfp?.image && typeof cfp.image !== 'string' ? (cfp.image as ImageType) : undefined;
 ---
 
 <Hero actions={heroActionsWithPermalinks} image={hero.image} tagline={heroBadge}>
@@ -143,8 +144,7 @@ const heroBadge = hero?.badge;
 
 <Note title={note.title} description={note.description} />
 
-{
-  about && (
+{about && (
     <>
       <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-6xl" id={about.id}>
         <div class="mb-10 md:mx-auto text-center md:mb-12 max-w-3xl">
@@ -171,11 +171,9 @@ const heroBadge = hero?.badge;
         {about.values && <Features title={about.values.title} items={[...(about.values.items ?? [])]} columns={3} />}
       </section>
     </>
-  )
-}
+  )}
 
-{
-  cfp && (
+{cfp && (
     <section
       class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-6xl"
       id={cfp.id}
@@ -224,15 +222,17 @@ const heroBadge = hero?.badge;
           {typeof cfp.image === 'string' ? (
             <Fragment set:html={cfp.image} />
           ) : (
-            <Image
-              class="w-full bg-gray-500"
-              width={1200}
-              height={675}
-              widths={[768, 1200]}
-              sizes="100vw"
-              layout="responsive"
-              {...(cfp.image as ImageType)}
-            />
+            cfpImage && (
+              <Image
+                class="w-full bg-gray-500"
+                width={1200}
+                height={675}
+                widths={[768, 1200]}
+                sizes="100vw"
+                layout="responsive"
+                {...cfpImage}
+              />
+            )
           )}
         </div>
       )}
@@ -342,71 +342,69 @@ const heroBadge = hero?.badge;
         )}
       </div>
     </section>
-  )
-}
+  )}
 
 <script>
-  import { resolveCfpPhase, type CfpAvailabilityPhase } from '~/utils/cfp-availability';
+import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/utils/cfp-availability';
 
-  const syncCfpState = (root: HTMLElement) => {
-    const opensAtValue = root.dataset.cfpOpensAt;
+const syncCfpState = (root: HTMLElement) => {
+  const opensAtValue = root.dataset.cfpOpensAt;
 
-    if (!opensAtValue) {
-      return;
-    }
-
-    let phase: CfpAvailabilityPhase;
-
-    try {
-      phase = resolveCfpPhase({
-        opensAt: root.dataset.cfpOpensAt ?? '',
-        closesAt: root.dataset.cfpClosesAt || undefined,
-      });
-    } catch {
-      return;
-    }
-
-    const statusByPhase: Record<CfpAvailabilityPhase, string | undefined> = {
-      upcoming: root.dataset.cfpStatusUpcoming,
-      open: root.dataset.cfpStatusOpen,
-      closed: root.dataset.cfpStatusClosed,
-    };
-
-    const statusElement = root.querySelector<HTMLElement>('[data-cfp-status]');
-    const disabledElements = root.querySelectorAll<HTMLElement>('[data-cfp-disabled]');
-    const linkElements = root.querySelectorAll<HTMLElement>('[data-cfp-link]');
-    const isDisabled = phase !== 'open';
-
-    if (statusElement && statusByPhase[phase]) {
-      statusElement.textContent = statusByPhase[phase] ?? '';
-    }
-
-    disabledElements.forEach((disabledElement) => {
-      disabledElement.hidden = !isDisabled;
-      disabledElement.setAttribute('aria-hidden', String(!isDisabled));
-    });
-
-    linkElements.forEach((linkElement) => {
-      linkElement.hidden = isDisabled;
-      linkElement.setAttribute('aria-hidden', String(isDisabled));
-    });
-  };
-
-  const syncAllCfpStates = () => {
-    document.querySelectorAll<HTMLElement>('[data-cfp-root="true"]').forEach((root) => syncCfpState(root));
-  };
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', syncAllCfpStates, { once: true });
-  } else {
-    syncAllCfpStates();
+  if (!opensAtValue) {
+    return;
   }
 
-  document.addEventListener('astro:page-load', syncAllCfpStates);
+  let phase: CfpAvailabilityPhase;
+
+  try {
+    phase = resolveCfpPhase({
+      opensAt: root.dataset.cfpOpensAt ?? '',
+      closesAt: root.dataset.cfpClosesAt || undefined,
+    });
+  } catch {
+    return;
+  }
+
+  const statusByPhase: Record<CfpAvailabilityPhase, string | undefined> = {
+    upcoming: root.dataset.cfpStatusUpcoming,
+    open: root.dataset.cfpStatusOpen,
+    closed: root.dataset.cfpStatusClosed,
+  };
+
+  const statusElement = root.querySelector<HTMLElement>('[data-cfp-status]');
+  const disabledElements = root.querySelectorAll<HTMLElement>('[data-cfp-disabled]');
+  const linkElements = root.querySelectorAll<HTMLElement>('[data-cfp-link]');
+  const isDisabled = phase !== 'open';
+
+  if (statusElement && statusByPhase[phase]) {
+    statusElement.textContent = statusByPhase[phase] ?? '';
+  }
+
+  disabledElements.forEach((disabledElement) => {
+    disabledElement.hidden = !isDisabled;
+    disabledElement.setAttribute('aria-hidden', String(!isDisabled));
+  });
+
+  linkElements.forEach((linkElement) => {
+    linkElement.hidden = isDisabled;
+    linkElement.setAttribute('aria-hidden', String(isDisabled));
+  });
+};
+
+const syncAllCfpStates = () => {
+  document.querySelectorAll<HTMLElement>('[data-cfp-root="true"]').forEach((root) => syncCfpState(root));
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', syncAllCfpStates, { once: true });
+} else {
+  syncAllCfpStates();
+}
+
+document.addEventListener('astro:page-load', syncAllCfpStates);
 </script>
 
-{
-  venue && (
+{venue && (
     <section class="px-4 py-16 sm:px-6 mx-auto lg:px-8 lg:py-20 max-w-6xl">
       <div class="mb-10 md:mx-auto text-center md:mb-12 max-w-3xl">
         {venue.title && (
@@ -431,7 +429,6 @@ const heroBadge = hero?.badge;
         </div>
       )}
     </section>
-  )
-}
+  )}
 
 <CallToAction title={callToAction.title} subtitle={callToAction.subtitle} actions={callToActionActionsWithPermalinks} />

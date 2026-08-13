@@ -1,10 +1,10 @@
+import favIcon from '~/assets/favicons/favicon.svg';
+import { isCfpOpen } from './data/meta/event';
+import { getLocalizedPagePath } from './i18n/routes';
+import type { LocaleDictionaries } from './i18n/utils';
+import { useTranslations } from './i18n/utils';
 import { isProgramEnabled } from './utils/page-routes';
 import { getPermalink } from './utils/permalinks';
-import { useTranslations } from './i18n/utils';
-import { getLocalizedPagePath } from './i18n/routes';
-import { isCfpOpen } from './data/meta/event';
-import type { LocaleDictionaries } from './i18n/utils';
-import favIcon from '~/assets/favicons/favicon.svg';
 
 // Function to get locale-aware navigation
 export const getHeaderData = (locale: keyof LocaleDictionaries, now: Date = new Date()) => {

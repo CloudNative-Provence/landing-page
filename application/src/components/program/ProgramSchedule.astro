@@ -1,10 +1,9 @@
 ---
+import { ProgramSelectionCodec } from '~/utils/program-selection';
 import ProgramFiltersPanel from './ProgramFiltersPanel.astro';
 import ProgramHero from './ProgramHero.astro';
 import ProgramScheduleGrid from './ProgramScheduleGrid.astro';
 import ProgramSelectionPanel from './ProgramSelectionPanel.astro';
-
-import { ProgramSelectionCodec } from '~/utils/program-selection';
 import type { ProgramScheduleProps } from './program-schedule.types';
 
 const { hero, highlights, filters, selection, labels, tracks, rooms, sessions } = Astro.props as ProgramScheduleProps;
@@ -41,5 +40,5 @@ const sessionIds = sessions.map((session) => session.id);
 </program-schedule>
 
 <script>
-  import './program-schedule-element';
+import './program-schedule-element';
 </script>
