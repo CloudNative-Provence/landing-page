@@ -5,6 +5,8 @@ import { enContent as brandEnContent } from '~/data/pages/brand-guidelines/en';
 import { frContent as brandFrContent } from '~/data/pages/brand-guidelines/fr';
 import contactEn from '~/data/pages/contact/en';
 import contactFr from '~/data/pages/contact/fr';
+import practicalInfoEn from '~/data/pages/practical-info/en';
+import practicalInfoFr from '~/data/pages/practical-info/fr';
 import privacyEn from '~/data/pages/privacy/en';
 import privacyFr from '~/data/pages/privacy/fr';
 import programEn from '~/data/pages/program/en';
@@ -17,6 +19,7 @@ import type { AppLang, RouteKey } from '~/i18n/routes';
 import AboutContent from '~/pages/about/_content.astro';
 import BrandGuidelinesContent from '~/pages/brand-guidelines/_content.astro';
 import ContactContent from '~/pages/contact/_content.astro';
+import PracticalInfoContent from '~/pages/practical-info/_content.astro';
 import PrivacyContent from '~/pages/privacy/_content.astro';
 import ProgramContent from '~/pages/program/_content.astro';
 import SponsoringContent from '~/pages/sponsoring/_content.astro';
@@ -59,6 +62,7 @@ const createPageResolver = (
 const localizedPageResolvers = {
   about: createPageResolver(AboutContent, { en: aboutEn, fr: aboutFr }),
   contact: createPageResolver(ContactContent, { en: contactEn, fr: contactFr }),
+  'practical-info': createPageResolver(PracticalInfoContent, { en: practicalInfoEn, fr: practicalInfoFr }),
   program: createPageResolver(ProgramContent, { en: programEn, fr: programFr }),
   sponsoring: createPageResolver(SponsoringContent, { en: sponsoringEn, fr: sponsoringFr }),
   'brand-guidelines': createPageResolver(

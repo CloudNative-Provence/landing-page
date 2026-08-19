@@ -57,7 +57,7 @@ export const getFooterData = (locale: keyof LocaleDictionaries) => {
             ? [{ text: t.footer.program, href: getPermalink(getLocalizedPagePath(locale, 'program')) }]
             : []),
           { text: t.footer.sponsoring, href: getPermalink(getLocalizedPagePath(locale, 'sponsoring')) },
-          { text: t.footer.practicalInfo, href: '#' },
+          { text: t.footer.practicalInfo, href: getPermalink(getLocalizedPagePath(locale, 'practical-info')) },
         ],
       },
       {

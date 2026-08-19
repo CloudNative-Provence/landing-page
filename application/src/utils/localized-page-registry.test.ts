@@ -18,6 +18,7 @@ vi.mock('astrowind:config', () => ({
 vi.mock('~/pages/about/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/brand-guidelines/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/contact/_content.astro', () => ({ default: {} }));
+vi.mock('~/pages/practical-info/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/privacy/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/program/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/sponsoring/_content.astro', () => ({ default: {} }));
@@ -38,6 +39,14 @@ describe('LocalizedPageRegistry', () => {
     expect(pageDefinition.layout).toBe('page');
     expect(pageDefinition.metadata.title).toBe('Programme');
     expect(pageDefinition.props.hero).toMatchObject({ title: 'Préparez votre journée à KCD Provence' });
+  });
+
+  it('resolves practical information content for the requested locale', () => {
+    const pageDefinition = LocalizedPageRegistry.resolve('practical-info', 'fr');
+
+    expect(pageDefinition.layout).toBe('page');
+    expect(pageDefinition.metadata.title).toBe('Infos pratiques');
+    expect(pageDefinition.props.title).toBe('Les infos pratiques pour votre journée en Provence');
   });
 
   it('resolves standalone pages without duplicating metadata in props', () => {

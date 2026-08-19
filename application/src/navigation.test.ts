@@ -71,6 +71,11 @@ describe('navigation', () => {
     const footer = getFooterData('en');
 
     expect(footer.links).toHaveLength(2);
+    expect(footer.links[0]?.links.map((item) => item.href)).toEqual([
+      '/en/program',
+      '/en/sponsoring',
+      '/en/practical-information',
+    ]);
     expect(footer.secondaryLinks.map((item) => item.href)).toEqual(['/en/terms-of-service', '/en/privacy-policy']);
     expect(footer.footNote).toContain('/favicon.svg');
     expect(footer.footNote).toContain('Cloud Native Provence');
@@ -83,7 +88,7 @@ describe('navigation', () => {
     const footer = getFooterData('fr');
 
     expect(header.links.map((link) => link.href)).toEqual(['/en/sponsoring', '/en/about', '/en/contact']);
-    expect(footer.links[0]?.links.map((link) => link.href)).toEqual(['/fr/sponsoring', '#']);
+    expect(footer.links[0]?.links.map((link) => link.href)).toEqual(['/fr/sponsoring', '/fr/infos-pratiques']);
   });
 
   it('omits the CFP link when the CFP is not open', () => {
