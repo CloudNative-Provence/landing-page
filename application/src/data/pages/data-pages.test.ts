@@ -123,4 +123,19 @@ describe('localized page data modules', () => {
     expect(homeFr.cfp.availability.statuses.open).toBeTruthy();
     expect(homeFr.cfp.availability.statuses.closed).toBeTruthy();
   });
+
+  it('includes the requested official parking guidance in both locales', () => {
+    const enParking = practicalInfoEn.items.find((item) => item.title === 'Parking');
+    const frParking = practicalInfoFr.items.find((item) => item.title === 'Parkings');
+
+    expect(enParking?.description).toContain('lametropolemobilite.fr/parking-relais/');
+    expect(enParking?.description).toContain('aixenprovencetourism.com/acces-transports/parkings/');
+    expect(enParking?.description).toContain('Parking Carnot');
+    expect(enParking?.description).toContain('closest option');
+
+    expect(frParking?.description).toContain('lametropolemobilite.fr/parking-relais/');
+    expect(frParking?.description).toContain('aixenprovencetourism.com/acces-transports/parkings/');
+    expect(frParking?.description).toContain('Parking Carnot');
+    expect(frParking?.description).toContain('la plus proche');
+  });
 });
