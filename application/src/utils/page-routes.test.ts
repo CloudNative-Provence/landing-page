@@ -53,6 +53,7 @@ describe('page route feature flags', () => {
     expect(getEnabledLocalizedRouteKeys()).toEqual([
       'about',
       'contact',
+      'practical-info',
       'sponsoring',
       'brand-guidelines',
       'terms',
