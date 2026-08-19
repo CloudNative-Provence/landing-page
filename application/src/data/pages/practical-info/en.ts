@@ -32,7 +32,7 @@ export default {
     {
       title: 'Parking',
       description:
-        'Several public parking options are available around the city center and major access roads. If you are driving in for the day, prefer official parking lots or park-and-ride facilities to make access to the venue easier.',
+        'Several public parking options are available around the city center and major access roads. If you are driving in for the day, consider the <a href="https://www.lametropolemobilite.fr/parking-relais/#loffre-parking-relais-pr-a-aix-en-provence">Aix-en-Provence park-and-ride offer</a> from La Métropole Mobilité, check the <a href="https://www.aixenprovencetourism.com/acces-transports/parkings/">official parking list</a>, and note that <a href="https://www.aixenprovencetourism.com/fr/fiche/parking-carnot-5567379">Parking Carnot</a> is the closest option to the venue area.',
       icon: 'tabler:parking',
     },
   ],

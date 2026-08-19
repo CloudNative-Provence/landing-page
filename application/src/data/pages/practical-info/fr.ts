@@ -32,7 +32,7 @@ export default {
     {
       title: 'Parkings',
       description:
-        "Plusieurs solutions de stationnement public sont disponibles autour du centre-ville et des grands axes d'accès. Si vous venez à la journée, privilégiez les parkings officiels ou les parkings-relais pour faciliter votre arrivée sur le lieu de l'événement.",
+        'Plusieurs solutions de stationnement public sont disponibles autour du centre-ville et des grands axes d\'accès. Si vous venez à la journée, pensez à l\'<a href="https://www.lametropolemobilite.fr/parking-relais/#loffre-parking-relais-pr-a-aix-en-provence">offre parking-relais d\'Aix-en-Provence</a> proposée par La Métropole Mobilité, consultez la <a href="https://www.aixenprovencetourism.com/acces-transports/parkings/">liste officielle des parkings</a>, et notez que le <a href="https://www.aixenprovencetourism.com/fr/fiche/parking-carnot-5567379">Parking Carnot</a> est l\'option la plus proche du lieu de l\'événement.',
       icon: 'tabler:parking',
     },
   ],
