@@ -9,7 +9,11 @@ import compress from 'astro-compress';
 import icon from 'astro-icon';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { lazyImagesRehypePlugin, readingTimeRemarkPlugin, responsiveTablesRehypePlugin } from './src/utils/frontmatter';
+import {
+  lazyImagesRehypePlugin,
+  readingTimeRemarkPlugin,
+  responsiveTablesRehypePlugin,
+} from './src/shared/content/markdown';
 import astrowind from './vendor/integration';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -50,6 +54,7 @@ export default defineConfig({
     sitemap(),
     mdx(),
     icon({
+      iconDir: 'src/assets/icons',
       include: {
         tabler: ['*'],
         'flat-color-icons': [

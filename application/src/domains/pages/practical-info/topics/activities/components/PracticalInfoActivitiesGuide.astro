@@ -1,0 +1,141 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { PracticalInfoActivityGuide } from '~/domains/pages/practical-info/model/activities';
+
+export interface Props {
+  activitiesGuide: PracticalInfoActivityGuide;
+}
+
+const { activitiesGuide } = Astro.props as Props;
+
+const sectionId = (id: string) => `activities-${id}`;
+const indexLabel = (index: number) => String(index + 1).padStart(2, '0');
+---
+
+<section class="not-prose px-4 pb-20 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-5xl">
+    <header class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+        {activitiesGuide.heroTitle}
+      </h2>
+      <p class="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">{activitiesGuide.heroIntro}</p>
+    </header>
+
+    <nav class="mt-10 flex flex-wrap items-center justify-center gap-2" aria-label={activitiesGuide.categoriesTitle}>
+      {activitiesGuide.categories.map((category) => (
+        <a
+          href={`#${sectionId(category.id)}`}
+          class="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-4 py-2 text-sm font-medium text-slate-700 backdrop-blur transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:bg-white/5 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
+        >
+          <Icon name={category.icon} class="h-4 w-4 text-amber-500 dark:text-amber-300" />
+          <span>{category.title}</span>
+        </a>
+      ))}
+    </nav>
+
+    <div class="mt-14 space-y-16">
+      {activitiesGuide.categories.map((category, categoryIndex) => (
+        <section id={sectionId(category.id)} class="scroll-mt-24">
+          <div class="flex items-baseline gap-4 border-b border-black/5 pb-4 dark:border-white/10">
+            <span class="text-3xl font-black tabular-nums text-amber-500/80 sm:text-4xl dark:text-amber-300/80">
+              {indexLabel(categoryIndex)}
+            </span>
+            <div>
+              <p class="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-amber-600 dark:text-amber-300">
+                {category.badge}
+              </p>
+              <h3 class="mt-1 flex items-center gap-2 text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+                <Icon name={category.icon} class="h-6 w-6 text-amber-500 dark:text-amber-300" />
+                {category.title}
+              </h3>
+            </div>
+          </div>
+          <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{category.description}</p>
+
+          <ul class="mt-4 divide-y divide-black/5 dark:divide-white/10">
+            {category.options.map((option) => (
+              <li class="group grid gap-4 py-5 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center">
+                <div>
+                  <div class="flex flex-wrap items-center gap-x-2 gap-y-1.5">
+                    <h4 class="text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">{option.name}</h4>
+                    {option.tags.map((tag) => (
+                      <span class="rounded-full bg-amber-50 px-2.5 py-0.5 text-xs font-medium text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <p class="mt-1.5 flex items-center gap-1.5 text-xs font-medium uppercase tracking-[0.08em] text-slate-500 dark:text-slate-400">
+                    <Icon name="tabler:map-pin" class="h-3.5 w-3.5 text-amber-500 dark:text-amber-300" />
+                    {option.meta}
+                  </p>
+                  <p class="mt-2 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{option.blurb}</p>
+                </div>
+                <a
+                  class="inline-flex w-fit items-center gap-1.5 justify-self-start rounded-full border border-black/10 px-4 py-2 text-sm font-semibold text-slate-700 transition-colors group-hover:border-amber-300 group-hover:text-amber-700 sm:justify-self-end dark:border-white/15 dark:text-slate-200 dark:group-hover:border-amber-400 dark:group-hover:text-amber-300"
+                  href={option.linkHref}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <span>{option.linkLabel}</span>
+                  <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+
+    <div
+      class="mt-16 grid gap-8 rounded-3xl border border-black/5 bg-white/70 p-6 backdrop-blur sm:p-8 md:grid-cols-3 dark:border-white/10 dark:bg-white/5"
+    >
+      <section>
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+          {activitiesGuide.tipsTitle}
+        </p>
+        <ul class="mt-4 space-y-3">
+          {activitiesGuide.tips.map((tip) => (
+            <li class="flex gap-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+              <Icon name="tabler:circle-check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500 dark:text-emerald-300" />
+              <span>{tip}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <section>
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+          {activitiesGuide.resourcesTitle}
+        </p>
+        <div class="mt-4 flex flex-col items-start gap-2">
+          {activitiesGuide.resources.map((resource) => (
+            <a
+              class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-700 transition-colors hover:text-amber-700 dark:text-slate-200 dark:hover:text-amber-300"
+              href={resource.href}
+              target="_blank"
+              rel="noreferrer"
+            >
+              <Icon name="tabler:arrow-up-right" class="h-3.5 w-3.5 text-amber-500 dark:text-amber-300" />
+              <span>{resource.text}</span>
+            </a>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+          {activitiesGuide.notesTitle}
+        </p>
+        <ul class="mt-4 space-y-3">
+          {activitiesGuide.notes.map((note) => (
+            <li class="flex gap-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+              <Icon name="tabler:info-circle" class="mt-0.5 h-4 w-4 shrink-0 text-amber-500 dark:text-amber-300" />
+              <span>{note}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    </div>
+  </div>
+</section>

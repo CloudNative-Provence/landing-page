@@ -34,7 +34,21 @@ event:
   startsAt: "2026-12-10T09:00:00+01:00"
   timeZone: "Europe/Paris"
   city: "Aix-en-Provence"
-  place: ""
+  place:
+    en:
+      name: "Aix-en-Provence Congress Centre"
+      address: "14 Boulevard Carnot, 13100 Aix-en-Provence, France"
+      description: "The Congress Centre sits close to the historic center and works well as a single arrival point whether you come by train, plane, or car."
+      url: "https://www.aixenprovence-congres.com/"
+      accessUrl: "https://www.aixenprovence-congres.com/centre-de-congres/acces-plan/"
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Aix-en-Provence%20Congress%20Centre%2C%2014%20Boulevard%20Carnot%2C%2013100%20Aix-en-Provence%2C%20France"
+    fr:
+      name: "Centre des Congrès d'Aix-en-Provence"
+      address: "14 Boulevard Carnot, 13100 Aix-en-Provence, France"
+      description: "Le Centre des Congrès se situe à deux pas du centre historique et constitute un point d'arrivée simple, que vous veniez en train, en avion ou en voiture."
+      url: "https://www.aixenprovence-congres.com/en/"
+      accessUrl: "https://www.aixenprovence-congres.com/en/aix-en-provence-convention-centre/access/"
+      mapUrl: "https://www.google.com/maps/search/?api=1&query=Centre%20des%20Congr%C3%A8s%20d%27Aix-en-Provence%2C%2014%20Boulevard%20Carnot%2C%2013100%20Aix-en-Provence%2C%20France"
   cfp:
     opensAt: "2026-05-15T00:00:00+02:00"
     closesAt: "2026-09-13T23:59:00+02:00"

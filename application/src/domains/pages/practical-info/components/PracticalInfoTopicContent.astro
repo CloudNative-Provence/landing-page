@@ -1,0 +1,12 @@
+---
+import type { PracticalInfoTopicContentProps } from '~/domains/pages/practical-info/model/content';
+import HeroText from '~/shared/components/widgets/HeroText.astro';
+
+const { tagline, title, summary, content } = Astro.props as PracticalInfoTopicContentProps;
+---
+
+<HeroText tagline={tagline} title={title} subtitle={summary} />
+
+<section class="px-4 pb-16 sm:px-6 lg:px-8">
+  <div class="prose prose-lg mx-auto max-w-4xl dark:prose-invert" set:html={content} />
+</section>

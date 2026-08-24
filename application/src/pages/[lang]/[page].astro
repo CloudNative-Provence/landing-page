@@ -1,13 +1,13 @@
 ---
+import { LocalizedPageRegistry } from '~/domains/pages/routing/localized-page-registry';
+import { getEnabledStandaloneLocalizedRouteKeys } from '~/domains/pages/routing/page-flags';
 import { languages } from '~/i18n/config';
 import { type AppLang, getRouteKeyFromSlug, routeSlugs } from '~/i18n/routes';
 import Layout from '~/layouts/PageLayout.astro';
-import { LocalizedPageRegistry } from '~/utils/localized-page-registry';
-import { getEnabledLocalizedRouteKeys } from '~/utils/page-routes';
 
 export function getStaticPaths() {
   const langs = Object.keys(languages) as AppLang[];
-  const routeKeys = getEnabledLocalizedRouteKeys();
+  const routeKeys = getEnabledStandaloneLocalizedRouteKeys();
 
   return langs.flatMap((lang) =>
     routeKeys.map((routeKey) => ({

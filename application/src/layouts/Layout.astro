@@ -5,16 +5,16 @@ import { Font } from 'astro:assets';
 // Comment the line below to disable View Transitions
 import { ClientRouter } from 'astro:transitions';
 import { I18N } from 'astrowind:config';
-import CustomStyles from '~/components/CustomStyles.astro';
-import Analytics from '~/components/common/Analytics.astro';
-import ApplyColorMode from '~/components/common/ApplyColorMode.astro';
-import BasicScripts from '~/components/common/BasicScripts.astro';
-import CommonMeta from '~/components/common/CommonMeta.astro';
-import LanguageAlternates from '~/components/common/LanguageAlternates.astro';
-import Metadata from '~/components/common/Metadata.astro';
-import SiteVerification from '~/components/common/SiteVerification.astro';
-import Favicons from '~/components/Favicons.astro';
 import { getLangFromUrl } from '~/i18n/utils';
+import CustomStyles from '~/shared/components/CustomStyles.astro';
+import Analytics from '~/shared/components/common/Analytics.astro';
+import ApplyColorMode from '~/shared/components/common/ApplyColorMode.astro';
+import BasicScripts from '~/shared/components/common/BasicScripts.astro';
+import CommonMeta from '~/shared/components/common/CommonMeta.astro';
+import LanguageAlternates from '~/shared/components/common/LanguageAlternates.astro';
+import Metadata from '~/shared/components/common/Metadata.astro';
+import SiteVerification from '~/shared/components/common/SiteVerification.astro';
+import Favicons from '~/shared/components/Favicons.astro';
 import type { MetaData as MetaDataType } from '~/types';
 
 export interface Props {

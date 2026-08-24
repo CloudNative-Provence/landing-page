@@ -1,0 +1,12 @@
+---
+import type { PracticalInfoTopicContentProps } from '~/domains/pages/practical-info/model/content';
+import HeroText from '~/shared/components/widgets/HeroText.astro';
+
+import PracticalInfoGettingTherePlanner from './PracticalInfoGettingTherePlanner.astro';
+
+const { tagline, title, summary, content, travelGuide } = Astro.props as PracticalInfoTopicContentProps;
+---
+
+<HeroText tagline={tagline} title={title} subtitle={summary} />
+
+{travelGuide && <PracticalInfoGettingTherePlanner content={content} travelGuide={travelGuide} />}

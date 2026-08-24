@@ -13,8 +13,8 @@ const countLeaves = (value: unknown): number => {
 
 describe('i18n locale dictionaries', () => {
   it('provides required navigation and metadata keys', () => {
-    expect(sourceLocales.en.nav.about).toBeTruthy();
-    expect(sourceLocales.fr.nav.about).toBeTruthy();
+    expect(sourceLocales.en.header.about).toBeTruthy();
+    expect(sourceLocales.fr.header.about).toBeTruthy();
     expect(sourceLocales.en.meta.title.default).toBeTruthy();
     expect(sourceLocales.fr.meta.title.default).toBeTruthy();
   });

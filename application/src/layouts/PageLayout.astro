@@ -1,9 +1,9 @@
 ---
-import Footer from '~/components/widgets/Footer.astro';
-import Header from '~/components/widgets/Header.astro';
 import { getLangFromUrl } from '~/i18n/utils';
+import { getFooterData, getHeaderData } from '~/layouts/composition/site-navigation';
 import Layout from '~/layouts/Layout.astro';
-import { getFooterData, getHeaderData } from '~/navigation';
+import Footer from '~/shared/components/widgets/Footer.astro';
+import Header from '~/shared/components/widgets/Header.astro';
 
 import type { MetaData } from '~/types';
 

@@ -1,11 +1,11 @@
 ---
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import FAQs from '~/components/widgets/FAQs.astro';
-import Features3 from '~/components/widgets/Features3.astro';
-import HeroText from '~/components/widgets/HeroText.astro';
-import Prices from '~/components/widgets/Pricing.astro';
+import CallToAction from '~/shared/components/widgets/CallToAction.astro';
+import FAQs from '~/shared/components/widgets/FAQs.astro';
+import Features3 from '~/shared/components/widgets/Features3.astro';
+import HeroText from '~/shared/components/widgets/HeroText.astro';
+import Prices from '~/shared/components/widgets/Pricing.astro';
+import { getPermalink } from '~/shared/url/permalinks';
 import type { Item } from '~/types';
-import { getPermalink } from '~/utils/permalinks';
 
 type ActionItem = {
   href: string;
