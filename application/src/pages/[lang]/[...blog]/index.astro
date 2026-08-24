@@ -1,15 +1,15 @@
 ---
 import type { GetStaticPaths, ImageMetadata, InferGetStaticPropsType } from 'astro';
 import merge from 'lodash.merge';
-import RelatedPosts from '~/components/blog/RelatedPosts.astro';
-import SinglePost from '~/components/blog/SinglePost.astro';
-import ToBlogLink from '~/components/blog/ToBlogLink.astro';
+import RelatedPosts from '~/domains/pages/blog/components/RelatedPosts.astro';
+import SinglePost from '~/domains/pages/blog/components/SinglePost.astro';
+import ToBlogLink from '~/domains/pages/blog/components/ToBlogLink.astro';
+import { blogPostRobots, getStaticPathsBlogPost } from '~/domains/pages/blog/services/posts';
 import type { AppLang } from '~/i18n/routes';
 import Layout from '~/layouts/PageLayout.astro';
+import { findImage } from '~/shared/media/images';
+import { getCanonical, getPermalink } from '~/shared/url/permalinks';
 import type { MetaData } from '~/types';
-import { blogPostRobots, getStaticPathsBlogPost } from '~/utils/blog';
-import { findImage } from '~/utils/images';
-import { getCanonical, getPermalink } from '~/utils/permalinks';
 
 export const prerender = true;
 

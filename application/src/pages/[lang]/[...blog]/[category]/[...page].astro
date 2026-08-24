@@ -1,10 +1,10 @@
 ---
 import type { GetStaticPaths, InferGetStaticPropsType } from 'astro';
-import Headline from '~/components/blog/Headline.astro';
-import BlogList from '~/components/blog/List.astro';
-import Pagination from '~/components/blog/Pagination.astro';
+import Headline from '~/domains/pages/blog/components/Headline.astro';
+import BlogList from '~/domains/pages/blog/components/List.astro';
+import Pagination from '~/domains/pages/blog/components/Pagination.astro';
+import { blogCategoryRobots, getStaticPathsBlogCategory } from '~/domains/pages/blog/services/posts';
 import Layout from '~/layouts/PageLayout.astro';
-import { blogCategoryRobots, getStaticPathsBlogCategory } from '~/utils/blog';
 
 export const prerender = true;
 

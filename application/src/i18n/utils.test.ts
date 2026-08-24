@@ -18,18 +18,18 @@ describe('i18n utils', () => {
     const tFr = useTranslations('fr');
     const tEn = useTranslations('en');
 
-    expect(tFr.nav.about).toBe(sourceLocales.fr.nav.about);
-    expect(tEn.nav.about).toBe(sourceLocales.en.nav.about);
+    expect(tFr.header.about).toBe(sourceLocales.fr.header.about);
+    expect(tEn.header.about).toBe(sourceLocales.en.header.about);
   });
 
   it('falls back to default language key when selected language value is empty', () => {
-    const originalValue = sourceLocales.en.nav.about;
+    const originalValue = sourceLocales.en.header.about;
 
-    (sourceLocales.en as unknown as { nav: { about: string } }).nav.about = '';
+    (sourceLocales.en as unknown as { header: { about: string } }).header.about = '';
     const t = useTranslations('en');
 
-    expect(t.nav.about).toBe(sourceLocales.fr.nav.about);
+    expect(t.header.about).toBe(sourceLocales.fr.header.about);
 
-    (sourceLocales.en as unknown as { nav: { about: string } }).nav.about = originalValue;
+    (sourceLocales.en as unknown as { header: { about: string } }).header.about = originalValue;
   });
 });

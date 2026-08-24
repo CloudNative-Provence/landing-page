@@ -1,0 +1,39 @@
+---
+import { PracticalInfoTopicRegistry } from '~/domains/pages/practical-info/topics/registry';
+import type { AppLang, PracticalInfoTopicKey } from '~/i18n/routes';
+import {
+  getPracticalInfoTopicKeyFromSlug,
+  getRouteKeyFromSlug,
+  practicalInfoTopicSlugs,
+  routeSlugs,
+} from '~/i18n/routes';
+import Layout from '~/layouts/PageLayout.astro';
+
+export function getStaticPaths() {
+  return (['en', 'fr'] as AppLang[]).flatMap((lang) =>
+    (Object.keys(practicalInfoTopicSlugs) as PracticalInfoTopicKey[]).map((topicKey) => ({
+      params: {
+        lang,
+        page: routeSlugs['practical-info'][lang],
+        topic: practicalInfoTopicSlugs[topicKey][lang],
+      },
+    }))
+  );
+}
+
+const lang = Astro.params.lang as AppLang;
+const page = Astro.params.page ?? '';
+const topic = Astro.params.topic ?? '';
+
+const routeKey = getRouteKeyFromSlug(lang, page);
+const topicKey = getPracticalInfoTopicKeyFromSlug(lang, topic);
+
+if (routeKey !== 'practical-info' || !topicKey) {
+  throw new Error(`Unknown localized route: /${lang}/${page}/${topic}`);
+}
+
+const pageDefinition = PracticalInfoTopicRegistry.resolve(topicKey, lang);
+const PageContent = pageDefinition.component;
+---
+
+<Layout metadata={pageDefinition.metadata}> <PageContent {...pageDefinition.props} /> </Layout>

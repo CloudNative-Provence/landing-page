@@ -1,0 +1,29 @@
+---
+import { findLocalizedBlogPath } from '~/domains/pages/blog/services/posts';
+import { defaultLang, languages } from '~/i18n/config';
+import { translatePathToLang } from '~/i18n/routes';
+
+const currentPath = Astro.url.pathname;
+
+if (!Astro.site) {
+  throw new Error('Astro.site is required for generating language alternates');
+}
+
+const baseUrl = Astro.site.origin;
+const alternateLinks = await Promise.all(
+  Object.keys(languages).map(async (lang) => {
+    const locale = lang as keyof typeof languages;
+    const blogAwarePath = await findLocalizedBlogPath(currentPath, locale);
+
+    return {
+      lang,
+      path: blogAwarePath || translatePathToLang(currentPath, locale),
+    };
+  })
+);
+const defaultAlternate = alternateLinks.find((entry) => entry.lang === defaultLang);
+const defaultAlternatePath = defaultAlternate?.path || `/${defaultLang}`;
+---
+
+{alternateLinks.map(({ lang, path }) => <link rel="alternate" hreflang={lang} href={`${baseUrl}${path}`} />)}
+<link rel="alternate" hreflang="x-default" href={`${baseUrl}${defaultAlternatePath}`}>

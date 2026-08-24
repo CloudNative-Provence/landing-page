@@ -1,17 +1,21 @@
-import metaEn from '../data/meta/en';
-import metaFr from '../data/meta/fr';
-import navigationEn from '../data/navigation/en';
-import navigationFr from '../data/navigation/fr';
+import metaEn from '../domains/metadata/en';
+import metaFr from '../domains/metadata/fr';
+import navigationEn from '../domains/navigation/en';
+import navigationFr from '../domains/navigation/fr';
+import blogEn from '../domains/pages/blog/content/en';
+import blogFr from '../domains/pages/blog/content/fr';
 import { defaultLang } from './config';
 
 export const sourceLocales = {
   fr: {
     ...navigationFr,
     ...metaFr,
+    ...blogFr,
   },
   en: {
     ...navigationEn,
     ...metaEn,
+    ...blogEn,
   },
 } as const;
 

@@ -1,18 +1,21 @@
 ---
-import Image from '~/components/common/Image.astro';
-import Button from '~/components/ui/Button.astro';
-import CallToAction from '~/components/widgets/CallToAction.astro';
-import CountDown from '~/components/widgets/CountDown.astro';
-import Features from '~/components/widgets/Features.astro';
-import Hero from '~/components/widgets/Hero.astro';
-import Note from '~/components/widgets/Note.astro';
-import Stats from '~/components/widgets/Stats.astro';
+import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/domains/event/cfp/availability';
+import Image from '~/shared/components/common/Image.astro';
+import Button from '~/shared/components/ui/Button.astro';
+import CallToAction from '~/shared/components/widgets/CallToAction.astro';
+import CountDown from '~/shared/components/widgets/CountDown.astro';
+import Features from '~/shared/components/widgets/Features.astro';
+import Hero from '~/shared/components/widgets/Hero.astro';
+import Note from '~/shared/components/widgets/Note.astro';
+import Stats from '~/shared/components/widgets/Stats.astro';
+import { getPermalink } from '~/shared/url/permalinks';
 import type { Image as ImageType, Item, Stat } from '~/types';
-import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/utils/cfp-availability';
-import { getPermalink } from '~/utils/permalinks';
 
 type ActionItem = {
   href: string;
+  text?: string;
+  icon?: string;
+  variant?: 'primary' | 'secondary' | 'tertiary' | 'link';
 } & Record<string, unknown>;
 
 type CfpAvailabilityLabels = {
@@ -88,14 +91,7 @@ export interface Props {
     title?: string;
     venueName?: string;
     description?: string;
-    howToGetThere?: {
-      title?: string;
-      items?: readonly Item[];
-    };
-    accommodation?: {
-      title?: string;
-      text?: string;
-    };
+    ctas?: readonly ActionItem[];
   };
   callToAction: {
     title?: string;
@@ -120,6 +116,11 @@ const heroActionsWithPermalinks = hero.actions.map((action: ActionItem) => ({
 const callToActionActionsWithPermalinks = callToAction.actions.map((action: ActionItem) => ({
   ...action,
   href: getPermalink(action.href),
+}));
+
+const venueCtasWithPermalinks = (venue?.ctas ?? []).map((cta: ActionItem) => ({
+  ...cta,
+  href: cta.href?.startsWith('http') ? cta.href : getPermalink(cta.href),
 }));
 
 const cfpPhase: CfpAvailabilityPhase | undefined = cfp?.availability ? resolveCfpPhase(cfp.availability) : undefined;
@@ -345,7 +346,7 @@ const cfpImage = cfp?.image && typeof cfp.image !== 'string' ? (cfp.image as Ima
   )}
 
 <script>
-import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/utils/cfp-availability';
+import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/domains/event/cfp/availability';
 
 const syncCfpState = (root: HTMLElement) => {
   const opensAtValue = root.dataset.cfpOpensAt;
@@ -419,13 +420,17 @@ document.addEventListener('astro:page-load', syncAllCfpStates);
           <p>{venue.description}</p>
         </div>
       )}
-      {venue.howToGetThere && (
-        <Features title={venue.howToGetThere.title} items={[...(venue.howToGetThere.items ?? [])]} columns={3} />
-      )}
-      {venue.accommodation && (
-        <div class="mt-10 max-w-3xl mx-auto text-center">
-          <h3 class="text-2xl font-bold mb-4">{venue.accommodation.title}</h3>
-          <p class="text-xl text-muted dark:text-slate-300">{venue.accommodation.text}</p>
+      {venueCtasWithPermalinks.length > 0 && (
+        <div class="mt-10 flex flex-wrap justify-center gap-4">
+          {venueCtasWithPermalinks.map((cta) => (
+            <Button
+              {...cta}
+              variant={cta.variant ?? 'primary'}
+              class="px-6 py-3 text-sm font-semibold"
+              target={cta.href?.startsWith('http') ? '_blank' : undefined}
+              rel={cta.href?.startsWith('http') ? 'noreferrer' : undefined}
+            />
+          ))}
         </div>
       )}
     </section>

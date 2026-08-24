@@ -1,0 +1,210 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { PracticalInfoTravelGuide } from '~/domains/pages/practical-info/model/travel';
+
+import PracticalInfoGettingThereModePanel from './PracticalInfoGettingThereModePanel.astro';
+
+export interface Props {
+  content: string;
+  travelGuide: PracticalInfoTravelGuide;
+}
+
+const { content, travelGuide } = Astro.props as Props;
+const plannerId = 'travel-planner';
+---
+
+<section class="not-prose px-4 pb-20 sm:px-6 lg:px-8">
+  <practical-info-travel-planner class="mx-auto block max-w-6xl">
+    <header class="mx-auto max-w-3xl text-center">
+      <p class="text-xs font-semibold uppercase tracking-[0.35em] text-sky-600 dark:text-sky-300">
+        {travelGuide.factsTitle}
+      </p>
+      <h2 class="mt-4 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+        {travelGuide.heroTitle}
+      </h2>
+      <p class="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">{travelGuide.heroIntro}</p>
+    </header>
+
+    <dl
+      class="mt-12 grid grid-cols-2 divide-y divide-black/5 rounded-3xl border border-black/5 bg-white/70 backdrop-blur sm:divide-y-0 lg:grid-cols-4 dark:divide-white/10 dark:border-white/10 dark:bg-white/5"
+    >
+      {travelGuide.facts.map((fact, index) => (
+        <div
+          class:list={[
+            'flex flex-col gap-3 p-6',
+            index % 2 === 1 ? 'border-l border-black/5 dark:border-white/10' : '',
+            'lg:border-l lg:first:border-l-0',
+          ]}
+        >
+          <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-sky-50 text-sky-600 dark:bg-sky-500/15 dark:text-sky-300">
+            <Icon name={fact.icon} class="h-5 w-5" />
+          </span>
+          <dt class="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+            {fact.label}
+          </dt>
+          <dd class="text-sm font-semibold leading-6 text-slate-900 dark:text-slate-50">{fact.value}</dd>
+        </div>
+      ))}
+    </dl>
+
+    <div class="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div>
+        <div class="flex flex-col gap-2">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-sky-300">
+            {travelGuide.selectorTitle}
+          </p>
+          <h3 class="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">{travelGuide.modesTitle}</h3>
+          <p class="max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{travelGuide.selectorIntro}</p>
+        </div>
+
+        <div
+          class="mt-6 inline-flex flex-wrap gap-1 rounded-2xl bg-slate-100 p-1 dark:bg-slate-800/70"
+          role="tablist"
+          aria-label={travelGuide.plannerTitle}
+        >
+          {travelGuide.modes.map((mode, index) => (
+            <button
+              id={`${plannerId}-tab-${index}`}
+              type="button"
+              role="tab"
+              aria-selected={index === 0 ? 'true' : 'false'}
+              aria-controls={`${plannerId}-panel-${index}`}
+              class:list={[
+                'relative rounded-xl px-4 py-2 text-sm font-semibold transition',
+                index === 0
+                  ? 'bg-white text-slate-900 shadow-sm dark:bg-slate-700 dark:text-white'
+                  : 'text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200',
+              ]}
+              data-planner-tab
+              data-index={index}
+              data-active={index === 0 ? 'true' : 'false'}
+            >
+              {mode.title}
+            </button>
+          ))}
+        </div>
+
+        <p class="mt-4 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-300">{travelGuide.modesIntro}</p>
+
+        <div class="mt-8">
+          {travelGuide.modes.map((mode, index) => (
+            <PracticalInfoGettingThereModePanel
+              plannerId={plannerId}
+              mode={mode}
+              index={index}
+              routeLabel={travelGuide.routeLabel}
+              routeTitle={travelGuide.routeTitle}
+              checklistTitle={travelGuide.checklistTitle}
+              linksTitle={travelGuide.linksTitle}
+              links={mode.links}
+            />
+          ))}
+        </div>
+      </div>
+
+      <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+        {travelGuide.locationAddress && (
+          <section>
+            {travelGuide.locationTitle && (
+              <p class="text-xs font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-sky-300">
+                {travelGuide.locationTitle}
+              </p>
+            )}
+            <p class="mt-3 text-lg font-semibold leading-snug text-slate-900 dark:text-white">
+              {travelGuide.locationAddress}
+            </p>
+            {travelGuide.locationDescription && (
+              <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{travelGuide.locationDescription}</p>
+            )}
+            {travelGuide.locationMapEmbedUrl && (
+              <div class="mt-5 overflow-hidden rounded-2xl border border-black/5 dark:border-white/10">
+                <iframe
+                  title={travelGuide.locationMapTitle ?? travelGuide.locationTitle ?? 'Venue map'}
+                  src={travelGuide.locationMapEmbedUrl}
+                  class="h-[240px] w-full"
+                  loading="lazy"
+                  referrerpolicy="no-referrer-when-downgrade"
+                />
+              </div>
+            )}
+            {travelGuide.locationMapHref && (
+              <a
+                class="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-sky-700 transition-colors hover:text-sky-800 dark:text-sky-300 dark:hover:text-sky-200"
+                href={travelGuide.locationMapHref}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>{travelGuide.locationMapLinkLabel ?? 'Open in Google Maps'}</span>
+                <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
+              </a>
+            )}
+          </section>
+        )}
+
+        <section class="border-t border-black/5 pt-8 dark:border-white/10">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-sky-300">
+            {travelGuide.tipsTitle}
+          </p>
+          <ul class="mt-4 space-y-3">
+            {travelGuide.tips.map((tip) => {
+              const tipText = typeof tip === 'string' ? tip : tip.text;
+              const tipLink = typeof tip === 'string' ? undefined : tip.link;
+              const tipTextAfter = typeof tip === 'string' ? undefined : tip.textAfter;
+              return (
+                <li class="flex gap-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                  <Icon name="tabler:point-filled" class="mt-1.5 h-3 w-3 shrink-0 text-sky-500 dark:text-sky-300" />
+                  <span>
+                    {tipText}
+                    {tipLink && (
+                      <a
+                        href={tipLink.href}
+                        class="font-medium text-sky-600 underline underline-offset-2 hover:text-sky-500 dark:text-sky-300"
+                      >
+                        {tipLink.text}
+                      </a>
+                    )}
+                    {tipTextAfter}
+                  </span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+
+        <section class="border-t border-black/5 pt-8 dark:border-white/10">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-sky-300">
+            {travelGuide.resourcesTitle}
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {travelGuide.resources.map((resource) => (
+              <a
+                class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:border-sky-300 hover:text-sky-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-sky-400 dark:hover:text-sky-300"
+                href={resource.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>{resource.text}</span>
+                <Icon name="tabler:arrow-up-right" class="h-3.5 w-3.5" />
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="border-t border-black/5 pt-8 dark:border-white/10">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-sky-600 dark:text-sky-300">
+            {travelGuide.notesTitle}
+          </p>
+          <div
+            class="prose prose-sm mt-4 max-w-none prose-p:text-slate-600 prose-a:text-sky-700 dark:prose-invert dark:prose-p:text-slate-300 dark:prose-a:text-sky-300"
+            set:html={content}
+          />
+        </section>
+      </aside>
+    </div>
+  </practical-info-travel-planner>
+
+  <script>
+  import './practical-info-travel-planner-element';
+  </script>
+</section>

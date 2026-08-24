@@ -1,11 +1,20 @@
 import { describe, expect, it } from 'vitest';
 
-import { getLocalizedPagePath, getRouteKeyFromSlug, type RouteKey, routeSlugs, translatePathToLang } from './routes';
+import {
+  getLocalizedPagePath,
+  getPracticalInfoTopicKeyFromSlug,
+  getRouteKeyFromSlug,
+  practicalInfoTopicSlugs,
+  type RouteKey,
+  routeSlugs,
+  translatePathToLang,
+} from './routes';
 
 describe('i18n routes helpers', () => {
   it('builds localized page path from route key', () => {
     expect(getLocalizedPagePath('fr', 'about')).toBe('/fr/a-propos');
     expect(getLocalizedPagePath('fr', 'practical-info')).toBe('/fr/infos-pratiques');
+    expect(getLocalizedPagePath('fr', 'practical-info', 'parking')).toBe('/fr/infos-pratiques/parkings');
     expect(getLocalizedPagePath('fr', 'program')).toBe('/fr/programme');
     expect(getLocalizedPagePath('en', 'privacy')).toBe('/en/privacy-policy');
   });
@@ -18,9 +27,17 @@ describe('i18n routes helpers', () => {
     expect(getRouteKeyFromSlug('en', 'unknown')).toBeUndefined();
   });
 
+  it('resolves practical information section key from localized slug', () => {
+    expect(getPracticalInfoTopicKeyFromSlug('fr', '/hebergement/')).toBe('accommodation');
+    expect(getPracticalInfoTopicKeyFromSlug('fr', 'parkings')).toBe('parking');
+    expect(getPracticalInfoTopicKeyFromSlug('en', 'getting-there')).toBe('getting-there');
+    expect(getPracticalInfoTopicKeyFromSlug('en', 'unknown')).toBeUndefined();
+  });
+
   it('translates localized route to target language', () => {
     expect(translatePathToLang('/fr/a-propos', 'en')).toBe('/en/about');
     expect(translatePathToLang('/fr/infos-pratiques', 'en')).toBe('/en/practical-information');
+    expect(translatePathToLang('/fr/infos-pratiques/parkings', 'en')).toBe('/en/practical-information/parking');
     expect(translatePathToLang('/fr/programme', 'en')).toBe('/en/program');
     expect(translatePathToLang('/en/privacy-policy', 'fr')).toBe('/fr/politique-de-confidentialite');
   });
@@ -54,5 +71,9 @@ describe('i18n routes helpers', () => {
       'terms',
       'privacy',
     ]);
+  });
+
+  it('contains all expected practical information section keys', () => {
+    expect(Object.keys(practicalInfoTopicSlugs)).toEqual(['accommodation', 'getting-there', 'activities', 'parking']);
   });
 });

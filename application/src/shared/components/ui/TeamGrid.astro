@@ -1,0 +1,41 @@
+---
+import Image from '~/shared/components/common/Image.astro';
+import Headline from '~/shared/components/ui/Headline.astro';
+import WidgetWrapper from '~/shared/components/ui/WidgetWrapper.astro';
+import type { Features as Props } from '~/types';
+
+const {
+  title = await Astro.slots.render('title'),
+  subtitle = await Astro.slots.render('subtitle'),
+  tagline = await Astro.slots.render('tagline'),
+  items = [],
+  columns = 3,
+  id,
+  isDark = false,
+  classes = {},
+  bg = await Astro.slots.render('bg'),
+} = Astro.props as Props;
+
+const headlineClasses = (classes?.headline ?? {}) as Record<string, string>;
+---
+
+<WidgetWrapper id={id} isDark={isDark} bg={bg}>
+  <Headline title={title} subtitle={subtitle} tagline={tagline} classes={headlineClasses} />
+
+  <div class={`grid gap-10 mt-12 mx-auto text-center sm:gap-12 md:grid-cols-2 lg:grid-cols-${columns} max-w-6xl`}>
+    {items.map(({ title, image }) => (
+        <div class="flex flex-col items-center">
+          {image && (
+            <Image
+              alt={title}
+              width={160}
+              height={160}
+              class="rounded-full w-40 h-40 object-cover shadow-lg mb-4"
+              {...image}
+            />
+          )}
+          <h3 class="text-lg font-semibold text-default">{title}</h3>
+        </div>
+      ))}
+  </div>
+</WidgetWrapper>

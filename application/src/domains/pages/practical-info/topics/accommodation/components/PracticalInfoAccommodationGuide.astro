@@ -1,0 +1,321 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { PracticalInfoAccommodationGuide } from '~/domains/pages/practical-info/model/accommodation';
+
+export interface Props {
+  content: string;
+  accommodationGuide: PracticalInfoAccommodationGuide;
+}
+
+const { content, accommodationGuide } = Astro.props as Props;
+const { stayFinder } = accommodationGuide;
+const featureLabelById = new Map(
+  stayFinder.filters.flatMap((group) =>
+    group.id === 'feature' ? group.options.map((option) => [option.id, option.label] as const) : []
+  )
+);
+const buildMapsSearchHref = (query: string) =>
+  `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+const defaultMapsSearchHref = stayFinder.venueMapHref ?? buildMapsSearchHref(stayFinder.mapsSearchBaseQuery);
+const zonePopoverId = 'accommodation-zone-help';
+const typePopoverId = 'accommodation-type-help';
+---
+
+<section class="not-prose px-4 pb-20 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-6xl">
+    <header class="mx-auto max-w-3xl text-center">
+      <h2 class="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl dark:text-white">
+        {accommodationGuide.heroTitle}
+      </h2>
+      <p class="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">{accommodationGuide.heroIntro}</p>
+    </header>
+
+    <div class="mt-16 grid gap-10 lg:grid-cols-[minmax(0,1fr)_20rem]">
+      <div>
+        <section>
+          <div class="max-w-2xl">
+            <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+              {stayFinder.title}
+            </p>
+            <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">{stayFinder.intro}</p>
+          </div>
+
+          <practical-info-stay-finder
+            class="mt-6 block"
+            data-search-base={stayFinder.mapsSearchBaseQuery}
+            data-search-context={stayFinder.mapsSearchContextLabel}
+            data-search-fallback-href={stayFinder.venueMapHref ?? ''}
+          >
+            <div
+              class="space-y-4 rounded-3xl border border-black/5 bg-white/70 p-5 backdrop-blur md:p-6 dark:border-white/10 dark:bg-white/5"
+            >
+              {stayFinder.filters.map((group) => (
+                <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
+                  <div class="flex w-28 shrink-0 items-center gap-2">
+                    <span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+                      {group.label}
+                    </span>
+                    {group.id === 'zone' && (
+                      <button
+                        type="button"
+                        popovertarget={zonePopoverId}
+                        popovertargetaction="toggle"
+                        aria-haspopup="dialog"
+                        class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-black/10 text-slate-500 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-400 dark:hover:border-amber-400 dark:hover:text-amber-300"
+                      >
+                        <Icon name="tabler:info-circle" class="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                    {group.id === 'type' && (
+                      <button
+                        type="button"
+                        popovertarget={typePopoverId}
+                        popovertargetaction="toggle"
+                        aria-haspopup="dialog"
+                        class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-black/10 text-slate-500 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-400 dark:hover:border-amber-400 dark:hover:text-amber-300"
+                      >
+                        <Icon name="tabler:info-circle" class="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                  </div>
+                  <div class="flex flex-wrap gap-2">
+                    {group.options.map((option) => (
+                      <button
+                        type="button"
+                        aria-pressed="false"
+                        data-filter-chip
+                        data-group={group.id}
+                        data-query={option.searchQuery ?? ''}
+                        data-value={option.id}
+                        data-active="false"
+                        class="cursor-pointer rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-amber-300 hover:text-amber-700 data-[active=true]:border-amber-600 data-[active=true]:bg-amber-600 data-[active=true]:text-white dark:border-white/15 dark:text-slate-300 dark:hover:border-amber-400 dark:hover:text-amber-300 dark:data-[active=true]:border-amber-400 dark:data-[active=true]:bg-amber-400 dark:data-[active=true]:text-slate-950"
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ))}
+
+              <div
+                id={zonePopoverId}
+                popover="auto"
+                class="fixed inset-0 m-auto max-h-[calc(100vh-2rem)] w-[min(42rem,calc(100vw-2rem))] overflow-auto rounded-[1.5rem] border border-black/10 bg-white p-5 text-left text-slate-900 shadow-2xl backdrop:bg-slate-950/50 dark:border-white/10 dark:bg-slate-950 dark:text-white"
+              >
+                <div class="max-w-2xl">
+                  <p class="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600 dark:text-amber-300">
+                    {accommodationGuide.areasTitle}
+                  </p>
+                  <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    {accommodationGuide.areasIntro}
+                  </p>
+                </div>
+
+                <div class="mt-5 grid gap-3 md:grid-cols-3">
+                  {accommodationGuide.areas.map((area) => (
+                    <article class="rounded-2xl border border-black/5 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-900/80">
+                      <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-300">
+                        {area.badge}
+                      </p>
+                      <h3 class="mt-2 text-base font-semibold text-slate-900 dark:text-slate-50">{area.title}</h3>
+                      <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{area.description}</p>
+                      <p class="mt-3 text-sm font-medium text-amber-800 dark:text-amber-200">{area.commute}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                id={typePopoverId}
+                popover="auto"
+                class="fixed inset-0 m-auto max-h-[calc(100vh-2rem)] w-[min(42rem,calc(100vw-2rem))] overflow-auto rounded-[1.5rem] border border-black/10 bg-white p-5 text-left text-slate-900 shadow-2xl backdrop:bg-slate-950/50 dark:border-white/10 dark:bg-slate-950 dark:text-white"
+              >
+                <div class="max-w-2xl">
+                  <p class="text-xs font-semibold uppercase tracking-[0.18em] text-amber-600 dark:text-amber-300">
+                    {accommodationGuide.stayTypesTitle}
+                  </p>
+                  <p class="mt-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                    {accommodationGuide.stayTypesIntro}
+                  </p>
+                </div>
+
+                <div class="mt-5 space-y-3">
+                  {accommodationGuide.stayTypes.map((stayType) => (
+                    <article class="rounded-2xl border border-black/5 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-900/80">
+                      <div class="flex flex-wrap items-center gap-2">
+                        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-50">{stayType.title}</h3>
+                        <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+                          {stayType.bestFor}
+                        </span>
+                      </div>
+                      <p class="mt-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-300">
+                        {stayType.badge}
+                      </p>
+                      <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{stayType.description}</p>
+                    </article>
+                  ))}
+                </div>
+              </div>
+
+              <div
+                class="flex flex-col gap-3 border-t border-black/5 pt-4 sm:flex-row sm:items-center sm:justify-between dark:border-white/10"
+              >
+                <p class="text-sm text-slate-600 dark:text-slate-300" aria-live="polite">
+                  <span data-count class="font-bold text-slate-900 dark:text-white">{stayFinder.stays.length}</span>
+                  <span> {stayFinder.resultsLabel}</span>
+                </p>
+                <div class="flex flex-wrap items-center gap-4 sm:justify-end">
+                  <a
+                    data-search-link
+                    class="inline-flex items-center gap-2 text-sm font-semibold text-amber-700 transition-colors hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200"
+                    href={defaultMapsSearchHref}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    <span class="flex flex-col items-start leading-tight sm:items-end">
+                      <span>{stayFinder.mapsSearchLabel}</span>
+                      <span
+                        data-search-context-label
+                        class="mt-1 text-xs font-medium text-slate-500 dark:text-slate-400"
+                      >
+                        {stayFinder.mapsSearchContextLabel}
+                      </span>
+                    </span>
+                    <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
+                  </a>
+                  <button
+                    type="button"
+                    data-reset
+                    class="cursor-pointer text-sm font-semibold text-amber-700 transition-colors hover:text-amber-800 dark:text-amber-300 dark:hover:text-amber-200"
+                  >
+                    {stayFinder.resetLabel}
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              {stayFinder.stays.map((stay) => (
+                <article
+                  data-stay
+                  data-zone={stay.zoneId}
+                  data-type={stay.typeId}
+                  data-feature={stay.featureIds.join(',')}
+                  class="group flex flex-col rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-[0_16px_44px_-24px_rgba(217,119,6,0.55)] dark:border-white/10 dark:bg-slate-900 dark:hover:border-amber-400"
+                >
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
+                      <Icon name="tabler:map-pin" class="h-3 w-3" />
+                      {stay.zoneLabel}
+                    </span>
+                    <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      {stay.typeLabel}
+                    </span>
+                  </div>
+
+                  <h3 class="mt-4 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">{stay.name}</h3>
+                  <p class="mt-2 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{stay.blurb}</p>
+
+                  {stay.featureIds.length > 0 && (
+                    <div class="mt-4 flex flex-wrap gap-1.5">
+                      {stay.featureIds.map((featureId) => (
+                        <span class="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-slate-500 dark:border-white/15 dark:text-slate-400">
+                          {featureLabelById.get(featureId) ?? featureId}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+
+                  <p class="mt-4 flex items-start gap-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                    <Icon name="tabler:map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-amber-500 dark:text-amber-300" />
+                    <span>{stay.address}</span>
+                  </p>
+
+                  <div class="mt-5 flex flex-wrap gap-2">
+                    <a
+                      class="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-700 dark:bg-amber-500 dark:text-slate-950 dark:hover:bg-amber-400"
+                      href={stay.websiteHref}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>{stay.websiteLabel}</span>
+                      <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
+                    </a>
+                    <a
+                      class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
+                      href={stay.mapHref}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>{stay.mapLabel}</span>
+                      <Icon name="tabler:map-2" class="h-4 w-4" />
+                    </a>
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            <div
+              hidden
+              data-empty
+              class="mt-6 rounded-3xl border border-dashed border-black/10 p-10 text-center dark:border-white/15"
+            >
+              <p class="text-base font-semibold text-slate-900 dark:text-white">{stayFinder.emptyTitle}</p>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">{stayFinder.emptyText}</p>
+            </div>
+          </practical-info-stay-finder>
+
+          <script>
+          import './practical-info-stay-finder-element';
+          </script>
+        </section>
+      </div>
+
+      <aside class="space-y-8 lg:sticky lg:top-24 lg:self-start">
+        <section>
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+            {accommodationGuide.checklistTitle}
+          </p>
+          <ul class="mt-4 space-y-3">
+            {accommodationGuide.checklist.map((item) => (
+              <li class="flex gap-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+                <Icon name="tabler:circle-check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500 dark:text-emerald-300" />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+
+        <section class="border-t border-black/5 pt-8 dark:border-white/10">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+            {accommodationGuide.resourcesTitle}
+          </p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {accommodationGuide.resources.map((resource) => (
+              <a
+                class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
+                href={resource.href}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <span>{resource.text}</span>
+                <Icon name="tabler:arrow-up-right" class="h-3.5 w-3.5" />
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <section class="border-t border-black/5 pt-8 dark:border-white/10">
+          <p class="text-xs font-semibold uppercase tracking-[0.28em] text-amber-600 dark:text-amber-300">
+            {accommodationGuide.notesTitle}
+          </p>
+          <div
+            class="prose prose-sm mt-4 max-w-none prose-p:text-slate-600 prose-a:text-amber-700 dark:prose-invert dark:prose-p:text-slate-300 dark:prose-a:text-amber-300"
+            set:html={content}
+          />
+        </section>
+      </aside>
+    </div>
+  </div>
+</section>
