@@ -68,6 +68,29 @@ Key files:
 - `application/src/pages/[lang]/[page].astro` - localized dynamic pages
 - `application/src/i18n/routes.ts` - slug mapping and path translation helpers
 
+## Program schedule URL parameters
+
+The program page (`/{lang}/programme` in `fr`, `/{lang}/program` in `en`) reads query parameters to preload a view. They can be combined.
+
+| Parameter    | Values | Effect                                                                                                                           |
+| ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `agenda`     | token  | Preselects saved sessions. Encoded as a compact, order-stable token (see below); legacy comma-separated ID lists still parse.    |
+| `live`       | `true` | Enables the live view: dims past sessions and highlights the current one, auto-refreshing over time.                             |
+| `fullscreen` | `true` | Opens the presentation (kiosk/TV) layout: hides the filters and agenda panels, shows a top bar with clock, and fills the screen. |
+
+Notes:
+
+- **Agenda token** — produced by `ProgramSelectionCodec.encode()`; it compresses the session IDs so the URL stays short regardless of how many sessions are saved, and stays valid even if the schedule order changes. `share` links use this token; `localStorage` keeps the plain ID list for durability.
+- **Fullscreen flag** — because the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) requires a user gesture, the flag applies the presentation layout immediately (ideal when the browser is already in OS-level/kiosk fullscreen on a TV) and upgrades to real browser fullscreen on the first tap/keypress. Exit with `Esc` or the top-bar button; both strip the `fullscreen` flag from the URL.
+- Example wall display: `/{lang}/programme?fullscreen=true&live=true`.
+
+Key files:
+
+- `application/src/domains/pages/program/components/program-schedule-element.ts` - client behavior (selection, live view, fullscreen/presentation mode)
+- `application/src/domains/pages/program/services/selection-codec.ts` - agenda token encode/decode
+- `application/src/domains/pages/program/services/live-view.ts` - `live` param + live-state classification
+- `application/src/domains/pages/program/services/fullscreen-view.ts` - `fullscreen` param helper
+
 ## Translations
 
 Translations are split by **domain** and **locale** (`en.ts`, `fr.ts`) using nested objects (no dot-string keys in data files).
