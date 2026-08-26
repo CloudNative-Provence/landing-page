@@ -1,4 +1,4 @@
 [codespell]
 # Skip third-party/generated paths and French-locale content files.
 ignore-words-list = afterAll,provence
-skip = .git,*.svg,**/package-lock.json,**/application/*/dist/**,**/application/*/node_modules/**,**/application/*/coverage/**,**/application/*/.astro/**,**/application/src/data/**/fr.ts,**/application/src/data/**/fr.md
+skip = .git,*.svg,**/package-lock.json,**/application/*/dist/**,**/application/*/node_modules/**,**/application/*/coverage/**,**/application/*/.astro/**,**/application/src/domains/**/fr.ts,**/application/src/domains/**/fr.md

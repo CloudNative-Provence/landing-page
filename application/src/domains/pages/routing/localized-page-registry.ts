@@ -9,8 +9,7 @@ import practicalInfoEn from '~/domains/pages/practical-info/content/en';
 import practicalInfoFr from '~/domains/pages/practical-info/content/fr';
 import privacyEn from '~/domains/pages/privacy/en';
 import privacyFr from '~/domains/pages/privacy/fr';
-import programEn from '~/domains/pages/program/content/en';
-import programFr from '~/domains/pages/program/content/fr';
+import { programEnPageData, programFrPageData } from '~/domains/pages/program/services/page-data';
 import sponsoringEn from '~/domains/pages/sponsoring/en';
 import sponsoringFr from '~/domains/pages/sponsoring/fr';
 import termsEn from '~/domains/pages/terms/en';
@@ -63,7 +62,7 @@ const localizedPageResolvers = {
   about: createPageResolver(AboutContent, { en: aboutEn, fr: aboutFr }),
   contact: createPageResolver(ContactContent, { en: contactEn, fr: contactFr }),
   'practical-info': createPageResolver(PracticalInfoContent, { en: practicalInfoEn, fr: practicalInfoFr }),
-  program: createPageResolver(ProgramContent, { en: programEn, fr: programFr }),
+  program: createPageResolver(ProgramContent, { en: programEnPageData, fr: programFrPageData }),
   sponsoring: createPageResolver(SponsoringContent, { en: sponsoringEn, fr: sponsoringFr }),
   'brand-guidelines': createPageResolver(
     BrandGuidelinesContent,

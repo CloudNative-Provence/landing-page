@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 import type { ProgramSession } from '~/domains/pages/program/model/schedule';
 
 interface Props {
@@ -34,109 +36,134 @@ const detailsPopoverId = `program-session-details-${session.id}`;
   data-ends-at={session.endsAt}
   data-global={String(isGlobal)}
   class:list={[
-    'rounded-[1.5rem] border border-gray-200 bg-white p-3 shadow-sm transition dark:border-slate-800 dark:bg-slate-950/70 xl:min-h-[12rem]',
+    'group relative flex flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white pl-4 pr-3 py-3 shadow-sm ring-1 ring-transparent transition duration-200 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-950/70 dark:hover:border-slate-700 xl:min-h-[12rem]',
     isGlobal &&
       'bg-gradient-to-br from-sky-50 via-white to-cyan-50 dark:from-sky-950/20 dark:via-slate-950/70 dark:to-cyan-950/20',
   ]}
 >
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-    <div class="min-w-0">
-      <div
-        class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-gray-50 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.16em] text-gray-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-      >
-        <span class={`h-2 w-2 rounded-full bg-gradient-to-r ${tone}`}></span>
-        {trackLabel}
-      </div>
-      <h3 class="mt-2 text-base font-semibold leading-tight text-gray-900 dark:text-white xl:text-lg">
-        {session.title}
-      </h3>
+  <span class={`absolute inset-y-0 left-0 w-1.5 bg-gradient-to-b ${tone}`} aria-hidden="true"></span>
+
+  <div class="flex items-start justify-between gap-2">
+    <div
+      class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 bg-gray-50/80 px-2.5 py-1 text-[0.65rem] font-semibold uppercase tracking-[0.14em] text-gray-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+    >
+      <span class={`h-2 w-2 rounded-full bg-gradient-to-r ${tone}`}></span>
+      {trackLabel}
     </div>
     <button
       type="button"
       data-program-toggle={session.id}
       data-add-label={labels.addLabel}
       data-remove-label={labels.removeLabel}
+      title={labels.addLabel}
+      aria-label={labels.addLabel}
       aria-pressed="false"
-      class="inline-flex w-full shrink-0 items-center justify-center rounded-full bg-sky-500 px-3.5 py-2 text-sm font-semibold text-white transition hover:bg-sky-400 sm:w-auto sm:px-3 sm:py-1.5 sm:text-xs"
+      class="inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-sky-500 text-white shadow-sm transition hover:bg-sky-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/50"
     >
-      {labels.addLabel}
+      <span class="sr-only" data-program-toggle-label>{labels.addLabel}</span>
+      <span data-program-toggle-add-icon>
+        <Icon name="tabler:plus" class="h-4 w-4" />
+      </span>
+      <span data-program-toggle-remove-icon hidden>
+        <Icon name="tabler:check" class="h-4 w-4" />
+      </span>
     </button>
   </div>
 
-  <div class="mt-3 flex flex-wrap gap-2 text-xs text-muted xl:text-sm">
-    <span
-      class="inline-flex items-center gap-2 rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 dark:bg-sky-950/40 dark:text-sky-200"
-    >
-      <span class="font-medium">{labels.roomLabel}:</span>
-      {roomLabel}
-    </span>
-    {session.format && (
-        <span class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-2.5 py-1 text-gray-700 dark:bg-slate-900 dark:text-slate-300">
-          {session.format}
-        </span>
-      )}
+  <h3 class="mt-2.5 text-base font-semibold leading-snug text-gray-900 dark:text-white xl:text-[1.05rem]">
+    {session.title}
+  </h3>
+
+  <div class="mt-auto pt-3">
+    <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted xl:text-[0.8rem]">
+      <span class="inline-flex items-center gap-1.5 font-medium text-gray-700 dark:text-slate-200">
+        <Icon name="tabler:map-pin" class="h-3.5 w-3.5 text-sky-500" />
+        {roomLabel}
+      </span>
+      {session.format && (
+          <span class="inline-flex items-center gap-1.5">
+            <Icon name="tabler:clock" class="h-3.5 w-3.5 text-gray-400 dark:text-slate-500" />
+            {session.format}
+          </span>
+        )}
+      {session.speakers?.length ? (
+          <span class="inline-flex min-w-0 items-center gap-1.5">
+            <Icon name="tabler:users" class="h-3.5 w-3.5 shrink-0 text-gray-400 dark:text-slate-500" />
+            <span class="truncate">{session.speakers.join(', ')}</span>
+          </span>
+        ) : null}
+    </div>
+
+    {session.description || session.tags?.length ? (
+        <button
+          type="button"
+          popovertarget={detailsPopoverId}
+          popovertargetaction="toggle"
+          aria-haspopup="dialog"
+          class="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-sky-600 transition hover:gap-1.5 hover:text-sky-500 dark:text-sky-300 dark:hover:text-sky-200"
+        >
+          {labels.detailsLabel}
+          <Icon name="tabler:arrow-right" class="h-3.5 w-3.5" />
+        </button>
+      ) : null}
   </div>
 
-  {session.speakers?.length ? (
-      <p class="mt-3 text-xs font-medium text-gray-700 dark:text-slate-200 xl:text-sm">
-        {labels.speakersLabel}: {session.speakers.join(', ')}
-      </p>
-    ) : null}
-
   {session.description || session.tags?.length ? (
-      <>
-        <div class="mt-3">
+      <div
+        id={detailsPopoverId}
+        popover="auto"
+        class="fixed inset-0 m-auto max-h-[calc(100vh-2rem)] w-[min(36rem,calc(100vw-2rem))] overflow-auto rounded-3xl border border-gray-200 bg-white p-6 text-left text-gray-900 shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+      >
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-[0.14em] text-sky-600 dark:text-sky-300">
+              <span class={`h-2 w-2 rounded-full bg-gradient-to-r ${tone}`}></span>
+              {trackLabel}
+            </p>
+            <h4 class="mt-2 text-xl font-semibold leading-tight">{session.title}</h4>
+          </div>
           <button
             type="button"
             popovertarget={detailsPopoverId}
-            popovertargetaction="toggle"
-            aria-haspopup="dialog"
-            class="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-sky-600 transition hover:border-sky-200 hover:bg-sky-50 dark:border-slate-700 dark:bg-slate-900 dark:text-sky-300 dark:hover:border-sky-800 dark:hover:bg-slate-800"
+            popovertargetaction="hide"
+            aria-label="Close"
+            class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gray-200 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
           >
-            {labels.detailsLabel}
+            <Icon name="tabler:x" class="h-4 w-4" />
           </button>
         </div>
 
-        <div
-          id={detailsPopoverId}
-          popover="auto"
-          class="fixed inset-0 m-auto max-h-[calc(100vh-2rem)] w-[min(36rem,calc(100vw-2rem))] overflow-auto rounded-[1.5rem] border border-gray-200 bg-white p-5 text-left text-gray-900 shadow-2xl backdrop:bg-slate-950/50 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-        >
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600 dark:text-sky-300">{trackLabel}</p>
-            <h4 class="mt-2 text-lg font-semibold">{session.title}</h4>
-          </div>
-
-          <div class="mt-4 flex flex-wrap gap-2 text-xs text-muted">
-            <span class="inline-flex items-center gap-2 rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 dark:bg-sky-950/40 dark:text-sky-200">
-              <span class="font-medium">{labels.roomLabel}:</span>
-              {roomLabel}
+        <div class="mt-4 flex flex-wrap gap-2 text-xs text-muted">
+          <span class="inline-flex items-center gap-1.5 rounded-full bg-sky-50 px-2.5 py-1 text-sky-700 dark:bg-sky-950/40 dark:text-sky-200">
+            <Icon name="tabler:map-pin" class="h-3.5 w-3.5" />
+            {roomLabel}
+          </span>
+          {session.format && (
+            <span class="inline-flex items-center gap-1.5 rounded-full bg-gray-100 px-2.5 py-1 text-gray-700 dark:bg-slate-900 dark:text-slate-300">
+              <Icon name="tabler:clock" class="h-3.5 w-3.5" />
+              {session.format}
             </span>
-            {session.format && (
-              <span class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-2.5 py-1 text-gray-700 dark:bg-slate-900 dark:text-slate-300">
-                {session.format}
-              </span>
-            )}
-          </div>
-
-          {session.speakers?.length ? (
-            <p class="mt-4 text-sm font-medium text-gray-700 dark:text-slate-200">
-              {labels.speakersLabel}: {session.speakers.join(', ')}
-            </p>
-          ) : null}
-
-          {session.description ? <p class="mt-4 text-sm leading-6 text-muted">{session.description}</p> : null}
-
-          {session.tags?.length ? (
-            <div class="mt-4 flex flex-wrap gap-2">
-              {session.tags.map((tag) => (
-                <span class="rounded-full border border-gray-200 px-2.5 py-1 text-[0.7rem] text-gray-600 dark:border-slate-700 dark:text-slate-300">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          ) : null}
+          )}
         </div>
-      </>
+
+        {session.speakers?.length ? (
+          <p class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-slate-200">
+            <Icon name="tabler:users" class="h-4 w-4 text-sky-500" />
+            {session.speakers.join(', ')}
+          </p>
+        ) : null}
+
+        {session.description ? <p class="mt-4 text-sm leading-6 text-muted">{session.description}</p> : null}
+
+        {session.tags?.length ? (
+          <div class="mt-4 flex flex-wrap gap-2">
+            {session.tags.map((tag) => (
+              <span class="rounded-full border border-gray-200 px-2.5 py-1 text-[0.7rem] text-gray-600 dark:border-slate-700 dark:text-slate-300">
+                #{tag}
+              </span>
+            ))}
+          </div>
+        ) : null}
+      </div>
     ) : null}
 </article>

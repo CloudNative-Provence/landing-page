@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 import { ProgramSelectionCodec } from '~/domains/pages/program/services/selection-codec';
 import ProgramFiltersPanel from './ProgramFiltersPanel.astro';
 import ProgramHero from './ProgramHero.astro';
@@ -13,18 +15,86 @@ const sessionIds = sessions.map((session) => session.id);
 <ProgramHero hero={hero} highlights={highlights} />
 
 <program-schedule
-  class="mx-auto block w-full max-w-[1600px] px-4 py-8 sm:px-6 xl:px-8 2xl:px-10"
+  class="mx-auto block w-full max-w-[1600px] px-3 py-6 sm:px-6 sm:py-8 xl:px-8 2xl:px-10"
   data-storage-key="cnp-program-selection"
   data-session-ids={ProgramSelectionCodec.serialize(sessionIds)}
   data-share-success={selection.shareSuccessLabel}
   data-share-unavailable={selection.shareUnavailableLabel}
   data-export-empty={selection.exportEmptyLabel}
   data-empty-selection={selection.emptyLabel}
+  data-selection-conflict-prompt={selection.conflictPromptLabel}
+  data-live-now={labels.liveNowLabel}
+  data-upcoming={labels.upcomingLabel}
+  data-live-enabled="false"
 >
-  <div class="space-y-6">
-    <ProgramFiltersPanel filters={filters} tracks={tracks} rooms={rooms} />
+  <div
+    hidden
+    data-fullscreen-panel
+    class="sticky top-0 z-30 mb-6 flex items-center justify-between gap-4 rounded-2xl border border-gray-200 bg-white/95 px-5 py-3 shadow-lg backdrop-blur dark:border-slate-800 dark:bg-slate-950/95"
+  >
+    <div class="flex items-center gap-3">
+      <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-500/15 text-sky-500 dark:text-sky-300">
+        <Icon name="tabler:calendar-event" class="h-5 w-5" />
+      </span>
+      <div>
+        <p class="text-sm font-semibold text-gray-900 dark:text-white">{hero.title}</p>
+        <p class="text-xs text-muted">{hero.date} · {hero.venue}</p>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <span
+        data-fullscreen-clock
+        class="hidden text-2xl font-bold tabular-nums text-gray-900 sm:block dark:text-white"
+      ></span>
+      <button
+        type="button"
+        data-fullscreen-toggle
+        class="inline-flex items-center gap-2 rounded-xl border border-gray-200 px-4 py-2.5 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+      >
+        <Icon name="tabler:minimize" class="h-4 w-4" />
+        {filters.exitFullscreenLabel}
+      </button>
+    </div>
+  </div>
 
-    <ProgramSelectionPanel selection={selection} />
+  <dialog
+    data-selection-conflict-dialog
+    class="m-auto w-[min(32rem,calc(100vw-2rem))] rounded-3xl border border-gray-200 bg-white p-0 text-gray-900 shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+  >
+    <form method="dialog" class="space-y-5 p-6">
+      <div>
+        <p class="text-xs font-semibold uppercase tracking-[0.16em] text-sky-600 dark:text-sky-300">
+          {selection.title}
+        </p>
+        <h2 class="mt-2 text-xl font-semibold">{selection.conflictTitleLabel}</h2>
+        <p class="mt-3 text-sm leading-6 text-muted">{selection.conflictDescriptionLabel}</p>
+      </div>
+
+      <div class="flex flex-col-reverse gap-3 sm:flex-row sm:justify-end">
+        <button
+          type="submit"
+          value="storage"
+          class="inline-flex items-center justify-center rounded-2xl border border-gray-200 px-4 py-3 text-sm font-semibold text-gray-700 transition hover:bg-gray-100 dark:border-slate-700 dark:text-slate-200 dark:hover:bg-slate-800"
+        >
+          {selection.conflictUseSavedLabel}
+        </button>
+        <button
+          type="submit"
+          value="query"
+          class="inline-flex items-center justify-center rounded-2xl bg-sky-500 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-sky-500/25 transition hover:bg-sky-400"
+        >
+          {selection.conflictUseLinkLabel}
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="space-y-6">
+    <div class="space-y-6" data-program-controls>
+      <ProgramSelectionPanel selection={selection} filters={filters} />
+
+      <ProgramFiltersPanel filters={filters} tracks={tracks} rooms={rooms} />
+    </div>
 
     <div
       hidden
@@ -38,6 +108,40 @@ const sessionIds = sessions.map((session) => session.id);
     <ProgramScheduleGrid labels={labels} tracks={tracks} rooms={rooms} sessions={sessions} timezone={hero.timezone} />
   </div>
 </program-schedule>
+
+<style>
+program-schedule[data-live-enabled="true"] [data-program-slot][data-live-state="past"] {
+  opacity: 0.6;
+}
+
+program-schedule[data-live-enabled="true"] [data-program-slot][data-live-state="live"] {
+  border-color: rgb(56 189 248 / 0.9);
+  background: color-mix(in srgb, white 82%, rgb(14 165 233 / 0.12));
+  box-shadow: 0 0 0 1px rgb(56 189 248 / 0.35);
+}
+
+:global(.dark) program-schedule[data-live-enabled="true"] [data-program-slot][data-live-state="live"] {
+  background: color-mix(in srgb, rgb(15 23 42) 92%, rgb(56 189 248 / 0.14));
+}
+
+program-schedule[data-fullscreen="true"] {
+  max-width: none;
+  overflow-y: auto;
+  background: #f8fafc;
+}
+
+:global(.dark) program-schedule[data-fullscreen="true"] {
+  background: #0f172a;
+}
+
+program-schedule[data-fullscreen="true"] [data-program-controls] {
+  display: none;
+}
+
+program-schedule[data-fullscreen="true"] [data-fullscreen-panel] {
+  display: flex;
+}
+</style>
 
 <script>
 import './program-schedule-element';

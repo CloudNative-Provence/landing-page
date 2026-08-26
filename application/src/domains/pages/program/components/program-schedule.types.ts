@@ -22,7 +22,11 @@ export interface ProgramScheduleFilters {
   roomLabel: string;
   allRoomsLabel: string;
   selectedOnlyLabel: string;
+  displayLabel: string;
+  liveLabel: string;
   resetLabel: string;
+  fullscreenLabel: string;
+  exitFullscreenLabel: string;
 }
 
 export interface ProgramScheduleSelection {
@@ -30,6 +34,12 @@ export interface ProgramScheduleSelection {
   subtitle: string;
   savedLabel: string;
   emptyLabel: string;
+  clearLabel: string;
+  conflictPromptLabel: string;
+  conflictTitleLabel: string;
+  conflictDescriptionLabel: string;
+  conflictUseLinkLabel: string;
+  conflictUseSavedLabel: string;
   shareLabel: string;
   exportLabel: string;
   shareSuccessLabel: string;
@@ -42,6 +52,8 @@ export interface ProgramScheduleLabels {
   roomLabel: string;
   speakersLabel: string;
   globalLabel: string;
+  liveNowLabel: string;
+  upcomingLabel: string;
   addLabel: string;
   removeLabel: string;
   detailsLabel: string;

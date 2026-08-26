@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'astro-icon/components';
+
 import type { ProgramRoom, ProgramTrack } from '~/domains/pages/program/model/schedule';
 
 import type { ProgramScheduleFilters } from './program-schedule.types';
@@ -10,55 +12,85 @@ interface Props {
 }
 
 const { filters, tracks, rooms } = Astro.props;
+
+const selectClass =
+  'w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-8 text-sm font-medium text-gray-800 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-sky-900/30';
+
+const togglePillClass =
+  'group relative inline-flex h-9 w-9 cursor-pointer select-none items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-sky-600 has-[:checked]:bg-sky-100 has-[:checked]:text-sky-600 has-[:focus-visible]:ring-2 has-[:focus-visible]:ring-sky-300 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-sky-300 dark:has-[:checked]:bg-sky-500/20 dark:has-[:checked]:text-sky-300';
 ---
 
 <section
-  class="sticky top-20 z-20 rounded-[1.75rem] border border-gray-200/80 bg-white/90 p-4 shadow-lg shadow-slate-900/5 backdrop-blur md:top-24 dark:border-slate-800 dark:bg-slate-900/90"
+  class="sticky top-20 z-20 rounded-2xl border border-gray-200/70 bg-white/85 p-2.5 shadow-lg shadow-slate-900/5 backdrop-blur-md md:top-24 dark:border-slate-800/80 dark:bg-slate-900/85"
 >
-  <div class="grid gap-3 xl:grid-cols-[minmax(0,2fr)_repeat(3,minmax(0,1fr))_auto] xl:items-end">
-    <label class="block">
-      <span class="mb-2 block text-sm font-medium text-gray-700 dark:text-slate-200">{filters.searchLabel}</span>
+  <div class="flex flex-col gap-2 lg:flex-row lg:items-center">
+    <label class="group relative min-w-0 flex-1">
+      <span class="sr-only">{filters.searchLabel}</span>
+      <span
+        class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 transition group-focus-within:text-sky-500 dark:text-slate-500"
+      >
+        <Icon name="tabler:search" class="h-4 w-4" />
+      </span>
       <input
         data-filter-search
         type="search"
         placeholder={filters.searchPlaceholder}
-        class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-sky-900/30"
+        class="w-full rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-3 text-sm text-gray-900 outline-none transition placeholder:text-gray-400 focus:border-sky-400 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder:text-slate-500 dark:focus:ring-sky-900/30"
       >
     </label>
 
-    <label class="block">
-      <span class="mb-2 block text-sm font-medium text-gray-700 dark:text-slate-200">{filters.trackLabel}</span>
-      <select
-        data-filter-track
-        class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-sky-900/30"
+    <div class="flex flex-wrap items-center gap-2">
+      <div class="relative w-full min-w-0 sm:w-auto sm:flex-1 lg:flex-none">
+        <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 dark:text-slate-500">
+          <Icon name="tabler:layout-grid" class="h-4 w-4" />
+        </span>
+        <select data-filter-track aria-label={filters.trackLabel} class={selectClass}>
+          <option value="">{filters.allTracksLabel}</option>
+          {tracks.map((track) => <option value={track.id}>{track.label}</option>)}
+        </select>
+        <span
+          class="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-gray-400 dark:text-slate-500"
+        >
+          <Icon name="tabler:chevron-down" class="h-4 w-4" />
+        </span>
+      </div>
+
+      <div class="relative w-full min-w-0 sm:w-auto sm:flex-1 lg:flex-none">
+        <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 dark:text-slate-500">
+          <Icon name="tabler:map-pin" class="h-4 w-4" />
+        </span>
+        <select data-filter-room aria-label={filters.roomLabel} class={selectClass}>
+          <option value="">{filters.allRoomsLabel}</option>
+          {rooms.map((room) => <option value={room.id}>{room.label}</option>)}
+        </select>
+        <span
+          class="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-gray-400 dark:text-slate-500"
+        >
+          <Icon name="tabler:chevron-down" class="h-4 w-4" />
+        </span>
+      </div>
+
+      <div
+        class="flex items-center gap-0.5 rounded-xl border border-gray-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-900"
       >
-        <option value="">{filters.allTracksLabel}</option>
-        {tracks.map((track) => <option value={track.id}>{track.label}</option>)}
-      </select>
-    </label>
+        <label class={togglePillClass} title={filters.selectedOnlyLabel}>
+          <input data-filter-selected type="checkbox" class="sr-only">
+          <span class="sr-only">{filters.selectedOnlyLabel}</span>
+          <Icon name="tabler:bookmark" class="h-[1.15rem] w-[1.15rem]" />
+        </label>
 
-    <label class="block">
-      <span class="mb-2 block text-sm font-medium text-gray-700 dark:text-slate-200">{filters.roomLabel}</span>
-      <select
-        data-filter-room
-        class="w-full rounded-2xl border border-gray-200 bg-white px-4 py-3 text-sm outline-none transition focus:border-sky-400 focus:ring-4 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-sky-900/30"
-      >
-        <option value="">{filters.allRoomsLabel}</option>
-        {rooms.map((room) => <option value={room.id}>{room.label}</option>)}
-      </select>
-    </label>
+        <span class="mx-0.5 h-5 w-px bg-gray-200 dark:bg-slate-700" aria-hidden="true"></span>
 
-    <label class="flex h-full items-center gap-3 rounded-2xl border border-gray-200 px-4 py-3 dark:border-slate-700">
-      <input data-filter-selected type="checkbox" class="h-4 w-4 rounded border-gray-300 text-sky-500">
-      <span class="text-sm text-gray-700 dark:text-slate-200">{filters.selectedOnlyLabel}</span>
-    </label>
-
-    <button
-      type="button"
-      data-filter-reset
-      class="inline-flex h-fit items-center justify-center rounded-2xl border border-gray-200 px-4 py-3 text-sm font-medium text-gray-700 transition hover:border-sky-300 hover:text-sky-600 dark:border-slate-700 dark:text-slate-200"
-    >
-      {filters.resetLabel}
-    </button>
+        <button
+          type="button"
+          data-filter-reset
+          title={filters.resetLabel}
+          class="inline-flex h-9 w-9 items-center justify-center rounded-lg text-gray-500 transition hover:bg-gray-100 hover:text-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-300 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+        >
+          <span class="sr-only">{filters.resetLabel}</span>
+          <Icon name="tabler:rotate-2" class="h-[1.15rem] w-[1.15rem]" />
+        </button>
+      </div>
+    </div>
   </div>
 </section>
