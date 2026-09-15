@@ -57,19 +57,17 @@
  * @property {ConferenceHallSchedule} [schedule]
  */
 
-const DEFAULT_API_BASE = 'https://conference-hall.io';
-
 /**
  * Fetches the event data from the Conference Hall public API.
  *
  * @param {object} params
  * @param {string} params.eventId  – Conference Hall event ID (slug)
  * @param {string} params.apiKey   – Conference Hall API key
- * @param {string} [params.apiBase] – Override for the API base URL
+ * @param {string} params.apiBase  – API base URL (e.g. https://conference-hall.io)
  * @returns {Promise<ConferenceHallEvent>}
  * @throws {Error} When the HTTP request fails
  */
-export async function fetchConferenceHallEvent({ eventId, apiKey, apiBase = DEFAULT_API_BASE }) {
+export async function fetchConferenceHallEvent({ eventId, apiKey, apiBase }) {
   const url = `${apiBase}/api/v1/event/${eventId}?key=${apiKey}`;
   const response = await fetch(url);
 

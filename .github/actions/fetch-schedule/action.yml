@@ -9,8 +9,7 @@ inputs:
     required: true
   api-base:
     description: Conference Hall API base URL
-    required: false
-    default: https://conference-hall.io
+    required: true
 
 runs:
   using: composite

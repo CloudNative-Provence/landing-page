@@ -28,6 +28,7 @@ jobs:
         uses: ./.github/actions/fetch-schedule
         with:
           api-key: ${{ secrets.CONFERENCEHALL_API_KEY }}
+          api-base: https://conference-hall.io
 
       - name: Create and merge pull request with updated schedule
         uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@3a27d31e9ccefbe9609cc9165017ed100ff34a22 # 0.38.0

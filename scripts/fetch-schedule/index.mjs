@@ -27,14 +27,16 @@ export default async ({ core, io }) => {
     return;
   }
 
+  if (!apiBase) {
+    core.setFailed('CONFERENCEHALL_API_BASE environment variable is required');
+    return;
+  }
+
   const eventId = readEventIdFromConfig(workspaceDir);
   core.info(`Event ID from config: ${eventId}`);
 
-  const apiParams = { eventId, apiKey };
-  if (apiBase) apiParams.apiBase = apiBase;
-
   core.info(`Fetching schedule from Conference Hall …`);
-  const event = await fetchConferenceHallEvent(apiParams);
+  const event = await fetchConferenceHallEvent({ eventId, apiKey, apiBase });
 
   core.info(`Event: ${event.name}`);
   core.info(`  Categories : ${(event.categories ?? []).length}`);
