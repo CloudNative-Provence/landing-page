@@ -1,24 +1,21 @@
 const programContent = {
   metadata: {
     title: 'Program',
-    description: 'Browse the KCD Provence 2026 agenda, filter sessions by track or room, and build your own day.',
+    description: 'Browse the KCD Provence 2026 agenda, filter sessions by room, and build your own day.',
   },
   hero: {
     tagline: 'Event program',
     title: 'Plan your day at KCD Provence',
     subtitle:
-      'Explore the full schedule, compare tracks, save your favorite sessions, share your personal agenda, and export it to your calendar in one click.',
+      'Explore the full schedule, save your favorite sessions, share your personal agenda, and export it to your calendar in one click.',
   },
   highlightLabels: {
-    tracks: 'Tracks',
     rooms: 'Rooms',
     sessions: 'Sessions',
   },
   filters: {
     searchLabel: 'Search the schedule',
     searchPlaceholder: 'Search by title, speaker, abstract, topic…',
-    trackLabel: 'Track',
-    allTracksLabel: 'All tracks',
     roomLabel: 'Room',
     allRoomsLabel: 'All rooms',
     selectedOnlyLabel: 'Only my schedule',
@@ -51,15 +48,19 @@ const programContent = {
     timeLabel: 'Time',
     roomLabel: 'Room',
     speakersLabel: 'Speakers',
-    globalLabel: 'All tracks',
+    languageLabel: 'Session language',
+    languageNames: { en: 'English', fr: 'French' },
+    globalLabel: 'All rooms',
     liveNowLabel: 'Live now',
     upcomingLabel: 'Upcoming',
     addLabel: 'Save to my schedule',
     removeLabel: 'Saved',
     detailsLabel: 'Details',
+    closeLabel: 'Close',
+    speakerProfileLabel: 'View profile: {name}',
+    speakerLinksLabel: 'Find this speaker online',
     noResultsTitle: 'No sessions match your filters',
     noResultsText: 'Try another keyword, choose a different room, or clear the filters to see the full agenda again.',
-    emptyTrackSlotLabel: 'No session is scheduled in this track during this slot.',
   },
 } as const;
 

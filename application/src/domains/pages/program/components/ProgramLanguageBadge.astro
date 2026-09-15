@@ -1,0 +1,22 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { ProgramScheduleLabels } from './program-schedule.types';
+
+interface Props {
+  language: 'en' | 'fr';
+  labels: Pick<ProgramScheduleLabels, 'languageLabel' | 'languageNames'>;
+}
+
+const { language, labels } = Astro.props;
+const label = `${labels.languageLabel}: ${labels.languageNames[language]}`;
+---
+
+<span
+  data-session-language={language}
+  aria-label={label}
+  title={label}
+  class="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-semibold text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-200"
+>
+  <Icon name="tabler:language" class="h-3.5 w-3.5 shrink-0" aria-hidden="true" />
+  {labels.languageNames[language]}
+</span>

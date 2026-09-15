@@ -1,0 +1,15 @@
+---
+import { renderProgramMarkdown } from '~/domains/pages/program/services/render-markdown';
+
+interface Props {
+  content: string;
+}
+
+const html = await renderProgramMarkdown(Astro.props.content);
+---
+
+<div
+  data-program-markdown
+  class="prose prose-sm prose-slate max-w-none [overflow-wrap:anywhere] prose-headings:font-semibold prose-a:text-sky-600 prose-a:underline prose-pre:overflow-x-auto dark:prose-invert dark:prose-a:text-sky-300"
+  set:html={html}
+/>

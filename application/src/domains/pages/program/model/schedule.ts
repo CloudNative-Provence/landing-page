@@ -1,12 +1,16 @@
-export interface ProgramTrack {
+export interface ProgramRoom {
   id: string;
   label: string;
   accent: string;
 }
 
-export interface ProgramRoom {
+export interface ProgramSpeaker {
   id: string;
-  label: string;
+  name: string;
+  bio?: string;
+  company?: string;
+  picture?: string;
+  socialLinks?: readonly string[];
 }
 
 export interface ProgramSession {
@@ -15,9 +19,8 @@ export interface ProgramSession {
   description: string;
   startsAt: string;
   endsAt: string;
-  trackIds: readonly string[];
-  roomIds: readonly string[];
-  speakers?: readonly string[];
+  roomId?: string;
+  speakers?: readonly ProgramSpeaker[];
   format?: string;
   isGlobal?: boolean;
   tags?: readonly string[];
@@ -28,11 +31,11 @@ export interface ProgramSessionDefinition extends Omit<ProgramSession, 'startsAt
   endsAtTime: string;
 }
 
-export interface ProgramSlot {
+export interface ProgramSlot<Session extends ProgramSession = ProgramSession> {
   key: string;
   startsAt: string;
   endsAt: string;
-  sessions: ProgramSession[];
+  sessions: Session[];
 }
 
 export class ProgramScheduleBuilder {
@@ -71,8 +74,10 @@ export class ProgramScheduleBuilder {
   }
 }
 
-export const groupProgramSessionsBySlot = (sessions: readonly ProgramSession[]): ProgramSlot[] => {
-  const slots = new Map<string, ProgramSlot>();
+export const groupProgramSessionsBySlot = <Session extends ProgramSession>(
+  sessions: readonly Session[]
+): ProgramSlot<Session>[] => {
+  const slots = new Map<string, ProgramSlot<Session>>();
 
   sessions.forEach((session) => {
     const key = `${session.startsAt}-${session.endsAt}`;
@@ -91,5 +96,24 @@ export const groupProgramSessionsBySlot = (sessions: readonly ProgramSession[]):
     });
   });
 
-  return [...slots.values()].sort((left, right) => left.startsAt.localeCompare(right.startsAt));
+  return [...slots.values()].sort(
+    (left, right) =>
+      Date.parse(left.startsAt) - Date.parse(right.startsAt) || Date.parse(left.endsAt) - Date.parse(right.endsAt)
+  );
+};
+
+/** Group within each room so another room's timings never create empty slots. */
+export const groupProgramSessionsByRoom = <Session extends ProgramSession>(
+  sessions: readonly Session[]
+): Map<string, ProgramSlot<Session>[]> => {
+  const rooms = new Map<string, Session[]>();
+
+  for (const session of sessions) {
+    const roomId = session.isGlobal ? '' : (session.roomId ?? '');
+    const roomSessions = rooms.get(roomId) ?? [];
+    roomSessions.push(session);
+    rooms.set(roomId, roomSessions);
+  }
+
+  return new Map([...rooms].map(([roomId, roomSessions]) => [roomId, groupProgramSessionsBySlot(roomSessions)]));
 };

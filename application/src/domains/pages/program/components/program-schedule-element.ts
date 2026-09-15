@@ -4,6 +4,7 @@ import { ProgramLiveView } from '~/domains/pages/program/services/live-view';
 import { ProgramSearchTextNormalizer } from '~/domains/pages/program/services/search-text-normalizer';
 import { ProgramSelectionCodec } from '~/domains/pages/program/services/selection-codec';
 import { ProgramSelectionSourceResolver } from '~/domains/pages/program/services/selection-source-resolver';
+import { buildProgramTimelineLayout } from '~/domains/pages/program/services/timeline-layout';
 
 // Safari (iOS and older desktop) still exposes the Fullscreen API under a webkit prefix.
 type WebkitFullscreenDocument = Document & {
@@ -22,11 +23,13 @@ class ProgramScheduleElement extends HTMLElement {
   selectedIds = new Set<string>();
   cards: HTMLElement[] = [];
   slots: HTMLElement[] = [];
+  roomHeaders: HTMLElement[] = [];
+  canonicalIds = new Map<string, string>();
+  roomGrid: HTMLElement | null = null;
   emptyState: HTMLElement | null = null;
   status: HTMLElement | null = null;
   selectedCount: HTMLElement | null = null;
   searchInput: HTMLInputElement | null = null;
-  trackSelect: HTMLSelectElement | null = null;
   roomSelect: HTMLSelectElement | null = null;
   selectedToggle: HTMLInputElement | null = null;
   liveToggle: HTMLInputElement | null = null;
@@ -47,12 +50,20 @@ class ProgramScheduleElement extends HTMLElement {
     this.validIds = (this.dataset.sessionIds || '').split(',').filter(Boolean);
     this.selectedIds = new Set<string>();
     this.cards = [...this.querySelectorAll<HTMLElement>('[data-program-session]')];
+    this.canonicalIds = new Map(
+      this.cards.flatMap((card) =>
+        (card.dataset.sourceSessionIds || card.dataset.sessionId || '')
+          .split(',')
+          .map((id) => [id, card.dataset.sessionId || ''] as const)
+      )
+    );
     this.slots = [...this.querySelectorAll<HTMLElement>('[data-program-slot]')];
+    this.roomHeaders = [...this.querySelectorAll<HTMLElement>('[data-program-room-header]')];
+    this.roomGrid = this.querySelector<HTMLElement>('[data-program-room-grid]');
     this.emptyState = this.querySelector<HTMLElement>('[data-empty-state]');
     this.status = this.querySelector<HTMLElement>('[data-program-status]');
     this.selectedCount = this.querySelector<HTMLElement>('[data-selected-count]');
     this.searchInput = this.querySelector<HTMLInputElement>('[data-filter-search]');
-    this.trackSelect = this.querySelector<HTMLSelectElement>('[data-filter-track]');
     this.roomSelect = this.querySelector<HTMLSelectElement>('[data-filter-room]');
     this.selectedToggle = this.querySelector<HTMLInputElement>('[data-filter-selected]');
     this.liveToggle = this.querySelector<HTMLInputElement>('[data-filter-live]');
@@ -77,7 +88,6 @@ class ProgramScheduleElement extends HTMLElement {
     this.handleFullscreenGesture = this.handleFullscreenGesture.bind(this);
 
     this.searchInput?.addEventListener('input', this.handleFilters);
-    this.trackSelect?.addEventListener('change', this.handleFilters);
     this.roomSelect?.addEventListener('change', this.handleFilters);
     this.selectedToggle?.addEventListener('change', this.handleFilters);
     this.liveToggle?.addEventListener('change', this.handleLiveToggle);
@@ -93,7 +103,6 @@ class ProgramScheduleElement extends HTMLElement {
 
   disconnectedCallback() {
     this.searchInput?.removeEventListener('input', this.handleFilters);
-    this.trackSelect?.removeEventListener('change', this.handleFilters);
     this.roomSelect?.removeEventListener('change', this.handleFilters);
     this.selectedToggle?.removeEventListener('change', this.handleFilters);
     this.liveToggle?.removeEventListener('change', this.handleLiveToggle);
@@ -284,6 +293,7 @@ class ProgramScheduleElement extends HTMLElement {
       queryValue: fromQuery,
       storageValue: fromStorage,
       validIds: this.validIds,
+      canonicalIds: this.canonicalIds,
     });
 
     if (resolution.type === 'conflict') {
@@ -347,7 +357,6 @@ class ProgramScheduleElement extends HTMLElement {
 
   handleFilters() {
     const query = ProgramSearchTextNormalizer.normalize(this.searchInput?.value || '');
-    const track = this.trackSelect?.value || '';
     const room = this.roomSelect?.value || '';
     const selectedOnly = Boolean(this.selectedToggle?.checked);
     const now = new Date();
@@ -356,19 +365,16 @@ class ProgramScheduleElement extends HTMLElement {
 
     this.cards.forEach((card) => {
       const searchText = card.dataset.searchText || '';
-      const trackIds = (card.dataset.trackIds || '').split(',').filter(Boolean);
-      const roomIds = (card.dataset.roomIds || '').split(',').filter(Boolean);
+      const roomIds = (card.dataset.roomIds || card.dataset.roomId || '').split(',');
       const isSelected = this.selectedIds.has(card.dataset.sessionId || '');
-      const isGlobal = card.dataset.global === 'true';
       const slot = card.closest<HTMLElement>('[data-program-slot]');
       const liveState = slot ? this.getSlotLiveState(slot, now) : 'upcoming';
 
       const matchesQuery = !query || searchText.includes(query);
-      const matchesTrack = !track || isGlobal || trackIds.includes(track);
       const matchesRoom = !room || roomIds.includes(room);
       const matchesSelection = !selectedOnly || isSelected;
       const matchesLive = !this.liveEnabled || liveState !== 'past';
-      const isVisible = matchesQuery && matchesTrack && matchesRoom && matchesSelection && matchesLive;
+      const isVisible = matchesQuery && matchesRoom && matchesSelection && matchesLive;
 
       card.hidden = !isVisible;
       if (isVisible) {
@@ -383,6 +389,40 @@ class ProgramScheduleElement extends HTMLElement {
       slot.hidden = !hasVisibleCards;
     });
 
+    const visibleRoomIds = new Set(
+      this.cards.filter((card) => !card.hidden).flatMap((card) => (card.dataset.roomIds || '').split(','))
+    );
+    const roomColumns = new Map<string, number>();
+    this.roomHeaders.forEach((header) => {
+      const id = header.dataset.roomId || '';
+      header.hidden = !visibleRoomIds.has(id) || Boolean(room && room !== id);
+      if (!header.hidden) {
+        roomColumns.set(id, roomColumns.size + 1);
+        header.style.setProperty('--program-room-column', String(roomColumns.size));
+      }
+    });
+
+    if (this.roomGrid) {
+      this.roomGrid.hidden = visibleCards === 0;
+      this.roomGrid.style.setProperty('--program-room-count', String(Math.max(roomColumns.size, 1)));
+      const visibleSlots = this.slots.filter((slot) => !slot.hidden);
+      const timeline = buildProgramTimelineLayout(
+        visibleSlots.map((slot) => ({ startsAt: slot.dataset.startsAt || '', endsAt: slot.dataset.endsAt || '' }))
+      );
+      this.roomGrid.style.setProperty('--program-time-rows', String(timeline.rowCount));
+      visibleSlots.forEach((slot) => {
+        slot.style.setProperty(
+          '--program-slot-start',
+          String((timeline.lines.get(Date.parse(slot.dataset.startsAt || '')) ?? 1) + 1)
+        );
+        slot.style.setProperty(
+          '--program-slot-end',
+          String((timeline.lines.get(Date.parse(slot.dataset.endsAt || '')) ?? 2) + 1)
+        );
+        slot.style.setProperty('--program-room-column', String(roomColumns.get(slot.dataset.roomId || '') ?? 1));
+      });
+    }
+
     if (this.emptyState) {
       this.emptyState.hidden = visibleCards > 0;
     }
@@ -391,7 +431,6 @@ class ProgramScheduleElement extends HTMLElement {
 
   handleReset() {
     if (this.searchInput) this.searchInput.value = '';
-    if (this.trackSelect) this.trackSelect.value = '';
     if (this.roomSelect) this.roomSelect.value = '';
     if (this.selectedToggle) this.selectedToggle.checked = false;
     this.handleFilters();

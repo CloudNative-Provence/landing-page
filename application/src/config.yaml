@@ -30,7 +30,7 @@ i18n:
   textDirection: ltr
 
 event:
-  startsAt: "2026-12-10T09:00:00+01:00"
+  startsAt: "2026-12-10T08:00:00+01:00"
   timeZone: "Europe/Paris"
   city: "Aix-en-Provence"
   place:
@@ -87,7 +87,7 @@ apps:
     relatedPostsCount: 4
 
   program:
-    isEnabled: false
+    isEnabled: true
 
 analytics:
   vendors:

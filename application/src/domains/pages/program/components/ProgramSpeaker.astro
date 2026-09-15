@@ -1,0 +1,115 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import type { ProgramSpeaker } from '~/domains/pages/program/model/schedule';
+import ProgramMarkdown from './ProgramMarkdown.astro';
+import type { ProgramScheduleLabels } from './program-schedule.types';
+
+interface Props {
+  speaker: ProgramSpeaker;
+  id: string;
+  labels: Pick<ProgramScheduleLabels, 'closeLabel' | 'speakerProfileLabel' | 'speakerLinksLabel'>;
+}
+
+const { speaker, id, labels } = Astro.props;
+const titleId = `${id}-title`;
+const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
+---
+
+<div class="min-w-0" data-program-speaker={speaker.id}>
+  <button
+    type="button"
+    popovertarget={id}
+    popovertargetaction="toggle"
+    aria-haspopup="dialog"
+    aria-controls={id}
+    aria-label={profileLabel}
+    title={profileLabel}
+    class="flex max-w-full items-center gap-2.5 rounded-xl p-1 text-left transition hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:hover:bg-slate-800"
+  >
+    {speaker.picture ? (
+  <img
+    src={speaker.picture}
+    alt=""
+    width="40"
+    height="40"
+    loading="lazy"
+    decoding="async"
+    referrerpolicy="no-referrer"
+    class="h-10 w-10 shrink-0 rounded-full bg-slate-100 object-cover dark:bg-slate-800"
+  />
+) : (
+  <span
+    class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-300"
+    aria-hidden="true"
+  >
+    <Icon name="tabler:user" class="h-5 w-5" />
+  </span>
+)}
+    <span class="min-w-0">
+      <span class="block text-sm font-medium text-gray-800 dark:text-slate-100">{speaker.name}</span>
+      {speaker.company && <span class="block text-xs text-muted">{speaker.company}</span>}
+    </span>
+  </button>
+
+  <div
+    id={id}
+    popover="auto"
+    role="dialog"
+    aria-labelledby={titleId}
+    class="fixed inset-0 m-auto max-h-[calc(100dvh-2rem)] w-[min(36rem,calc(100vw-2rem))] overflow-auto rounded-3xl border border-gray-200 bg-white p-6 text-left text-gray-900 shadow-2xl backdrop:bg-slate-950/60 backdrop:backdrop-blur-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+  >
+    <div class="flex items-start justify-between gap-3">
+      <div class="flex min-w-0 items-center gap-4">
+        {speaker.picture && (
+  <img
+    src={speaker.picture}
+    alt=""
+    width="80"
+    height="80"
+    loading="lazy"
+    decoding="async"
+    referrerpolicy="no-referrer"
+    class="h-20 w-20 shrink-0 rounded-2xl bg-slate-100 object-cover dark:bg-slate-800"
+  />
+)}
+        <div class="min-w-0">
+          <h4 id={titleId} class="text-xl font-semibold leading-tight">{speaker.name}</h4>
+          {speaker.company && <p class="mt-1 text-sm text-muted">{speaker.company}</p>}
+        </div>
+      </div>
+      <button
+        type="button"
+        popovertarget={id}
+        popovertargetaction="hide"
+        aria-label={labels.closeLabel}
+        autofocus
+        class="grid h-8 w-8 shrink-0 place-items-center rounded-full border border-gray-200 text-gray-500 transition hover:bg-gray-100 hover:text-gray-800 dark:border-slate-700 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
+      >
+        <Icon name="tabler:x" class="h-4 w-4" />
+      </button>
+    </div>
+
+    {speaker.bio && (
+  <div class="mt-6">
+    <ProgramMarkdown content={speaker.bio} />
+  </div>
+)}
+
+    {speaker.socialLinks?.length ? (
+  <nav class="mt-6 flex flex-wrap gap-2" aria-label={labels.speakerLinksLabel}>
+    {speaker.socialLinks.map((link) => (
+      <a
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-sky-700 transition hover:bg-sky-50 dark:border-slate-700 dark:text-sky-300 dark:hover:bg-slate-800"
+      >
+        {new URL(link).hostname.replace(/^www\./, '')}
+        <Icon name="tabler:external-link" class="h-3.5 w-3.5" />
+      </a>
+    ))}
+  </nav>
+) : null}
+  </div>
+</div>

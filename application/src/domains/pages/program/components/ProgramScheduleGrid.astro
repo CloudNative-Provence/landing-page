@@ -1,127 +1,65 @@
 ---
 import {
-  groupProgramSessionsBySlot,
+  groupProgramSessionsByRoom,
   type ProgramRoom,
   type ProgramSession,
-  type ProgramTrack,
 } from '~/domains/pages/program/model/schedule';
-import { ProgramSearchTextNormalizer } from '~/domains/pages/program/services/search-text-normalizer';
-import ProgramSessionCard from './ProgramSessionCard.astro';
-
+import { mergeSharedProgramSessions } from '~/domains/pages/program/services/shared-sessions';
+import { buildProgramTimelineLayout } from '~/domains/pages/program/services/timeline-layout';
+import ProgramScheduleSlot from './ProgramScheduleSlot.astro';
 import type { ProgramScheduleLabels } from './program-schedule.types';
 
 interface Props {
   labels: ProgramScheduleLabels;
-  tracks: readonly ProgramTrack[];
   rooms: readonly ProgramRoom[];
   sessions: readonly ProgramSession[];
   timezone: string;
 }
 
-const { labels, tracks, rooms, sessions, timezone } = Astro.props;
-
-const roomMap = new Map(rooms.map((room) => [room.id, room]));
-const trackLabelMap = new Map(tracks.map((track) => [track.id, track.label]));
-const roomLabelMap = new Map(rooms.map((room) => [room.id, room.label]));
-const slots = groupProgramSessionsBySlot(sessions);
-const allTrackIds = tracks.map((track) => track.id);
-
-const formatTime = (value: string) =>
-  new Intl.DateTimeFormat('en-GB', {
-    hour: '2-digit',
-    minute: '2-digit',
-    timeZone: timezone,
-  }).format(new Date(value));
-
-const getSessionSearchText = (session: ProgramSession) =>
-  ProgramSearchTextNormalizer.fromSession(session, trackLabelMap, roomLabelMap);
+const { labels, rooms, sessions, timezone } = Astro.props;
+const roomLabels = new Map(rooms.map((room) => [room.id, room.label]));
+const displaySessions = mergeSharedProgramSessions(sessions, rooms);
+const scheduledRooms = rooms.filter((room) => displaySessions.some((session) => session.roomIds.includes(room.id)));
+const schedules = groupProgramSessionsByRoom(displaySessions);
+const slots = [...schedules].flatMap(([roomId, roomSlots]) => roomSlots.map((slot) => ({ roomId, slot })));
+slots.sort(
+  (left, right) =>
+    Date.parse(left.slot.startsAt) - Date.parse(right.slot.startsAt) ||
+    Date.parse(left.slot.endsAt) - Date.parse(right.slot.endsAt) ||
+    left.roomId.localeCompare(right.roomId)
+);
+const timeline = buildProgramTimelineLayout(slots.map(({ slot }) => slot));
 ---
 
-<section
-  class="sm:rounded-3xl sm:border sm:border-gray-200 sm:bg-white sm:p-3 sm:shadow-lg sm:shadow-slate-900/5 sm:dark:border-slate-800 sm:dark:bg-slate-900/90 md:p-4"
+<div
+  data-program-room-grid
+  style={{
+  '--program-room-count': Math.max(scheduledRooms.length, 1),
+  '--program-time-rows': timeline.rowCount,
+}}
+  class="grid gap-x-5 gap-y-3 md:grid-cols-[repeat(var(--program-room-count),minmax(0,1fr))] md:grid-rows-[auto_repeat(var(--program-time-rows),auto)]"
 >
-  <div class="space-y-3">
-    <div class="hidden gap-3 lg:grid lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))]">
-      <div class="flex items-end px-2 pb-1 text-xs font-semibold uppercase tracking-[0.18em] text-muted">
-        {labels.timeLabel}
-      </div>
-      {tracks.map((track) => (
-  <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950/60">
-    <span class={`h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b ${track.accent}`} />
-    <span class="text-sm font-semibold text-gray-900 dark:text-white">{track.label}</span>
-  </div>
+  {scheduledRooms.map((room, index) => (
+  <h2
+    data-program-room-header
+    data-room-id={room.id}
+    style={{ '--program-room-column': index + 1 }}
+    class="sticky top-24 z-10 hidden items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm md:col-start-[var(--program-room-column)] md:row-start-1 md:flex dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+  >
+    <span class={`h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b ${room.accent}`} aria-hidden="true"></span>
+    {room.label}
+  </h2>
 ))}
-    </div>
 
-    {slots.map((slot) => {
-  const globalSessions = slot.sessions.filter(
-    (session) => session.isGlobal || session.trackIds.length === allTrackIds.length
-  );
-  const trackSessions = slot.sessions.filter((session) => !globalSessions.includes(session));
-
-  return (
-    <section
-      class="grid items-start gap-3 sm:rounded-3xl sm:border sm:border-gray-200/70 sm:bg-slate-50/60 sm:p-3 sm:dark:border-slate-800 sm:dark:bg-slate-950/40 lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))]"
-      data-program-slot
-      data-starts-at={slot.startsAt}
-      data-ends-at={slot.endsAt}
-    >
-      <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm lg:sticky lg:left-0 lg:top-24 lg:flex-col lg:items-start lg:gap-1.5 lg:self-stretch dark:border-slate-800 dark:bg-slate-900">
-        <p class="text-lg font-bold tabular-nums leading-none text-gray-900 dark:text-white">
-          {formatTime(slot.startsAt)}
-        </p>
-        <p class="inline-flex items-center gap-1 text-xs tabular-nums text-muted">
-          <span class="text-gray-300 dark:text-slate-600">
-            <span class="lg:hidden">→</span>
-            <span class="hidden lg:inline">└</span>
-          </span>
-          {formatTime(slot.endsAt)}
-        </p>
-        <p
-          hidden
-          data-slot-live-badge
-          class="mt-1 inline-flex rounded-full bg-sky-100 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-sky-700 dark:bg-sky-950/40 dark:text-sky-200"
-        ></p>
-      </div>
-
-      <div class="space-y-3 lg:col-span-3">
-        {globalSessions.map((session) => (
-          <ProgramSessionCard
-            session={session}
-            isGlobal={true}
-            trackLabel={labels.globalLabel}
-            tone="from-sky-500 to-cyan-400"
-            roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
-            labels={labels}
-            searchText={getSessionSearchText(session)}
-          />
-        ))}
-
-        {trackSessions.length > 0 && (
-          <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-            {tracks.map((track) => {
-              const session = trackSessions.find((entry) => entry.trackIds.includes(track.id));
-              return session ? (
-                <ProgramSessionCard
-                  session={session}
-                  isGlobal={false}
-                  trackLabel={track.label}
-                  tone={track.accent}
-                  roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
-                  labels={labels}
-                  searchText={getSessionSearchText(session)}
-                />
-              ) : (
-                <div class="hidden min-h-[12rem] items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white/50 px-4 py-5 text-center text-xs text-muted lg:flex dark:border-slate-800 dark:bg-slate-950/20">
-                  {labels.emptyTrackSlotLabel}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </section>
-  );
-})}
-  </div>
-</section>
+  {slots.map(({ roomId, slot }) => (
+  <ProgramScheduleSlot
+    room={rooms.find((room) => room.id === roomId)}
+    column={scheduledRooms.findIndex((room) => room.id === roomId) + 1}
+    timeSlot={slot}
+    timeline={timeline}
+    labels={labels}
+    timezone={timezone}
+    roomLabels={roomLabels}
+  />
+))}
+</div>

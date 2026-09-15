@@ -1,0 +1,74 @@
+---
+import type { ProgramRoom, ProgramSlot } from '~/domains/pages/program/model/schedule';
+import { ProgramSearchTextNormalizer } from '~/domains/pages/program/services/search-text-normalizer';
+import type { ProgramDisplaySession } from '~/domains/pages/program/services/shared-sessions';
+import type { ProgramTimelineLayout } from '~/domains/pages/program/services/timeline-layout';
+import ProgramSessionCard from './ProgramSessionCard.astro';
+import type { ProgramScheduleLabels } from './program-schedule.types';
+
+interface Props {
+  room?: ProgramRoom;
+  column: number;
+  timeSlot: ProgramSlot<ProgramDisplaySession>;
+  timeline: ProgramTimelineLayout;
+  labels: ProgramScheduleLabels;
+  timezone: string;
+  roomLabels: ReadonlyMap<string, string>;
+}
+
+const { room, column, timeSlot: slot, timeline, labels, timezone, roomLabels } = Astro.props;
+const timeFormatter = new Intl.DateTimeFormat('en-GB', {
+  hour: '2-digit',
+  minute: '2-digit',
+  timeZone: timezone,
+});
+const formatTime = (value: string) => timeFormatter.format(new Date(value));
+const roomLabel = room?.label ?? labels.globalLabel;
+---
+
+<section
+  data-program-slot
+  data-program-shared-slot={!room ? true : undefined}
+  data-room-id={room?.id ?? ''}
+  data-starts-at={slot.startsAt}
+  data-ends-at={slot.endsAt}
+  aria-label={`${roomLabel}: ${formatTime(slot.startsAt)}–${formatTime(slot.endsAt)}`}
+  style={{
+  '--program-slot-start': (timeline.lines.get(Date.parse(slot.startsAt)) ?? 1) + 1,
+  '--program-slot-end': (timeline.lines.get(Date.parse(slot.endsAt)) ?? 2) + 1,
+  '--program-room-column': column,
+}}
+  class:list={[
+  'flex min-w-0 flex-col gap-2 rounded-2xl border border-gray-200/70 bg-slate-50/60 p-3 dark:border-slate-800 dark:bg-slate-950/40 md:row-[var(--program-slot-start)/var(--program-slot-end)]',
+  room ? 'md:col-start-[var(--program-room-column)]' : 'md:col-[1/-1]',
+]}
+>
+  <div class="flex flex-wrap items-center gap-2 px-1 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">
+    <span class="sr-only">{labels.timeLabel}</span>
+    <time datetime={slot.startsAt}>{formatTime(slot.startsAt)}</time>
+    <span class="text-gray-400 dark:text-slate-500" aria-hidden="true">–</span>
+    <time datetime={slot.endsAt}>{formatTime(slot.endsAt)}</time>
+    <span
+      hidden
+      data-slot-live-badge
+      class="ml-auto rounded-full bg-sky-100 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-sky-700 dark:bg-sky-950/40 dark:text-sky-200"
+    ></span>
+  </div>
+
+  {slot.sessions.map((session) => (
+  <ProgramSessionCard
+    session={session}
+    sourceIds={session.sourceIds}
+    roomIds={session.roomIds}
+    isGlobal={!room}
+    tone={room?.accent ?? 'from-sky-500 to-cyan-400'}
+    roomId={room?.id ?? ''}
+    roomLabel={roomLabel}
+    labels={labels}
+    searchText={ProgramSearchTextNormalizer.compose([
+      ProgramSearchTextNormalizer.fromSession(session, roomLabels),
+      ...session.roomIds.map((id) => roomLabels.get(id)),
+    ])}
+  />
+))}
+</section>

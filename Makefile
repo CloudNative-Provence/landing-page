@@ -12,6 +12,9 @@ setup: ## Prepare stack to run
 start: ## Start application in dev mode
 	npm --prefix application run start
 
+fetch-schedule: ## Update the program from Conference Hall (requires CONFERENCEHALL_API_KEY)
+	node --experimental-strip-types scripts/fetch-schedule/cli.mjs
+
 lint: ## Run linters
 	npm --prefix application run lint:ci -- $(filter-out $@,$(MAKECMDGOALS))
 	$(call run_linter,)

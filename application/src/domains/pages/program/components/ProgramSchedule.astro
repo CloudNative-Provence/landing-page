@@ -8,7 +8,7 @@ import ProgramScheduleGrid from './ProgramScheduleGrid.astro';
 import ProgramSelectionPanel from './ProgramSelectionPanel.astro';
 import type { ProgramScheduleProps } from './program-schedule.types';
 
-const { hero, highlights, filters, selection, labels, tracks, rooms, sessions } = Astro.props as ProgramScheduleProps;
+const { hero, highlights, filters, selection, labels, rooms, sessions } = Astro.props as ProgramScheduleProps;
 const sessionIds = sessions.map((session) => session.id);
 ---
 
@@ -93,7 +93,7 @@ const sessionIds = sessions.map((session) => session.id);
     <div class="space-y-6" data-program-controls>
       <ProgramSelectionPanel selection={selection} filters={filters} />
 
-      <ProgramFiltersPanel filters={filters} tracks={tracks} rooms={rooms} />
+      <ProgramFiltersPanel filters={filters} rooms={rooms} />
     </div>
 
     <div
@@ -105,7 +105,7 @@ const sessionIds = sessions.map((session) => session.id);
       <p class="mt-2 text-sm text-muted">{labels.noResultsText}</p>
     </div>
 
-    <ProgramScheduleGrid labels={labels} tracks={tracks} rooms={rooms} sessions={sessions} timezone={hero.timezone} />
+    <ProgramScheduleGrid labels={labels} rooms={rooms} sessions={sessions} timezone={hero.timezone} />
   </div>
 </program-schedule>
 

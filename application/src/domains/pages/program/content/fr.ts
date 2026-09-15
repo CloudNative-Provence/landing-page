@@ -2,24 +2,21 @@ const programContent = {
   metadata: {
     title: 'Programme',
     description:
-      'Consultez le programme de KCD Provence 2026, filtrez les sessions par parcours ou par salle et composez votre journée.',
+      'Consultez le programme de KCD Provence 2026, filtrez les sessions par salle et composez votre journée.',
   },
   hero: {
     tagline: 'Programme',
     title: 'Préparez votre journée à KCD Provence',
     subtitle:
-      'Explorez le programme complet, comparez les parcours, enregistrez vos sessions favorites, partagez votre agenda personnel et exportez-le dans votre calendrier.',
+      'Explorez le programme complet, enregistrez vos sessions favorites, partagez votre agenda personnel et exportez-le dans votre calendrier.',
   },
   highlightLabels: {
-    tracks: 'Parcours',
     rooms: 'Salles',
     sessions: 'Sessions',
   },
   filters: {
     searchLabel: 'Rechercher dans le programme',
     searchPlaceholder: 'Chercher par titre, intervenant, résumé, sujet…',
-    trackLabel: 'Parcours',
-    allTracksLabel: 'Tous les parcours',
     roomLabel: 'Salle',
     allRoomsLabel: 'Toutes les salles',
     selectedOnlyLabel: 'Uniquement mon agenda',
@@ -33,7 +30,7 @@ const programContent = {
     title: 'Mon agenda',
     subtitle: 'Vos choix sont sauvegardés dans votre navigateur sur cet appareil.',
     savedLabel: 'sessions sauvegardées',
-    emptyLabel: 'Sélectionnez des sessions pour composer votre propre parcours.',
+    emptyLabel: 'Sélectionnez des sessions pour composer votre agenda.',
     clearLabel: 'Effacer les sessions sauvegardées',
     conflictPromptLabel:
       "Ce lien contient un agenda différent de votre agenda sauvegardé. Appuyez sur OK pour garder l'agenda du lien, ou sur Annuler pour garder votre agenda sauvegardé.",
@@ -51,16 +48,20 @@ const programContent = {
     timeLabel: 'Horaire',
     roomLabel: 'Salle',
     speakersLabel: 'Intervenants',
-    globalLabel: 'Tous les parcours',
+    languageLabel: 'Langue de la session',
+    languageNames: { en: 'Anglais', fr: 'Français' },
+    globalLabel: 'Toutes les salles',
     liveNowLabel: 'En direct',
     upcomingLabel: 'À venir',
     addLabel: 'Ajouter à mon agenda',
     removeLabel: 'Enregistré',
     detailsLabel: 'Détails',
+    closeLabel: 'Fermer',
+    speakerProfileLabel: 'Voir le profil de {name}',
+    speakerLinksLabel: 'Retrouvez cet intervenant en ligne',
     noResultsTitle: 'Aucune session ne correspond à vos filtres',
     noResultsText:
       'Essayez un autre mot-clé, choisissez une autre salle ou réinitialisez les filtres pour revoir tout le programme.',
-    emptyTrackSlotLabel: "Aucune session n'est prévue dans ce parcours sur ce créneau.",
   },
 } as const;
 
