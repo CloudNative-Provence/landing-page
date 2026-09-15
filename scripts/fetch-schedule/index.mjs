@@ -1,38 +1,38 @@
 /**
  * Entry point for the fetch-schedule github-script action.
  *
- * Required environment variables:
- *   CONFERENCEHALL_API_KEY  – API key from the Conference Hall event settings
+ * All parameters are passed explicitly from the action — no environment
+ * variables are read inside this module.
  *
- * Optional environment variables:
- *   CONFERENCEHALL_API_BASE – Override the API base URL (default: https://conference-hall.io)
- *
- * The Conference Hall event ID is read automatically from application/src/config.yaml.
- *
- * @param {import('@actions/github-script').AsyncFunctionArguments} AsyncFunctionArguments
+ * @param {import('@actions/github-script').AsyncFunctionArguments & {
+ *   apiKey: string,
+ *   apiBase: string,
+ *   workspaceDir: string,
+ * }} params
  */
-export default async ({ core, io }) => {
+export default async ({ core, io, apiKey, apiBase, workspaceDir }) => {
   const { readEventIdFromConfig } = await import('./config-reader.mjs');
   const { fetchConferenceHallEvent } = await import('./conference-hall-client.mjs');
   const { mapEventToScheduleModel } = await import('./schedule-mapper.mjs');
   const { renderScheduleFile } = await import('./schedule-renderer.mjs');
   const { writeScheduleFiles } = await import('./schedule-writer.mjs');
 
-  const apiKey = process.env.CONFERENCEHALL_API_KEY;
-  const apiBase = process.env.CONFERENCEHALL_API_BASE;
-  const workspaceDir = process.env.GITHUB_WORKSPACE;
-
   if (!apiKey) {
-    core.setFailed('CONFERENCEHALL_API_KEY environment variable is required');
+    core.setFailed('apiKey parameter is required');
     return;
   }
 
   if (!apiBase) {
-    core.setFailed('CONFERENCEHALL_API_BASE environment variable is required');
+    core.setFailed('apiBase parameter is required');
     return;
   }
 
-  const eventId = readEventIdFromConfig(workspaceDir);
+  if (!workspaceDir) {
+    core.setFailed('workspaceDir parameter is required');
+    return;
+  }
+
+  const eventId = readEventIdFromConfig(workspaceDir, apiBase);
   core.info(`Event ID from config: ${eventId}`);
 
   core.info(`Fetching schedule from Conference Hall …`);
