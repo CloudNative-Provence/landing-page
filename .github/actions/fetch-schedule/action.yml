@@ -1,12 +1,11 @@
 name: Fetch schedule from Conference Hall
-description: Fetches the event schedule from the Conference Hall API and regenerates the TypeScript schedule content files.
+description: >
+  Fetches the event schedule from the Conference Hall API and regenerates the TypeScript schedule content files.
+  The Conference Hall event ID is read automatically from application/src/config.yaml.
 
 inputs:
   api-key:
     description: Conference Hall API key
-    required: true
-  event-id:
-    description: Conference Hall event ID
     required: true
   api-base:
     description: Conference Hall API base URL
@@ -20,9 +19,8 @@ runs:
       uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71 # v9.0.0
       env:
         CONFERENCEHALL_API_KEY: ${{ inputs.api-key }}
-        CONFERENCEHALL_EVENT_ID: ${{ inputs.event-id }}
         CONFERENCEHALL_API_BASE: ${{ inputs.api-base }}
       with:
         script: |
-          const { default: fetchSchedule } = await import('${{ github.workspace }}/scripts/fetch-schedule.mjs');
+          const { default: fetchSchedule } = await import('${{ github.workspace }}/scripts/fetch-schedule/index.mjs');
           await fetchSchedule({ core, io });
