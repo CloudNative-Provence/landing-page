@@ -1,4 +1,4 @@
-import type { ProgramRoom, ProgramSession, ProgramTrack } from '~/domains/pages/program/model/schedule';
+import type { ProgramRoom, ProgramSession } from '~/domains/pages/program/model/schedule';
 
 export interface ProgramHighlight {
   label: string;
@@ -17,8 +17,6 @@ export interface ProgramScheduleHero {
 export interface ProgramScheduleFilters {
   searchLabel: string;
   searchPlaceholder: string;
-  trackLabel: string;
-  allTracksLabel: string;
   roomLabel: string;
   allRoomsLabel: string;
   selectedOnlyLabel: string;
@@ -51,15 +49,19 @@ export interface ProgramScheduleLabels {
   timeLabel: string;
   roomLabel: string;
   speakersLabel: string;
+  languageLabel: string;
+  languageNames: Readonly<Record<'en' | 'fr', string>>;
   globalLabel: string;
   liveNowLabel: string;
   upcomingLabel: string;
   addLabel: string;
   removeLabel: string;
   detailsLabel: string;
+  closeLabel: string;
+  speakerProfileLabel: string;
+  speakerLinksLabel: string;
   noResultsTitle: string;
   noResultsText: string;
-  emptyTrackSlotLabel: string;
 }
 
 export interface ProgramScheduleProps {
@@ -68,7 +70,6 @@ export interface ProgramScheduleProps {
   filters: ProgramScheduleFilters;
   selection: ProgramScheduleSelection;
   labels: ProgramScheduleLabels;
-  tracks: readonly ProgramTrack[];
   rooms: readonly ProgramRoom[];
   sessions: readonly ProgramSession[];
 }

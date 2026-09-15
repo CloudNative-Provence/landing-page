@@ -18,6 +18,7 @@ interface ResolveSelectionSourceParams {
   queryValue: string | null | undefined;
   storageValue: string | null | undefined;
   validIds: readonly string[];
+  canonicalIds?: ReadonlyMap<string, string>;
 }
 
 export class ProgramSelectionSourceResolver {
@@ -25,9 +26,13 @@ export class ProgramSelectionSourceResolver {
     queryValue,
     storageValue,
     validIds,
+    canonicalIds,
   }: ResolveSelectionSourceParams): ProgramSelectionSourceResolution {
-    const querySelection = ProgramSelectionCodec.parse(queryValue, validIds);
-    const storageSelection = ProgramSelectionCodec.parse(storageValue, validIds);
+    const normalize = (value: string | null | undefined) => [
+      ...new Set(ProgramSelectionCodec.parse(value, validIds).map((id) => canonicalIds?.get(id) ?? id)),
+    ];
+    const querySelection = normalize(queryValue);
+    const storageSelection = normalize(storageValue);
     const serializedQuery = ProgramSelectionCodec.serialize(querySelection);
     const serializedStorage = ProgramSelectionCodec.serialize(storageSelection);
 

@@ -68,30 +68,6 @@ Key files:
 - `application/src/pages/[lang]/[page].astro` - localized dynamic pages
 - `application/src/i18n/routes.ts` - slug mapping and path translation helpers
 
-## Program schedule URL parameters
-
-The program page (`/{lang}/programme` in `fr`, `/{lang}/program` in `en`) reads query parameters to preload a view. They can be combined.
-
-| Parameter    | Values | Effect                                                                                                                           |
-| ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------- |
-| `agenda`     | token  | Preselects saved sessions. Encoded as a compact, order-stable token (see below); legacy comma-separated ID lists still parse.    |
-| `live`       | `true` | Enables the live view: dims past sessions and highlights the current one, auto-refreshing over time.                             |
-| `fullscreen` | `true` | Opens the presentation (kiosk/TV) layout: hides the filters and agenda panels, shows a top bar with clock, and fills the screen. |
-
-Notes:
-
-- **Agenda token** — produced by `ProgramSelectionCodec.encode()`; it compresses the session IDs so the URL stays short regardless of how many sessions are saved, and stays valid even if the schedule order changes. `share` links use this token; `localStorage` keeps the plain ID list for durability.
-- **Fullscreen flag** — because the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) requires a user gesture, the flag applies the presentation layout immediately
-  (ideal when the browser is already in OS-level/kiosk fullscreen on a TV) and upgrades to real browser fullscreen on the first tap/keypress. Exit with `Esc` or the top-bar button; both strip the `fullscreen` flag from the URL.
-- Example wall display: `/{lang}/programme?fullscreen=true&live=true`.
-
-Key files:
-
-- `application/src/domains/pages/program/components/program-schedule-element.ts` - client behavior (selection, live view, fullscreen/presentation mode)
-- `application/src/domains/pages/program/services/selection-codec.ts` - agenda token encode/decode
-- `application/src/domains/pages/program/services/live-view.ts` - `live` param + live-state classification
-- `application/src/domains/pages/program/services/fullscreen-view.ts` - `fullscreen` param helper
-
 ## Translations
 
 Translations are split by **domain** and **locale** (`en.ts`, `fr.ts`) using nested objects (no dot-string keys in data files).
@@ -281,6 +257,70 @@ Everything else should live under `domains/`, `shared/`, `pages/`, `layouts/`, `
 - `shared/` must not depend on `pages/`, and it should stay free of domain-specific knowledge.
 - Do not introduce new generic buckets like `data/` or `utils/`; choose the owning domain and name files for the behavior they provide.
 - If a folder starts collecting more than one kind of responsibility, split by domain before adding more files.
+
+## Program schedule
+
+### Program schedule import
+
+The program content is generated from Conference Hall's `/api/v1/event/:event/schedule` export.
+To refresh it locally, export `CONFERENCEHALL_API_KEY` in your shell and run:
+
+```bash
+make fetch-schedule
+```
+
+This uses the same importer as the daily `fetch-schedule` workflow and updates
+`application/src/domains/pages/program/content/schedule.ts`. Both locales use this one file, preserving the
+source titles, descriptions, speaker profiles, room names, session IDs, and session times, including
+breaks and other entries without a talk proposal. Sessions refer directly to rooms; the
+Conference Hall export calls the room name `track`. Empty or invalid responses fail before
+replacing the existing schedule. Keep session edits in Conference Hall, then regenerate.
+
+Each room has its own chronological schedule and time labels. Side-by-side rooms share time
+boundaries: matching slots align and have equal heights, while longer sessions span the shorter
+slots in other rooms without empty placeholder cards. Filtering recalculates the layout from
+visible sessions. Identical sessions with the same time range in every room appear once in a
+full-width row. Their original Conference Hall IDs remain valid in saved and shared agendas.
+On smaller screens, entries form one chronological list with natural card heights.
+
+Session descriptions and speaker biographies render Markdown. Schedule cards show speaker names as
+plain text. In session details, speaker names and photos open profiles with their biography, company,
+and public links when provided by Conference Hall.
+
+The event day and display timezone come exclusively from `event.startsAt` and `event.timeZone`
+in `application/src/config.yaml`. Every published schedule day and session start/end must fall
+on that event day in the configured timezone, or the import throws before writing any files.
+The program page also checks session dates during site generation, so changing the config
+without refreshing an incompatible schedule fails instead of showing conflicting dates.
+
+The importer loads the shared TypeScript date validator using Node’s built-in type stripping,
+enabled explicitly in the local commands and GitHub Action for compatibility with Node 22.12 and newer.
+
+Importer tests run with `npm --prefix application run test:schedule` and as part of the regular test suite.
+
+### Program schedule URL parameters
+
+The program page (`/{lang}/programme` in `fr`, `/{lang}/program` in `en`) reads query parameters to preload a view. They can be combined.
+
+| Parameter    | Values | Effect                                                                                                                           |
+| ------------ | ------ | -------------------------------------------------------------------------------------------------------------------------------- |
+| `agenda`     | token  | Preselects saved sessions. Encoded as a compact, order-stable token (see below); legacy comma-separated ID lists still parse.    |
+| `live`       | `true` | Enables the live view: dims past sessions and highlights the current one, auto-refreshing over time.                             |
+| `fullscreen` | `true` | Opens the presentation (kiosk/TV) layout: hides the filters and agenda panels, shows a top bar with clock, and fills the screen. |
+
+Notes:
+
+- **Agenda token** — produced by `ProgramSelectionCodec.encode()`; it compresses the session IDs so the URL stays short regardless of how many sessions are saved, and stays valid even if the schedule order changes. `share` links use this token; `localStorage` keeps the plain ID list for durability.
+- **Fullscreen flag** — because the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) requires a user gesture, the flag applies the presentation layout immediately
+  (ideal when the browser is already in OS-level/kiosk fullscreen on a TV) and upgrades to real browser fullscreen on the first tap/keypress. Exit with `Esc` or the top-bar button; both strip the `fullscreen` flag from the URL.
+- Example wall display: `/{lang}/programme?fullscreen=true&live=true`.
+
+Key files:
+
+- `application/src/domains/pages/program/components/program-schedule-element.ts` - client behavior (selection, live view, fullscreen/presentation mode)
+- `application/src/domains/pages/program/services/selection-codec.ts` - agenda token encode/decode
+- `application/src/domains/pages/program/services/live-view.ts` - `live` param + live-state classification
+- `application/src/domains/pages/program/services/fullscreen-view.ts` - `fullscreen` param helper
 
 ## CI
 

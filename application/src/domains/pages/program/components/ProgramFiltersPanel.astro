@@ -1,17 +1,16 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-import type { ProgramRoom, ProgramTrack } from '~/domains/pages/program/model/schedule';
+import type { ProgramRoom } from '~/domains/pages/program/model/schedule';
 
 import type { ProgramScheduleFilters } from './program-schedule.types';
 
 interface Props {
   filters: ProgramScheduleFilters;
-  tracks: readonly ProgramTrack[];
   rooms: readonly ProgramRoom[];
 }
 
-const { filters, tracks, rooms } = Astro.props;
+const { filters, rooms } = Astro.props;
 
 const selectClass =
   'w-full appearance-none rounded-xl border border-gray-200 bg-white py-2.5 pl-9 pr-8 text-sm font-medium text-gray-800 outline-none transition focus:border-sky-400 focus:ring-2 focus:ring-sky-100 dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:focus:ring-sky-900/30';
@@ -40,21 +39,6 @@ const togglePillClass =
     </label>
 
     <div class="flex flex-wrap items-center gap-2">
-      <div class="relative w-full min-w-0 sm:w-auto sm:flex-1 lg:flex-none">
-        <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 dark:text-slate-500">
-          <Icon name="tabler:layout-grid" class="h-4 w-4" />
-        </span>
-        <select data-filter-track aria-label={filters.trackLabel} class={selectClass}>
-          <option value="">{filters.allTracksLabel}</option>
-          {tracks.map((track) => <option value={track.id}>{track.label}</option>)}
-        </select>
-        <span
-          class="pointer-events-none absolute inset-y-0 right-2.5 flex items-center text-gray-400 dark:text-slate-500"
-        >
-          <Icon name="tabler:chevron-down" class="h-4 w-4" />
-        </span>
-      </div>
-
       <div class="relative w-full min-w-0 sm:w-auto sm:flex-1 lg:flex-none">
         <span class="pointer-events-none absolute inset-y-0 left-3 flex items-center text-gray-400 dark:text-slate-500">
           <Icon name="tabler:map-pin" class="h-4 w-4" />

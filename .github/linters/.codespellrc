@@ -1,4 +1,4 @@
 [codespell]
 # Skip third-party/generated paths and French-locale content files.
 ignore-words-list = afterAll,provence
-skip = .git,.tmp-super-linter/**,super-linter-output/**,*.svg,**/package-lock.json,**/application/*/dist/**,**/application/*/node_modules/**,**/application/*/coverage/**,**/application/*/.astro/**,**/application/src/config.yaml,**/application/src/domains/**/*.fr.ts,**/application/src/domains/**/*.fr.md,**/application/src/domains/**/fr.ts,**/application/src/domains/**/fr.md,**/application/src/domains/event/sponsors/sponsors.ts
+skip = .git,.tmp-super-linter/**,super-linter-output/**,*.svg,**/package-lock.json,**/application/*/dist/**,**/application/*/node_modules/**,**/application/*/coverage/**,**/application/*/.astro/**,**/application/src/config.yaml,**/application/src/domains/**/*.fr.ts,**/application/src/domains/**/*.fr.md,**/application/src/domains/**/fr.ts,**/application/src/domains/**/fr.md,**/application/src/domains/event/sponsors/sponsors.ts,**/application/src/domains/pages/program/content/schedule.ts

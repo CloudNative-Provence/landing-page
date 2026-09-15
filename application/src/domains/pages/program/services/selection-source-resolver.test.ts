@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
+import { ProgramSelectionCodec } from './selection-codec';
 import { ProgramSelectionSourceResolver } from './selection-source-resolver';
 
 describe('ProgramSelectionSourceResolver', () => {
@@ -41,5 +42,37 @@ describe('ProgramSelectionSourceResolver', () => {
         validIds: ['talk-1', 'talk-2'],
       })
     ).toEqual({ type: 'resolved', selectedIds: ['talk-2', 'talk-1'], updateUrl: false });
+  });
+
+  it('restores either original ID as one shared session, including compressed agendas', () => {
+    const validIds = ['left-break', 'right-break'];
+    const canonicalIds = new Map([
+      ['left-break', 'left-break'],
+      ['right-break', 'left-break'],
+    ]);
+    for (const queryValue of ['right-break', ProgramSelectionCodec.encode(['left-break', 'right-break'], validIds)]) {
+      expect(
+        ProgramSelectionSourceResolver.resolve({
+          queryValue,
+          storageValue: null,
+          validIds,
+          canonicalIds,
+        })
+      ).toEqual({ type: 'resolved', selectedIds: ['left-break'], updateUrl: false });
+    }
+  });
+
+  it('does not report a conflict when two original IDs identify the same shared row', () => {
+    expect(
+      ProgramSelectionSourceResolver.resolve({
+        queryValue: 'right-break',
+        storageValue: 'left-break,right-break',
+        validIds: ['left-break', 'right-break'],
+        canonicalIds: new Map([
+          ['left-break', 'left-break'],
+          ['right-break', 'left-break'],
+        ]),
+      })
+    ).toEqual({ type: 'resolved', selectedIds: ['left-break'], updateUrl: false });
   });
 });
