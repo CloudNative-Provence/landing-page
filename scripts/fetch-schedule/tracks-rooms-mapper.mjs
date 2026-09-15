@@ -21,7 +21,7 @@ import { slugify } from './time-utils.mjs';
  * @param {import('./conference-hall-client.mjs').ConferenceHallRoom[]} scheduleRooms
  * @param {import('./conference-hall-client.mjs').ConferenceHallScheduleSession[]} scheduleSessions
  * @param {Map<string, import('./conference-hall-client.mjs').ConferenceHallTalk>} talkById
- * @returns {{ tracks: TrackDefinition[], rooms: RoomDefinition[], roomIdByTrackId: Map<string, string> }}
+ * @returns {{ tracks: TrackDefinition[], rooms: RoomDefinition[] }}
  */
 export function mapTracksAndRooms(categories, scheduleRooms, scheduleSessions, talkById) {
   /** @type {RoomDefinition[]} */
@@ -55,5 +55,5 @@ export function mapTracksAndRooms(categories, scheduleRooms, scheduleSessions, t
     return { id, label: cat.name, roomId: roomIdByTrackId.get(id) ?? '' };
   });
 
-  return { tracks, rooms, roomIdByTrackId };
+  return { tracks, rooms };
 }

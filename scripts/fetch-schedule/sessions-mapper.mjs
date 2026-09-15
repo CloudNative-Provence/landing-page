@@ -8,7 +8,6 @@ import { slugify, extractLocalTime } from './time-utils.mjs';
  * @property {string} startsAtTime
  * @property {string} endsAtTime
  * @property {string[]} trackIds
- * @property {string[]} roomIds  - Derived from the session's track (a track is always in the same room)
  * @property {string[]} [speakers]
  * @property {string} [format]
  * @property {boolean} [isGlobal]
@@ -17,16 +16,15 @@ import { slugify, extractLocalTime } from './time-utils.mjs';
 
 /**
  * Maps scheduled Conference Hall slots to session definitions.
- * The room for each session is derived from its track's room association.
+ * Room placement is the concern of the track, not the session.
  *
  * @param {import('./conference-hall-client.mjs').ConferenceHallSchedule} schedule
  * @param {Map<string, import('./conference-hall-client.mjs').ConferenceHallTalk>} talkById
  * @param {Map<string, import('./conference-hall-client.mjs').ConferenceHallCategory>} categoryById
  * @param {Map<string, import('./conference-hall-client.mjs').ConferenceHallFormat>} formatById
- * @param {Map<string, string>} roomIdByTrackId  - Derived from tracks-rooms-mapper
  * @returns {SessionDefinition[]}
  */
-export function mapSessionsFromSchedule(schedule, talkById, categoryById, formatById, roomIdByTrackId) {
+export function mapSessionsFromSchedule(schedule, talkById, categoryById, formatById) {
   const sessions = [];
 
   for (const slot of schedule.sessions) {
@@ -40,7 +38,6 @@ export function mapSessionsFromSchedule(schedule, talkById, categoryById, format
 
     const format = talk.formats ? formatById.get(talk.formats) : undefined;
     const trackId = slugify(category.name);
-    const roomId = roomIdByTrackId.get(trackId) ?? '';
 
     /** @type {SessionDefinition} */
     const session = {
@@ -50,7 +47,6 @@ export function mapSessionsFromSchedule(schedule, talkById, categoryById, format
       startsAtTime: extractLocalTime(slot.startTime),
       endsAtTime: extractLocalTime(slot.endTime),
       trackIds: [trackId],
-      roomIds: roomId ? [roomId] : [],
       speakers: talk.speakers?.map((s) => s.displayName) ?? [],
     };
 
@@ -95,7 +91,6 @@ export function mapSessionsFromTalks(talks, categoryById, formatById, logger) {
       startsAtTime: '00:00',
       endsAtTime: '00:00',
       trackIds: [trackId],
-      roomIds: [],
       speakers: talk.speakers?.map((s) => s.displayName) ?? [],
     };
 

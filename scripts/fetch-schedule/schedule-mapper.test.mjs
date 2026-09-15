@@ -55,7 +55,7 @@ describe('mapEventToScheduleModel', () => {
     assert.equal(rooms[0].label, 'Grand Auditorium');
   });
 
-  it('maps scheduled sessions with preserved local time; roomIds derived from track', () => {
+  it('maps scheduled sessions with preserved local time; room is track concern', () => {
     const { sessions } = mapEventToScheduleModel(event, noopLogger);
     assert.equal(sessions.length, 1);
     const s = sessions[0];
@@ -64,7 +64,7 @@ describe('mapEventToScheduleModel', () => {
     assert.equal(s.startsAtTime, '09:00');
     assert.equal(s.endsAtTime, '09:40');
     assert.deepEqual(s.trackIds, ['keynote']);
-    assert.deepEqual(s.roomIds, ['grand-auditorium']);
+    assert.equal(s.roomIds, undefined);
     assert.deepEqual(s.speakers, ['Alice']);
     assert.equal(s.format, 'Talk · 30 min');
     assert.deepEqual(s.tags, ['keynote', 'en']);

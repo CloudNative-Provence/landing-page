@@ -36,7 +36,7 @@ describe('renderStringArray', () => {
 });
 
 describe('renderSession', () => {
-  /** @type {import('./schedule-mapper.mjs').SessionDefinition} */
+  /** @type {import('./sessions-mapper.mjs').SessionDefinition} */
   const minimalSession = {
     id: 'my-session',
     title: 'My Session',
@@ -44,10 +44,9 @@ describe('renderSession', () => {
     startsAtTime: '09:00',
     endsAtTime: '09:30',
     trackIds: ['keynote'],
-    roomIds: ['auditorium'],
   };
 
-  it('renders required fields', () => {
+  it('renders required fields without roomIds', () => {
     const output = renderSession(minimalSession);
     assert.match(output, /id: 'my-session'/);
     assert.match(output, /title: 'My Session'/);
@@ -55,7 +54,7 @@ describe('renderSession', () => {
     assert.match(output, /startsAtTime: '09:00'/);
     assert.match(output, /endsAtTime: '09:30'/);
     assert.match(output, /trackIds: \['keynote'\]/);
-    assert.match(output, /roomIds: \['auditorium'\]/);
+    assert.doesNotMatch(output, /roomIds/);
   });
 
   it('wraps long descriptions onto a second line', () => {
@@ -110,7 +109,6 @@ describe('renderScheduleFile', () => {
         startsAtTime: '09:00',
         endsAtTime: '09:30',
         trackIds: ['keynote'],
-        roomIds: ['auditorium'],
       },
     ],
   };

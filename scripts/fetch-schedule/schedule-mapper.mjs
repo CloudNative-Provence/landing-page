@@ -34,7 +34,7 @@ export function mapEventToScheduleModel(event, logger) {
   const scheduleRooms = schedule?.rooms ?? [];
   const scheduleSessions = schedule?.sessions ?? [];
 
-  const { tracks, rooms, roomIdByTrackId } = mapTracksAndRooms(
+  const { tracks, rooms } = mapTracksAndRooms(
     categories,
     scheduleRooms,
     scheduleSessions,
@@ -43,7 +43,7 @@ export function mapEventToScheduleModel(event, logger) {
 
   /** @type {SessionDefinition[]} */
   const sessions = schedule?.sessions?.length
-    ? mapSessionsFromSchedule(schedule, talkById, categoryById, formatById, roomIdByTrackId)
+    ? mapSessionsFromSchedule(schedule, talkById, categoryById, formatById)
     : mapSessionsFromTalks(talks, categoryById, formatById, logger);
 
   sessions.sort((a, b) => a.startsAtTime.localeCompare(b.startsAtTime));
