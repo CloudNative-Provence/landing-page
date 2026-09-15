@@ -39,7 +39,7 @@ export function renderSession(session) {
 
   lines.push(`    startsAtTime: '${session.startsAtTime}',`);
   lines.push(`    endsAtTime: '${session.endsAtTime}',`);
-  lines.push(`    trackIds: ${renderStringArray(session.trackIds)},`);
+  lines.push(`    trackId: '${session.trackId}',`);
 
   if (session.speakers?.length) {
     lines.push(`    speakers: ${renderStringArray(session.speakers)},`);

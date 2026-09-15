@@ -15,14 +15,12 @@ describe('ProgramSearchTextNormalizer', () => {
         description: 'Une session pour l’équipe plateforme',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:40:00+01:00',
-        trackIds: ['platform'],
-        roomIds: ['auditorium'],
+        trackId: 'platform',
         speakers: ['Émilien Escalle'],
         format: 'Talk',
         tags: ['résilience'],
       },
-      new Map([['platform', 'Plateforme']]),
-      new Map([['auditorium', 'Grand Auditorium']])
+      new Map([['platform', 'Plateforme']])
     );
 
     expect(searchText).toContain('keynote douverture');

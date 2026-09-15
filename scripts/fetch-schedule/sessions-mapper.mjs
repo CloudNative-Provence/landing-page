@@ -7,7 +7,7 @@ import { slugify, extractLocalTime } from './time-utils.mjs';
  * @property {string} description
  * @property {string} startsAtTime
  * @property {string} endsAtTime
- * @property {string[]} trackIds
+ * @property {string} trackId
  * @property {string[]} [speakers]
  * @property {string} [format]
  * @property {boolean} [isGlobal]
@@ -46,7 +46,7 @@ export function mapSessionsFromSchedule(schedule, talkById, categoryById, format
       description: talk.abstract ?? '',
       startsAtTime: extractLocalTime(slot.startTime),
       endsAtTime: extractLocalTime(slot.endTime),
-      trackIds: [trackId],
+      trackId,
       speakers: talk.speakers?.map((s) => s.displayName) ?? [],
     };
 
@@ -90,7 +90,7 @@ export function mapSessionsFromTalks(talks, categoryById, formatById, logger) {
       description: talk.abstract ?? '',
       startsAtTime: '00:00',
       endsAtTime: '00:00',
-      trackIds: [trackId],
+      trackId,
       speakers: talk.speakers?.map((s) => s.displayName) ?? [],
     };
 

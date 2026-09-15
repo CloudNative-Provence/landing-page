@@ -43,18 +43,17 @@ describe('renderSession', () => {
     description: 'Short desc.',
     startsAtTime: '09:00',
     endsAtTime: '09:30',
-    trackIds: ['keynote'],
+    trackId: 'keynote',
   };
 
-  it('renders required fields without roomIds', () => {
+  it('renders required fields', () => {
     const output = renderSession(minimalSession);
     assert.match(output, /id: 'my-session'/);
     assert.match(output, /title: 'My Session'/);
     assert.match(output, /description: 'Short desc\.'/);
     assert.match(output, /startsAtTime: '09:00'/);
     assert.match(output, /endsAtTime: '09:30'/);
-    assert.match(output, /trackIds: \['keynote'\]/);
-    assert.doesNotMatch(output, /roomIds/);
+    assert.match(output, /trackId: 'keynote'/);
   });
 
   it('wraps long descriptions onto a second line', () => {
@@ -108,7 +107,7 @@ describe('renderScheduleFile', () => {
         description: 'Intro',
         startsAtTime: '09:00',
         endsAtTime: '09:30',
-        trackIds: ['keynote'],
+        trackId: 'keynote',
       },
     ],
   };

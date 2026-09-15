@@ -63,8 +63,7 @@ describe('mapEventToScheduleModel', () => {
     assert.equal(s.title, 'Opening keynote');
     assert.equal(s.startsAtTime, '09:00');
     assert.equal(s.endsAtTime, '09:40');
-    assert.deepEqual(s.trackIds, ['keynote']);
-    assert.equal(s.roomIds, undefined);
+    assert.equal(s.trackId, 'keynote');
     assert.deepEqual(s.speakers, ['Alice']);
     assert.equal(s.format, 'Talk · 30 min');
     assert.deepEqual(s.tags, ['keynote', 'en']);

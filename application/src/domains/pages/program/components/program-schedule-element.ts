@@ -356,16 +356,16 @@ class ProgramScheduleElement extends HTMLElement {
 
     this.cards.forEach((card) => {
       const searchText = card.dataset.searchText || '';
-      const trackIds = (card.dataset.trackIds || '').split(',').filter(Boolean);
-      const roomIds = (card.dataset.roomIds || '').split(',').filter(Boolean);
+      const trackId = card.dataset.trackId || '';
+      const roomId = card.dataset.roomId || '';
       const isSelected = this.selectedIds.has(card.dataset.sessionId || '');
       const isGlobal = card.dataset.global === 'true';
       const slot = card.closest<HTMLElement>('[data-program-slot]');
       const liveState = slot ? this.getSlotLiveState(slot, now) : 'upcoming';
 
       const matchesQuery = !query || searchText.includes(query);
-      const matchesTrack = !track || isGlobal || trackIds.includes(track);
-      const matchesRoom = !room || roomIds.includes(room);
+      const matchesTrack = !track || isGlobal || trackId === track;
+      const matchesRoom = !room || roomId === room;
       const matchesSelection = !selectedOnly || isSelected;
       const matchesLive = !this.liveEnabled || liveState !== 'past';
       const isVisible = matchesQuery && matchesTrack && matchesRoom && matchesSelection && matchesLive;

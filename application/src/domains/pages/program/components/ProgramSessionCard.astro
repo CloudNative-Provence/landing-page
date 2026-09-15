@@ -5,6 +5,7 @@ import type { ProgramSession } from '~/domains/pages/program/model/schedule';
 
 interface Props {
   session: ProgramSession;
+  roomId: string;
   roomLabel: string;
   trackLabel: string;
   tone: string;
@@ -19,7 +20,7 @@ interface Props {
   searchText: string;
 }
 
-const { session, roomLabel, trackLabel, tone, isGlobal, labels, searchText } = Astro.props;
+const { session, roomId, roomLabel, trackLabel, tone, isGlobal, labels, searchText } = Astro.props;
 const detailsPopoverId = `program-session-details-${session.id}`;
 ---
 
@@ -30,8 +31,8 @@ const detailsPopoverId = `program-session-details-${session.id}`;
   data-session-description={session.description}
   data-session-location={roomLabel}
   data-search-text={searchText}
-  data-track-ids={session.trackIds.join(',')}
-  data-room-ids={session.roomIds.join(',')}
+  data-track-id={session.trackId ?? ''}
+  data-room-id={roomId}
   data-starts-at={session.startsAt}
   data-ends-at={session.endsAt}
   data-global={String(isGlobal)}
