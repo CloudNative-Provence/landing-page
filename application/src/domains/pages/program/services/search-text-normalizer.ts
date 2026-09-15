@@ -20,19 +20,14 @@ export class ProgramSearchTextNormalizer {
     );
   }
 
-  static fromSession(
-    session: ProgramSession,
-    trackLabels: ReadonlyMap<string, string>,
-    roomLabels: ReadonlyMap<string, string>
-  ): string {
+  static fromSession(session: ProgramSession, trackLabels: ReadonlyMap<string, string>): string {
     return this.compose([
       session.title,
       session.description,
       session.format,
       ...(session.speakers ?? []),
       ...(session.tags ?? []),
-      ...session.trackIds.map((trackId) => trackLabels.get(trackId) ?? ''),
-      ...session.roomIds.map((roomId) => roomLabels.get(roomId) ?? ''),
+      ...(session.trackId ? [trackLabels.get(session.trackId) ?? ''] : []),
     ]);
   }
 }

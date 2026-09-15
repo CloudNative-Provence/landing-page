@@ -1,0 +1,43 @@
+name: Fetch program schedule from Conference Hall
+
+on:
+  schedule:
+    # Run every day at 06:00 UTC
+    - cron: '0 6 * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: true
+
+permissions: {}
+
+jobs:
+  fetch-schedule:
+    name: Fetch & update schedule
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Fetch schedule from Conference Hall API
+        uses: ./.github/actions/fetch-schedule
+        with:
+          api-key: ${{ secrets.CONFERENCEHALL_API_KEY }}
+          api-base: https://conference-hall.io
+
+      - name: Create and merge pull request with updated schedule
+        uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@3a27d31e9ccefbe9609cc9165017ed100ff34a22 # 0.38.0
+        with:
+          branch: chore/update-schedule
+          title: 'feat(program): update schedule from Conference Hall'
+          body: |
+            Automated update of the program schedule sessions fetched from the
+            [Conference Hall](https://conference-hall.io) event API.
+
+            Triggered by: `${{ github.event_name }}`
+          commit-message: 'feat(program): update schedule from Conference Hall'

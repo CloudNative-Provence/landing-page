@@ -2,6 +2,7 @@ export interface ProgramTrack {
   id: string;
   label: string;
   accent: string;
+  roomId: string;
 }
 
 export interface ProgramRoom {
@@ -15,8 +16,7 @@ export interface ProgramSession {
   description: string;
   startsAt: string;
   endsAt: string;
-  trackIds: readonly string[];
-  roomIds: readonly string[];
+  trackId?: string;
   speakers?: readonly string[];
   format?: string;
   isGlobal?: boolean;

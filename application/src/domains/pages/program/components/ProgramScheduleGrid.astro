@@ -21,10 +21,14 @@ interface Props {
 const { labels, tracks, rooms, sessions, timezone } = Astro.props;
 
 const roomMap = new Map(rooms.map((room) => [room.id, room]));
+const trackMap = new Map(tracks.map((track) => [track.id, track]));
 const trackLabelMap = new Map(tracks.map((track) => [track.id, track.label]));
-const roomLabelMap = new Map(rooms.map((room) => [room.id, room.label]));
 const slots = groupProgramSessionsBySlot(sessions);
-const allTrackIds = tracks.map((track) => track.id);
+
+const getSessionRoomId = (session: ProgramSession): string =>
+  (session.trackId ? trackMap.get(session.trackId)?.roomId : undefined) ?? '';
+
+const getSessionRoomLabel = (session: ProgramSession): string => roomMap.get(getSessionRoomId(session))?.label ?? '';
 
 const formatTime = (value: string) =>
   new Intl.DateTimeFormat('en-GB', {
@@ -34,7 +38,7 @@ const formatTime = (value: string) =>
   }).format(new Date(value));
 
 const getSessionSearchText = (session: ProgramSession) =>
-  ProgramSearchTextNormalizer.fromSession(session, trackLabelMap, roomLabelMap);
+  ProgramSearchTextNormalizer.fromSession(session, trackLabelMap);
 ---
 
 <section
@@ -54,9 +58,7 @@ const getSessionSearchText = (session: ProgramSession) =>
     </div>
 
     {slots.map((slot) => {
-        const globalSessions = slot.sessions.filter(
-          (session) => session.isGlobal || session.trackIds.length === allTrackIds.length
-        );
+        const globalSessions = slot.sessions.filter((session) => session.isGlobal || !session.trackId);
         const trackSessions = slot.sessions.filter((session) => !globalSessions.includes(session));
 
         return (
@@ -89,7 +91,8 @@ const getSessionSearchText = (session: ProgramSession) =>
                   isGlobal={true}
                   trackLabel={labels.globalLabel}
                   tone="from-sky-500 to-cyan-400"
-                  roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
+                  roomId={getSessionRoomId(session)}
+                  roomLabel={getSessionRoomLabel(session)}
                   labels={labels}
                   searchText={getSessionSearchText(session)}
                 />
@@ -98,14 +101,15 @@ const getSessionSearchText = (session: ProgramSession) =>
               {trackSessions.length > 0 && (
                 <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
                   {tracks.map((track) => {
-                    const session = trackSessions.find((entry) => entry.trackIds.includes(track.id));
+                    const session = trackSessions.find((entry) => entry.trackId === track.id);
                     return session ? (
                       <ProgramSessionCard
                         session={session}
                         isGlobal={false}
                         trackLabel={track.label}
                         tone={track.accent}
-                        roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
+                        roomId={track.roomId}
+                        roomLabel={roomMap.get(track.roomId)?.label ?? ''}
                         labels={labels}
                         searchText={getSessionSearchText(session)}
                       />

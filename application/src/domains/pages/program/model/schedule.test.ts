@@ -11,8 +11,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAtTime: '09:00',
         endsAtTime: '09:30',
-        trackIds: ['main'],
-        roomIds: ['auditorium'],
+        trackId: 'main',
       },
     ]);
 
@@ -23,8 +22,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:30:00+01:00',
-        trackIds: ['main'],
-        roomIds: ['auditorium'],
+        trackId: 'main',
       },
     ]);
   });
@@ -37,8 +35,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAtTime: '09:00',
         endsAtTime: '09:30',
-        trackIds: ['main'],
-        roomIds: ['auditorium'],
+        trackId: 'main',
       },
     ]);
 
@@ -54,8 +51,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:30:00+01:00',
-        trackIds: ['main'],
-        roomIds: ['auditorium'],
+        trackId: 'main',
       },
       {
         id: 'b',
@@ -63,8 +59,7 @@ describe('program utilities', () => {
         description: 'Talk',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:30:00+01:00',
-        trackIds: ['platform'],
-        roomIds: ['cedar'],
+        trackId: 'platform',
       },
       {
         id: 'c',
@@ -72,8 +67,6 @@ describe('program utilities', () => {
         description: 'Coffee',
         startsAt: '2026-12-10T09:30:00+01:00',
         endsAt: '2026-12-10T10:00:00+01:00',
-        trackIds: ['main', 'platform'],
-        roomIds: ['expo'],
         isGlobal: true,
       },
     ]);
