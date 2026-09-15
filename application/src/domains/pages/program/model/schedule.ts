@@ -1,7 +1,8 @@
 export interface ProgramTrack {
   id: string;
   label: string;
-  accent: string;
+  accent?: string;
+  roomId?: string;
 }
 
 export interface ProgramRoom {

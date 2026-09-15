@@ -1,41 +1,9 @@
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
 
-import { slugify, extractLocalTime, mapEventToScheduleModel } from './schedule-mapper.mjs';
+import { mapEventToScheduleModel } from './schedule-mapper.mjs';
 
 const noopLogger = { warning: () => {} };
-
-describe('slugify', () => {
-  it('lowercases and replaces spaces with dashes', () => {
-    assert.equal(slugify('Platform Engineering'), 'platform-engineering');
-  });
-
-  it('strips diacritics', () => {
-    assert.equal(slugify('Salle Sainte-Victoire'), 'salle-sainte-victoire');
-  });
-
-  it('collapses multiple non-alphanumeric chars', () => {
-    assert.equal(slugify('Hello   World!!'), 'hello-world');
-  });
-
-  it('trims leading and trailing dashes', () => {
-    assert.equal(slugify('  hello  '), 'hello');
-  });
-});
-
-describe('extractLocalTime', () => {
-  it('returns HH:MM from a timezone-offset ISO string', () => {
-    assert.equal(extractLocalTime('2026-12-10T09:00:00+01:00'), '09:00');
-  });
-
-  it('returns HH:MM from a UTC ISO string', () => {
-    assert.equal(extractLocalTime('2026-12-10T13:45:00Z'), '13:45');
-  });
-
-  it('throws for a string without time component', () => {
-    assert.throws(() => extractLocalTime('2026-12-10'), /Cannot extract time/);
-  });
-});
 
 describe('mapEventToScheduleModel', () => {
   /** @type {import('./conference-hall-client.mjs').ConferenceHallEvent} */
@@ -71,12 +39,13 @@ describe('mapEventToScheduleModel', () => {
     },
   };
 
-  it('maps categories to tracks', () => {
+  it('maps categories to tracks with roomId (no accent)', () => {
     const { tracks } = mapEventToScheduleModel(event, noopLogger);
     assert.equal(tracks.length, 2);
     assert.equal(tracks[0].id, 'keynote');
     assert.equal(tracks[0].label, 'Keynote');
-    assert.match(tracks[0].accent, /from-sky/);
+    assert.equal(tracks[0].roomId, 'grand-auditorium');
+    assert.equal(tracks[0].accent, undefined);
   });
 
   it('maps rooms', () => {
@@ -86,7 +55,7 @@ describe('mapEventToScheduleModel', () => {
     assert.equal(rooms[0].label, 'Grand Auditorium');
   });
 
-  it('maps scheduled sessions with preserved local time', () => {
+  it('maps scheduled sessions with preserved local time; roomIds derived from track', () => {
     const { sessions } = mapEventToScheduleModel(event, noopLogger);
     assert.equal(sessions.length, 1);
     const s = sessions[0];
@@ -158,13 +127,17 @@ describe('mapEventToScheduleModel', () => {
     assert.equal(sessions.length, 0);
   });
 
-  it('applies DEFAULT_ACCENT for unrecognised track slugs', () => {
-    const eventWithUnknownTrack = {
+  it('throws when a scheduled talk has no category (track)', () => {
+    const eventNoCategory = {
       ...event,
-      categories: [{ id: 'catX', name: 'Something New' }],
+      talks: [
+        { ...event.talks[0], categories: undefined },
+      ],
     };
 
-    const { tracks } = mapEventToScheduleModel(eventWithUnknownTrack, noopLogger);
-    assert.match(tracks[0].accent, /from-violet/);
+    assert.throws(
+      () => mapEventToScheduleModel(eventNoCategory, noopLogger),
+      /has no related track/
+    );
   });
 });

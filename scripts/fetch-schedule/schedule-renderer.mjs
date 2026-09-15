@@ -71,7 +71,7 @@ export function renderScheduleFile(model) {
   const trackLines = model.tracks
     .map(
       (t) =>
-        `  { id: '${escapeSingleQuote(t.id)}', label: '${escapeSingleQuote(t.label)}', accent: '${escapeSingleQuote(t.accent)}' }`
+        `  { id: '${escapeSingleQuote(t.id)}', label: '${escapeSingleQuote(t.label)}', roomId: '${escapeSingleQuote(t.roomId)}' }`
     )
     .join(',\n');
 

@@ -100,7 +100,7 @@ describe('renderSession', () => {
 
 describe('renderScheduleFile', () => {
   const model = {
-    tracks: [{ id: 'keynote', label: 'Keynotes', accent: 'from-sky-500 to-cyan-400' }],
+    tracks: [{ id: 'keynote', label: 'Keynotes', roomId: 'auditorium' }],
     rooms: [{ id: 'auditorium', label: 'Grand Auditorium' }],
     sessions: [
       {
@@ -123,10 +123,11 @@ describe('renderScheduleFile', () => {
     assert.match(output, /} as const;/);
   });
 
-  it('includes track data', () => {
+  it('includes track data with roomId', () => {
     const output = renderScheduleFile(model);
     assert.match(output, /id: 'keynote'/);
     assert.match(output, /label: 'Keynotes'/);
+    assert.match(output, /roomId: 'auditorium'/);
   });
 
   it('includes room data', () => {
