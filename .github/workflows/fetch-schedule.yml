@@ -24,19 +24,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Set up Node.js
-        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
-        with:
-          node-version-file: application/.node-version
-
       - name: Fetch schedule from Conference Hall API
-        uses: actions/github-script@d746ffe35508b1917358783b479e04febd2b8f71 # v9.0.0
-        env:
-          CONFERENCEHALL_API_KEY: ${{ secrets.CONFERENCEHALL_API_KEY }}
-          CONFERENCEHALL_EVENT_ID: ${{ vars.CONFERENCEHALL_EVENT_ID }}
+        uses: ./.github/actions/fetch-schedule
         with:
-          script: |
-            await import('${{ github.workspace }}/scripts/fetch-schedule.mjs')
+          api-key: ${{ secrets.CONFERENCEHALL_API_KEY }}
+          event-id: ${{ vars.CONFERENCEHALL_EVENT_ID }}
 
       - name: Create and merge pull request with updated schedule
         uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@3a27d31e9ccefbe9609cc9165017ed100ff34a22 # 0.38.0

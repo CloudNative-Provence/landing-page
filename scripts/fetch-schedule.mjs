@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 /**
  * Fetch the program schedule from the Conference Hall public API and regenerate
  * the two locale-specific schedule files:
@@ -11,429 +10,293 @@
  *
  * Optional environment variables:
  *   CONFERENCEHALL_API_BASE  – Override the base URL (default: https://conference-hall.io)
- */
-
-import { writeFileSync } from 'node:fs';
-import { resolve, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-// ---------------------------------------------------------------------------
-// Configuration
-// ---------------------------------------------------------------------------
-
-const API_BASE = process.env.CONFERENCEHALL_API_BASE ?? 'https://conference-hall.io';
-const EVENT_ID = process.env.CONFERENCEHALL_EVENT_ID;
-const API_KEY = process.env.CONFERENCEHALL_API_KEY;
-
-if (!EVENT_ID) {
-  console.error('Error: CONFERENCEHALL_EVENT_ID environment variable is required');
-  process.exit(1);
-}
-if (!API_KEY) {
-  console.error('Error: CONFERENCEHALL_API_KEY environment variable is required');
-  process.exit(1);
-}
-
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-/**
- * Slugify a string into a URL-safe identifier.
- * @param {string} text
- * @returns {string}
- */
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
-}
-
-/**
- * Extract "HH:MM" from an ISO-8601 datetime string, preserving the original
- * local time rather than converting to UTC.
- * e.g. "2026-12-10T09:00:00+01:00" → "09:00"
- * @param {string} isoString
- * @returns {string}
- */
-function formatTime(isoString) {
-  const match = isoString.match(/T(\d{2}):(\d{2})/);
-  if (!match) {
-    throw new Error(`Cannot extract time from ISO string: ${isoString}`);
-  }
-  return `${match[1]}:${match[2]}`;
-}
-
-/**
- * Escape a string for safe inclusion inside a TypeScript single-quoted string.
- * @param {string} value
- * @returns {string}
- */
-function escapeSingleQuote(value) {
-  return value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-}
-
-/**
- * Render an array of strings as a TypeScript array literal (single-quoted values).
- * @param {string[]} values
- * @returns {string}
- */
-function renderStringArray(values) {
-  return `[${values.map((v) => `'${escapeSingleQuote(v)}'`).join(', ')}]`;
-}
-
-// ---------------------------------------------------------------------------
-// API fetch
-// ---------------------------------------------------------------------------
-
-/**
- * Fetch JSON from a URL, throwing on HTTP errors.
- * @param {string} url
- * @returns {Promise<unknown>}
- */
-async function fetchJson(url) {
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error(`HTTP ${response.status} ${response.statusText} — ${url}`);
-  }
-  return response.json();
-}
-
-// ---------------------------------------------------------------------------
-// API → schedule model
-// ---------------------------------------------------------------------------
-
-/**
- * @typedef {Object} ConferenceHallSpeaker
- * @property {string} uid
- * @property {string} displayName
- */
-
-/**
- * @typedef {Object} ConferenceHallTalk
- * @property {string} uid
- * @property {string} title
- * @property {string} [abstract]
- * @property {string} [categories]   – category id (maps to track)
- * @property {string} [formats]      – format id
- * @property {string} [language]
- * @property {ConferenceHallSpeaker[]} speakers
- */
-
-/**
- * @typedef {Object} ConferenceHallScheduleSession
- * @property {string} talkId
- * @property {string} roomId
- * @property {string} startTime   – ISO-8601 datetime
- * @property {string} endTime     – ISO-8601 datetime
- */
-
-/**
- * @typedef {Object} ConferenceHallScheduleRoom
- * @property {string} id
- * @property {string} name
- */
-
-/**
- * @typedef {Object} ConferenceHallSchedule
- * @property {ConferenceHallScheduleRoom[]} rooms
- * @property {ConferenceHallScheduleSession[]} sessions
- */
-
-/**
- * @typedef {Object} ConferenceHallCategory
- * @property {string} id
- * @property {string} name
- */
-
-/**
- * @typedef {Object} ConferenceHallFormat
- * @property {string} id
- * @property {string} name
- */
-
-/**
- * @typedef {Object} ConferenceHallEvent
- * @property {string} id
- * @property {string} name
- * @property {ConferenceHallCategory[]} [categories]
- * @property {ConferenceHallFormat[]} [formats]
- * @property {ConferenceHallTalk[]} [talks]
- * @property {ConferenceHallSchedule} [schedule]
- */
-
-/**
- * @typedef {Object} SessionDefinition
- * @property {string} id
- * @property {string} title
- * @property {string} description
- * @property {string} startsAtTime
- * @property {string} endsAtTime
- * @property {string[]} trackIds
- * @property {string[]} roomIds
- * @property {string[]} [speakers]
- * @property {string} [format]
- * @property {boolean} [isGlobal]
- * @property {string[]} [tags]
- */
-
-/**
- * @typedef {Object} TrackDefinition
- * @property {string} id
- * @property {string} label
- * @property {string} accent
- */
-
-/**
- * @typedef {Object} RoomDefinition
- * @property {string} id
- * @property {string} label
- */
-
-/**
- * Predefined track accent colours (mapped by slugified track name).
- * @type {Record<string, string>}
- */
-const TRACK_ACCENTS = {
-  keynote: 'from-sky-500 to-cyan-400',
-  platform: 'from-emerald-500 to-lime-400',
-  builders: 'from-fuchsia-500 to-rose-400',
-};
-
-const DEFAULT_ACCENT = 'from-violet-500 to-indigo-400';
-
-/**
- * Build the schedule model from a Conference Hall API response.
  *
- * @param {ConferenceHallEvent} event
- * @returns {{ tracks: TrackDefinition[], rooms: RoomDefinition[], sessions: SessionDefinition[] }}
+ * @param {import('@actions/github-script').AsyncFunctionArguments} AsyncFunctionArguments
  */
-function buildScheduleModel(event) {
-  const categories = event.categories ?? [];
-  const formats = event.formats ?? [];
-  const talks = event.talks ?? [];
-  const schedule = event.schedule;
+export default async ({ core, io }) => {
+  // ---------------------------------------------------------------------------
+  // Configuration
+  // ---------------------------------------------------------------------------
 
-  // Build lookup maps
-  /** @type {Map<string, ConferenceHallCategory>} */
-  const categoryById = new Map(categories.map((c) => [c.id, c]));
-  /** @type {Map<string, ConferenceHallFormat>} */
-  const formatById = new Map(formats.map((f) => [f.id, f]));
-  /** @type {Map<string, ConferenceHallTalk>} */
-  const talkById = new Map(talks.map((t) => [t.uid, t]));
+  const API_BASE = process.env.CONFERENCEHALL_API_BASE ?? 'https://conference-hall.io';
+  const EVENT_ID = process.env.CONFERENCEHALL_EVENT_ID;
+  const API_KEY = process.env.CONFERENCEHALL_API_KEY;
 
-  // Build tracks from categories
-  /** @type {TrackDefinition[]} */
-  const tracks = categories.map((cat) => {
-    const slug = slugify(cat.name);
-    return {
-      id: slug,
-      label: cat.name,
-      accent: TRACK_ACCENTS[slug] ?? DEFAULT_ACCENT,
-    };
-  });
+  if (!EVENT_ID) {
+    core.setFailed('CONFERENCEHALL_EVENT_ID environment variable is required');
+    return;
+  }
+  if (!API_KEY) {
+    core.setFailed('CONFERENCEHALL_API_KEY environment variable is required');
+    return;
+  }
 
-  // Build rooms
-  /** @type {RoomDefinition[]} */
-  const rooms = (schedule?.rooms ?? []).map((room) => ({
-    id: slugify(room.name),
-    label: room.name,
-  }));
+  // ---------------------------------------------------------------------------
+  // Helpers
+  // ---------------------------------------------------------------------------
 
-  // Build sessions
-  /** @type {SessionDefinition[]} */
-  const sessions = [];
+  /**
+   * Slugify a string into a URL-safe identifier.
+   * @param {string} text
+   * @returns {string}
+   */
+  const slugify = (text) =>
+    text
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '');
 
-  if (schedule?.sessions?.length) {
-    for (const slot of schedule.sessions) {
-      const talk = talkById.get(slot.talkId);
-      if (!talk) continue;
-
-      const startDate = slot.startTime;
-      const endDate = slot.endTime;
-      const category = talk.categories ? categoryById.get(talk.categories) : undefined;
-      const format = talk.formats ? formatById.get(talk.formats) : undefined;
-      const trackId = category ? slugify(category.name) : undefined;
-      const roomId = slugify(
-        schedule.rooms.find((r) => r.id === slot.roomId)?.name ?? slot.roomId
-      );
-
-      /** @type {SessionDefinition} */
-      const session = {
-        id: slugify(talk.title),
-        title: talk.title,
-        description: talk.abstract ?? '',
-        startsAtTime: formatTime(startDate),
-        endsAtTime: formatTime(endDate),
-        trackIds: trackId ? [trackId] : [],
-        roomIds: [roomId],
-        speakers: talk.speakers?.map((s) => s.displayName) ?? [],
-      };
-
-      if (format) {
-        session.format = format.name;
-      }
-
-      const tags = [];
-      if (category) tags.push(slugify(category.name));
-      if (talk.language) tags.push(talk.language.toLowerCase());
-      if (tags.length) {
-        session.tags = tags;
-      }
-
-      sessions.push(session);
+  /**
+   * Extract "HH:MM" from an ISO-8601 datetime string, preserving the original
+   * local time rather than converting to UTC.
+   * e.g. "2026-12-10T09:00:00+01:00" → "09:00"
+   * @param {string} isoString
+   * @returns {string}
+   */
+  const formatTime = (isoString) => {
+    const match = isoString.match(/T(\d{2}):(\d{2})/);
+    if (!match) {
+      throw new Error(`Cannot extract time from ISO string: ${isoString}`);
     }
-  } else {
-    // Fallback: no schedule data — emit one session per talk without time slots
-    console.warn('Warning: No schedule data returned by the API. Sessions will have placeholder times.');
-    for (const talk of talks) {
-      const category = talk.categories ? categoryById.get(talk.categories) : undefined;
-      const format = talk.formats ? formatById.get(talk.formats) : undefined;
-      const trackId = category ? slugify(category.name) : undefined;
+    return `${match[1]}:${match[2]}`;
+  };
 
-      /** @type {SessionDefinition} */
-      const session = {
-        id: slugify(talk.title),
-        title: talk.title,
-        description: talk.abstract ?? '',
-        startsAtTime: '00:00',
-        endsAtTime: '00:00',
-        trackIds: trackId ? [trackId] : [],
-        roomIds: [],
-        speakers: talk.speakers?.map((s) => s.displayName) ?? [],
-      };
+  /**
+   * Escape a string for safe inclusion inside a TypeScript single-quoted string.
+   * @param {string} value
+   * @returns {string}
+   */
+  const escapeSingleQuote = (value) => value.replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 
-      if (format) {
-        session.format = format.name;
+  /**
+   * Render an array of strings as a TypeScript array literal (single-quoted values).
+   * @param {string[]} values
+   * @returns {string}
+   */
+  const renderStringArray = (values) => `[${values.map((v) => `'${escapeSingleQuote(v)}'`).join(', ')}]`;
+
+  // ---------------------------------------------------------------------------
+  // API → schedule model
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Predefined track accent colours (mapped by slugified track name).
+   * @type {Record<string, string>}
+   */
+  const TRACK_ACCENTS = {
+    keynote: 'from-sky-500 to-cyan-400',
+    platform: 'from-emerald-500 to-lime-400',
+    builders: 'from-fuchsia-500 to-rose-400',
+  };
+
+  const DEFAULT_ACCENT = 'from-violet-500 to-indigo-400';
+
+  /**
+   * Build the schedule model from a Conference Hall API response.
+   *
+   * @param {object} event
+   * @returns {{ tracks: object[], rooms: object[], sessions: object[] }}
+   */
+  const buildScheduleModel = (event) => {
+    const categories = event.categories ?? [];
+    const formats = event.formats ?? [];
+    const talks = event.talks ?? [];
+    const schedule = event.schedule;
+
+    const categoryById = new Map(categories.map((c) => [c.id, c]));
+    const formatById = new Map(formats.map((f) => [f.id, f]));
+    const talkById = new Map(talks.map((t) => [t.uid, t]));
+
+    const tracks = categories.map((cat) => {
+      const slug = slugify(cat.name);
+      return { id: slug, label: cat.name, accent: TRACK_ACCENTS[slug] ?? DEFAULT_ACCENT };
+    });
+
+    const rooms = (schedule?.rooms ?? []).map((room) => ({
+      id: slugify(room.name),
+      label: room.name,
+    }));
+
+    const sessions = [];
+
+    if (schedule?.sessions?.length) {
+      for (const slot of schedule.sessions) {
+        const talk = talkById.get(slot.talkId);
+        if (!talk) continue;
+
+        const category = talk.categories ? categoryById.get(talk.categories) : undefined;
+        const format = talk.formats ? formatById.get(talk.formats) : undefined;
+        const trackId = category ? slugify(category.name) : undefined;
+        const roomId = slugify(schedule.rooms.find((r) => r.id === slot.roomId)?.name ?? slot.roomId);
+
+        const session = {
+          id: slugify(talk.title),
+          title: talk.title,
+          description: talk.abstract ?? '',
+          startsAtTime: formatTime(slot.startTime),
+          endsAtTime: formatTime(slot.endTime),
+          trackIds: trackId ? [trackId] : [],
+          roomIds: [roomId],
+          speakers: talk.speakers?.map((s) => s.displayName) ?? [],
+        };
+
+        if (format) session.format = format.name;
+
+        const tags = [];
+        if (category) tags.push(slugify(category.name));
+        if (talk.language) tags.push(talk.language.toLowerCase());
+        if (tags.length) session.tags = tags;
+
+        sessions.push(session);
       }
+    } else {
+      core.warning('No schedule data returned by the API. Sessions will have placeholder times.');
+      for (const talk of talks) {
+        const category = talk.categories ? categoryById.get(talk.categories) : undefined;
+        const format = talk.formats ? formatById.get(talk.formats) : undefined;
+        const trackId = category ? slugify(category.name) : undefined;
 
-      sessions.push(session);
+        const session = {
+          id: slugify(talk.title),
+          title: talk.title,
+          description: talk.abstract ?? '',
+          startsAtTime: '00:00',
+          endsAtTime: '00:00',
+          trackIds: trackId ? [trackId] : [],
+          roomIds: [],
+          speakers: talk.speakers?.map((s) => s.displayName) ?? [],
+        };
+
+        if (format) session.format = format.name;
+
+        sessions.push(session);
+      }
     }
-  }
 
-  // Sort sessions by start time
-  sessions.sort((a, b) => a.startsAtTime.localeCompare(b.startsAtTime));
+    sessions.sort((a, b) => a.startsAtTime.localeCompare(b.startsAtTime));
 
-  return { tracks, rooms, sessions };
-}
+    return { tracks, rooms, sessions };
+  };
 
-// ---------------------------------------------------------------------------
-// TypeScript file generation
-// ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // TypeScript file generation
+  // ---------------------------------------------------------------------------
 
-/**
- * Render a single session object as indented TypeScript source.
- * @param {SessionDefinition} session
- * @returns {string}
- */
-function renderSession(session) {
-  const lines = ['  {'];
-  lines.push(`    id: '${escapeSingleQuote(session.id)}',`);
-  lines.push(`    title: '${escapeSingleQuote(session.title)}',`);
+  /**
+   * Render a single session object as indented TypeScript source.
+   * @param {object} session
+   * @returns {string}
+   */
+  const renderSession = (session) => {
+    const lines = ['  {'];
+    lines.push(`    id: '${escapeSingleQuote(session.id)}',`);
+    lines.push(`    title: '${escapeSingleQuote(session.title)}',`);
 
-  if (session.description.length > 80) {
-    lines.push(`    description:`);
-    lines.push(`      '${escapeSingleQuote(session.description)}',`);
-  } else {
-    lines.push(`    description: '${escapeSingleQuote(session.description)}',`);
-  }
+    if (session.description.length > 80) {
+      lines.push(`    description:`);
+      lines.push(`      '${escapeSingleQuote(session.description)}',`);
+    } else {
+      lines.push(`    description: '${escapeSingleQuote(session.description)}',`);
+    }
 
-  lines.push(`    startsAtTime: '${session.startsAtTime}',`);
-  lines.push(`    endsAtTime: '${session.endsAtTime}',`);
-  lines.push(`    trackIds: ${renderStringArray(session.trackIds)},`);
-  lines.push(`    roomIds: ${renderStringArray(session.roomIds)},`);
+    lines.push(`    startsAtTime: '${session.startsAtTime}',`);
+    lines.push(`    endsAtTime: '${session.endsAtTime}',`);
+    lines.push(`    trackIds: ${renderStringArray(session.trackIds)},`);
+    lines.push(`    roomIds: ${renderStringArray(session.roomIds)},`);
 
-  if (session.speakers?.length) {
-    lines.push(`    speakers: ${renderStringArray(session.speakers)},`);
-  }
+    if (session.speakers?.length) {
+      lines.push(`    speakers: ${renderStringArray(session.speakers)},`);
+    }
 
-  if (session.format) {
-    lines.push(`    format: '${escapeSingleQuote(session.format)}',`);
-  }
+    if (session.format) {
+      lines.push(`    format: '${escapeSingleQuote(session.format)}',`);
+    }
 
-  if (session.isGlobal) {
-    lines.push('    isGlobal: true,');
-  }
+    if (session.isGlobal) {
+      lines.push('    isGlobal: true,');
+    }
 
-  if (session.tags?.length) {
-    lines.push(`    tags: ${renderStringArray(session.tags)},`);
-  }
+    if (session.tags?.length) {
+      lines.push(`    tags: ${renderStringArray(session.tags)},`);
+    }
 
-  lines.push('  }');
-  return lines.join('\n');
-}
+    lines.push('  }');
+    return lines.join('\n');
+  };
 
-/**
- * Generate the full content of a schedule TypeScript file.
- *
- * @param {{ tracks: TrackDefinition[], rooms: RoomDefinition[], sessions: SessionDefinition[] }} model
- * @returns {string}
- */
-function renderScheduleFile(model) {
-  const trackLines = model.tracks
-    .map(
-      (t) =>
-        `  { id: '${escapeSingleQuote(t.id)}', label: '${escapeSingleQuote(t.label)}', accent: '${escapeSingleQuote(t.accent)}' }`
-    )
-    .join(',\n');
+  /**
+   * Generate the full content of a schedule TypeScript file.
+   * @param {{ tracks: object[], rooms: object[], sessions: object[] }} model
+   * @returns {string}
+   */
+  const renderScheduleFile = (model) => {
+    const trackLines = model.tracks
+      .map(
+        (t) =>
+          `  { id: '${escapeSingleQuote(t.id)}', label: '${escapeSingleQuote(t.label)}', accent: '${escapeSingleQuote(t.accent)}' }`
+      )
+      .join(',\n');
 
-  const roomLines = model.rooms
-    .map((r) => `  { id: '${escapeSingleQuote(r.id)}', label: '${escapeSingleQuote(r.label)}' }`)
-    .join(',\n');
+    const roomLines = model.rooms
+      .map((r) => `  { id: '${escapeSingleQuote(r.id)}', label: '${escapeSingleQuote(r.label)}' }`)
+      .join(',\n');
 
-  const sessionLines = model.sessions.map(renderSession).join(',\n');
+    const sessionLines = model.sessions.map(renderSession).join(',\n');
 
-  return [
-    `const tracks = [`,
-    trackLines ? trackLines + ',' : '',
-    `] as const;`,
-    ``,
-    `const rooms = [`,
-    roomLines ? roomLines + ',' : '',
-    `] as const;`,
-    ``,
-    `const sessions = [`,
-    sessionLines ? sessionLines + ',' : '',
-    `] as const;`,
-    ``,
-    `export default {`,
-    `  tracks,`,
-    `  rooms,`,
-    `  sessions,`,
-    `} as const;`,
-    ``,
-  ]
-    .join('\n');
-}
+    return [
+      `const tracks = [`,
+      trackLines ? trackLines + ',' : '',
+      `] as const;`,
+      ``,
+      `const rooms = [`,
+      roomLines ? roomLines + ',' : '',
+      `] as const;`,
+      ``,
+      `const sessions = [`,
+      sessionLines ? sessionLines + ',' : '',
+      `] as const;`,
+      ``,
+      `export default {`,
+      `  tracks,`,
+      `  rooms,`,
+      `  sessions,`,
+      `} as const;`,
+      ``,
+    ].join('\n');
+  };
 
-// ---------------------------------------------------------------------------
-// Main
-// ---------------------------------------------------------------------------
+  // ---------------------------------------------------------------------------
+  // Main
+  // ---------------------------------------------------------------------------
 
-async function main() {
-  console.log(`Fetching schedule for event "${EVENT_ID}" from ${API_BASE} …`);
+  core.info(`Fetching schedule for event "${EVENT_ID}" from ${API_BASE} …`);
 
   const url = `${API_BASE}/api/v1/event/${EVENT_ID}?key=${API_KEY}`;
 
-  /** @type {ConferenceHallEvent} */
-  const event = await fetchJson(url);
+  const response = await fetch(url);
+  if (!response.ok) {
+    core.setFailed(`HTTP ${response.status} ${response.statusText} — ${url}`);
+    return;
+  }
 
-  console.log(`Event: ${event.name}`);
-  console.log(`  Categories : ${(event.categories ?? []).length}`);
-  console.log(`  Formats    : ${(event.formats ?? []).length}`);
-  console.log(`  Talks      : ${(event.talks ?? []).length}`);
-  console.log(`  Schedule   : ${event.schedule?.sessions?.length ?? 0} sessions`);
+  const event = await response.json();
+
+  core.info(`Event: ${event.name}`);
+  core.info(`  Categories : ${(event.categories ?? []).length}`);
+  core.info(`  Formats    : ${(event.formats ?? []).length}`);
+  core.info(`  Talks      : ${(event.talks ?? []).length}`);
+  core.info(`  Schedule   : ${event.schedule?.sessions?.length ?? 0} sessions`);
 
   const model = buildScheduleModel(event);
 
-  const scriptDir = dirname(fileURLToPath(import.meta.url));
-  const contentDir = resolve(
-    scriptDir,
-    '../application/src/domains/pages/program/content'
-  );
+  const { writeFileSync } = await import('node:fs');
+  const { resolve } = await import('node:path');
+
+  const contentDir = resolve(process.env.GITHUB_WORKSPACE, 'application/src/domains/pages/program/content');
+
+  await io.mkdirP(contentDir);
 
   const fileContent = renderScheduleFile(model);
 
@@ -443,12 +306,8 @@ async function main() {
   writeFileSync(enPath, fileContent, 'utf-8');
   writeFileSync(frPath, fileContent, 'utf-8');
 
-  console.log(`\nWrote ${model.tracks.length} tracks, ${model.rooms.length} rooms, ${model.sessions.length} sessions`);
-  console.log(`  → ${enPath}`);
-  console.log(`  → ${frPath}`);
-}
+  core.info(`\nWrote ${model.tracks.length} tracks, ${model.rooms.length} rooms, ${model.sessions.length} sessions`);
+  core.info(`  → ${enPath}`);
+  core.info(`  → ${frPath}`);
+};
 
-main().catch((err) => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
