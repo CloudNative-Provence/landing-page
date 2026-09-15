@@ -1,14 +1,16 @@
+import { rooms as baseRooms, tracks as baseTracks } from './schedule';
+
 const tracks = [
-  { id: 'keynote', label: 'Keynotes & communauté', accent: 'from-sky-500 to-cyan-400', roomId: 'auditorium' },
-  { id: 'platform', label: 'Platform Engineering', accent: 'from-emerald-500 to-lime-400', roomId: 'luberon' },
-  { id: 'builders', label: 'Builders Track', accent: 'from-fuchsia-500 to-rose-400', roomId: 'sainte-victoire' },
+  { ...baseTracks[0], label: 'Keynotes & communauté' },
+  { ...baseTracks[1], label: 'Platform Engineering' },
+  { ...baseTracks[2], label: 'Builders Track' },
 ] as const;
 
 const rooms = [
-  { id: 'auditorium', label: 'Grand Auditorium' },
-  { id: 'luberon', label: 'Salle Luberon' },
-  { id: 'sainte-victoire', label: 'Salle Sainte-Victoire' },
-  { id: 'expo', label: 'Espace partenaires' },
+  { ...baseRooms[0], label: 'Grand Auditorium' },
+  { ...baseRooms[1], label: 'Salle Luberon' },
+  { ...baseRooms[2], label: 'Salle Sainte-Victoire' },
+  { ...baseRooms[3], label: 'Espace partenaires' },
 ] as const;
 
 const sessions = [

@@ -62,6 +62,57 @@ export function renderSession(session) {
 }
 
 /**
+ * Generate the content of the shared schedule.ts file (tracks and rooms, no labels).
+ * Labels are locale-specific and maintained in the locale schedule files.
+ * @param {import('./schedule-mapper.mjs').ScheduleModel} model
+ * @returns {string}
+ */
+export function renderSharedScheduleFile(model) {
+  const trackLines = model.tracks
+    .map((t) => `  { id: '${escapeSingleQuote(t.id)}', roomId: '${escapeSingleQuote(t.roomId)}' }`)
+    .join(',\n');
+
+  const roomLines = model.rooms.map((r) => `  { id: '${escapeSingleQuote(r.id)}' }`).join(',\n');
+
+  return [
+    `export const tracks = [`,
+    trackLines ? `${trackLines},` : '',
+    `] as const;`,
+    ``,
+    `export const rooms = [`,
+    roomLines ? `${roomLines},` : '',
+    `] as const;`,
+    ``,
+  ].join('\n');
+}
+
+/**
+ * Generate the content of a locale-specific schedule file (sessions only).
+ * Tracks and rooms are imported from the shared schedule.ts file.
+ * @param {import('./schedule-mapper.mjs').ScheduleModel} model
+ * @returns {string}
+ */
+export function renderLocaleScheduleFile(model) {
+  const sessionLines = model.sessions.map(renderSession).join(',\n');
+
+  return [
+    `import { rooms, tracks } from './schedule';`,
+    ``,
+    `const sessions = [`,
+    sessionLines ? `${sessionLines},` : '',
+    `] as const;`,
+    ``,
+    `export default {`,
+    `  tracks,`,
+    `  rooms,`,
+    `  sessions,`,
+    `} as const;`,
+    ``,
+  ].join('\n');
+}
+
+/**
+ * @deprecated Use renderSharedScheduleFile and renderLocaleScheduleFile instead.
  * Generate the full content of a schedule TypeScript file from a model.
  * @param {import('./schedule-mapper.mjs').ScheduleModel} model
  * @returns {string}

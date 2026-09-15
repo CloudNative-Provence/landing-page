@@ -14,7 +14,7 @@ export default async ({ core, io, apiKey, apiBase, workspaceDir }) => {
   const { readEventIdFromConfig } = await import('./config-reader.mjs');
   const { fetchConferenceHallEvent } = await import('./conference-hall-client.mjs');
   const { mapEventToScheduleModel } = await import('./schedule-mapper.mjs');
-  const { renderScheduleFile } = await import('./schedule-renderer.mjs');
+  const { renderSharedScheduleFile, renderLocaleScheduleFile } = await import('./schedule-renderer.mjs');
   const { writeScheduleFiles } = await import('./schedule-writer.mjs');
 
   if (!apiKey) {
@@ -45,10 +45,12 @@ export default async ({ core, io, apiKey, apiBase, workspaceDir }) => {
   core.info(`  Schedule   : ${event.schedule?.sessions?.length ?? 0} sessions`);
 
   const model = mapEventToScheduleModel(event, { warning: (msg) => core.warning(msg) });
-  const content = renderScheduleFile(model);
-  const { enPath, frPath } = await writeScheduleFiles({ content, workspaceDir, io });
+  const sharedContent = renderSharedScheduleFile(model);
+  const localeContent = renderLocaleScheduleFile(model);
+  const { sharedPath, enPath, frPath } = await writeScheduleFiles({ sharedContent, localeContent, workspaceDir, io });
 
   core.info(`Wrote ${model.tracks.length} tracks, ${model.rooms.length} rooms, ${model.sessions.length} sessions`);
+  core.info(`  → ${sharedPath}`);
   core.info(`  → ${enPath}`);
   core.info(`  → ${frPath}`);
 };
