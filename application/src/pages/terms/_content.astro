@@ -28,28 +28,28 @@ const { lastUpdatedLabel, lastUpdated, intro, sections } = Astro.props;
   <p>{intro}</p>
 
   {sections.map((section) => (
-      <section>
-        <h2>{section.title}</h2>
+  <section>
+    <h2>{section.title}</h2>
 
-        {section.paragraphs?.map((paragraph) => (
-          <p>{paragraph}</p>
-        ))}
-
-        {section.link && (
-          <p>
-            {section.link.prefix}
-            <a href={section.link.href}>{section.link.label}</a>
-            {section.link.suffix}
-          </p>
-        )}
-
-        {section.items && (
-          <ul>
-            {section.items.map((item) => (
-              <li>{item}</li>
-            ))}
-          </ul>
-        )}
-      </section>
+    {section.paragraphs?.map((paragraph) => (
+      <p>{paragraph}</p>
     ))}
+
+    {section.link && (
+      <p>
+        {section.link.prefix}
+        <a href={section.link.href}>{section.link.label}</a>
+        {section.link.suffix}
+      </p>
+    )}
+
+    {section.items && (
+      <ul>
+        {section.items.map((item) => (
+          <li>{item}</li>
+        ))}
+      </ul>
+    )}
+  </section>
+))}
 </div>

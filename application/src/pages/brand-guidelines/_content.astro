@@ -74,16 +74,16 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
 
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
       {[...colorPalette.colors].map((color) => (
-          <div class="rounded-lg overflow-hidden shadow-lg">
-            <div class="h-32" style={`background-color: ${color.hex};`} />
-            <div class="p-4 bg-white dark:bg-slate-800">
-              <h3 class="font-bold text-lg mb-2">{color.name}</h3>
-              <p class="text-sm text-muted mb-1">HEX: {color.hex}</p>
-              <p class="text-sm text-muted mb-1">RGB: {color.rgb}</p>
-              <p class="text-sm text-muted">Usage: {color.usage}</p>
-            </div>
-          </div>
-        ))}
+  <div class="rounded-lg overflow-hidden shadow-lg">
+    <div class="h-32" style={`background-color: ${color.hex};`} />
+    <div class="p-4 bg-white dark:bg-slate-800">
+      <h3 class="font-bold text-lg mb-2">{color.name}</h3>
+      <p class="text-sm text-muted mb-1">HEX: {color.hex}</p>
+      <p class="text-sm text-muted mb-1">RGB: {color.rgb}</p>
+      <p class="text-sm text-muted">Usage: {color.usage}</p>
+    </div>
+  </div>
+))}
     </div>
   </section>
 
@@ -102,25 +102,25 @@ const { metadata, hero, colorPalette, typography, logoDownloads, usageGuidelines
 
       <div class="space-y-4">
         {[...typography.examples].map((example) => (
-            <div>
-              <p class="text-sm text-muted mb-2">{example.label}</p>
-              {example.style === 'text-4xl font-bold' && (
-                <h1 class={example.style} style="font-family: Montserrat, sans-serif;">
-                  {example.text}
-                </h1>
-              )}
-              {example.style === 'text-2xl font-semibold' && (
-                <h2 class={example.style} style="font-family: Montserrat, sans-serif;">
-                  {example.text}
-                </h2>
-              )}
-              {example.style === 'text-lg' && (
-                <p class={example.style} style="font-family: Montserrat, sans-serif;">
-                  {example.text}
-                </p>
-              )}
-            </div>
-          ))}
+  <div>
+    <p class="text-sm text-muted mb-2">{example.label}</p>
+    {example.style === 'text-4xl font-bold' && (
+      <h1 class={example.style} style="font-family: Montserrat, sans-serif;">
+        {example.text}
+      </h1>
+    )}
+    {example.style === 'text-2xl font-semibold' && (
+      <h2 class={example.style} style="font-family: Montserrat, sans-serif;">
+        {example.text}
+      </h2>
+    )}
+    {example.style === 'text-lg' && (
+      <p class={example.style} style="font-family: Montserrat, sans-serif;">
+        {example.text}
+      </p>
+    )}
+  </div>
+))}
       </div>
     </div>
   </section>

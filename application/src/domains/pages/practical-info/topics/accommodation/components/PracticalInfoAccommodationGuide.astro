@@ -51,52 +51,52 @@ const typePopoverId = 'accommodation-type-help';
               class="space-y-4 rounded-3xl border border-black/5 bg-white/70 p-5 backdrop-blur md:p-6 dark:border-white/10 dark:bg-white/5"
             >
               {stayFinder.filters.map((group) => (
-                <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
-                  <div class="flex w-28 shrink-0 items-center gap-2">
-                    <span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
-                      {group.label}
-                    </span>
-                    {group.id === 'zone' && (
-                      <button
-                        type="button"
-                        popovertarget={zonePopoverId}
-                        popovertargetaction="toggle"
-                        aria-haspopup="dialog"
-                        class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-black/10 text-slate-500 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-400 dark:hover:border-amber-400 dark:hover:text-amber-300"
-                      >
-                        <Icon name="tabler:info-circle" class="h-3.5 w-3.5" />
-                      </button>
-                    )}
-                    {group.id === 'type' && (
-                      <button
-                        type="button"
-                        popovertarget={typePopoverId}
-                        popovertargetaction="toggle"
-                        aria-haspopup="dialog"
-                        class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-black/10 text-slate-500 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-400 dark:hover:border-amber-400 dark:hover:text-amber-300"
-                      >
-                        <Icon name="tabler:info-circle" class="h-3.5 w-3.5" />
-                      </button>
-                    )}
-                  </div>
-                  <div class="flex flex-wrap gap-2">
-                    {group.options.map((option) => (
-                      <button
-                        type="button"
-                        aria-pressed="false"
-                        data-filter-chip
-                        data-group={group.id}
-                        data-query={option.searchQuery ?? ''}
-                        data-value={option.id}
-                        data-active="false"
-                        class="cursor-pointer rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-amber-300 hover:text-amber-700 data-[active=true]:border-amber-600 data-[active=true]:bg-amber-600 data-[active=true]:text-white dark:border-white/15 dark:text-slate-300 dark:hover:border-amber-400 dark:hover:text-amber-300 dark:data-[active=true]:border-amber-400 dark:data-[active=true]:bg-amber-400 dark:data-[active=true]:text-slate-950"
-                      >
-                        {option.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              ))}
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:gap-4">
+    <div class="flex w-28 shrink-0 items-center gap-2">
+      <span class="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500 dark:text-slate-400">
+        {group.label}
+      </span>
+      {group.id === 'zone' && (
+        <button
+          type="button"
+          popovertarget={zonePopoverId}
+          popovertargetaction="toggle"
+          aria-haspopup="dialog"
+          class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-black/10 text-slate-500 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-400 dark:hover:border-amber-400 dark:hover:text-amber-300"
+        >
+          <Icon name="tabler:info-circle" class="h-3.5 w-3.5" />
+        </button>
+      )}
+      {group.id === 'type' && (
+        <button
+          type="button"
+          popovertarget={typePopoverId}
+          popovertargetaction="toggle"
+          aria-haspopup="dialog"
+          class="inline-flex h-6 w-6 items-center justify-center rounded-full border border-black/10 text-slate-500 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-400 dark:hover:border-amber-400 dark:hover:text-amber-300"
+        >
+          <Icon name="tabler:info-circle" class="h-3.5 w-3.5" />
+        </button>
+      )}
+    </div>
+    <div class="flex flex-wrap gap-2">
+      {group.options.map((option) => (
+        <button
+          type="button"
+          aria-pressed="false"
+          data-filter-chip
+          data-group={group.id}
+          data-query={option.searchQuery ?? ''}
+          data-value={option.id}
+          data-active="false"
+          class="cursor-pointer rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:border-amber-300 hover:text-amber-700 data-[active=true]:border-amber-600 data-[active=true]:bg-amber-600 data-[active=true]:text-white dark:border-white/15 dark:text-slate-300 dark:hover:border-amber-400 dark:hover:text-amber-300 dark:data-[active=true]:border-amber-400 dark:data-[active=true]:bg-amber-400 dark:data-[active=true]:text-slate-950"
+        >
+          {option.label}
+        </button>
+      ))}
+    </div>
+  </div>
+))}
 
               <div
                 id={zonePopoverId}
@@ -114,15 +114,15 @@ const typePopoverId = 'accommodation-type-help';
 
                 <div class="mt-5 grid gap-3 md:grid-cols-3">
                   {accommodationGuide.areas.map((area) => (
-                    <article class="rounded-2xl border border-black/5 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-900/80">
-                      <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-300">
-                        {area.badge}
-                      </p>
-                      <h3 class="mt-2 text-base font-semibold text-slate-900 dark:text-slate-50">{area.title}</h3>
-                      <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{area.description}</p>
-                      <p class="mt-3 text-sm font-medium text-amber-800 dark:text-amber-200">{area.commute}</p>
-                    </article>
-                  ))}
+  <article class="rounded-2xl border border-black/5 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-900/80">
+    <p class="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-300">
+      {area.badge}
+    </p>
+    <h3 class="mt-2 text-base font-semibold text-slate-900 dark:text-slate-50">{area.title}</h3>
+    <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{area.description}</p>
+    <p class="mt-3 text-sm font-medium text-amber-800 dark:text-amber-200">{area.commute}</p>
+  </article>
+))}
                 </div>
               </div>
 
@@ -142,19 +142,19 @@ const typePopoverId = 'accommodation-type-help';
 
                 <div class="mt-5 space-y-3">
                   {accommodationGuide.stayTypes.map((stayType) => (
-                    <article class="rounded-2xl border border-black/5 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-900/80">
-                      <div class="flex flex-wrap items-center gap-2">
-                        <h3 class="text-base font-semibold text-slate-900 dark:text-slate-50">{stayType.title}</h3>
-                        <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
-                          {stayType.bestFor}
-                        </span>
-                      </div>
-                      <p class="mt-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-300">
-                        {stayType.badge}
-                      </p>
-                      <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{stayType.description}</p>
-                    </article>
-                  ))}
+  <article class="rounded-2xl border border-black/5 bg-slate-50 p-4 dark:border-white/10 dark:bg-slate-900/80">
+    <div class="flex flex-wrap items-center gap-2">
+      <h3 class="text-base font-semibold text-slate-900 dark:text-slate-50">{stayType.title}</h3>
+      <span class="rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-medium text-amber-800 dark:bg-amber-500/10 dark:text-amber-200">
+        {stayType.bestFor}
+      </span>
+    </div>
+    <p class="mt-2 text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-amber-600 dark:text-amber-300">
+      {stayType.badge}
+    </p>
+    <p class="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">{stayType.description}</p>
+  </article>
+))}
                 </div>
               </div>
 
@@ -197,63 +197,63 @@ const typePopoverId = 'accommodation-type-help';
 
             <div class="mt-6 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {stayFinder.stays.map((stay) => (
-                <article
-                  data-stay
-                  data-zone={stay.zoneId}
-                  data-type={stay.typeId}
-                  data-feature={stay.featureIds.join(',')}
-                  class="group flex flex-col rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-[0_16px_44px_-24px_rgba(217,119,6,0.55)] dark:border-white/10 dark:bg-slate-900 dark:hover:border-amber-400"
-                >
-                  <div class="flex flex-wrap items-center gap-1.5">
-                    <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
-                      <Icon name="tabler:map-pin" class="h-3 w-3" />
-                      {stay.zoneLabel}
-                    </span>
-                    <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                      {stay.typeLabel}
-                    </span>
-                  </div>
+  <article
+    data-stay
+    data-zone={stay.zoneId}
+    data-type={stay.typeId}
+    data-feature={stay.featureIds.join(',')}
+    class="group flex flex-col rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-[0_16px_44px_-24px_rgba(217,119,6,0.55)] dark:border-white/10 dark:bg-slate-900 dark:hover:border-amber-400"
+  >
+    <div class="flex flex-wrap items-center gap-1.5">
+      <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
+        <Icon name="tabler:map-pin" class="h-3 w-3" />
+        {stay.zoneLabel}
+      </span>
+      <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+        {stay.typeLabel}
+      </span>
+    </div>
 
-                  <h3 class="mt-4 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">{stay.name}</h3>
-                  <p class="mt-2 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{stay.blurb}</p>
+    <h3 class="mt-4 text-lg font-bold tracking-tight text-slate-900 dark:text-slate-50">{stay.name}</h3>
+    <p class="mt-2 flex-1 text-sm leading-7 text-slate-600 dark:text-slate-300">{stay.blurb}</p>
 
-                  {stay.featureIds.length > 0 && (
-                    <div class="mt-4 flex flex-wrap gap-1.5">
-                      {stay.featureIds.map((featureId) => (
-                        <span class="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-slate-500 dark:border-white/15 dark:text-slate-400">
-                          {featureLabelById.get(featureId) ?? featureId}
-                        </span>
-                      ))}
-                    </div>
-                  )}
+    {stay.featureIds.length > 0 && (
+      <div class="mt-4 flex flex-wrap gap-1.5">
+        {stay.featureIds.map((featureId) => (
+          <span class="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-slate-500 dark:border-white/15 dark:text-slate-400">
+            {featureLabelById.get(featureId) ?? featureId}
+          </span>
+        ))}
+      </div>
+    )}
 
-                  <p class="mt-4 flex items-start gap-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-                    <Icon name="tabler:map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-amber-500 dark:text-amber-300" />
-                    <span>{stay.address}</span>
-                  </p>
+    <p class="mt-4 flex items-start gap-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+      <Icon name="tabler:map-pin" class="mt-0.5 h-4 w-4 shrink-0 text-amber-500 dark:text-amber-300" />
+      <span>{stay.address}</span>
+    </p>
 
-                  <div class="mt-5 flex flex-wrap gap-2">
-                    <a
-                      class="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-700 dark:bg-amber-500 dark:text-slate-950 dark:hover:bg-amber-400"
-                      href={stay.websiteHref}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <span>{stay.websiteLabel}</span>
-                      <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
-                    </a>
-                    <a
-                      class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
-                      href={stay.mapHref}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      <span>{stay.mapLabel}</span>
-                      <Icon name="tabler:map-2" class="h-4 w-4" />
-                    </a>
-                  </div>
-                </article>
-              ))}
+    <div class="mt-5 flex flex-wrap gap-2">
+      <a
+        class="inline-flex items-center gap-1.5 rounded-full bg-amber-600 px-3.5 py-2 text-sm font-semibold text-white transition-colors hover:bg-amber-700 dark:bg-amber-500 dark:text-slate-950 dark:hover:bg-amber-400"
+        href={stay.websiteHref}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span>{stay.websiteLabel}</span>
+        <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
+      </a>
+      <a
+        class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-2 text-sm font-medium text-slate-700 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
+        href={stay.mapHref}
+        target="_blank"
+        rel="noreferrer"
+      >
+        <span>{stay.mapLabel}</span>
+        <Icon name="tabler:map-2" class="h-4 w-4" />
+      </a>
+    </div>
+  </article>
+))}
             </div>
 
             <div
@@ -279,11 +279,11 @@ const typePopoverId = 'accommodation-type-help';
           </p>
           <ul class="mt-4 space-y-3">
             {accommodationGuide.checklist.map((item) => (
-              <li class="flex gap-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
-                <Icon name="tabler:circle-check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500 dark:text-emerald-300" />
-                <span>{item}</span>
-              </li>
-            ))}
+  <li class="flex gap-3 text-sm leading-7 text-slate-600 dark:text-slate-300">
+    <Icon name="tabler:circle-check" class="mt-0.5 h-4 w-4 shrink-0 text-emerald-500 dark:text-emerald-300" />
+    <span>{item}</span>
+  </li>
+))}
           </ul>
         </section>
 
@@ -293,16 +293,16 @@ const typePopoverId = 'accommodation-type-help';
           </p>
           <div class="mt-4 flex flex-wrap gap-2">
             {accommodationGuide.resources.map((resource) => (
-              <a
-                class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
-                href={resource.href}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <span>{resource.text}</span>
-                <Icon name="tabler:arrow-up-right" class="h-3.5 w-3.5" />
-              </a>
-            ))}
+  <a
+    class="inline-flex items-center gap-1.5 rounded-full border border-black/10 px-3.5 py-1.5 text-sm font-medium text-slate-700 transition-colors hover:border-amber-300 hover:text-amber-700 dark:border-white/15 dark:text-slate-200 dark:hover:border-amber-400 dark:hover:text-amber-300"
+    href={resource.href}
+    target="_blank"
+    rel="noreferrer"
+  >
+    <span>{resource.text}</span>
+    <Icon name="tabler:arrow-up-right" class="h-3.5 w-3.5" />
+  </a>
+))}
           </div>
         </section>
 

@@ -1,0 +1,8 @@
+scan:
+  skip-dirs:
+    - .tmp-super-linter
+    - application/.astro
+    - application/coverage
+    - application/dist
+    - application/node_modules
+    - super-linter-output
