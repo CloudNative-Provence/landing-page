@@ -23,17 +23,17 @@ const {
 <astro-countdown data-event-date={eventDate}>
   <div class="flex flex-wrap justify-center gap-6 py-10">
     {Object.entries(labels).map(([index, label]) => (
-        <div class="flex flex-col items-center">
-          <div
-            id={index}
-            class="relative w-24 h-24 bg-white text-black rounded-md shadow-inner border border-gray-300 font-mono text-4xl font-bold flex items-center justify-center animate-flip"
-          >
-            00
-            <div class="absolute top-1/2 left-0 w-full h-px bg-gray-300" />
-          </div>
-          <div class="mt-2 text-sm font-medium uppercase tracking-widest text-muted">{label}</div>
-        </div>
-      ))}
+  <div class="flex flex-col items-center">
+    <div
+      id={index}
+      class="relative w-24 h-24 bg-white text-black rounded-md shadow-inner border border-gray-300 font-mono text-4xl font-bold flex items-center justify-center animate-flip"
+    >
+      00
+      <div class="absolute top-1/2 left-0 w-full h-px bg-gray-300" />
+    </div>
+    <div class="mt-2 text-sm font-medium uppercase tracking-widest text-muted">{label}</div>
+  </div>
+))}
   </div>
 </astro-countdown>
 

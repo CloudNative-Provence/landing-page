@@ -22,18 +22,18 @@ const languageLinks = await Promise.all(
 <div class="relative inline-block text-left">
   <div class="flex items-center space-x-2">
     {languageLinks.map(({ langCode, href }) => (
-        <a
-          href={href}
-          class:list={[
-            'px-3 py-2 text-sm font-medium rounded-md transition-colors',
-            lang === langCode
-              ? 'bg-primary text-white'
-              : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
-          ]}
-          aria-current={lang === langCode ? 'page' : undefined}
-        >
-          {langCode.toUpperCase()}
-        </a>
-      ))}
+  <a
+    href={href}
+    class:list={[
+      'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+      lang === langCode
+        ? 'bg-primary text-white'
+        : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800',
+    ]}
+    aria-current={lang === langCode ? 'page' : undefined}
+  >
+    {langCode.toUpperCase()}
+  </a>
+))}
   </div>
 </div>

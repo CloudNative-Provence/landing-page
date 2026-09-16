@@ -30,9 +30,9 @@ const PageContent = pageDefinition.component;
 ---
 
 {pageDefinition.layout === 'page' ? (
-    <Layout metadata={pageDefinition.metadata}>
-      <PageContent {...pageDefinition.props} />
-    </Layout>
-  ) : (
-    <PageContent metadata={pageDefinition.metadata} {...pageDefinition.props} />
-  )}
+  <Layout metadata={pageDefinition.metadata}>
+    <PageContent {...pageDefinition.props} />
+  </Layout>
+) : (
+  <PageContent metadata={pageDefinition.metadata} {...pageDefinition.props} />
+)}

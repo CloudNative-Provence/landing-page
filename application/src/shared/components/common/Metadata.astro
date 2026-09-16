@@ -97,12 +97,12 @@ const twitterImage = normalizedOpenGraph?.images?.[0]?.url;
 {resolvedTitle ? <meta property="og:title" content={resolvedTitle} /> : null}
 {adaptedOpenGraph?.locale ? <meta property="og:locale" content={adaptedOpenGraph.locale} /> : null}
 {adaptedOpenGraph?.images?.map((image) => (
-    <>
-      <meta property="og:image" content={image.url} />
-      {image.width ? <meta property="og:image:width" content={String(image.width)} /> : null}
-      {image.height ? <meta property="og:image:height" content={String(image.height)} /> : null}
-    </>
-  ))}
+  <>
+    <meta property="og:image" content={image.url} />
+    {image.width ? <meta property="og:image:width" content={String(image.width)} /> : null}
+    {image.height ? <meta property="og:image:height" content={String(image.height)} /> : null}
+  </>
+))}
 
 {seoProps?.twitter?.cardType ? <meta name="twitter:card" content={seoProps.twitter.cardType} /> : null}
 {seoProps?.twitter?.site ? <meta name="twitter:site" content={seoProps.twitter.site} /> : null}

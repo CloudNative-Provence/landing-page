@@ -81,7 +81,8 @@ The program page (`/{lang}/programme` in `fr`, `/{lang}/program` in `en`) reads 
 Notes:
 
 - **Agenda token** — produced by `ProgramSelectionCodec.encode()`; it compresses the session IDs so the URL stays short regardless of how many sessions are saved, and stays valid even if the schedule order changes. `share` links use this token; `localStorage` keeps the plain ID list for durability.
-- **Fullscreen flag** — because the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) requires a user gesture, the flag applies the presentation layout immediately (ideal when the browser is already in OS-level/kiosk fullscreen on a TV) and upgrades to real browser fullscreen on the first tap/keypress. Exit with `Esc` or the top-bar button; both strip the `fullscreen` flag from the URL.
+- **Fullscreen flag** — because the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API) requires a user gesture, the flag applies the presentation layout immediately
+  (ideal when the browser is already in OS-level/kiosk fullscreen on a TV) and upgrades to real browser fullscreen on the first tap/keypress. Exit with `Esc` or the top-bar button; both strip the `fullscreen` flag from the URL.
 - Example wall display: `/{lang}/programme?fullscreen=true&live=true`.
 
 Key files:

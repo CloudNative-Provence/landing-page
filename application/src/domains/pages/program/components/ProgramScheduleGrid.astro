@@ -46,80 +46,82 @@ const getSessionSearchText = (session: ProgramSession) =>
         {labels.timeLabel}
       </div>
       {tracks.map((track) => (
-          <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950/60">
-            <span class={`h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b ${track.accent}`} />
-            <span class="text-sm font-semibold text-gray-900 dark:text-white">{track.label}</span>
-          </div>
-        ))}
+  <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 dark:border-slate-800 dark:bg-slate-950/60">
+    <span class={`h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b ${track.accent}`} />
+    <span class="text-sm font-semibold text-gray-900 dark:text-white">{track.label}</span>
+  </div>
+))}
     </div>
 
     {slots.map((slot) => {
-        const globalSessions = slot.sessions.filter(
-          (session) => session.isGlobal || session.trackIds.length === allTrackIds.length
-        );
-        const trackSessions = slot.sessions.filter((session) => !globalSessions.includes(session));
+  const globalSessions = slot.sessions.filter(
+    (session) => session.isGlobal || session.trackIds.length === allTrackIds.length
+  );
+  const trackSessions = slot.sessions.filter((session) => !globalSessions.includes(session));
 
-        return (
-          <section
-            class="grid items-start gap-3 sm:rounded-3xl sm:border sm:border-gray-200/70 sm:bg-slate-50/60 sm:p-3 sm:dark:border-slate-800 sm:dark:bg-slate-950/40 lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))]"
-            data-program-slot
-            data-starts-at={slot.startsAt}
-            data-ends-at={slot.endsAt}
-          >
-            <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm lg:sticky lg:left-0 lg:top-24 lg:flex-col lg:items-start lg:gap-1.5 lg:self-stretch dark:border-slate-800 dark:bg-slate-900">
-              <p class="text-lg font-bold tabular-nums leading-none text-gray-900 dark:text-white">{formatTime(slot.startsAt)}</p>
-              <p class="inline-flex items-center gap-1 text-xs tabular-nums text-muted">
-                <span class="text-gray-300 dark:text-slate-600">
-                  <span class="lg:hidden">→</span>
-                  <span class="hidden lg:inline">└</span>
-                </span>
-                {formatTime(slot.endsAt)}
-              </p>
-              <p
-                hidden
-                data-slot-live-badge
-                class="mt-1 inline-flex rounded-full bg-sky-100 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-sky-700 dark:bg-sky-950/40 dark:text-sky-200"
-              ></p>
-            </div>
+  return (
+    <section
+      class="grid items-start gap-3 sm:rounded-3xl sm:border sm:border-gray-200/70 sm:bg-slate-50/60 sm:p-3 sm:dark:border-slate-800 sm:dark:bg-slate-950/40 lg:grid-cols-[8rem_repeat(3,minmax(0,1fr))]"
+      data-program-slot
+      data-starts-at={slot.startsAt}
+      data-ends-at={slot.endsAt}
+    >
+      <div class="flex items-center gap-3 rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm lg:sticky lg:left-0 lg:top-24 lg:flex-col lg:items-start lg:gap-1.5 lg:self-stretch dark:border-slate-800 dark:bg-slate-900">
+        <p class="text-lg font-bold tabular-nums leading-none text-gray-900 dark:text-white">
+          {formatTime(slot.startsAt)}
+        </p>
+        <p class="inline-flex items-center gap-1 text-xs tabular-nums text-muted">
+          <span class="text-gray-300 dark:text-slate-600">
+            <span class="lg:hidden">→</span>
+            <span class="hidden lg:inline">└</span>
+          </span>
+          {formatTime(slot.endsAt)}
+        </p>
+        <p
+          hidden
+          data-slot-live-badge
+          class="mt-1 inline-flex rounded-full bg-sky-100 px-2.5 py-1 text-[0.6rem] font-semibold uppercase tracking-[0.16em] text-sky-700 dark:bg-sky-950/40 dark:text-sky-200"
+        ></p>
+      </div>
 
-            <div class="space-y-3 lg:col-span-3">
-              {globalSessions.map((session) => (
+      <div class="space-y-3 lg:col-span-3">
+        {globalSessions.map((session) => (
+          <ProgramSessionCard
+            session={session}
+            isGlobal={true}
+            trackLabel={labels.globalLabel}
+            tone="from-sky-500 to-cyan-400"
+            roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
+            labels={labels}
+            searchText={getSessionSearchText(session)}
+          />
+        ))}
+
+        {trackSessions.length > 0 && (
+          <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {tracks.map((track) => {
+              const session = trackSessions.find((entry) => entry.trackIds.includes(track.id));
+              return session ? (
                 <ProgramSessionCard
                   session={session}
-                  isGlobal={true}
-                  trackLabel={labels.globalLabel}
-                  tone="from-sky-500 to-cyan-400"
+                  isGlobal={false}
+                  trackLabel={track.label}
+                  tone={track.accent}
                   roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
                   labels={labels}
                   searchText={getSessionSearchText(session)}
                 />
-              ))}
-
-              {trackSessions.length > 0 && (
-                <div class="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
-                  {tracks.map((track) => {
-                    const session = trackSessions.find((entry) => entry.trackIds.includes(track.id));
-                    return session ? (
-                      <ProgramSessionCard
-                        session={session}
-                        isGlobal={false}
-                        trackLabel={track.label}
-                        tone={track.accent}
-                        roomLabel={session.roomIds.map((roomId) => roomMap.get(roomId)?.label ?? roomId).join(' · ')}
-                        labels={labels}
-                        searchText={getSessionSearchText(session)}
-                      />
-                    ) : (
-                      <div class="hidden min-h-[12rem] items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white/50 px-4 py-5 text-center text-xs text-muted lg:flex dark:border-slate-800 dark:bg-slate-950/20">
-                        {labels.emptyTrackSlotLabel}
-                      </div>
-                    );
-                  })}
+              ) : (
+                <div class="hidden min-h-[12rem] items-center justify-center rounded-2xl border border-dashed border-gray-200 bg-white/50 px-4 py-5 text-center text-xs text-muted lg:flex dark:border-slate-800 dark:bg-slate-950/20">
+                  {labels.emptyTrackSlotLabel}
                 </div>
-              )}
-            </div>
-          </section>
-        );
-      })}
+              );
+            })}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+})}
   </div>
 </section>
