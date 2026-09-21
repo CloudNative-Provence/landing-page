@@ -1,3 +1,5 @@
+import sponsorsEn from '../domains/event/sponsors/content/en';
+import sponsorsFr from '../domains/event/sponsors/content/fr';
 import metaEn from '../domains/metadata/en';
 import metaFr from '../domains/metadata/fr';
 import navigationEn from '../domains/navigation/en';
@@ -8,11 +10,13 @@ import { defaultLang } from './config';
 
 export const sourceLocales = {
   fr: {
+    ...sponsorsFr,
     ...navigationFr,
     ...metaFr,
     ...blogFr,
   },
   en: {
+    ...sponsorsEn,
     ...navigationEn,
     ...metaEn,
     ...blogEn,

@@ -1,0 +1,710 @@
+---
+import { Icon } from 'astro-icon/components';
+import { getLocalizedPagePath } from '~/i18n/routes';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
+import { getPermalink } from '~/shared/url/permalinks';
+import { sponsors, sponsorTiers } from '../sponsors';
+import SponsorDialog from './SponsorDialog.astro';
+
+interface Props {
+  headingLevel?: 'h1' | 'h2';
+  sponsorshipHref?: string;
+}
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang).sponsors;
+const {
+  headingLevel = 'h2',
+  sponsorshipHref = `${getPermalink(getLocalizedPagePath(lang, 'sponsoring'))}#sponsor-packages`,
+} = Astro.props;
+const Heading = headingLevel;
+const TierHeading = headingLevel === 'h1' ? 'h2' : 'h3';
+const NameHeading = headingLevel === 'h1' ? 'h3' : 'h4';
+const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community: 'tabler:heart-handshake' };
+---
+
+<sponsor-showcase>
+  <section id="sponsors" class="sponsor-showcase" aria-labelledby="sponsors-title">
+    <div class="sponsor-container">
+      <header class="showcase-header">
+        <div>
+          <p class="eyebrow"><span aria-hidden="true"></span>{t.eyebrow}</p>
+          <Heading id="sponsors-title" class="showcase-title">
+            {t.title}<br><span>{t.titleAccent}</span>
+          </Heading>
+        </div>
+        <div class="showcase-intro">
+          <p>{t.introduction}</p>
+          <a class="intro-link" href={sponsorshipHref}>
+            {t.joinAction}<Icon name="tabler:arrow-up-right" aria-hidden="true" />
+          </a>
+        </div>
+      </header>
+
+      <nav class="tier-navigation" aria-label={t.navigation}>
+        {sponsorTiers.map((tier) => (
+  <a href={`#sponsors-${tier}`} class:list={['tier-link', `tier-link--${tier}`]}>
+    <span class="tier-dot" aria-hidden="true"></span>
+    {t.tiers[tier]}
+    <span class="tier-count">{sponsors.filter((sponsor) => sponsor.tier === tier).length}</span>
+  </a>
+))}
+      </nav>
+
+      <div class="sponsor-tiers">
+        {sponsorTiers.map((tier) => (
+  <section
+    id={`sponsors-${tier}`}
+    class:list={['sponsor-tier', `sponsor-tier--${tier}`]}
+    aria-labelledby={`sponsors-${tier}-title`}
+  >
+    <div class="tier-heading">
+      <TierHeading id={`sponsors-${tier}-title`}>
+        <span class="tier-symbol">
+          <Icon name={tierIcons[tier]} aria-hidden="true" />
+        </span>
+        {t.tiers[tier]}
+      </TierHeading>
+      <span class="tier-rule" aria-hidden="true"></span>
+      <p>{t.tierNotes[tier]}</p>
+    </div>
+    <ul class="sponsor-grid">
+      {sponsors
+        .filter((sponsor) => sponsor.tier === tier)
+        .map((sponsor) => (
+          <li>
+            <article class:list={['sponsor-card', `sponsor-card--${sponsor.id}`]}>
+              <div class="sponsor-logo-stage">
+                <img
+                  src={sponsor.logo.src}
+                  width={sponsor.logo.width}
+                  height={sponsor.logo.height}
+                  alt={sponsor.name}
+                  loading={tier === 'gold' && headingLevel === 'h1' ? 'eager' : 'lazy'}
+                  decoding="async"
+                />
+                {sponsor.id === 'gravitek' && (
+                  <span class="gravitek-wordmark" aria-hidden="true">
+                    Gravitek
+                  </span>
+                )}
+                {tier === 'gold' && (
+                  <span class="gold-caption" aria-hidden="true">
+                    GOLD SPONSOR
+                  </span>
+                )}
+              </div>
+              <div class="sponsor-card-content">
+                <NameHeading class:list={{ 'sr-only': tier === 'community' }}>{sponsor.name}</NameHeading>
+                <div class="sponsor-actions">
+                  <button
+                    type="button"
+                    class="sponsor-visit"
+                    data-sponsor-open={`sponsor-dialog-${sponsor.id}`}
+                    aria-controls={`sponsor-dialog-${sponsor.id}`}
+                    aria-haspopup="dialog"
+                    hidden
+                  >
+                    {t.visit} {sponsor.name}
+                    <Icon name="tabler:arrow-right" aria-hidden="true" />
+                  </button>
+                  <noscript>
+                    <details class="sponsor-pitch-fallback">
+                      <summary>
+                        {t.visit} {sponsor.name}
+                      </summary>
+                      {sponsor.pitch[lang].split('\n\n').map((paragraph) => (
+                        <p>{paragraph}</p>
+                      ))}
+                      <a
+                        class="sponsor-visit"
+                        href={sponsor.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={`${t.website} ${sponsor.name} (${t.newTab})`}
+                      >
+                        {t.website} {sponsor.name}
+                        <Icon name="tabler:arrow-up-right" aria-hidden="true" />
+                      </a>
+                    </details>
+                  </noscript>
+                </div>
+              </div>
+            </article>
+            <SponsorDialog sponsor={sponsor} lang={lang} />
+          </li>
+        ))}
+    </ul>
+  </section>
+))}
+      </div>
+
+      <aside class="sponsor-invitation">
+        <span class="invitation-icon"><Icon name="tabler:heart-handshake" aria-hidden="true" /></span>
+        <div>
+          <p class="invitation-title">{t.joinTitle}</p>
+          <p class="invitation-description">{t.joinDescription}</p>
+        </div>
+        <a class="invitation-link" href={sponsorshipHref}>
+          {t.joinAction}<Icon name="tabler:arrow-right" aria-hidden="true" />
+        </a>
+      </aside>
+      <p class="sponsor-thanks"><Icon name="tabler:heart" aria-hidden="true" />{t.thanks}</p>
+    </div>
+  </section>
+</sponsor-showcase>
+
+<script>
+import './sponsor-showcase-element';
+</script>
+
+<style>
+sponsor-showcase {
+  display: block;
+}
+.sponsor-showcase {
+  --sponsor-ink: #17253c;
+  --sponsor-muted: #546278;
+  --sponsor-border: #dce3ee;
+  --sponsor-surface: #fff;
+  position: relative;
+  padding: 5.5rem 1.5rem 3rem;
+  color: var(--sponsor-ink);
+  background: radial-gradient(ellipse at 0 0, #e9f2fa 0, transparent 45%), #f7f8fb;
+  scroll-margin-top: 6rem;
+}
+.sponsor-container {
+  max-width: 70rem;
+  margin-inline: auto;
+}
+.showcase-header {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 3rem;
+  align-items: end;
+}
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: #31618b;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  margin-bottom: 1.2rem;
+}
+.eyebrow span {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #46a5cb;
+  box-shadow: 0 0 0 5px #46a5cb18;
+}
+.showcase-title {
+  font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.13;
+  letter-spacing: -0.055em;
+}
+.showcase-title > span {
+  color: #00669f;
+}
+.showcase-intro {
+  max-width: 26rem;
+  padding-bottom: 0.15rem;
+}
+.showcase-intro > p {
+  color: var(--sponsor-muted);
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+.intro-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #00669f;
+}
+.intro-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.25rem;
+}
+.intro-link :global(svg),
+.sponsor-visit :global(svg),
+.invitation-link :global(svg) {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+}
+.tier-navigation {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+}
+.tier-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--sponsor-border);
+  border-radius: 99px;
+  background: var(--sponsor-surface);
+  font-size: 0.75rem;
+  font-weight: 600;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.tier-link:hover {
+  border-color: #46a5cb;
+  background: #eaf4fc;
+}
+.tier-dot {
+  height: 0.4rem;
+  width: 0.4rem;
+  border-radius: 50%;
+  background: #b88327;
+}
+.tier-link--silver .tier-dot {
+  background: #7c90aa;
+}
+.tier-link--community .tier-dot {
+  background: #9474b8;
+}
+.tier-count {
+  color: var(--sponsor-muted);
+  font-size: 0.7rem;
+  padding-left: 0.4rem;
+  border-left: 1px solid var(--sponsor-border);
+}
+.sponsor-tiers {
+  display: grid;
+  gap: 2.5rem;
+}
+.sponsor-tier {
+  scroll-margin-top: 6rem;
+}
+.tier-heading {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.tier-heading h2,
+.tier-heading h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.tier-symbol {
+  display: grid;
+  place-items: center;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 0.65rem;
+  color: #946212;
+  background: #f3e6c9;
+}
+.tier-symbol :global(svg) {
+  width: 1.1rem;
+  height: 1.1rem;
+}
+.sponsor-tier--silver .tier-symbol {
+  color: #536b87;
+  background: #e6ecf4;
+}
+.sponsor-tier--community .tier-symbol {
+  color: #785298;
+  background: #eee7f6;
+}
+.tier-rule {
+  height: 1px;
+  flex: 1;
+  background: var(--sponsor-border);
+}
+.tier-heading > p {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--sponsor-muted);
+}
+.sponsor-grid {
+  display: grid;
+  gap: 1.15rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.sponsor-tier--silver .sponsor-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.sponsor-tier--community .sponsor-grid {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+.sponsor-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--sponsor-border);
+  border-radius: 1rem;
+  background: var(--sponsor-surface);
+  box-shadow: 0 3px 8px #17253c03;
+  transition:
+    transform 0.2s,
+    box-shadow 0.2s,
+    border-color 0.2s;
+}
+.sponsor-card:hover {
+  transform: translateY(-4px);
+  border-color: #91afc9;
+  box-shadow: 0 14px 30px #17253c0c;
+}
+.sponsor-showcase :is(a, button, summary):focus-visible {
+  outline: 3px solid #087bbb;
+  outline-offset: 5px;
+}
+.sponsor-logo-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-height: 8.5rem;
+  padding: 1.75rem 2rem;
+  background: #fff;
+}
+.sponsor-logo-stage img {
+  width: 100%;
+  max-width: 13rem;
+  height: 4rem;
+  object-fit: contain;
+}
+.sponsor-tier--silver .sponsor-logo-stage {
+  min-height: 10rem;
+}
+.sponsor-tier--silver .sponsor-logo-stage img {
+  max-width: 18rem;
+  height: 4.6rem;
+}
+.sponsor-card-content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 1.4rem 1.5rem;
+  border-top: 1px solid var(--sponsor-border);
+}
+.sponsor-card-content h3,
+.sponsor-card-content h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.sponsor-pitch-fallback {
+  font-size: 0.875rem;
+  color: var(--sponsor-muted);
+  line-height: 1.75;
+  margin-bottom: 1.1rem;
+}
+.sponsor-pitch-fallback p {
+  margin-top: 0.9rem;
+}
+.sponsor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.65rem 1rem;
+}
+.sponsor-actions .sponsor-visit {
+  flex: 1;
+}
+.sponsor-visit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: auto;
+  color: #00669f;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-height: 2.75rem;
+  cursor: pointer;
+  text-align: left;
+}
+.sponsor-visit[hidden] {
+  display: none;
+}
+.sponsor-visit :global(svg) {
+  transition: transform 0.2s;
+}
+.sponsor-card:hover .sponsor-visit :global(svg) {
+  transform: translate(2px, -2px);
+}
+.sponsor-card--exoscale {
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  border-color: #d6be82;
+  box-shadow: 0 5px 20px #b78b2510;
+}
+.sponsor-card--exoscale .sponsor-logo-stage {
+  position: relative;
+  min-height: 16.5rem;
+  flex-direction: column;
+  gap: 1.8rem;
+  background: radial-gradient(ellipse at 15% 100%, #2d4660, transparent 70%), #17253c;
+}
+.sponsor-card--exoscale img {
+  max-width: 20rem;
+  height: 4.5rem;
+}
+.gold-caption {
+  color: #e3c681;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+}
+.sponsor-card--exoscale .sponsor-card-content {
+  justify-content: center;
+  padding: 2.25rem 2.75rem;
+  border-top: 0;
+}
+.sponsor-card--exoscale .sponsor-card-content h3,
+.sponsor-card--exoscale .sponsor-card-content h4 {
+  font-size: 1.8rem;
+  letter-spacing: -0.035em;
+}
+.sponsor-card--exoscale .sponsor-visit {
+  margin-top: 0.4rem;
+  padding-top: 0.8rem;
+  border-top: 1px solid var(--sponsor-border);
+  font-size: 0.85rem;
+}
+.sponsor-card--gravitek img {
+  width: 2.7rem;
+  height: 3rem;
+}
+.gravitek-wordmark {
+  color: #161a22;
+  font-size: 1.8rem;
+  font-weight: 600;
+  letter-spacing: -0.055em;
+}
+.sponsor-card--ikki-league img {
+  max-width: 10rem;
+}
+.sponsor-card--smart-tribune img {
+  max-width: 11.5rem;
+}
+.sponsor-tier--community .sponsor-card {
+  border-radius: 0.75rem;
+}
+.sponsor-tier--community .sponsor-logo-stage {
+  min-height: 5.5rem;
+  padding: 1rem 0.75rem;
+  gap: 0.45rem;
+}
+.sponsor-tier--community .sponsor-logo-stage img {
+  max-width: 8.5rem;
+  height: 2.5rem;
+}
+.sponsor-tier--community .sponsor-card--gravitek img {
+  width: 1.75rem;
+  height: 2rem;
+}
+.sponsor-tier--community .gravitek-wordmark {
+  font-size: 1.1rem;
+}
+.sponsor-tier--community .sponsor-card-content {
+  padding: 0.35rem 0.65rem;
+}
+.sponsor-tier--community .sponsor-visit {
+  gap: 0.35rem;
+  line-height: 1.45;
+}
+.sponsor-tier--community .sponsor-visit :global(svg) {
+  width: 0.9rem;
+  height: 0.9rem;
+}
+.sponsor-invitation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.7rem 2rem;
+  margin-top: 2.75rem;
+  border: 1px dashed #aebfd2;
+  border-radius: 1rem;
+  background: #edf3f9;
+}
+.invitation-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  color: #376993;
+  background: #dfeaf5;
+}
+.invitation-icon :global(svg) {
+  height: 1.4rem;
+  width: 1.4rem;
+}
+.invitation-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+.invitation-description {
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  color: var(--sponsor-muted);
+}
+.invitation-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0.8rem 1.2rem;
+  border-radius: 99px;
+  color: #fff;
+  background: #004e91;
+  font-size: 0.8rem;
+  font-weight: 600;
+  transition: background 0.2s;
+}
+.invitation-link:hover {
+  background: #4e3a75;
+}
+.sponsor-thanks {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1.75rem;
+  font-size: 0.7rem;
+  color: var(--sponsor-muted);
+}
+.sponsor-thanks :global(svg) {
+  width: 0.9rem;
+  height: 0.9rem;
+  color: #9474b8;
+}
+:global(.dark) .sponsor-showcase {
+  --sponsor-ink: #e8eef7;
+  --sponsor-muted: #abb9cd;
+  --sponsor-border: #344058;
+  --sponsor-surface: #202b40;
+  background: radial-gradient(ellipse at 0 0, #20344c 0, transparent 45%), #161e30;
+}
+:global(.dark) .showcase-title > span,
+:global(.dark) .eyebrow,
+:global(.dark) .intro-link,
+:global(.dark) .sponsor-visit {
+  color: #81c9ea;
+}
+:global(.dark) .tier-link:hover {
+  background: #2c3e56;
+}
+:global(.dark) .sponsor-invitation {
+  background: #202e43;
+  border-color: #4b6281;
+}
+:global(.dark) .invitation-icon {
+  color: #a7d7ed;
+  background: #2c435e;
+}
+:global(.dark) .sponsor-showcase :is(a, button, summary):focus-visible {
+  outline-color: #81c9ea;
+}
+@media (max-width: 1023px) {
+  .sponsor-tier--community .sponsor-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+@media (max-width: 767px) {
+  .sponsor-showcase {
+    padding: 3.5rem 1.25rem 2rem;
+  }
+  .showcase-header {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  .showcase-intro {
+    max-width: 35rem;
+  }
+  .tier-navigation {
+    margin-bottom: 2.25rem;
+  }
+  .sponsor-card--exoscale .sponsor-card-content {
+    padding: 1.5rem;
+  }
+  .sponsor-card--exoscale img {
+    max-width: 15rem;
+  }
+  .sponsor-invitation {
+    flex-wrap: wrap;
+    padding: 1.5rem;
+  }
+  .invitation-link {
+    margin-left: 3.75rem;
+  }
+}
+@media (max-width: 540px) {
+  .sponsor-tier--silver .sponsor-grid,
+  .sponsor-card--exoscale {
+    grid-template-columns: 1fr;
+  }
+  .sponsor-tier--community .sponsor-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .tier-heading {
+    gap: 0.6rem;
+  }
+  .tier-heading > p {
+    font-size: 0.56rem;
+    letter-spacing: 0.04em;
+    max-width: 7rem;
+    text-align: right;
+  }
+  .sponsor-card--exoscale .sponsor-logo-stage {
+    min-height: 11rem;
+  }
+  .sponsor-tier--silver .sponsor-logo-stage {
+    min-height: 8.5rem;
+  }
+  .sponsor-card-content {
+    padding: 1.2rem 1.5rem;
+  }
+  .invitation-icon {
+    display: none;
+  }
+  .invitation-link {
+    margin-left: 0;
+    width: 100%;
+  }
+  .sponsor-thanks {
+    font-size: 0.65rem;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sponsor-card,
+  .sponsor-visit :global(svg),
+  .tier-link,
+  .invitation-link {
+    transition: none;
+  }
+  .sponsor-card:hover,
+  .sponsor-card:hover .sponsor-visit :global(svg) {
+    transform: none;
+  }
+}
+</style>

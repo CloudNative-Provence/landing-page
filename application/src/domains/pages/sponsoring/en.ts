@@ -2,7 +2,8 @@ import { getLocalizedPagePath } from '~/i18n/routes';
 
 export default {
   metadata: {
-    title: 'Sponsoring - Cloud Native Provence',
+    title: 'Our sponsors - Cloud Native Provence',
+    description: 'Meet the Gold, Silver and Community sponsors making KCD Provence possible, and join the adventure.',
   },
   hero: {
     tagline: 'Sponsoring',

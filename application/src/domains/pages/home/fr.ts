@@ -58,7 +58,7 @@ export default {
     eventDate: eventMeta.startsAt,
   },
   note: {
-    title: 'Notre philosophie :',
+    title: 'Notre philosophie : ',
     description: 'Communauté, Partage et Technologies Open Source',
   },
   countdownLabels: {

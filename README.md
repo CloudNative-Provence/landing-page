@@ -97,6 +97,7 @@ Key files:
 Translations are split by **domain** and **locale** (`en.ts`, `fr.ts`) using nested objects (no dot-string keys in data files).
 
 - Shared site copy lives in `application/src/domains/`:
+  - `event/sponsors/content/` for sponsor showcase and dialog labels
   - `navigation/` for header and footer labels
   - `metadata/` for site-wide metadata copy
 - Page-specific content lives in domain-owned folders:
@@ -218,6 +219,7 @@ All application source code lives under `application/src`. If you are adding or 
 - `shared/content/` contains Markdown and Astro content pipeline helpers. `domains/pages/*/content/` contains business content owned by a specific page domain.
 - `domains/pages/routing/` contains page-routing support. `pages/` contains framework route entrypoints only.
 - `domains/pages/*/components/` owns page-specific UI. `shared/components/` is reserved for truly shared UI used across domains.
+- `domains/event/sponsors/components/` owns sponsor UI used by the home and sponsoring pages, including its browser behavior. Localized labels live in `domains/event/sponsors/content/{en,fr}.ts`, and the roster lives in `domains/event/sponsors/sponsors.ts`.
 - `domains/metadata/` contains shared metadata copy. Page-specific metadata belongs in the owning page domain, not in `domains/metadata/`.
 - `shared/url/` contains generic permalink and URL helpers. If a helper knows about page enablement or page registry rules, it belongs in `domains/pages/routing/` instead.
 - `shared/content/` contains generic Markdown and content-pipeline helpers. If a helper becomes layout-specific, move it into `layouts/composition/`.

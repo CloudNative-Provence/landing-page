@@ -2,7 +2,9 @@ import { getLocalizedPagePath } from '~/i18n/routes';
 
 export default {
   metadata: {
-    title: 'Sponsoring - Cloud Native Provence',
+    title: 'Nos sponsors - Cloud Native Provence',
+    description:
+      "Découvrez les sponsors Gold, Silver et Communautaires qui font vivre KCD Provence et rejoignez l'aventure.",
   },
   hero: {
     tagline: 'Sponsoring',
@@ -11,7 +13,7 @@ export default {
       "Soutenez Kubernetes Community Days Provence 2026, organisé par l'association Cloud Native Provence, et faites de cette journée un succès collectif et communautaire.",
   },
   pricing: {
-    title: 'Nos formulas de sponsoring',
+    title: 'Nos formules de sponsoring',
     subtitle: 'Choisissez le pack qui correspond à vos objectifs',
     packages: [
       {

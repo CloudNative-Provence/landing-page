@@ -100,7 +100,7 @@ describe('navigation', () => {
     const footer = getFooterData('fr');
 
     expect(header.links).toEqual([
-      { text: 'Sponsoring', href: '/en/sponsoring' },
+      { text: 'Sponsors', href: '/en/sponsoring' },
       {
         text: 'Practical Information',
         links: [

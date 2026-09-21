@@ -48,7 +48,7 @@ export const getHeaderData = (locale: keyof LocaleDictionaries, now: Date = new 
           ]
         : []),
       {
-        text: t.header.sponsoring,
+        text: t.header.sponsors,
         href: getPermalink(getLocalizedPagePath(locale, 'sponsoring')),
       },
       {
