@@ -1,5 +1,6 @@
 ---
 import { type CfpAvailabilityPhase, resolveCfpPhase } from '~/domains/event/cfp/availability';
+import SponsorShowcase from '~/domains/event/sponsors/components/SponsorShowcase.astro';
 import Image from '~/shared/components/common/Image.astro';
 import Button from '~/shared/components/ui/Button.astro';
 import CallToAction from '~/shared/components/widgets/CallToAction.astro';
@@ -144,6 +145,8 @@ const cfpImage = cfp?.image && typeof cfp.image !== 'string' ? (cfp.image as Ima
 </Hero>
 
 <Note title={note.title} description={note.description} />
+
+<SponsorShowcase />
 
 {about && (
   <>

@@ -1,8 +1,8 @@
 ---
+import SponsorShowcase from '~/domains/event/sponsors/components/SponsorShowcase.astro';
 import CallToAction from '~/shared/components/widgets/CallToAction.astro';
 import FAQs from '~/shared/components/widgets/FAQs.astro';
 import Features3 from '~/shared/components/widgets/Features3.astro';
-import HeroText from '~/shared/components/widgets/HeroText.astro';
 import Prices from '~/shared/components/widgets/Pricing.astro';
 import { getPermalink } from '~/shared/url/permalinks';
 import type { Item } from '~/types';
@@ -69,7 +69,13 @@ const actionsWithPermalinks = callToAction.actions.map((action: ActionItem) => (
 }));
 ---
 
-<HeroText tagline={hero.tagline} title={hero.title} subtitle={hero.subtitle} />
+<SponsorShowcase headingLevel="h1" sponsorshipHref="#sponsor-packages" />
+
+<section id="sponsor-packages" class="mx-auto max-w-5xl scroll-mt-24 px-6 pt-20 text-center">
+  <p class="mb-3 text-sm font-bold uppercase tracking-widest text-primary">{hero.tagline}</p>
+  <h2 class="mb-4 text-3xl font-bold tracking-tight md:text-4xl">{hero.title}</h2>
+  <p class="mx-auto max-w-3xl text-lg text-muted">{hero.subtitle}</p>
+</section>
 
 <Prices title={pricing.title} subtitle={pricing.subtitle} prices={pricesWithPermalinks} />
 

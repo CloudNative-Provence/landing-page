@@ -1,0 +1,193 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { AppLang } from '~/i18n/routes';
+import { useTranslations } from '~/i18n/utils';
+import type { Sponsor } from '../sponsors';
+
+interface Props {
+  sponsor: Sponsor;
+  lang: AppLang;
+}
+
+const { sponsor, lang } = Astro.props;
+const t = useTranslations(lang).sponsors;
+---
+
+<dialog
+  id={`sponsor-dialog-${sponsor.id}`}
+  class="sponsor-dialog"
+  aria-labelledby={`sponsor-dialog-${sponsor.id}-title`}
+>
+  <header class="dialog-header">
+    <div class:list={['dialog-logo', { 'dialog-logo--gold': sponsor.tier === 'gold' }]}>
+      <img src={sponsor.logo.src} width={sponsor.logo.width} height={sponsor.logo.height} alt="" loading="lazy">
+    </div>
+    <form method="dialog">
+      <button type="submit" class="dialog-close" aria-label={t.close} autofocus>
+        <Icon name="tabler:x" aria-hidden="true" />
+      </button>
+    </form>
+  </header>
+  <div class="dialog-body">
+    <p class="dialog-tier">{t.tiers[sponsor.tier]}</p>
+    <h2 id={`sponsor-dialog-${sponsor.id}-title`}>{sponsor.name}</h2>
+    <div class="dialog-pitch">
+      {sponsor.pitch[lang].split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+  </div>
+  <footer class="dialog-footer">
+    <a
+      href={sponsor.url}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`${t.website} ${sponsor.name} (${t.newTab})`}
+    >
+      {t.website} {sponsor.name}<Icon name="tabler:arrow-up-right" aria-hidden="true" />
+    </a>
+  </footer>
+</dialog>
+
+<style>
+.sponsor-dialog {
+  width: min(40rem, calc(100% - 2rem));
+  max-height: calc(100dvh - 3rem);
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--sponsor-border);
+  border-radius: 1.25rem;
+  color: var(--sponsor-ink);
+  background: var(--sponsor-surface);
+  box-shadow: 0 24px 80px #0b132b40;
+}
+.sponsor-dialog[open] {
+  display: flex;
+  flex-direction: column;
+}
+.sponsor-dialog::backdrop {
+  background: #0b132ba6;
+  backdrop-filter: blur(4px);
+}
+.dialog-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--sponsor-border);
+  flex-shrink: 0;
+}
+.dialog-logo {
+  display: grid;
+  place-items: center;
+  width: 13rem;
+  height: 4.5rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.65rem;
+  background: #fff;
+}
+.dialog-logo--gold {
+  background: #17253c;
+}
+.dialog-logo img {
+  width: 100%;
+  height: 3rem;
+  object-fit: contain;
+}
+.dialog-close {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid var(--sponsor-border);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dialog-close:hover {
+  background: #46a5cb20;
+}
+.dialog-close :global(svg) {
+  width: 1.3rem;
+  height: 1.3rem;
+}
+.dialog-body {
+  padding: 1.75rem 2rem 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.dialog-tier {
+  color: var(--sponsor-muted);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+h2 {
+  margin: 0.5rem 0 1.25rem;
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+}
+.dialog-pitch {
+  color: var(--sponsor-muted);
+  font-size: 0.95rem;
+  line-height: 1.85;
+}
+.dialog-pitch p + p {
+  margin-top: 1rem;
+}
+.dialog-footer {
+  flex-shrink: 0;
+  padding: 1.25rem 2rem;
+  border-top: 1px solid var(--sponsor-border);
+}
+.dialog-footer a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  padding: 0.8rem 1.2rem;
+  border-radius: 99px;
+  color: #fff;
+  background: #004e91;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.dialog-footer a:hover {
+  background: #4e3a75;
+}
+.dialog-footer :global(svg) {
+  width: 1.1rem;
+  height: 1.1rem;
+  flex-shrink: 0;
+}
+.sponsor-dialog :is(a, button):focus-visible {
+  outline: 3px solid #087bbb;
+  outline-offset: 3px;
+}
+:global(.dark) .sponsor-dialog :is(a, button):focus-visible {
+  outline-color: #81c9ea;
+}
+:global(html:has(.sponsor-dialog[open])) {
+  overflow: hidden;
+}
+@media (max-width: 540px) {
+  .sponsor-dialog {
+    width: calc(100% - 1rem);
+    max-height: calc(100dvh - 1rem);
+    border-radius: 1rem;
+  }
+  .dialog-header {
+    padding: 0.75rem 1rem;
+  }
+  .dialog-body {
+    padding: 1.25rem;
+  }
+  .dialog-footer {
+    padding: 1rem;
+  }
+  .dialog-footer a {
+    width: 100%;
+  }
+}
+</style>

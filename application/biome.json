@@ -8,6 +8,7 @@
       "**",
       "!src/assets/styles/tailwind.css",
       "!src/assets/images/brand/logo/*.svg",
+      "!!src/assets/images/sponsors/*.svg",
       "!!**/.astro",
       "!!**/coverage",
       "!!**/dist"
