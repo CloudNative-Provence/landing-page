@@ -1,5 +1,9 @@
 export default {
   header: {
+    navigationLabel: 'Navigation principale',
+    menuToggleLabel: 'Ouvrir ou fermer le menu',
+    themeToggleLabel: 'Basculer entre le mode sombre et le mode clair',
+    rssFeedLabel: 'Flux RSS',
     event: 'Événement',
     cfp: 'CFP',
     venue: 'Lieu',
@@ -11,7 +15,7 @@ export default {
     practicalInfo: 'Infos pratiques',
     about: 'À propos',
     contact: 'Contact',
-    brandGuidelines: 'Charte Graphique',
+    brandGuidelines: 'Charte graphique',
   },
   footer: {
     event: 'Événement',
@@ -20,7 +24,7 @@ export default {
     program: 'Programme',
     practicalInfo: 'Infos pratiques',
     about: 'À propos',
-    brandGuidelines: 'Charte Graphique',
+    brandGuidelines: 'Charte graphique',
     contact: 'Contact',
     terms: 'Mentions légales',
     privacy: 'Politique de confidentialité',

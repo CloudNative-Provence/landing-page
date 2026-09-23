@@ -14,12 +14,12 @@ const mapsSearch = (query: string) => `https://www.google.com/maps/search/?api=1
 export default {
   metadata: {
     title: 'Parkings',
-    description: `Consultez les solutions de stationnement et parking-relais pour votre venue à ${eventMeta.city}.`,
+    description: `Consultez les solutions de stationnement et les parkings-relais pour votre venue à ${eventMeta.city}.`,
   },
   tagline: 'Infos pratiques',
   title: 'Parkings',
   summary:
-    'Stationnez sous le lieu, dans un parking central, ou laissez la voiture dans un parking-relais et prenez un bus gratuit.',
+    'Stationnez sous le lieu, dans un parking central ou laissez la voiture dans un parking-relais et prenez un bus gratuit.',
   content:
     'Vous venez en voiture ? Le parking Carnot se trouve juste sous le centre des congrès, plusieurs parkings couverts sont à quelques minutes à pied, et les parkings-relais aux entrées de la ville offrent un bus gratuit vers le centre.',
   icon: 'tabler:parking',
@@ -28,7 +28,7 @@ export default {
   parkingGuide: {
     heroTitle: "Où se garer pour l'événement",
     heroIntro:
-      'Venez en voiture sans stress : garez-vous juste sous le lieu, dans un parking central, ou laissez la voiture dans un parking-relais et montez dans un bus gratuit.',
+      'Venez en voiture sans stress : garez-vous juste sous le lieu, dans un parking central ou laissez la voiture dans un parking-relais et montez dans un bus gratuit.',
     categoriesTitle: 'Choisissez votre approche',
     categoriesIntro: "Trois options selon la proximité souhaitée et l'organisation de votre journée.",
     categories: [
@@ -36,15 +36,15 @@ export default {
         id: 'venue',
         title: 'Au plus près du lieu',
         badge: 'Sous le centre des congrès',
-        description: "Le parking Carnot se trouve juste sous le lieu - l'option la plus simple le jour J.",
+        description: "Le parking Carnot se trouve juste sous le lieu : l'option la plus simple le jour J.",
         icon: 'tabler:building',
         options: [
           {
             name: 'Parking Carnot',
             blurb:
-              'Juste sous le centre des congrès, à un ascenseur des salles ; 675 places avec recharge électrique, personnel 24h/24.',
+              'Juste sous le centre des congrès, avec accès aux salles par ascenseur ; 675 places avec recharge électrique et personnel présent 24 h/24.',
             address: 'Boulevard Carnot, 13100 Aix-en-Provence',
-            featureTags: ['Couvert', 'Recharge électrique', 'Ouvert 24h/24', 'Accès PMR'],
+            featureTags: ['Couvert', 'Recharge électrique', 'Ouvert 24 h/24', 'Accès PMR'],
             mapLabel: 'Carte',
             mapHref: mapsPin('43.525315', '5.454859'),
           },
@@ -54,7 +54,7 @@ export default {
         id: 'city-centre',
         title: 'Parkings du centre-ville',
         badge: 'À quelques minutes à pied',
-        description: 'Parkings publics couverts à quelques minutes à pied, pratiques si Carnot est complete.',
+        description: 'Parkings publics couverts à quelques minutes à pied, pratiques si Carnot est complet.',
         icon: 'tabler:parking',
         options: [
           {
@@ -62,7 +62,7 @@ export default {
             blurb:
               'Le plus grand parking central (1 800 places) près de La Rotonde et des gares, avec recharge électrique.',
             address: 'Rue Villevieille, 13100 Aix-en-Provence',
-            featureTags: ['Couvert', 'Recharge électrique', 'Ouvert 24h/24'],
+            featureTags: ['Couvert', 'Recharge électrique', 'Ouvert 24 h/24'],
             mapLabel: 'Carte',
             mapHref: mapsPin('43.526953', '5.443108'),
           },
@@ -89,7 +89,7 @@ export default {
         title: 'Parkings-relais (P+R)',
         badge: 'Bus gratuit vers le centre',
         description:
-          "Parkings sécurisés et gardiennés aux entrées de la ville, reliés au centre par des bus fréquents - gratuits pour le conducteur et ses passagers sur demande à l'accueil. Ouverts de 4h30 à 20h, sortie à toute heure.",
+          "Parkings sécurisés et gardiennés aux entrées de la ville, reliés au centre par des bus fréquents, gratuits pour le conducteur et ses passagers sur demande à l'accueil. Ouverts de 4 h 30 à 20 h, sortie à toute heure.",
         icon: 'tabler:bus',
         options: [
           {
@@ -124,7 +124,7 @@ export default {
       "Le jour J, le parking Carnot sous le centre des congrès est l'option la plus simple.",
       'Les 30 premières minutes sont gratuites dans les parkings du centre (SEMEPA).',
       "Vous venez à la journée ? Laissez la voiture dans un parking-relais et demandez à l'accueil le ticket de bus gratuit pour vous et vos passagers.",
-      "Les parkings du centre sont pris d'assaut les jours de marché (mardi, jeudi, samedi) - arrivez tôt.",
+      "Les parkings du centre sont pris d'assaut les jours de marché (mardi, jeudi, samedi) : arrivez tôt.",
       'La plupart des parkings couverts ont une hauteur limitée à 1,90 m.',
     ],
     resourcesTitle: 'Liens utiles',
@@ -136,9 +136,9 @@ export default {
     ],
     notesTitle: 'Bon à savoir',
     notes: [
-      'Parking Carnot : 675 places, hauteur max 1,90 m, recharge électrique, personnel 24h/24.',
-      "Parking Rotonde : 1 800 places, et le niveau -1 accueille les véhicules jusqu'à 3 m de haut.",
-      'Les parkings-relais ouvrent à 4h30 et ferment à 20h ; la sortie est possible à toute heure.',
+      'Parking Carnot : 675 places, hauteur maximale de 1,90 m, recharge électrique, personnel présent 24 h/24.',
+      "Parking Rotonde : 1 800 places et le niveau -1 accueille les véhicules jusqu'à 3 m de haut.",
+      'Les parkings-relais ouvrent à 4 h 30 et ferment à 20 h ; la sortie est possible à toute heure.',
     ],
   },
 } satisfies PracticalInfoTopicData;

@@ -32,46 +32,47 @@ export default {
   },
   tagline: 'Infos pratiques',
   title: 'Hébergement',
-  summary: `Trouvez des hôtels, appart-hôtels, maisons d'hôtes et locations courte durée ${accommodationAreaLabel}.`,
-  content: `<p>Réserver tôt près du lieu ou du centre historique offre le plus de choix. Si vous prolongez, les deux sont une base idéale pour explorer la Provence.</p>`,
+  summary: `Trouvez des hôtels, appart-hôtels, maisons d'hôtes et locations de courte durée ${accommodationAreaLabel}.`,
+  content: `<p>Réservez tôt près du lieu de l'événement ou du centre historique pour avoir le plus de choix. Si vous prolongez votre séjour, ces deux zones sont idéales pour explorer la Provence.</p>`,
   icon: 'tabler:bed',
   callToActionLabel: "Voir les détails d'hébergement",
   backToOverviewLabel: 'Retour aux infos pratiques',
   accommodationGuide: {
     heroTitle: 'Où loger pour une journée sans stress',
     heroIntro:
-      "Choisissez une zone selon votre arrivée et l'envie de marcher, puis le type d'hébergement adapté à votre séjour.",
+      "Choisissez une zone selon votre mode d'arrivée et votre envie de marcher, puis le type d'hébergement adapté à votre séjour.",
     areasTitle: "Choisissez d'abord votre zone",
     areasIntro:
-      'Trois options simples selon votre priorité : trajet le plus court, soirées animées, ou arrivée tardive sans stress.',
+      'Trois options simples selon votre priorité : trajet le plus court, soirées animées ou arrivée tardive sans stress.',
     areas: [
       {
         title: venueAreaTitle,
         badge: 'Trajet le plus court le jour J',
-        description: 'Le matin le plus simple, et facile pour revenir entre les sessions.',
-        commute: 'Réservez tôt - cette zone se remplit en premier.',
+        description: 'Un trajet simple le matin et un retour facile entre les sessions.',
+        commute: 'Réservez tôt : cette zone se remplit en premier.',
       },
       {
         title: 'Centre historique',
         badge: 'Idéal pour les restaurants et les soirées',
-        description: 'Restaurants, cafés et balades au pied de la porte, et pratique sans voiture.',
-        commute: "Une courte marche ou un taxi jusqu'au lieu.",
+        description:
+          'Restaurants, cafés et balades à deux pas de votre hébergement, pour un séjour pratique sans voiture.',
+        commute: "Un court trajet à pied ou en taxi jusqu'au lieu.",
       },
       {
         title: 'En lisière du centre',
         badge: 'Idéal pour les arrivées tardives',
-        description: 'Check-in et stationnement plus simples si vous arrivez tard ou repartez tôt.',
+        description: 'Accueil et stationnement plus simples si vous arrivez tard ou repartez tôt.',
         commute: 'Vérifiez le trajet du matin avant de réserver.',
       },
     ],
     stayTypesTitle: "Choisissez le type d'hébergement adapté",
-    stayTypesIntro: 'Le bon choix suit votre agenda, pas la plus longue liste de services.',
+    stayTypesIntro: 'Choisissez selon votre programme et les services dont vous avez besoin.',
     stayTypes: [
       {
         title: 'Hôtels',
         badge: 'Le plus simple',
-        description: 'Service prévisible, bagagerie, et arrivée facile le jour même.',
-        bestFor: 'Séjours courts ou solo',
+        description: 'Services fiables, bagagerie et arrivée facile le jour même.',
+        bestFor: 'Séjours courts ou en solo',
       },
       {
         title: 'Appart-hôtels',
@@ -82,14 +83,14 @@ export default {
       {
         title: "Maisons d'hôtes et locations",
         badge: 'Le plus local',
-        description: "Plus de charme et de souplesse, avec un peu plus à vérifier sur l'accès.",
+        description: "Plus de charme et de souplesse ; pensez à vérifier les conditions d'accès.",
         bestFor: 'Séjours prolongés ou en groupe',
       },
     ],
     stayFinder: {
       title: 'Trouvez votre hébergement',
       intro:
-        "Choisissez la zone, le type d'hébergement, et les critères pratiques qui comptent pour vous pour affiner la sélection, puis ouvrez un lieu pour explorer plus loin.",
+        "Affinez la sélection selon la zone, le type d'hébergement et vos critères pratiques, puis consultez le site ou la carte d'un établissement pour en savoir plus.",
       filters: [
         {
           id: 'zone',
@@ -200,7 +201,7 @@ export default {
         {
           name: 'La petite Mazarine',
           blurb:
-            "Maison d'hôtes paisible de 2 chambers avec piscine partagée sur les hauteurs, à quelques minutes du centre en voiture.",
+            "Maison d'hôtes paisible de 2 chambres avec piscine partagée sur les hauteurs, à quelques minutes du centre en voiture.",
           address: '1135 chemin du vallon des lauriers, 13080 Aix-en-Provence',
           zoneId: 'venue-area',
           zoneLabel: 'Autour du lieu',
@@ -227,7 +228,7 @@ export default {
           mapHref: mapsPin('43.523677', '5.442665'),
         },
         {
-          name: 'Séjours et Affairs Mirabeau',
+          name: 'Séjours et Affaires Mirabeau',
           blurb: 'Studios et deux-pièces prêts à vivre près des gares, avec parking privé couvert.',
           address: '615 avenue Wolfgang Amadeus Mozart, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -327,7 +328,8 @@ export default {
         },
         {
           name: 'Villa des Félibres',
-          blurb: "Maison d'hôtes de charme avec piscine et garage, au calme, à pied des gares et du centre.",
+          blurb:
+            "Maison d'hôtes de charme avec piscine et garage, au calme, avec les gares et le centre accessibles à pied.",
           address: '4 avenue Saint-Michel du Pigonnet, 13090 Aix-en-Provence',
           zoneId: 'near-stations',
           zoneLabel: 'Près des gares',
@@ -342,7 +344,7 @@ export default {
         {
           name: 'Hôtel des Augustins',
           blurb:
-            'Hôtel de charme milieu de gamme dans un ancien couvent, à deux pas du cours Mirabeau en zone piétonne.',
+            'Hôtel de charme de milieu de gamme dans un ancien couvent, à deux pas du cours Mirabeau en zone piétonne.',
           address: '3 rue de la Masse, 13100 Aix-en-Provence',
           zoneId: 'historic-center',
           zoneLabel: 'Centre historique',
@@ -371,7 +373,7 @@ export default {
         {
           name: 'Hôtel des Quatre Dauphins',
           blurb:
-            'Hôtel cosy dans un hôtel particulier du XIXe siècle à Mazarin, tout près de la fontaine des Quatre Dauphins.',
+            'Hôtel chaleureux dans un hôtel particulier du XIXe siècle à Mazarin, tout près de la fontaine des Quatre Dauphins.',
           address: '54 rue Roux Alphéran, 13100 Aix-en-Provence',
           zoneId: 'historic-center',
           zoneLabel: 'Centre historique',
@@ -399,7 +401,8 @@ export default {
         },
         {
           name: 'Aquabella Hôtel & Spa',
-          blurb: 'Calme du centre ancien avec jardin et spa sensoriel près des Thermes, parking à proximité.',
+          blurb:
+            'Hôtel au calme dans le centre ancien, avec jardin et spa sensoriel près des Thermes, parking à proximité.',
           address: '2 rue des Étuves, 13100 Aix-en-Provence',
           zoneId: 'historic-center',
           zoneLabel: 'Centre historique',
@@ -414,7 +417,7 @@ export default {
         {
           name: 'Villa Hélène',
           blurb:
-            "Maison d'hôtes élégante de 5 chambers avec piscine et table d'hôtes, dans la verdure au nord de la ville.",
+            "Maison d'hôtes élégante de 5 chambres avec piscine et table d'hôtes, dans la verdure au nord de la ville.",
           address: '920 chemin du Vallon de Bagnol, 13090 Aix-en-Provence',
           zoneId: 'historic-center',
           zoneLabel: 'Centre historique',
@@ -430,10 +433,10 @@ export default {
     },
     checklistTitle: 'Avant de réserver',
     checklist: [
-      'Réservez tôt pour la zone du lieu ou le centre historique.',
+      "Réservez tôt pour loger près du lieu de l'événement ou dans le centre historique.",
       "Vérifiez le temps de marche réel jusqu'au lieu, pas seulement le nom du quartier.",
-      "Arrivée tardive ? Confirmez les horaires de check-in et l'accès taxi.",
-      'En voiture ? Vérifiez le stationnement avant un hébergement central.',
+      "Arrivée tardive ? Confirmez les horaires d'accueil et l'accès en taxi.",
+      'En voiture ? Vérifiez le stationnement avant de réserver un hébergement dans le centre.',
     ],
     resourcesTitle: 'Liens utiles',
     resources: [

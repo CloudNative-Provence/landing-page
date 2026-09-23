@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import LanguageSwitcher from '~/shared/components/common/LanguageSwitcher.astro';
 import ToggleMenu from '~/shared/components/common/ToggleMenu.astro';
 import ToggleTheme from '~/shared/components/common/ToggleTheme.astro';
@@ -43,6 +44,7 @@ const {
   position = 'center',
 } = Astro.props;
 
+const t = useTranslations(getLangFromUrl(Astro.url)).header;
 const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
 ---
 
@@ -71,11 +73,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
   >
     <div class:list={[{ 'mr-auto rtl:mr-0 rtl:ml-auto': position === 'right' }, 'flex justify-between']}>
       <a class="flex items-center" href={getHomePermalink()}> <Logo /> </a>
-      <div class="flex items-center md:hidden"><ToggleMenu /></div>
+      <div class="flex items-center md:hidden"><ToggleMenu label={t.menuToggleLabel} /></div>
     </div>
     <nav
       class="items-center w-full md:w-auto hidden md:flex md:mx-5 text-default overflow-y-auto overflow-x-hidden md:overflow-y-visible md:overflow-x-auto md:justify-self-center"
-      aria-label="Main navigation"
+      aria-label={t.navigationLabel}
     >
       <ul
         class="flex flex-col md:flex-row md:self-center w-full md:w-auto text-xl md:text-[0.9375rem] tracking-[0.01rem] font-medium md:justify-center"
@@ -130,11 +132,11 @@ const currentPath = `/${trimSlash(new URL(Astro.url).pathname)}`;
       <div class="items-center flex justify-between w-full md:w-auto">
         <div class="flex items-center space-x-2">
           <LanguageSwitcher />
-          {showToggleTheme && <ToggleTheme iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
+          {showToggleTheme && <ToggleTheme label={t.themeToggleLabel} iconClass="w-6 h-6 md:w-5 md:h-5 md:inline-block" />}
           {showRssFeed && (
   <a
     class="text-muted dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 inline-flex items-center"
-    aria-label="RSS Feed"
+    aria-label={t.rssFeedLabel}
     href={getAsset('/rss.xml')}
   >
     <Icon name="tabler:rss" class="w-5 h-5" />

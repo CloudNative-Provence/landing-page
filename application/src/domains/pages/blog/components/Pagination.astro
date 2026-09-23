@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import Button from '~/shared/components/ui/Button.astro';
 import { getPermalink } from '~/shared/url/permalinks';
 
@@ -10,7 +11,13 @@ export interface Props {
   nextText?: string;
 }
 
-const { prevUrl, nextUrl, prevText = 'Newer posts', nextText = 'Older posts' } = Astro.props;
+const t = useTranslations(getLangFromUrl(Astro.url));
+const {
+  prevUrl,
+  nextUrl,
+  prevText = t.blog.pagination.newerPostsLabel,
+  nextText = t.blog.pagination.olderPostsLabel,
+} = Astro.props;
 ---
 
 {(prevUrl || nextUrl) && (

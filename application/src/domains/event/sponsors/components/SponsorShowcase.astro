@@ -73,8 +73,8 @@ const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community
         .filter((sponsor) => sponsor.tier === tier)
         .map((sponsor) => (
           <li>
-            <article class:list={['sponsor-card', `sponsor-card--${sponsor.id}`]}>
-              <div class="sponsor-logo-stage">
+            <article class:list={['sponsor-card', `sponsor-card--${tier}`]}>
+              <div class:list={['sponsor-logo-stage', { 'sponsor-logo-stage--with-name': sponsor.showNameWithLogo }]}>
                 <img
                   src={sponsor.logo.src}
                   width={sponsor.logo.width}
@@ -83,14 +83,14 @@ const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community
                   loading={tier === 'gold' && headingLevel === 'h1' ? 'eager' : 'lazy'}
                   decoding="async"
                 />
-                {sponsor.id === 'gravitek' && (
-                  <span class="gravitek-wordmark" aria-hidden="true">
-                    Gravitek
+                {sponsor.showNameWithLogo && (
+                  <span class="sponsor-logo-name" aria-hidden="true">
+                    {sponsor.name}
                   </span>
                 )}
                 {tier === 'gold' && (
                   <span class="gold-caption" aria-hidden="true">
-                    GOLD SPONSOR
+                    {t.goldCaption}
                   </span>
                 )}
               </div>
@@ -448,20 +448,20 @@ sponsor-showcase {
 .sponsor-card:hover .sponsor-visit :global(svg) {
   transform: translate(2px, -2px);
 }
-.sponsor-card--exoscale {
+.sponsor-card--gold {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
   border-color: #d6be82;
   box-shadow: 0 5px 20px #b78b2510;
 }
-.sponsor-card--exoscale .sponsor-logo-stage {
+.sponsor-card--gold .sponsor-logo-stage {
   position: relative;
   min-height: 16.5rem;
   flex-direction: column;
   gap: 1.8rem;
   background: radial-gradient(ellipse at 15% 100%, #2d4660, transparent 70%), #17253c;
 }
-.sponsor-card--exoscale img {
+.sponsor-card--gold img {
   max-width: 20rem;
   height: 4.5rem;
 }
@@ -471,37 +471,31 @@ sponsor-showcase {
   font-weight: 600;
   letter-spacing: 0.24em;
 }
-.sponsor-card--exoscale .sponsor-card-content {
+.sponsor-card--gold .sponsor-card-content {
   justify-content: center;
   padding: 2.25rem 2.75rem;
   border-top: 0;
 }
-.sponsor-card--exoscale .sponsor-card-content h3,
-.sponsor-card--exoscale .sponsor-card-content h4 {
+.sponsor-card--gold .sponsor-card-content h3,
+.sponsor-card--gold .sponsor-card-content h4 {
   font-size: 1.8rem;
   letter-spacing: -0.035em;
 }
-.sponsor-card--exoscale .sponsor-visit {
+.sponsor-card--gold .sponsor-visit {
   margin-top: 0.4rem;
   padding-top: 0.8rem;
   border-top: 1px solid var(--sponsor-border);
   font-size: 0.85rem;
 }
-.sponsor-card--gravitek img {
+.sponsor-logo-stage--with-name img {
   width: 2.7rem;
   height: 3rem;
 }
-.gravitek-wordmark {
+.sponsor-logo-name {
   color: #161a22;
   font-size: 1.8rem;
   font-weight: 600;
   letter-spacing: -0.055em;
-}
-.sponsor-card--ikki-league img {
-  max-width: 10rem;
-}
-.sponsor-card--smart-tribune img {
-  max-width: 11.5rem;
 }
 .sponsor-tier--community .sponsor-card {
   border-radius: 0.75rem;
@@ -515,11 +509,11 @@ sponsor-showcase {
   max-width: 8.5rem;
   height: 2.5rem;
 }
-.sponsor-tier--community .sponsor-card--gravitek img {
+.sponsor-tier--community .sponsor-logo-stage--with-name img {
   width: 1.75rem;
   height: 2rem;
 }
-.sponsor-tier--community .gravitek-wordmark {
+.sponsor-tier--community .sponsor-logo-name {
   font-size: 1.1rem;
 }
 .sponsor-tier--community .sponsor-card-content {
@@ -644,10 +638,10 @@ sponsor-showcase {
   .tier-navigation {
     margin-bottom: 2.25rem;
   }
-  .sponsor-card--exoscale .sponsor-card-content {
+  .sponsor-card--gold .sponsor-card-content {
     padding: 1.5rem;
   }
-  .sponsor-card--exoscale img {
+  .sponsor-card--gold img {
     max-width: 15rem;
   }
   .sponsor-invitation {
@@ -660,7 +654,7 @@ sponsor-showcase {
 }
 @media (max-width: 540px) {
   .sponsor-tier--silver .sponsor-grid,
-  .sponsor-card--exoscale {
+  .sponsor-card--gold {
     grid-template-columns: 1fr;
   }
   .sponsor-tier--community .sponsor-grid {
@@ -675,7 +669,7 @@ sponsor-showcase {
     max-width: 7rem;
     text-align: right;
   }
-  .sponsor-card--exoscale .sponsor-logo-stage {
+  .sponsor-card--gold .sponsor-logo-stage {
     min-height: 11rem;
   }
   .sponsor-tier--silver .sponsor-logo-stage {
