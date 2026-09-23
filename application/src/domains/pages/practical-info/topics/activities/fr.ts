@@ -19,22 +19,22 @@ export default {
   summary:
     "Des idées pour prolonger votre séjour : l'Aix de Cézanne, les paysages de Provence, la gastronomie et les vins.",
   content:
-    'Vous restez un peu plus longtemps ? Explorez le centre historique et ses musées à pied, partez vers la Sainte-Victoire et les villages de Provence, ou dégustez le rosé et la cuisine locale.',
+    'Vous restez un peu plus longtemps ? Explorez le centre historique et ses musées à pied, partez vers la Sainte-Victoire et les villages de Provence ou dégustez le rosé et la cuisine locale.',
   icon: 'tabler:map-star',
   callToActionLabel: 'Découvrir les activités',
   backToOverviewLabel: 'Retour aux infos pratiques',
   activitiesGuide: {
     heroTitle: 'Profitez de votre séjour',
     heroIntro:
-      "De l'Aix de Cézanne aux vignobles, montagnes et calanques de Provence, voici des idées pour prolonger votre venue.",
+      "De l'Aix de Cézanne aux vignobles, montagnes et calanques de Provence, voici des idées pour prolonger votre séjour.",
     categoriesTitle: 'Choisissez votre journée',
-    categoriesIntro: "La culture en ville, la nature autour d'Aix, ou un avant-goût de Provence.",
+    categoriesIntro: "La culture en ville, la nature autour d'Aix ou un avant-goût de Provence.",
     categories: [
       {
         id: 'in-aix',
         title: 'À Aix-en-Provence',
         badge: 'Culture & patrimoine',
-        description: 'Explorez la vieille ville et son art à pied, à quelques minutes du lieu.',
+        description: 'Explorez à pied la vieille ville et son patrimoine artistique, à quelques minutes du lieu.',
         icon: 'tabler:building-monument',
         options: [
           {
@@ -56,7 +56,8 @@ export default {
           },
           {
             name: 'Musée Granet',
-            blurb: 'De Cézanne à Giacometti et la collection Planque, dans un ancien prieuré du quartier Mazarin.',
+            blurb:
+              'De Cézanne à Giacometti, en passant par la collection Planque, dans un ancien prieuré du quartier Mazarin.',
             meta: 'Place Saint-Jean-de-Malte',
             tags: ['Musée'],
             linkLabel: 'Musée Granet',
@@ -120,7 +121,7 @@ export default {
         title: 'Gastronomie & vins',
         badge: 'Goûter la Provence',
         description:
-          "Le pays du rosé et les saveurs provençales, des étals de marché aux domaines viticoles remplis d'art.",
+          "Le pays du rosé et les saveurs provençales, des étals de marché aux domaines viticoles qui accueillent des œuvres d'art.",
         icon: 'tabler:glass-full',
         options: [
           {
@@ -134,7 +135,7 @@ export default {
           },
           {
             name: "Domaines des Coteaux d'Aix",
-            blurb: "Rosé et rogue de l'appellation Coteaux d'Aix-en-Provence, avec dégustations au caveau.",
+            blurb: "Rosé et rouge de l'appellation Coteaux d'Aix-en-Provence, avec dégustations au caveau.",
             meta: "Autour d'Aix - dégustations",
             tags: ['Vin'],
             linkLabel: 'Réserver une dégustation',
@@ -142,7 +143,7 @@ export default {
           },
           {
             name: 'Marchés & gastronomie provençale',
-            blurb: "Produits locaux, olives, fromages et le calisson d'Aix aux marchés en plein air.",
+            blurb: "Découvrez les produits locaux, olives, fromages et calissons d'Aix sur les marchés en plein air.",
             meta: 'Vieille ville - mar., jeu. & sam.',
             tags: ['Gratuit', 'Gourmand'],
             linkLabel: 'Que faire',
@@ -154,8 +155,8 @@ export default {
     tipsTitle: 'Organisez vos journées',
     tips: [
       'Un jour de plus ? Les sites de Cézanne et la Sainte-Victoire se combinent bien pour une journée sur les pas du peintre.',
-      "Réservez l'Atelier des Lauves et Bibémus à l'avance - les places sont limitées.",
-      'Les marchés animent la vieille ville les mardi, jeudi et samedi matin.',
+      "Réservez l'Atelier des Lauves et Bibémus à l'avance : les places sont limitées.",
+      'Les marchés animent la vieille ville les mardis, jeudis et samedis matin.',
       'Le City Pass regroupe les grands sites, des visites guidées et le réseau de bus.',
       "En été, vérifiez les règles d'accès aux massifs de la Sainte-Victoire avant de partir.",
     ],

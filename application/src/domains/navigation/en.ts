@@ -1,5 +1,9 @@
 export default {
   header: {
+    navigationLabel: 'Main navigation',
+    menuToggleLabel: 'Toggle Menu',
+    themeToggleLabel: 'Toggle between Dark and Light mode',
+    rssFeedLabel: 'RSS Feed',
     event: 'Event',
     cfp: 'CFP',
     venue: 'Venue',

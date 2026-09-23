@@ -4,7 +4,7 @@ export default {
   metadata: {
     title: 'Nos sponsors - Cloud Native Provence',
     description:
-      "Découvrez les sponsors Gold, Silver et Communautaires qui font vivre KCD Provence et rejoignez l'aventure.",
+      "Découvrez les sponsors Gold, Silver et communautaires qui font vivre KCD Provence et rejoignez l'aventure.",
   },
   hero: {
     tagline: 'Sponsoring',
@@ -14,7 +14,7 @@ export default {
   },
   pricing: {
     title: 'Nos formules de sponsoring',
-    subtitle: 'Choisissez le pack qui correspond à vos objectifs',
+    subtitle: 'Choisissez la formule qui correspond à vos objectifs',
     packages: [
       {
         title: 'Platinum',
@@ -22,13 +22,13 @@ export default {
         price: 10000,
         period: 'HT',
         items: [
-          { description: 'Stand 9 m² + mobilier' },
-          { description: '6 billets + réduction 30% sur 6 billets' },
-          { description: 'Logo et mention sur scène et communiqué de presse' },
+          { description: 'Stand de 9 m² + mobilier' },
+          { description: '6 billets + réduction de 30 % sur 6 billets' },
+          { description: 'Logo et mention sur scène et dans le communiqué de presse' },
           { description: 'Image de marque sur tous les supports de communication' },
           { description: 'Présence sur scène (5 min)' },
-          { description: 'Dîner Sponsors & Partenaires' },
-          { description: 'Application pour scanner les leads' },
+          { description: 'Dîner des sponsors et partenaires' },
+          { description: 'Application de collecte de contacts' },
         ],
         callToAction: {
           text: 'Devenir sponsor',
@@ -43,12 +43,12 @@ export default {
         price: 6000,
         period: 'HT',
         items: [
-          { description: 'Stand 6 m² + mobilier' },
-          { description: '4 billets + réduction 30% sur 4 billets' },
+          { description: 'Stand de 6 m² + mobilier' },
+          { description: '4 billets + réduction de 30 % sur 4 billets' },
           { description: 'Logo sur scène et dans les supports' },
           { description: 'Citation dans le communiqué de presse' },
-          { description: 'Dîner Sponsors & Partenaires' },
-          { description: 'Application pour scanner les leads' },
+          { description: 'Dîner des sponsors et partenaires' },
+          { description: 'Application de collecte de contacts' },
         ],
         callToAction: {
           text: 'Devenir sponsor',
@@ -61,12 +61,12 @@ export default {
         price: 4000,
         period: 'HT',
         items: [
-          { description: 'Stand 4 m² + mobilier' },
-          { description: '2 billets + réduction 30% sur 2 billets' },
+          { description: 'Stand de 4 m² + mobilier' },
+          { description: '2 billets + réduction de 30 % sur 2 billets' },
           { description: 'Logo sur les supports' },
           { description: 'Citation dans le communiqué de presse' },
-          { description: 'Dîner Sponsors & Partenaires' },
-          { description: 'Application pour scanner les leads' },
+          { description: 'Dîner des sponsors et partenaires' },
+          { description: 'Application de collecte de contacts' },
         ],
         callToAction: {
           text: 'Devenir sponsor',
@@ -79,11 +79,11 @@ export default {
         price: 1000,
         period: 'HT',
         items: [
-          { description: '2 billets + réduction 30% sur 2 billets' },
+          { description: '2 billets + réduction de 30 % sur 2 billets' },
           { description: 'Présence dans la zone communautaire' },
           { description: 'Logo sur le site web' },
-          { description: 'Dîner Sponsors & Partenaires' },
-          { description: 'Application pour scanner les leads' },
+          { description: 'Dîner des sponsors et partenaires' },
+          { description: 'Application de collecte de contacts' },
         ],
         callToAction: {
           text: 'Devenir sponsor',
@@ -94,7 +94,7 @@ export default {
   },
   features: {
     title: 'Pourquoi sponsoriser KCD Provence 2026 ?',
-    subtitle: 'Un partenariat avec fort impact pour les entreprises tech',
+    subtitle: 'Un partenariat à fort impact pour les entreprises tech',
     items: [
       {
         title: 'Visibilité ciblée',
@@ -112,8 +112,9 @@ export default {
         icon: 'tabler:rocket',
       },
       {
-        title: 'Networking',
-        description: "Participez au dîner exclusif Sponsors & Partenaires avec l'équipe organisatrice et les speakers.",
+        title: 'Rencontres et échanges',
+        description:
+          "Participez au dîner exclusif des sponsors et partenaires avec l'équipe organisatrice et les intervenants.",
         icon: 'tabler:heart-handshake',
       },
     ],
@@ -124,15 +125,15 @@ export default {
     items: [
       {
         title: 'Puis-je proposer une autre idée de sponsoring ?',
-        description: 'Oui, contactez-nous pour discuter de toute idée créative ou besoin spécifique.',
+        description: 'Oui, contactez-nous pour discuter de toute idée créative ou de tout besoin spécifique.',
       },
       {
         title: "Puis-je être sponsor communautaire en tant qu'association ?",
-        description: "Absolute, tant que votre action est alignée avec l'écosystème Open Source et Cloud Native.",
+        description: "Absolument, tant que votre action est alignée avec l'écosystème Open Source et Cloud Native.",
       },
       {
         title: 'Est-ce que je peux cumuler plusieurs options ?',
-        description: "Oui, vous pouvez ajouter des options (badge, café, glaces...) à n'importe quel pack.",
+        description: "Oui, vous pouvez ajouter des options (badge, café, glaces...) à n'importe quelle formule.",
       },
       {
         title: 'Est-ce que la facture est assujettie à la TVA ?',
@@ -146,7 +147,7 @@ export default {
     items: [
       {
         title: 'Dossier de sponsoring (FR)',
-        description: 'Le dossier complete en français avec toutes les information sur les différentes formulas.',
+        description: 'Le dossier complet en français avec toutes les informations sur les différentes formules.',
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (FR)',
@@ -155,9 +156,8 @@ export default {
         },
       },
       {
-        title: 'Sponsorship Package (EN)',
-        description:
-          'The complete sponsorship package in English with all the information about the different options.',
+        title: 'Dossier de sponsoring (EN)',
+        description: 'Le dossier complet en anglais avec toutes les informations sur les différentes formules.',
         icon: 'tabler:file-text',
         callToAction: {
           text: 'Télécharger (EN)',
@@ -168,11 +168,11 @@ export default {
     ],
   },
   contact: {
-    title: 'Contact Sponsoring',
+    title: 'Contact sponsoring',
     subtitle: 'Pour toute question sur le sponsoring, contactez-nous',
     items: [
       {
-        title: 'Email',
+        title: 'E-mail',
         description: 'sponsors@cloudnative-provence.fr',
         icon: 'tabler:mail',
       },

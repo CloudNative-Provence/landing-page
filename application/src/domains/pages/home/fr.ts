@@ -16,13 +16,13 @@ const venueName = getVenueName('fr');
 const venuePlace = getEventPlace('fr');
 const venueInfo = getVenueInfo('fr');
 const venueDescription = venuePlace
-  ? `Le KCD Provence se tiendra au ${venueName}. Le lieu se situe au ${venueInfo.address}, à deux pas du centre historique, connecté aux transports en commun et proche des accès routiers. Vous profiterez de salles modernes, d'un escape sponsors et de nombreux escapes d'échange tout au long de la journée.`
-  : `Le KCD Provence aura lieu à ${eventMeta.city}. Le lieu exact sera annoncé prochainement, avec les information pratiques sur l'accès, l'hébergement et l'organisation sur place.`;
+  ? `Le KCD Provence se tiendra au ${venueName}. Le lieu se situe au ${venueInfo.address}, à deux pas du centre historique, desservi par les transports en commun et proche des accès routiers. Vous profiterez de salles modernes, d'un espace sponsors et de nombreux espaces d'échange tout au long de la journée.`
+  : `Le KCD Provence aura lieu à ${eventMeta.city}. Le lieu exact sera annoncé prochainement, avec les informations pratiques sur l'accès, l'hébergement et l'organisation sur place.`;
 
 export default {
   metadata: {
     title: 'Kubernetes Community Days Provence à Aix-en-Provence',
-    description: `Rejoignez 600+ professionnels du Cloud Native le ${eventDate} au ${venueName} pour une journée de conférences, workshops et networking.`,
+    description: `Rejoignez plus de 600 professionnels du Cloud Native le ${eventDate} au ${venueName} pour une journée de conférences, d'ateliers et d'échanges.`,
     ignoreTitleTemplate: true,
   },
   hero: {
@@ -33,18 +33,18 @@ export default {
         href: 'https://community2.cncf.io/events/details/cncf-kcd-provence-presents-kcd-provence-2026/',
         icon: 'tabler:calendar',
       },
-      { text: 'Proposer un talk', href: '#cfp' },
+      { text: 'Proposer une conférence', href: '#cfp' },
     ],
     image: {
       light: {
         src: '~/assets/images/logos/logo-kcd-provence-primary.svg',
-        alt: 'Logo Kubernetes Community Days Provence Principal',
+        alt: 'Logo principal Kubernetes Community Days Provence',
         width: 500,
         height: 500,
       },
       dark: {
         src: '~/assets/images/logos/logo-kcd-provence-white.svg',
-        alt: 'Logo Kubernetes Community Days Provence Blanc',
+        alt: 'Logo blanc Kubernetes Community Days Provence',
         width: 500,
         height: 500,
       },
@@ -54,12 +54,12 @@ export default {
       main: 'Kubernetes Community Days',
       subtitle: 'Provence',
     },
-    subtitle: `Réservez la date ! Le ${eventDate}, la communauté Cloud Native se retrouve au ${venueName} pour une journée de talks, de networking et de convivialité sous le soleil de Provence.`,
+    subtitle: `Réservez la date ! Le ${eventDate}, la communauté Cloud Native se retrouve au ${venueName} pour une journée de conférences, d'échanges et de convivialité sous le soleil de Provence.`,
     eventDate: eventMeta.startsAt,
   },
   note: {
     title: 'Notre philosophie : ',
-    description: 'Communauté, Partage et Technologies Open Source',
+    description: 'Communauté, partage et technologies open source',
   },
   countdownLabels: {
     days: 'jours',
@@ -71,13 +71,13 @@ export default {
     id: 'about',
     title: "L'événement",
     intro:
-      "KCD Provence est une conférence communautaire qui rassemble développeurs, plateform engineers et professionnels IT passionnés par les technologies Cloud Native. Organisé par l'association Cloud Native Provence, cet événement s'inscrit dans le réseau mondial des Kubernetes Community Days soutenu par la CNCF.",
+      "KCD Provence est une conférence communautaire qui rassemble développeurs, ingénieurs plateforme et professionnels de l'informatique passionnés par les technologies Cloud Native. Organisé par l'association Cloud Native Provence, cet événement s'inscrit dans le réseau mondial des Kubernetes Community Days soutenu par la CNCF.",
     paragraph2:
-      "Pendant une journée, vous profiterez de talks inspirants donnés par des experts, d'ateliers pratiques pour approfondir vos compétences, d'un escape exposition pour découvrir les acteurs de l'écosystème, et de nombreux moments d'échange dans un cadre exceptionnel.",
+      "Pendant une journée, vous profiterez de conférences inspirantes données par des experts, d'ateliers pratiques pour approfondir vos compétences, d'un espace d'exposition pour découvrir les acteurs de l'écosystème et de nombreux moments d'échange dans un cadre exceptionnel.",
     stats: [
       { amount: '600+', title: 'Participants attendus' },
-      { amount: '1', title: 'Journée de talks & workshops' },
-      { amount: '∞', title: 'Opportunités de networking' },
+      { amount: '1', title: "Journée de conférences et d'ateliers" },
+      { amount: '∞', title: "Occasions d'échanger" },
     ],
     whatToExpect: {
       title: 'Au programme',
@@ -85,19 +85,19 @@ export default {
         {
           title: 'Conférences',
           description:
-            "Des talks de 10 à 30 minutes par des speakers nationaux et internationaux, du retour d'expérience au deep-dive technique.",
+            "Des conférences de 10 à 30 minutes par des intervenants nationaux et internationaux, du retour d'expérience à l'exploration technique approfondie.",
           icon: 'tabler:microphone',
         },
         {
-          title: 'Networking',
+          title: 'Rencontres et échanges',
           description:
-            'Pauses café, déjeuner inclus et afterparty pour créer des connexions durables avec la communauté.',
+            'Pauses café, déjeuner inclus et soirée de clôture pour créer des liens durables avec la communauté.',
           icon: 'tabler:users-group',
         },
         {
-          title: 'Expo Sponsors',
+          title: 'Espace sponsors',
           description:
-            'Un escape dédié aux entreprises partenaires pour échanger, découvrir des outils et repartir avec du swag.',
+            'Un espace dédié aux entreprises partenaires pour échanger, découvrir des outils et repartir avec des cadeaux.',
           icon: 'tabler:building',
         },
       ],
@@ -116,8 +116,8 @@ export default {
           icon: 'tabler:accessible',
         },
         {
-          title: 'Diversité & Inclusion',
-          description: 'Un événement ouvert à toutes et tous, dans le respect du Code de Conduite CNCF.',
+          title: 'Diversité et inclusion',
+          description: 'Un événement ouvert à toutes et tous, dans le respect du code de conduite de la CNCF.',
           icon: 'tabler:users',
         },
       ],
@@ -127,7 +127,7 @@ export default {
     id: 'cfp',
     title: 'Appel à conférenciers',
     intro:
-      "Partagez vos retours d'expérience, démos et apprentissages avec la communauté cloud native en Provence. Nous cherchons des talks courts, concrets et utiles pour aider les participantes et participants à concevoir, exploiter et améliorer leurs plateformes.",
+      "Partagez vos retours d'expérience, démos et apprentissages avec la communauté cloud native en Provence. Nous cherchons des présentations courtes, concrètes et utiles pour aider les participantes et participants à concevoir, exploiter et améliorer leurs plateformes.",
     availability: {
       ...cfpSchedule,
       statuses: buildCfpStatuses('fr'),
@@ -137,7 +137,7 @@ export default {
       items: buildCfpImportantDates('fr', {
         opens: 'Ouverture du CFP',
         closes: 'Clôture du CFP',
-        speakersNotified: 'Notification des speakers',
+        speakersNotified: 'Notification des intervenants',
         eventDay: 'Jour J',
       }),
     },
@@ -158,11 +158,11 @@ export default {
         },
         {
           title: 'Communauté',
-          description: 'Open source, transmission, inclusion et via de la communauté.',
+          description: 'Open source, transmission, inclusion et vie de la communauté.',
         },
         {
           title: 'Developer Experience',
-          description: 'Outils, workflows, feedback loops et comfort des développeuses et développeurs.',
+          description: 'Outils, workflows, boucles de rétroaction et confort des développeuses et développeurs.',
         },
         {
           title: 'IA',
@@ -170,11 +170,12 @@ export default {
         },
         {
           title: 'Sécurité',
-          description: 'Identité, policy, supply chain logicielle et protection runtime.',
+          description:
+            "Identité, politiques de sécurité, chaîne d'approvisionnement logicielle et protection à l'exécution.",
         },
         {
           title: 'Réseau',
-          description: 'Ingress, gateways, réseau de services, traffic et performance.',
+          description: 'Ingress, passerelles, réseau de services, trafic et performance.',
         },
       ],
     },
@@ -186,29 +187,29 @@ export default {
           description: '30 minutes pour approfondir un sujet avec du contexte, une démo et des retours utiles.',
         },
         {
-          title: 'Short talk (10 minutes)',
+          title: 'Conférence courte (10 minutes)',
           description: '10 minutes pour partager une idée forte, une démo ou un retour précis.',
         },
         {
-          title: 'Lightning Talk (5 minutes)',
+          title: 'Présentation éclair (5 minutes)',
           description: '5 minutes pour transmettre une idée, une astuce ou une histoire avec énergie.',
         },
       ],
     },
     speakerPerks: {
-      title: 'Avantages speakers',
+      title: 'Avantages pour les intervenants',
       items: [
-        "Pass speaker gratuit pour l'événement",
-        "Dîner des speakers la veille de l'événement",
-        'Enregistrement vidéo de votre talk',
+        "Billet intervenant gratuit pour l'événement",
+        "Dîner des intervenants la veille de l'événement",
+        'Enregistrement vidéo de votre présentation',
       ],
     },
     guidelines: {
       title: 'Quelques règles',
       items: [
-        'Les talks peuvent être en français ou en anglais',
-        "Pas de pitch commercial, nous voulons du contenu authentique et du retour d'expérience",
-        'Maximum 2 soumissions par speaker',
+        'Les présentations peuvent être en français ou en anglais',
+        "Pas de discours commercial, nous voulons du contenu authentique et du retour d'expérience",
+        'Maximum 2 propositions par intervenant',
         'Les propositions ne seront plus modifiables après soumission',
       ],
     },
@@ -238,7 +239,7 @@ export default {
         icon: 'tabler:parking',
       },
       {
-        text: 'Trouver un hebergement',
+        text: 'Trouver un hébergement',
         href: getLocalizedPagePath('fr', 'practical-info', 'accommodation'),
         variant: 'secondary',
         icon: 'tabler:bed',

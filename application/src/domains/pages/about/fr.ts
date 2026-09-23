@@ -39,7 +39,7 @@ export default {
       },
       {
         title: 'Vie communautaire',
-        description: 'Favoriser les échanges entre développeurs, ingénieurs, architects et passionnés en Provence.',
+        description: 'Favoriser les échanges entre développeurs, ingénieurs, architectes et passionnés en Provence.',
         icon: 'tabler:users',
       },
     ],
@@ -68,9 +68,9 @@ export default {
     tagline: 'Basés en Provence',
     items: [
       {
-        title: 'Région Provence, France',
+        title: 'Provence, France',
         description:
-          "L'association organise ses événements en région Provence, avec Aix-en-Provence comme principal centre d'activité.",
+          "L'association organise ses événements en Provence, avec Aix-en-Provence comme principal centre d'activité.",
       },
     ],
   },

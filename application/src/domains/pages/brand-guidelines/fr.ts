@@ -1,11 +1,11 @@
 export const frContent = {
   metadata: {
-    title: 'Charte Graphique - Cloud Native Provence',
+    title: 'Charte graphique - Cloud Native Provence',
   },
   hero: {
-    tagline: 'Charte Graphique',
+    tagline: 'Charte graphique',
     title: 'Identité visuelle Cloud Native Provence',
-    subtitle: 'Découvrez nos couleurs, typographie et téléchargez nos logos dans différents formats.',
+    subtitle: 'Découvrez nos couleurs et notre typographie, et téléchargez nos logos dans différents formats.',
   },
   colorPalette: {
     title: 'Palette de couleurs',
@@ -15,7 +15,7 @@ export const frContent = {
         name: 'Primaire',
         hex: '#004e91',
         rgb: '0, 78, 145',
-        usage: 'Éléments principaux, CTA',
+        usage: "Éléments principaux, appels à l'action",
       },
       {
         name: 'Secondaire',
@@ -24,7 +24,7 @@ export const frContent = {
         usage: 'Éléments secondaires',
       },
       {
-        name: 'Secondaire Clair',
+        name: 'Secondaire claire',
         hex: '#8B79B9',
         rgb: '139, 121, 185',
         usage: 'Accents, dégradés',
@@ -33,7 +33,7 @@ export const frContent = {
         name: 'Accent',
         hex: '#46A5CB',
         rgb: '70, 165, 203',
-        usage: 'Liens, highlights',
+        usage: 'Liens, mises en évidence',
       },
     ],
   },
@@ -44,18 +44,18 @@ export const frContent = {
     description: 'Police principale pour tous les textes et titres',
     examples: [
       {
-        label: 'Titre principal (Bold)',
+        label: 'Titre principal (gras)',
         text: 'Cloud Native Provence',
         style: 'text-4xl font-bold',
       },
       {
-        label: 'Sous-titre (Semi-Bold)',
+        label: 'Sous-titre (demi-gras)',
         text: "L'événement Cloud Native en Provence",
         style: 'text-2xl font-semibold',
       },
       {
-        label: 'Texte courant (Regular)',
-        text: "Rejoignez-nous pour une journée immersive de conférences, d'ateliers et d'échanges autour de Kubernetes, DevOps et du Cloud Native.",
+        label: 'Texte courant (normal)',
+        text: "Rejoignez-nous pour une journée immersive de conférences, d'ateliers et d'échanges autour de Kubernetes, du DevOps et du Cloud Native.",
         style: 'text-lg',
       },
     ],
@@ -69,28 +69,28 @@ export const frContent = {
         description: 'Symbole/icône sans texte, pour les petits formats et les favicons. SVG et PNG.',
         icon: 'tabler:square',
         callToAction: {
-          text: 'Télécharger SVG',
+          text: 'Télécharger le SVG',
           href: '/logos/logo-icon.svg',
           download: true,
         },
       },
       {
-        title: 'Logo KCD Provence (Primaire)',
+        title: 'Logo KCD Provence (principal)',
         description:
           "Variante KCD Provence en couleurs principales. Format vectoriel, idéal pour le web et l'impression sans perte de qualité.",
         icon: 'tabler:file-vector',
         callToAction: {
-          text: 'Télécharger SVG',
+          text: 'Télécharger le SVG',
           href: '/logos/logo-kcd-provence-primary.svg',
           download: true,
         },
       },
       {
-        title: 'Logo KCD Provence (Fonds sombres)',
+        title: 'Logo KCD Provence (fonds sombres)',
         description: 'Variante blanche KCD Provence pour fonds sombres. Format vectoriel propre et redimensionnable.',
         icon: 'tabler:palette',
         callToAction: {
-          text: 'Télécharger SVG',
+          text: 'Télécharger le SVG',
           href: '/logos/logo-kcd-provence-white.svg',
           download: true,
         },
@@ -111,7 +111,7 @@ export const frContent = {
       },
       {
         title: 'Taille minimale',
-        description: "La largeur minimale du logo doit être de 120px pour le web et 30mm pour l'impression.",
+        description: "La largeur minimale du logo doit être de 120 px pour le web et 30 mm pour l'impression.",
       },
       {
         title: 'Couleurs',

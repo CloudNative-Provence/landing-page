@@ -16,7 +16,7 @@ export const teamMembers = [
     image: { src: '~/assets/images/pages/about/team/sherine-khoury.jpg' },
   },
   {
-    title: 'Emilien Escalle',
+    title: 'Émilien Escalle',
     image: { src: '~/assets/images/pages/about/team/emilien-escalle.jpg' },
   },
   {

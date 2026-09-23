@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import PostTags from '~/domains/pages/blog/components/Tags.astro';
+import { getLangFromUrl, useTranslations } from '~/i18n/utils';
 import Image from '~/shared/components/common/Image.astro';
 import SocialShare from '~/shared/components/common/SocialShare.astro';
 import { getFormattedDate } from '~/shared/formatting/format';
@@ -13,6 +14,7 @@ export interface Props {
 }
 
 const { post, url } = Astro.props;
+const t = useTranslations(getLangFromUrl(Astro.url));
 ---
 
 <section class="py-8 sm:py-16 lg:py-20 mx-auto">
@@ -44,7 +46,7 @@ const { post, url } = Astro.props;
 )}
           {post.readingTime && (
   <>
-    &nbsp;· <span>{post.readingTime}</span> min read
+    &nbsp;· <span>{post.readingTime}</span> {t.blog.post.readingTimeLabel}
   </>
 )}
         </p>

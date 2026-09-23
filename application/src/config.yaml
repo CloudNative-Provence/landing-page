@@ -44,7 +44,7 @@ event:
     fr:
       name: "Centre des Congrès d'Aix-en-Provence"
       address: "14 Boulevard Carnot, 13100 Aix-en-Provence, France"
-      description: "Le Centre des Congrès se situe à deux pas du centre historique et constitute un point d'arrivée simple, que vous veniez en train, en avion ou en voiture."
+      description: "Le Centre des Congrès se situe à deux pas du centre historique et constitue un point d'arrivée simple, que vous veniez en train, en avion ou en voiture."
       url: "https://www.aixenprovence-congres.com/en/"
       accessUrl: "https://www.aixenprovence-congres.com/en/aix-en-provence-convention-centre/access/"
       mapUrl: "https://www.google.com/maps/search/?api=1&query=Centre%20des%20Congr%C3%A8s%20d%27Aix-en-Provence%2C%2014%20Boulevard%20Carnot%2C%2013100%20Aix-en-Provence%2C%20France"

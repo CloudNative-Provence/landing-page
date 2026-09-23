@@ -35,24 +35,24 @@ export default {
   tagline: 'Infos pratiques',
   title: 'Comment venir',
   summary: `Choisissez d'abord votre point d'arrivée, puis organisez les 15 à 30 dernières minutes ${travelDestinationLabel}.`,
-  content: `<p>Si vous arrivez le matin même de l'événement, privilégiez l'option avec le moins de correspondences et gardez une merge pour la circulation sur le corridor de l'A8.</p><p>Pour un hôtel dans l'hypercentre, la dernière portion est souvent plus simple à pied ou en taxi une fois les bagages posés.</p>`,
+  content: `<p>Si vous arrivez le matin même de l'événement, privilégiez l'option avec le moins de correspondances et gardez une marge pour la circulation sur l'A8.</p><p>Pour un hôtel dans l'hypercentre, la dernière portion est souvent plus simple à pied ou en taxi une fois les bagages posés.</p>`,
   icon: 'tabler:route',
   callToActionLabel: 'Voir les options de transport',
   backToOverviewLabel: 'Retour aux infos pratiques',
   travelGuide: {
     heroTitle: "Planifiez l'arrivée la plus fluide",
     heroIntro:
-      'Choisissez le parcours qui limit les correspondences inutiles, puis réservez la courte liaison finale avec une merge comfortable.',
-    factsTitle: "En un coup d'oeil",
+      'Choisissez le parcours qui limite les correspondances inutiles, puis prévoyez la dernière partie du trajet avec une marge confortable.',
+    factsTitle: "En un coup d'œil",
     facts: [
       {
         label: 'Gare Aix-en-Provence TGV',
-        value: 'Environ 15 minutes du centre-ville',
+        value: 'À environ 15 minutes du centre-ville',
         icon: 'tabler:train',
       },
       {
         label: 'Aéroport Marseille Provence',
-        value: 'Environ 25 minutes du centre-ville',
+        value: 'À environ 25 minutes du centre-ville',
         icon: 'tabler:plane-arrival',
       },
       {
@@ -79,35 +79,36 @@ export default {
     plannerIntro: `Choisissez le parcours qui correspond à votre façon d'arriver, puis concentrez-vous sur la liaison finale vers ${eventMeta.city}.`,
     selectorTitle: "Sélectionnez votre mode d'arrivée",
     selectorIntro:
-      "Comparez l'option la plus rapide, la plus souple, ou la plus comfortable avec des bagages avant de réserver.",
-    routeTitle: "Parcours en un coup d'oeil",
-    routeLabel: "Flux d'arrivée",
-    checklistTitle: 'Checklist avant le départ',
+      "Comparez l'option la plus rapide, la plus souple ou la plus confortable avec des bagages avant de réserver.",
+    routeTitle: "Parcours en un coup d'œil",
+    routeLabel: 'Étapes du trajet',
+    checklistTitle: 'À vérifier avant le départ',
     linksTitle: 'Liens utiles pour cette option',
     modesTitle: 'Choisissez le mode de transport adapté à votre trajet',
     modesIntro:
-      'Toutes les options fonctionnent, mais le meilleur choix dépend surtout de votre priorité: rapidité, bagages, ou flexibilité.',
+      'Toutes les options fonctionnent, mais le meilleur choix dépend surtout de votre priorité : rapidité, bagages ou flexibilité.',
     modes: [
       {
         title: 'En train',
         badge: 'Idéal depuis Paris, Lyon, Bruxelles ou Genève',
-        duration: 'Environ 2h55 depuis Paris',
+        duration: 'Environ 2 h 55 depuis Paris',
         summary:
-          'Aix-en-Provence TGV est le hub ferroviaire le plus rapide et se situe à environ 15 km du centre-ville.',
+          'La gare Aix-en-Provence TGV permet les trajets en train les plus rapides et se situe à environ 15 km du centre-ville.',
         icon: 'tabler:train',
         route: [
           {
             title: 'Réservez votre arrivée en TGV',
-            detail: 'Ne retenez un aller le jour même que si la correspondence locale vous laisse une vraie merge.',
+            detail:
+              'Choisissez une arrivée le jour même uniquement si la correspondance locale vous laisse une marge suffisante.',
             icon: 'tabler:ticket',
           },
           {
             title: 'Arrivez à Aix-en-Provence TGV',
-            detail: 'Prévoyez ensuite une courte liaison en navette, taxi, ou voiture de location.',
+            detail: 'Prévoyez ensuite une courte liaison en navette, taxi ou voiture de location.',
             icon: 'tabler:train',
           },
           {
-            title: 'Terminez la liaison finale',
+            title: 'Rejoignez votre destination',
             detail: hasVenue
               ? `Rejoignez le lieu de l'événement ou votre hébergement en centre-ville avec l'option la plus simple pour vos bagages.`
               : `Rejoignez le centre-ville avec l'option la plus simple pour vos bagages.`,
@@ -115,8 +116,8 @@ export default {
           },
         ],
         details: [
-          "Les liaisons TGV directs ou avec correspondence simple en font souvent l'option la plus prévisible pour une arrivée le jour même.",
-          'Depuis la gare, poursuivez en navette, taxi, ou voiture de location selon votre hébergement.',
+          "Les liaisons TGV directes ou avec une correspondance simple en font souvent l'option la plus prévisible pour une arrivée le jour même.",
+          'Depuis la gare, poursuivez en navette, taxi ou voiture de location selon votre hébergement.',
           'Vérifiez la dernière liaison locale avant de confirmer un train très tôt ou très tard.',
         ],
         links: [
@@ -135,30 +136,31 @@ export default {
         route: [
           {
             title: 'Atterrissez à Marseille Provence',
-            detail: 'Ajoutez le temps de sortie, de bagages, puis du transfert routier.',
+            detail: 'Prévoyez le temps de débarquement, de récupération des bagages et de transfert routier.',
             icon: 'tabler:plane-arrival',
           },
           {
             title: 'Choisissez une liaison directe',
-            detail: "Taxi ou voiture réservée à l'avance reste souvent la solution la plus fluide avec des sacs.",
+            detail:
+              "Un taxi ou une voiture réservée à l'avance reste souvent la solution la plus simple avec des bagages.",
             icon: 'tabler:car',
           },
           {
             title: 'Rejoignez votre hôtel ou le lieu',
             detail:
-              'Si vous arrivez la veille, comparez le temps réel entre un hôtel aéroport et un hôtel centre-ville.',
+              "Si vous arrivez la veille, comparez les temps de trajet depuis un hôtel proche de l'aéroport et depuis un hôtel en centre-ville.",
             icon: 'tabler:building-community',
           },
         ],
         details: [
-          'Ajoutez un peu de merge pour la récupération des bagages et le transfert routier vers Aix-en-Provence.',
-          "Le taxi ou le trajet réservé à l'avance est souvent l'option la plus directe avec des bagages ou hors des meilleurs horaires de navette.",
+          'Ajoutez un peu de marge pour la récupération des bagages et le transfert routier vers Aix-en-Provence.',
+          "Le taxi ou le trajet réservé à l'avance est souvent l'option la plus directe avec des bagages ou lorsque les horaires des navettes ne vous conviennent pas.",
           "Si vous arrivez la veille, comparez bien les temps de transfert entre un hôtel proche de l'aéroport et un hôtel dans le centre-ville.",
         ],
         links: [
           { text: "Site de l'aéroport", href: transportResources.airport },
           { text: "Guide officiel d'accès", href: transportResources.officialGuide },
-          { text: 'Informations taxis', href: transportResources.taxis },
+          { text: 'Informations sur les taxis', href: transportResources.taxis },
         ],
       },
       {
@@ -170,13 +172,13 @@ export default {
         icon: 'tabler:car',
         route: [
           {
-            title: "Préparez l'approche autoroutière",
-            detail: "Choisissez l'axe A7, A8, ou A51 qui évite un détour inutile le jour de l'événement.",
+            title: 'Préparez votre trajet autoroutier',
+            detail: "Choisissez l'axe A7, A8 ou A51 qui évite un détour inutile le jour de l'événement.",
             icon: 'tabler:road',
           },
           {
             title: 'Décidez du stationnement avant de partir',
-            detail: 'Choisissez entre un parking central et une stratégie parc-relais avant votre départ.',
+            detail: 'Choisissez entre un parking central et un parc-relais avant votre départ.',
             icon: 'tabler:parking',
           },
           {
@@ -186,13 +188,13 @@ export default {
           },
         ],
         details: [
-          "La circulation du matin peut ralentir l'approche finale, donc prévoyez une merge si vous venez le jour même.",
-          'Le stationnement en hypercentre est plus constraint que les parcs relais ou les options en périphérie.',
+          "La circulation du matin peut ralentir l'approche finale, donc prévoyez une marge si vous venez le jour même.",
+          'Le stationnement en hypercentre est plus contraignant que dans les parcs-relais ou les parkings en périphérie.',
           "Si vous n'avez pas besoin de la voiture pendant la journée, garez-vous une fois puis terminez à pied ou en transport local.",
         ],
         links: [
           { text: "Guide officiel d'accès", href: transportResources.officialGuide },
-          { text: 'Parcs relais', href: transportResources.parkAndRide },
+          { text: 'Parcs-relais', href: transportResources.parkAndRide },
           { text: 'Guide des parkings', href: 'https://www.aixenprovencetourism.com/acces-transports/parkings/' },
         ],
       },
@@ -201,30 +203,30 @@ export default {
         badge: 'Idéal pour les 10 à 30 dernières minutes',
         duration: `À utiliser après votre arrivée à ${eventMeta.city}`,
         summary: hasVenue
-          ? `Pour la liaison finale vers le ${venuePlace} ou le centre-ville, combinez transport local, taxi, ou courte marche selon vos bagages et votre timing.`
-          : `Pour la liaison finale vers le centre-ville, combinez transport local, taxi, ou courte marche selon vos bagages et votre timing.`,
+          ? `Pour la liaison finale vers le ${venuePlace} ou le centre-ville, combinez transports en commun, taxi ou courte marche selon vos bagages et vos horaires.`
+          : `Pour la liaison finale vers le centre-ville, combinez transports en commun, taxi ou courte marche selon vos bagages et vos horaires.`,
         icon: 'tabler:bus',
         route: [
           {
-            title: 'Arrivez à votre hub principal',
-            detail: "Partez de la gare TGV, de l'aéroport, de votre hôtel, ou d'un parking selon votre trajet.",
+            title: 'Définissez votre point de départ',
+            detail: "Partez de la gare TGV, de l'aéroport, de votre hôtel ou d'un parking selon votre trajet.",
             icon: 'tabler:current-location',
           },
           {
             title: 'Choisissez la liaison la plus fluide',
-            detail: "Bus, taxi, ou marche courte selon l'horaire et vos bagages.",
+            detail: "Bus, taxi ou courte marche selon l'horaire et vos bagages.",
             icon: 'tabler:bus',
           },
           {
-            title: 'Marchez la dernière portion sereinement',
-            detail: 'Gardez le plan et les infos du lieu à portée pour les derniers mètres.',
+            title: 'Terminez le trajet à pied sereinement',
+            detail: 'Gardez le plan et les infos du lieu à portée de main pour les derniers mètres.',
             icon: 'tabler:map-pin',
           },
         ],
         details: [
           "La Métropole Mobilité et le guide de l'office de tourisme couvrent les options de transport en commun dans la ville.",
-          "Les taxis sont utiles pour un planning serré, des sacs volumineux, ou un accès direct à la zone de l'événement.",
-          "Si votre hôtel est central, finir à pied est souvent plus simple que gérer la circulation dans l'hypercentre.",
+          "Les taxis sont utiles si vous avez peu de temps, des bagages volumineux ou besoin d'un accès direct à la zone de l'événement.",
+          "Si votre hôtel est central, finir à pied est souvent plus simple que de gérer la circulation dans l'hypercentre.",
         ],
         links: [
           { text: 'Réseaux de transports en commun', href: transportResources.publicTransport },
@@ -241,10 +243,10 @@ export default {
         link: { text: 'parking', href: getLocalizedPagePath('fr', 'practical-info', 'parking') },
         textAfter: '.',
       },
-      'Gardez à portée de main une application de navigation et une source officielle transport pour les changements de quai ou de circulation de dernière minute.',
+      'Gardez à portée de main une application de navigation et une source officielle sur les transports pour les changements de quai ou de circulation de dernière minute.',
     ],
     resourcesTitle: 'Ressources officielles',
-    notesTitle: "Notes d'arrivée",
+    notesTitle: 'Conseils pour votre arrivée',
     resources: [
       { text: 'Site du lieu', href: venueInfo.url ?? 'https://www.aixenprovence-congres.com/en/' },
       ...(venueMapHref ? [{ text: 'Le lieu sur Google Maps', href: venueMapHref }] : []),
