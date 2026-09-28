@@ -39,9 +39,9 @@ const mergeSocialLinks = (
 const mergeSpeakerProfiles = (existing: ProgramSpeaker | undefined, incoming: ProgramSpeaker): ProgramSpeaker => ({
   id: existing?.id ?? incoming.id,
   name: existing?.name ?? incoming.name,
-  bio: existing?.bio ?? incoming.bio,
-  company: existing?.company ?? incoming.company,
-  picture: existing?.picture ?? incoming.picture,
+  bio: incoming.bio ?? existing?.bio,
+  company: incoming.company ?? existing?.company,
+  picture: incoming.picture ?? existing?.picture,
   socialLinks: mergeSocialLinks(existing?.socialLinks, incoming.socialLinks),
 });
 
