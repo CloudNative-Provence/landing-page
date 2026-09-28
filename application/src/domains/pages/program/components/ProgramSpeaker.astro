@@ -8,15 +8,16 @@ import type { ProgramScheduleLabels } from './program-schedule.types';
 interface Props {
   speaker: ProgramSpeaker;
   id: string;
+  variant?: 'compact' | 'card';
   labels: Pick<ProgramScheduleLabels, 'closeLabel' | 'speakerProfileLabel' | 'speakerLinksLabel'>;
 }
 
-const { speaker, id, labels } = Astro.props;
+const { speaker, id, labels, variant = 'compact' } = Astro.props;
 const titleId = `${id}-title`;
 const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
 ---
 
-<div class="min-w-0" data-program-speaker={speaker.id}>
+<div class:list={['min-w-0', { 'speaker-card': variant === 'card' }]} data-program-speaker={speaker.id}>
   <button
     type="button"
     popovertarget={id}
@@ -25,9 +26,15 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
     aria-controls={id}
     aria-label={profileLabel}
     title={profileLabel}
-    class="flex max-w-full items-center gap-2.5 rounded-xl p-1 text-left transition hover:bg-sky-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:hover:bg-slate-800"
+    class:list={[
+  'text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4 dark:focus-visible:ring-offset-slate-950',
+  variant === 'card'
+    ? 'speaker-card-trigger'
+    : 'flex max-w-full items-center gap-2.5 rounded-xl p-1 transition hover:bg-sky-50 dark:hover:bg-slate-800',
+]}
   >
-    {speaker.picture ? (
+    <slot>
+      {speaker.picture ? (
   <img
     src={speaker.picture}
     alt=""
@@ -46,10 +53,11 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
     <Icon name="tabler:user" class="h-5 w-5" />
   </span>
 )}
-    <span class="min-w-0">
-      <span class="block text-sm font-medium text-gray-800 dark:text-slate-100">{speaker.name}</span>
-      {speaker.company && <span class="block text-xs text-muted">{speaker.company}</span>}
-    </span>
+      <span class="min-w-0">
+        <span class="block text-sm font-medium text-gray-800 dark:text-slate-100">{speaker.name}</span>
+        {speaker.company && <span class="block text-xs text-muted">{speaker.company}</span>}
+      </span>
+    </slot>
   </button>
 
   <div
@@ -113,3 +121,50 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
 ) : null}
   </div>
 </div>
+
+<style>
+.speaker-card,
+.speaker-card-trigger {
+  height: 100%;
+}
+
+.speaker-card-trigger {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid #e1e6ee;
+  border-radius: 1.25rem;
+  background: white;
+  cursor: pointer;
+  transition:
+    transform 220ms ease,
+    box-shadow 220ms ease,
+    border-color 220ms ease;
+}
+
+.speaker-card-trigger:hover {
+  transform: translateY(-5px);
+  border-color: #9baec5;
+  box-shadow: 0 16px 32px -16px rgb(18 35 62 / 25%);
+}
+
+:global(.dark) .speaker-card-trigger {
+  border-color: #34364e;
+  background: #222238;
+}
+
+:global(.dark) .speaker-card-trigger:hover {
+  border-color: #7e84a3;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .speaker-card-trigger {
+    transition: none;
+  }
+
+  .speaker-card-trigger:hover {
+    transform: none;
+  }
+}
+</style>

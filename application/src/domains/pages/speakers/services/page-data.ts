@@ -4,19 +4,26 @@ import type { ProgramSession, ProgramSpeaker } from '~/domains/pages/program/mod
 import type { MetaData } from '~/types';
 
 export interface SpeakersPageData {
-  [key: string]: unknown;
   metadata: MetaData;
   hero: {
     tagline: string;
     title: string;
     subtitle: string;
+    programLabel: string;
   };
   section: {
     title: string;
-    subtitle: string;
     emptyState: string;
   };
-  labels: Pick<ProgramScheduleLabels, 'closeLabel' | 'speakerProfileLabel' | 'speakerLinksLabel'>;
+  labels: Pick<ProgramScheduleLabels, 'closeLabel' | 'speakerProfileLabel' | 'speakerLinksLabel'> & {
+    viewProfileLabel: string;
+    searchLabel: string;
+    searchPlaceholder: string;
+    clearSearchLabel: string;
+    resultsLabel: string;
+    noResultsTitle: string;
+    noResultsText: string;
+  };
   speakers: readonly ProgramSpeaker[];
 }
 

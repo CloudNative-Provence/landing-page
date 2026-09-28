@@ -1,0 +1,563 @@
+---
+import { Icon } from 'astro-icon/components';
+import { eventMeta, formatEventDate } from '~/domains/event/config/event';
+import type { ProgramSpeaker as Speaker } from '~/domains/pages/program/model/schedule';
+import { ProgramSearchTextNormalizer } from '~/domains/pages/program/services/search-text-normalizer';
+import SpeakerCard from '~/domains/pages/speakers/components/SpeakerCard.astro';
+import type { SpeakersPageData } from '~/domains/pages/speakers/services/page-data';
+import { getLocalizedPagePath } from '~/i18n/routes';
+import { getLangFromUrl } from '~/i18n/utils';
+import { getPermalink } from '~/shared/url/permalinks';
+
+export interface Props {
+  hero: SpeakersPageData['hero'];
+  section: SpeakersPageData['section'];
+  labels: SpeakersPageData['labels'];
+  speakers: readonly Speaker[];
+}
+
+const { hero, section, labels, speakers } = Astro.props;
+const lang = getLangFromUrl(Astro.url);
+const portraits = speakers.filter((speaker) => speaker.picture).slice(0, 5);
+const resultsLabel = labels.resultsLabel
+  .replace('{count}', String(speakers.length))
+  .replace('{total}', String(speakers.length));
+---
+
+<section class="speakers-hero" aria-labelledby="speakers-title">
+  <div class="hero-inner">
+    <div class="hero-copy">
+      <p class="hero-eyebrow">
+        <span class="eyebrow-dot"></span>KCD Provence <span class="eyebrow-divider">/</span> {hero.tagline}
+      </p>
+      <h1 id="speakers-title">{hero.title}</h1>
+      <p class="hero-description">{hero.subtitle}</p>
+      <a class="program-link" href={getPermalink(getLocalizedPagePath(lang, 'program'))}>
+        {hero.programLabel}<Icon name="tabler:arrow-up-right" class="h-5 w-5" />
+      </a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orbit orbit-outer"></div>
+      <div class="orbit orbit-inner"></div>
+      <div class="cloud-core"><Icon name="tabler:cloud" class="h-16 w-16" /></div>
+      {portraits.map((speaker, index) => (
+  <div class:list={['orbit-portrait', `orbit-portrait-${index}`]}>
+    <img src={speaker.picture} alt="" width="112" height="112" decoding="async" referrerpolicy="no-referrer" />
+  </div>
+))}
+      <span class="orbit-spark spark-one">+</span>
+      <span class="orbit-spark spark-two">+</span>
+      <span class="orbit-dot"></span>
+    </div>
+  </div>
+  <div class="hero-meta">
+    <span><Icon name="tabler:calendar-event" class="h-4 w-4" />{formatEventDate(lang)}</span>
+    <span><Icon name="tabler:map-pin" class="h-4 w-4" />{eventMeta.city}</span>
+  </div>
+</section>
+
+<speaker-directory class="speaker-directory" data-results-label={labels.resultsLabel}>
+  <section class="directory-inner" aria-labelledby="lineup-title">
+    <div class="directory-toolbar">
+      <div>
+        <div class="directory-heading">
+          <h2 id="lineup-title">{section.title}</h2>
+          <span
+            class="speaker-count"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-label={hero.tagline}
+            data-speaker-count
+            >{resultsLabel}</span
+          >
+        </div>
+      </div>
+      {speakers.length > 0 && (
+  <div class="speaker-search" data-speaker-search hidden>
+    <Icon name="tabler:search" class="h-5 w-5 shrink-0" />
+    <label class="sr-only" for="speaker-search">
+      {labels.searchLabel}
+    </label>
+    <input
+      id="speaker-search"
+      type="search"
+      placeholder={labels.searchPlaceholder}
+      autocomplete="off"
+      aria-controls="speaker-grid"
+    />
+    <button type="button" class="search-clear" aria-label={labels.clearSearchLabel} data-clear-search hidden>
+      <Icon name="tabler:x" class="h-4 w-4" />
+    </button>
+  </div>
+)}
+    </div>
+
+    {speakers.length ? (
+  <>
+    <div id="speaker-grid" class="speaker-grid">
+      {speakers.map((speaker, index) => (
+        <article
+          data-speaker-card
+          data-search-text={ProgramSearchTextNormalizer.compose([speaker.name, speaker.company])}
+        >
+          <SpeakerCard speaker={speaker} labels={labels} index={index} />
+        </article>
+      ))}
+    </div>
+    <div class="directory-empty" data-no-results hidden>
+      <Icon name="tabler:search" class="mx-auto mb-4 h-8 w-8 text-muted" />
+      <h3>{labels.noResultsTitle}</h3>
+      <p>{labels.noResultsText}</p>
+      <button type="button" class="reset-search" data-clear-search>
+        {labels.clearSearchLabel}
+        <Icon name="tabler:arrow-right" class="h-4 w-4" />
+      </button>
+    </div>
+  </>
+) : (
+  <div class="directory-empty">
+    <Icon name="tabler:microphone-2" class="mx-auto mb-4 h-8 w-8 text-muted" />
+    <p>{section.emptyState}</p>
+  </div>
+)}
+  </section>
+</speaker-directory>
+
+<style>
+.speakers-hero {
+  position: relative;
+  overflow: hidden;
+  background: #101f36;
+  color: #f5f7fc;
+}
+
+.speakers-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(rgb(255 255 255 / 3%) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(255 255 255 / 3%) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: linear-gradient(to right, transparent 25%, black);
+}
+
+.hero-inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  align-items: center;
+  gap: 2rem;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 4rem 2rem 3.5rem;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  color: #d4e0f0;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.eyebrow-dot {
+  width: 0.4375rem;
+  height: 0.4375rem;
+  border-radius: 50%;
+  background: #96cfea;
+}
+.eyebrow-divider {
+  color: #71849f;
+}
+
+h1 {
+  margin-top: 1.5rem;
+  font-size: clamp(2.75rem, 5.5vw, 4.75rem);
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.065em;
+}
+
+.hero-description {
+  max-width: 34rem;
+  margin-top: 1.5rem;
+  color: #c0ccde;
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+
+.program-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  padding: 0.875rem 1.125rem;
+  border: 1px solid #536782;
+  border-radius: 0.625rem;
+  color: #f5f7fc;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition:
+    background 180ms ease,
+    border-color 180ms ease;
+}
+
+.program-link:hover {
+  background: #253954;
+  border-color: #a7bdf5;
+}
+.program-link:focus-visible,
+.reset-search:focus-visible,
+.search-clear:focus-visible {
+  outline: 2px solid #46a5cb;
+  outline-offset: 4px;
+}
+.hero-art {
+  position: relative;
+  width: 23rem;
+  height: 23rem;
+  justify-self: center;
+}
+.orbit {
+  position: absolute;
+  border: 1px solid #3a4963;
+  border-radius: 50%;
+}
+.orbit-outer {
+  inset: 1.5rem;
+}
+.orbit-inner {
+  inset: 5rem;
+  border-style: dashed;
+  border-color: #485873;
+}
+
+.cloud-core {
+  position: absolute;
+  inset: 7.75rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid #5b6c8a;
+  border-radius: 2rem;
+  color: #b7c8f6;
+  background: #263853;
+  transform: rotate(-8deg);
+}
+
+.orbit-portrait {
+  position: absolute;
+  width: 5.5rem;
+  height: 5.5rem;
+  overflow: hidden;
+  border: 5px solid #101f36;
+  border-radius: 50%;
+  background: #50658b;
+}
+.orbit-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.orbit-portrait-0 {
+  top: 0;
+  left: 7.5rem;
+  width: 6.5rem;
+  height: 6.5rem;
+}
+.orbit-portrait-1 {
+  top: 5.5rem;
+  right: 0;
+}
+.orbit-portrait-2 {
+  bottom: 2rem;
+  right: 2rem;
+  width: 6.25rem;
+  height: 6.25rem;
+}
+.orbit-portrait-3 {
+  bottom: 1rem;
+  left: 3rem;
+}
+.orbit-portrait-4 {
+  top: 7rem;
+  left: 0;
+  width: 6rem;
+  height: 6rem;
+}
+.orbit-spark {
+  position: absolute;
+  color: #a7bdf5;
+  font-size: 2rem;
+  font-weight: 400;
+}
+.spark-one {
+  top: 1rem;
+  left: 2rem;
+}
+.spark-two {
+  right: 0;
+  bottom: 1rem;
+  color: #87cfcd;
+}
+.orbit-dot {
+  position: absolute;
+  top: 2.75rem;
+  right: 3.5rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #87cfcd;
+}
+
+.hero-meta {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.75rem;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding: 1.125rem 0;
+  border-top: 1px solid #35435a;
+  color: #bdcadd;
+  font-size: 0.75rem;
+}
+
+.hero-meta > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.speaker-directory {
+  display: block;
+  background: #f7f8fb;
+}
+.directory-inner {
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: 3.5rem 2rem 5rem;
+}
+.directory-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+.directory-heading {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.875rem;
+}
+h2 {
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.045em;
+}
+.speaker-count {
+  padding: 0.375rem 0.625rem;
+  border: 1px solid #dce2ec;
+  border-radius: 0.5rem;
+  color: #54647b;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.speaker-search {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 22rem;
+  max-width: 100%;
+  padding: 0.875rem 1rem;
+  border: 1px solid #dce2ec;
+  border-radius: 0.75rem;
+  background: white;
+  color: #66758b;
+}
+
+.speaker-search:focus-within {
+  outline: 2px solid #46a5cb;
+  outline-offset: 2px;
+}
+.speaker-search input {
+  min-width: 0;
+  width: 100%;
+  background: transparent;
+  color: var(--aw-color-text-default);
+  font: inherit;
+  font-size: 0.75rem;
+  outline: none;
+}
+.speaker-search input::placeholder {
+  color: #66758b;
+  opacity: 1;
+}
+.speaker-search input::-webkit-search-cancel-button {
+  appearance: none;
+}
+.search-clear {
+  display: grid;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+.search-clear:hover {
+  background: #e9edf2;
+  color: #004e91;
+}
+.speaker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1.5rem;
+}
+.directory-empty {
+  padding: 4rem 1.5rem;
+  border: 1px dashed #ced7e4;
+  border-radius: 1.25rem;
+  text-align: center;
+}
+.directory-empty h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.directory-empty p {
+  max-width: 32rem;
+  margin: 0.75rem auto 0;
+  color: var(--aw-color-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.7;
+}
+.reset-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  color: var(--aw-color-primary);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+[hidden] {
+  display: none !important;
+}
+:global(.dark) .speaker-directory {
+  background: #1a1a2e;
+}
+:global(.dark) .speaker-search {
+  background: #222238;
+  border-color: #45475d;
+  color: #afb9cc;
+}
+:global(.dark) .speaker-search input::placeholder {
+  color: #afb9cc;
+}
+:global(.dark) .speaker-count {
+  border-color: #45475d;
+  color: #b9c5d8;
+}
+:global(.dark) .directory-empty {
+  border-color: #45475d;
+}
+
+@media (max-width: 80rem) {
+  .hero-meta {
+    margin-inline: 2rem;
+  }
+}
+
+@media (max-width: 64rem) {
+  .hero-art {
+    transform: scale(0.8);
+    transform-origin: center;
+    width: 23rem;
+    margin-inline: -2rem;
+  }
+  .hero-inner {
+    gap: 0;
+  }
+  .speaker-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 48rem) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    padding-block: 3rem;
+  }
+  .hero-art {
+    display: none;
+  }
+  h1 {
+    font-size: clamp(2.75rem, 9vw, 4rem);
+  }
+  .hero-description {
+    max-width: 32rem;
+  }
+  .directory-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .speaker-search {
+    width: 100%;
+  }
+  .speaker-search input {
+    font-size: 1rem;
+  }
+  .speaker-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .directory-inner {
+    padding-top: 2.5rem;
+  }
+}
+
+@media (max-width: 35rem) {
+  .hero-inner {
+    padding-inline: 1.25rem;
+  }
+  .hero-meta {
+    margin-inline: 1.25rem;
+    gap: 1rem;
+    font-size: 0.6875rem;
+  }
+  .hero-eyebrow {
+    font-size: 0.625rem;
+    gap: 0.5rem;
+  }
+  .directory-inner {
+    padding-inline: 1.25rem;
+  }
+  .speaker-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .program-link {
+    transition: none;
+  }
+}
+</style>
+
+<script>
+import '~/domains/pages/speakers/components/speaker-directory-element';
+</script>

@@ -5,21 +5,29 @@ import { buildSpeakersPageData } from './services/page-data';
 export default buildSpeakersPageData({
   metadata: {
     title: 'Intervenants',
-    description: 'Découvrez les intervenants de KCD Provence 2026 et consultez leurs profils publiés.',
+    description: 'Les intervenants de KCD Provence 2026 : biographies, entreprises et liens.',
   },
   hero: {
     tagline: 'Intervenants',
     title: 'Découvrez les intervenants de KCD Provence',
-    subtitle: 'Retrouvez les profils déjà publiés dans le programme de KCD Provence 2026.',
+    subtitle:
+      'Les profils des intervenants de KCD Provence 2026. Pour les conférences et les horaires, consultez le programme.',
+    programLabel: 'Voir le programme',
   },
   section: {
-    title: 'Intervenants publiés',
-    subtitle: 'Les profils affichés ici sont issus du programme publié de la conférence.',
-    emptyState: 'Les profils des intervenants apparaîtront ici dès que le programme sera publié.',
+    title: 'Les profils',
+    emptyState: 'Aucun profil publié pour le moment.',
   },
   labels: {
     closeLabel: programContent.labels.closeLabel,
     speakerProfileLabel: programContent.labels.speakerProfileLabel,
     speakerLinksLabel: programContent.labels.speakerLinksLabel,
+    viewProfileLabel: 'Voir le profil',
+    searchLabel: 'Trouver un intervenant',
+    searchPlaceholder: 'Rechercher un nom, une entreprise…',
+    clearSearchLabel: 'Effacer la recherche',
+    resultsLabel: '{count} / {total}',
+    noResultsTitle: 'Aucun profil trouvé',
+    noResultsText: 'Essayez un autre nom ou une autre entreprise.',
   },
 });
