@@ -1,5 +1,6 @@
-import { eventMeta } from '~/domains/event/config/event';
+import { eventMeta, getVenueInfo, getVenueName } from '~/domains/event/config/event';
 import type { PracticalInfoTopicData } from '~/domains/pages/practical-info/model/content';
+import { buildVenueReferenceMapHref } from '~/domains/pages/practical-info/shared/google-maps';
 
 const parkingResources = {
   parkAndRideOffer: 'https://www.lametropolemobilite.fr/parking-relais/#loffre-parking-relais-pr-a-aix-en-provence',
@@ -7,9 +8,13 @@ const parkingResources = {
   cityCarParks: 'https://mamp.parkings-semepa.fr/',
   parkAndRideLines: 'https://www.aixenbus.fr/fr/Yve-Les-Parkings-Relais-28P2BR29.html',
 } as const;
+const venueInfo = getVenueInfo('fr');
+const venueMapReference = [getVenueName('fr'), venueInfo.address].filter(Boolean).join(', ');
 
-const mapsPin = (lat: string, lon: string) => `https://www.google.com/maps?q=${lat},${lon}`;
-const mapsSearch = (query: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+const mapsPin = (lat: string, lon: string) =>
+  buildVenueReferenceMapHref({ venueReference: venueMapReference, destination: `${lat},${lon}` });
+const mapsSearch = (query: string) =>
+  buildVenueReferenceMapHref({ venueReference: venueMapReference, destination: query, fallbackQuery: query });
 
 export default {
   metadata: {

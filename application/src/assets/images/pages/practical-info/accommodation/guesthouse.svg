@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Guesthouse illustration</title>
+  <desc id="desc">A warm guesthouse with a garden, trees, and a welcoming front door.</desc>
+  <defs>
+    <linearGradient id="guesthouse-bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f0fdf4" />
+      <stop offset="54%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#16a34a" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#guesthouse-bg)" rx="36" />
+  <circle cx="506" cy="82" r="40" fill="#fff" fill-opacity=".52" />
+  <path d="M0 288c85-41 166-50 252-28 86 22 155 23 252-13 44-16 88-19 136-9v122H0Z" fill="#4ade80" fill-opacity=".3" />
+  <path d="M154 160 320 66l166 94v134H154Z" fill="#fffbeb" fill-opacity=".96" />
+  <path d="M122 170 320 54l198 116-20 34-178-104-178 104Z" fill="#92400e" fill-opacity=".9" />
+  <path d="M286 214h68v80h-68Z" fill="#b45309" fill-opacity=".82" />
+  <g fill="#fef3c7">
+    <rect x="196" y="190" width="42" height="42" rx="8" />
+    <rect x="250" y="190" width="42" height="42" rx="8" />
+    <rect x="348" y="190" width="42" height="42" rx="8" />
+    <rect x="402" y="190" width="42" height="42" rx="8" />
+    <rect x="196" y="242" width="42" height="42" rx="8" />
+    <rect x="402" y="242" width="42" height="42" rx="8" />
+  </g>
+  <path d="M82 282c0-30 24-54 54-54 23 0 43 14 51 35-8 7-15 15-20 25l-3 6H82Z" fill="#15803d" fill-opacity=".9" />
+  <path d="M468 284c0-34 27-61 61-61 26 0 49 17 57 41l6 20h-124Z" fill="#166534" fill-opacity=".82" />
+  <circle cx="532" cy="236" r="22" fill="#bbf7d0" fill-opacity=".75" />
+  <path d="M0 300h640" stroke="#166534" stroke-opacity=".14" stroke-width="12" />
+</svg>

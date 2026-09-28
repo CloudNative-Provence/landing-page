@@ -1,5 +1,6 @@
-import { eventMeta, getEventPlace, getVenueInfo } from '~/domains/event/config/event';
+import { eventMeta, getEventPlace, getVenueInfo, getVenueName } from '~/domains/event/config/event';
 import type { PracticalInfoTopicData } from '~/domains/pages/practical-info/model/content';
+import { buildVenueReferenceMapHref } from '~/domains/pages/practical-info/shared/google-maps';
 
 const venuePlace = getEventPlace('fr');
 const venueInfo = getVenueInfo('fr');
@@ -13,6 +14,7 @@ const accommodationResources = {
 } as const;
 const venueAddress = venueInfo.address;
 const venueMapHref = venueInfo.mapUrl;
+const venueMapReference = [getVenueName('fr'), venueAddress].filter(Boolean).join(', ');
 const venueAreaTitle = hasVenue ? `Autour du ${venuePlace}` : 'Autour du lieu';
 const mapsSearchContextLabel = hasVenue ? venuePlace : eventMeta.city;
 const mapsSearchAnchor = [venuePlace, venueAddress ?? eventMeta.city].filter(Boolean).join(', ');
@@ -23,7 +25,8 @@ const zoneSearchQueryById = {
   'historic-center': `centre historique ${eventMeta.city}`,
 } as const;
 
-const mapsPin = (lat: string, lon: string) => `https://www.google.com/maps?q=${lat},${lon}`;
+const mapsPin = (lat: string, lon: string) =>
+  buildVenueReferenceMapHref({ venueReference: venueMapReference, destination: `${lat},${lon}` });
 
 export default {
   metadata: {
