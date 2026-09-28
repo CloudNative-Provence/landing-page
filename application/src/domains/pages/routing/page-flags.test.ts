@@ -47,8 +47,10 @@ describe('page route feature flags', () => {
   it('keeps the program page enabled by default', () => {
     expect(isProgramEnabled()).toBe(true);
     expect(isLocalizedPageEnabled('program')).toBe(true);
+    expect(isLocalizedPageEnabled('speakers')).toBe(true);
     expect(hasStandaloneLocalizedPage('practical-info')).toBe(false);
     expect(getEnabledLocalizedRouteKeys()).toContain('program');
+    expect(getEnabledLocalizedRouteKeys()).toContain('speakers');
     expect(getEnabledStandaloneLocalizedRouteKeys()).not.toContain('practical-info');
   });
 
@@ -57,7 +59,9 @@ describe('page route feature flags', () => {
 
     expect(isProgramEnabled()).toBe(false);
     expect(isLocalizedPageEnabled('program')).toBe(false);
+    expect(isLocalizedPageEnabled('speakers')).toBe(false);
     expect(getEnabledLocalizedRouteKeys()).not.toContain('program');
+    expect(getEnabledLocalizedRouteKeys()).not.toContain('speakers');
     expect(getEnabledLocalizedRouteKeys()).toEqual([
       'about',
       'contact',

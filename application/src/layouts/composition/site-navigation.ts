@@ -37,6 +37,10 @@ export const getHeaderData = (locale: keyof LocaleDictionaries, now: Date = new 
               text: t.header.program,
               href: getPermalink(getLocalizedPagePath(locale, 'program')),
             },
+            {
+              text: t.header.speakers,
+              href: getPermalink(getLocalizedPagePath(locale, 'speakers')),
+            },
           ]
         : []),
       ...(cfpOpen
@@ -77,7 +81,10 @@ export const getFooterData = (locale: keyof LocaleDictionaries) => {
         title: t.footer.event,
         links: [
           ...(isProgramEnabled()
-            ? [{ text: t.footer.program, href: getPermalink(getLocalizedPagePath(locale, 'program')) }]
+            ? [
+                { text: t.footer.program, href: getPermalink(getLocalizedPagePath(locale, 'program')) },
+                { text: t.footer.speakers, href: getPermalink(getLocalizedPagePath(locale, 'speakers')) },
+              ]
             : []),
           { text: t.footer.sponsoring, href: getPermalink(getLocalizedPagePath(locale, 'sponsoring')) },
         ],

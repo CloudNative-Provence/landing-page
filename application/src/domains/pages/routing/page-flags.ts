@@ -4,7 +4,9 @@ import { type RouteKey, routeSlugs } from '~/i18n/routes';
 
 export const isProgramEnabled = () => APP_PROGRAM.isEnabled;
 
-export const isLocalizedPageEnabled = (routeKey: RouteKey) => routeKey !== 'program' || isProgramEnabled();
+const isProgramPage = (routeKey: RouteKey) => routeKey === 'program' || routeKey === 'speakers';
+
+export const isLocalizedPageEnabled = (routeKey: RouteKey) => !isProgramPage(routeKey) || isProgramEnabled();
 
 export const hasStandaloneLocalizedPage = (routeKey: RouteKey) => routeKey !== 'practical-info';
 
