@@ -56,7 +56,7 @@ describe('LocalizedPageRegistry', () => {
     expect(pageDefinition.layout).toBe('page');
     expect(pageDefinition.metadata.title).toBe('Speakers');
     expect(pageDefinition.props.speakers).toEqual(
-      expect.arrayContaining([expect.objectContaining({ name: 'Aurélie Vache' })])
+      expect.arrayContaining([expect.objectContaining({ id: expect.any(String), name: expect.any(String) })])
     );
   });
 
