@@ -15,6 +15,7 @@ vi.mock('astrowind:config', () => ({
   },
 }));
 
+import { mockedVenueReference } from '../test-constants';
 import parkingEn from './en';
 import parkingFr from './fr';
 
@@ -55,7 +56,6 @@ describe('parking topic content', () => {
   });
 
   it('uses venue-referenced map links for each parking option', () => {
-    const venueReference = 'Palais des Congrès, Aix-en-Provence';
     const parkingOptions = [
       ...(parkingEn.parkingGuide?.categories.flatMap((category) => category.options) ?? []),
       ...(parkingFr.parkingGuide?.categories.flatMap((category) => category.options) ?? []),
@@ -69,7 +69,7 @@ describe('parking topic content', () => {
           mapHref.origin === 'https://www.google.com' &&
           mapHref.pathname === '/maps/dir/' &&
           mapHref.searchParams.get('api') === '1' &&
-          mapHref.searchParams.get('origin') === venueReference
+          mapHref.searchParams.get('origin') === mockedVenueReference
         );
       })
     ).toBe(true);

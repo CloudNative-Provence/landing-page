@@ -17,14 +17,13 @@ vi.mock('astrowind:config', () => ({
   },
 }));
 
+import { mockedVenueReference } from '../test-constants';
 import accommodationEn from './en';
 import accommodationFr from './fr';
 import { getStayThumbnailSrc } from './stay-thumbnail';
 
 describe('accommodation topic content', () => {
   it('provides structured accommodation guidance in both locales', () => {
-    const venueReference = 'Palais des Congrès, Aix-en-Provence';
-
     expect(accommodationEn.accommodationGuide?.areas).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.stayTypes).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.resources.map((resource) => resource.text)).toContain('Venue website');
@@ -71,7 +70,7 @@ describe('accommodation topic content', () => {
           mapHref.origin === 'https://www.google.com' &&
           mapHref.pathname === '/maps/dir/' &&
           mapHref.searchParams.get('api') === '1' &&
-          mapHref.searchParams.get('origin') === venueReference &&
+          mapHref.searchParams.get('origin') === mockedVenueReference &&
           stay.address.length > 0 &&
           stay.zoneId.length > 0 &&
           stay.typeId.length > 0 &&
