@@ -35,5 +35,5 @@ export const buildVenueReferenceMapHref = ({
     return buildGoogleMapsDirectionsHref(normalizedVenueReference, normalizedDestination);
   }
 
-  return buildGoogleMapsSearchHref(normalizedFallbackQuery || normalizedDestination);
+  return buildGoogleMapsSearchHref(normalizedFallbackQuery);
 };
