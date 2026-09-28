@@ -10,6 +10,8 @@ import practicalInfoFr from '~/domains/pages/practical-info/content/fr';
 import privacyEn from '~/domains/pages/privacy/en';
 import privacyFr from '~/domains/pages/privacy/fr';
 import { programEnPageData, programFrPageData } from '~/domains/pages/program/services/page-data';
+import speakersEn from '~/domains/pages/speakers/en';
+import speakersFr from '~/domains/pages/speakers/fr';
 import sponsoringEn from '~/domains/pages/sponsoring/en';
 import sponsoringFr from '~/domains/pages/sponsoring/fr';
 import termsEn from '~/domains/pages/terms/en';
@@ -21,6 +23,7 @@ import ContactContent from '~/pages/contact/_content.astro';
 import PracticalInfoContent from '~/pages/practical-info/_content.astro';
 import PrivacyContent from '~/pages/privacy/_content.astro';
 import ProgramContent from '~/pages/program/_content.astro';
+import SpeakersContent from '~/pages/speakers/_content.astro';
 import SponsoringContent from '~/pages/sponsoring/_content.astro';
 import TermsContent from '~/pages/terms/_content.astro';
 import type { MetaData } from '~/types';
@@ -63,6 +66,7 @@ const localizedPageResolvers = {
   contact: createPageResolver(ContactContent, { en: contactEn, fr: contactFr }),
   'practical-info': createPageResolver(PracticalInfoContent, { en: practicalInfoEn, fr: practicalInfoFr }),
   program: createPageResolver(ProgramContent, { en: programEnPageData, fr: programFrPageData }),
+  speakers: createPageResolver(SpeakersContent, { en: speakersEn, fr: speakersFr }),
   sponsoring: createPageResolver(SponsoringContent, { en: sponsoringEn, fr: sponsoringFr }),
   'brand-guidelines': createPageResolver(
     BrandGuidelinesContent,

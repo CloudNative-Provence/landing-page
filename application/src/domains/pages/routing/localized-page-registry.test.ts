@@ -21,6 +21,7 @@ vi.mock('~/pages/contact/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/practical-info/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/privacy/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/program/_content.astro', () => ({ default: {} }));
+vi.mock('~/pages/speakers/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/sponsoring/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/terms/_content.astro', () => ({ default: {} }));
 
@@ -47,6 +48,16 @@ describe('LocalizedPageRegistry', () => {
     expect(pageDefinition.layout).toBe('page');
     expect(pageDefinition.metadata.title).toBe('Infos pratiques');
     expect(pageDefinition.props.title).toBe('Les infos pratiques pour votre journée en Provence');
+  });
+
+  it('resolves speakers content for the requested locale', () => {
+    const pageDefinition = LocalizedPageRegistry.resolve('speakers', 'en');
+
+    expect(pageDefinition.layout).toBe('page');
+    expect(pageDefinition.metadata.title).toBe('Speakers');
+    expect(pageDefinition.props.speakers).toEqual(
+      expect.arrayContaining([expect.objectContaining({ name: 'Aurélie Vache' })])
+    );
   });
 
   it('resolves standalone pages without duplicating metadata in props', () => {

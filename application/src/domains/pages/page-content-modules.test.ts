@@ -25,6 +25,7 @@ describe('page content modules', () => {
       ...import.meta.glob('./not-found/*.ts', { eager: true }),
       ...import.meta.glob('./privacy/*.ts', { eager: true }),
       ...import.meta.glob('./sponsoring/*.ts', { eager: true }),
+      ...import.meta.glob('./speakers/*.ts', { eager: true }),
       ...import.meta.glob('./terms/*.ts', { eager: true }),
       ...import.meta.glob('./practical-info/content/*.ts', { eager: true }),
       ...import.meta.glob(['./practical-info/topics/*/*.ts', '!./practical-info/topics/*/*.test.ts'], { eager: true }),

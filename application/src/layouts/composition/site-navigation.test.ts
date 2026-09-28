@@ -59,11 +59,12 @@ describe('navigation', () => {
 
   it('returns localized header links including the CFP when it is open', () => {
     const header = getHeaderData('fr', cfpOpenDate);
-    expect(header.links).toHaveLength(6);
+    expect(header.links).toHaveLength(7);
     expect(header.links[0].href).toBe('/fr/programme');
-    expect(header.links[1]).toEqual({ text: 'CFP', href: '/fr#cfp' });
-    expect(header.links[2].href).toBe('/fr/sponsoring');
-    expect(header.links[3]).toEqual({
+    expect(header.links[1].href).toBe('/fr/intervenants');
+    expect(header.links[2]).toEqual({ text: 'CFP', href: '/fr#cfp' });
+    expect(header.links[3].href).toBe('/fr/sponsoring');
+    expect(header.links[4]).toEqual({
       text: 'Infos pratiques',
       links: [
         { text: 'Hébergement', href: '/fr/infos-pratiques/hebergement' },
@@ -72,15 +73,15 @@ describe('navigation', () => {
         { text: 'Activités', href: '/fr/infos-pratiques/activites' },
       ],
     });
-    expect(header.links[4].href).toBe('/fr/a-propos');
-    expect(header.links[5].href).toBe('/fr/contact');
+    expect(header.links[5].href).toBe('/fr/a-propos');
+    expect(header.links[6].href).toBe('/fr/contact');
   });
 
   it('returns localized footer data and favicon note', () => {
     const footer = getFooterData('en');
 
     expect(footer.links).toHaveLength(3);
-    expect(footer.links[0]?.links.map((item) => item.href)).toEqual(['/en/program', '/en/sponsoring']);
+    expect(footer.links[0]?.links.map((item) => item.href)).toEqual(['/en/program', '/en/speakers', '/en/sponsoring']);
     expect(footer.links[1]?.title).toBe('Practical Information');
     expect(footer.links[1]?.links.map((item) => item.href)).toEqual([
       '/en/practical-information/accommodation',
@@ -120,8 +121,9 @@ describe('navigation', () => {
     const header = getHeaderData('en', cfpClosedDate);
 
     expect(header.links[0]?.href).toBe('/en/program');
-    expect(header.links[1]?.href).toBe('/en/sponsoring');
-    expect(header.links[2]).toEqual({
+    expect(header.links[1]?.href).toBe('/en/speakers');
+    expect(header.links[2]?.href).toBe('/en/sponsoring');
+    expect(header.links[3]).toEqual({
       text: 'Practical Information',
       links: [
         { text: 'Accommodation', href: '/en/practical-information/accommodation' },
@@ -130,7 +132,7 @@ describe('navigation', () => {
         { text: 'Activities', href: '/en/practical-information/activities' },
       ],
     });
-    expect(header.links[3]?.href).toBe('/en/about');
-    expect(header.links[4]?.href).toBe('/en/contact');
+    expect(header.links[4]?.href).toBe('/en/about');
+    expect(header.links[5]?.href).toBe('/en/contact');
   });
 });

@@ -7,6 +7,7 @@ export const routeSlugs = {
   contact: { en: 'contact', fr: 'contact' },
   'practical-info': { en: 'practical-information', fr: 'infos-pratiques' },
   program: { en: 'program', fr: 'programme' },
+  speakers: { en: 'speakers', fr: 'intervenants' },
   sponsoring: { en: 'sponsoring', fr: 'sponsoring' },
   'brand-guidelines': { en: 'brand-guidelines', fr: 'charte-graphique' },
   terms: { en: 'terms-of-service', fr: 'conditions-generales-utilisation' },

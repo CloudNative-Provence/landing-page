@@ -16,6 +16,7 @@ describe('i18n routes helpers', () => {
     expect(getLocalizedPagePath('fr', 'practical-info')).toBe('/fr/infos-pratiques');
     expect(getLocalizedPagePath('fr', 'practical-info', 'parking')).toBe('/fr/infos-pratiques/parkings');
     expect(getLocalizedPagePath('fr', 'program')).toBe('/fr/programme');
+    expect(getLocalizedPagePath('fr', 'speakers')).toBe('/fr/intervenants');
     expect(getLocalizedPagePath('en', 'privacy')).toBe('/en/privacy-policy');
   });
 
@@ -23,6 +24,7 @@ describe('i18n routes helpers', () => {
     expect(getRouteKeyFromSlug('fr', '/charte-graphique/')).toBe('brand-guidelines');
     expect(getRouteKeyFromSlug('fr', 'infos-pratiques')).toBe('practical-info');
     expect(getRouteKeyFromSlug('en', 'program')).toBe('program');
+    expect(getRouteKeyFromSlug('fr', 'intervenants')).toBe('speakers');
     expect(getRouteKeyFromSlug('en', 'terms-of-service')).toBe('terms');
     expect(getRouteKeyFromSlug('en', 'unknown')).toBeUndefined();
   });
@@ -39,6 +41,7 @@ describe('i18n routes helpers', () => {
     expect(translatePathToLang('/fr/infos-pratiques', 'en')).toBe('/en/practical-information');
     expect(translatePathToLang('/fr/infos-pratiques/parkings', 'en')).toBe('/en/practical-information/parking');
     expect(translatePathToLang('/fr/programme', 'en')).toBe('/en/program');
+    expect(translatePathToLang('/fr/intervenants', 'en')).toBe('/en/speakers');
     expect(translatePathToLang('/en/privacy-policy', 'fr')).toBe('/fr/politique-de-confidentialite');
   });
 
@@ -66,6 +69,7 @@ describe('i18n routes helpers', () => {
       'contact',
       'practical-info',
       'program',
+      'speakers',
       'sponsoring',
       'brand-guidelines',
       'terms',
