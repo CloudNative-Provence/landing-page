@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">Hotel illustration</title>
+  <desc id="desc">A stylized hotel facade with warm evening tones.</desc>
+  <defs>
+    <linearGradient id="hotel-bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#fff7ed" />
+      <stop offset="55%" stop-color="#fde68a" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+  </defs>
+  <rect width="640" height="360" fill="url(#hotel-bg)" rx="36" />
+  <circle cx="520" cy="86" r="44" fill="#ffffff" fill-opacity=".55" />
+  <path
+    d="M0 286c94-58 180-72 260-46 91 29 145 24 232-18 60-29 104-33 148-24v162H0Z"
+    fill="#fb923c"
+    fill-opacity=".42"
+  />
+  <path d="M120 132h148c16.569 0 30 13.431 30 30v132H90V162c0-16.569 13.431-30 30-30Z" fill="#fff" fill-opacity=".95" />
+  <path
+    d="M314 106h164c16.569 0 30 13.431 30 30v158H284V136c0-16.569 13.431-30 30-30Z"
+    fill="#7c2d12"
+    fill-opacity=".92"
+  />
+  <path d="M168 184h56v110h-56Z" fill="#f59e0b" fill-opacity=".36" />
+  <path d="M352 146h108c8.837 0 16 7.163 16 16v132H336V162c0-8.837 7.163-16 16-16Z" fill="#9a3412" fill-opacity=".78" />
+  <g fill="#fef3c7">
+    <rect x="116" y="158" width="30" height="30" rx="6" />
+    <rect x="154" y="158" width="30" height="30" rx="6" />
+    <rect x="192" y="158" width="30" height="30" rx="6" />
+    <rect x="230" y="158" width="30" height="30" rx="6" />
+    <rect x="116" y="202" width="30" height="30" rx="6" />
+    <rect x="154" y="202" width="30" height="30" rx="6" />
+    <rect x="192" y="202" width="30" height="30" rx="6" />
+    <rect x="230" y="202" width="30" height="30" rx="6" />
+    <rect x="356" y="132" width="30" height="30" rx="6" />
+    <rect x="398" y="132" width="30" height="30" rx="6" />
+    <rect x="440" y="132" width="30" height="30" rx="6" />
+    <rect x="356" y="176" width="30" height="30" rx="6" />
+    <rect x="398" y="176" width="30" height="30" rx="6" />
+    <rect x="440" y="176" width="30" height="30" rx="6" />
+    <rect x="356" y="220" width="30" height="30" rx="6" />
+    <rect x="398" y="220" width="30" height="30" rx="6" />
+    <rect x="440" y="220" width="30" height="30" rx="6" />
+  </g>
+  <path d="M0 300h640" stroke="#7c2d12" stroke-opacity=".16" stroke-width="12" />
+</svg>

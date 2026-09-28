@@ -19,9 +19,12 @@ vi.mock('astrowind:config', () => ({
 
 import accommodationEn from './en';
 import accommodationFr from './fr';
+import { getStayThumbnailSrc } from './stay-thumbnail';
 
 describe('accommodation topic content', () => {
   it('provides structured accommodation guidance in both locales', () => {
+    const venueReference = 'Palais des Congrès, Aix-en-Provence';
+
     expect(accommodationEn.accommodationGuide?.areas).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.stayTypes).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.resources.map((resource) => resource.text)).toContain('Venue website');
@@ -60,14 +63,21 @@ describe('accommodation topic content', () => {
       [
         ...(accommodationEn.accommodationGuide?.stayFinder.stays ?? []),
         ...(accommodationFr.accommodationGuide?.stayFinder.stays ?? []),
-      ].every(
-        (stay) =>
+      ].every((stay) => {
+        const mapHref = new URL(stay.mapHref);
+
+        return (
           stay.websiteHref.startsWith('https://') &&
-          stay.mapHref.startsWith('https://') &&
+          mapHref.origin === 'https://www.google.com' &&
+          mapHref.pathname === '/maps/dir/' &&
+          mapHref.searchParams.get('api') === '1' &&
+          mapHref.searchParams.get('origin') === venueReference &&
           stay.address.length > 0 &&
           stay.zoneId.length > 0 &&
-          stay.typeId.length > 0
-      )
+          stay.typeId.length > 0 &&
+          Boolean(getStayThumbnailSrc(stay.typeId))
+        );
+      })
     ).toBe(true);
   });
 });
