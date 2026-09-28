@@ -4,8 +4,6 @@ import { Icon } from 'astro-icon/components';
 import type { PracticalInfoAccommodationGuide } from '~/domains/pages/practical-info/model/accommodation';
 import Image from '~/shared/components/common/Image.astro';
 
-import { defaultStayThumbnailSrc, getStayThumbnailSrc } from '../stay-thumbnail';
-
 export interface Props {
   content: string;
   accommodationGuide: PracticalInfoAccommodationGuide;
@@ -209,16 +207,25 @@ const typePopoverId = 'accommodation-type-help';
   >
     <div class="overflow-hidden rounded-2xl border border-black/5 bg-slate-100 dark:border-white/10 dark:bg-slate-800/80">
       <Image
-        src={getStayThumbnailSrc(stay.typeId) ?? defaultStayThumbnailSrc}
-        alt=""
+        src={stay.thumbnail.src}
+        alt={stay.name}
         width={640}
         height={360}
         widths={[320, 640]}
         sizes="(min-width: 1280px) 20rem, (min-width: 768px) 50vw, 100vw"
         aspectRatio="16:9"
-        class="w-full transition duration-300 ease-out group-hover:scale-[1.02]"
+        class="aspect-video w-full object-cover transition duration-300 ease-out group-hover:scale-[1.02]"
       />
     </div>
+
+    <a
+      href={stay.thumbnail.sourceHref}
+      target="_blank"
+      rel="noreferrer"
+      class="mt-2 self-start text-xs text-slate-500 underline decoration-slate-300 underline-offset-2 hover:text-amber-700 dark:text-slate-400 dark:decoration-slate-600 dark:hover:text-amber-300"
+    >
+      Photo : {stay.thumbnail.credit}
+    </a>
 
     <div class="mt-5 flex flex-wrap items-center gap-1.5">
       <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">

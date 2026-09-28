@@ -20,9 +20,18 @@ vi.mock('astrowind:config', () => ({
 import { mockedVenueReference } from '../test-constants';
 import accommodationEn from './en';
 import accommodationFr from './fr';
-import { getStayThumbnailSrc } from './stay-thumbnail';
 
 describe('accommodation topic content', () => {
+  it('uses the same distinct property photos in both locales', () => {
+    const englishStays = accommodationEn.accommodationGuide!.stayFinder.stays;
+    const frenchStays = accommodationFr.accommodationGuide!.stayFinder.stays;
+
+    expect(new Set(englishStays.map((stay) => stay.thumbnail.src)).size).toBe(englishStays.length);
+    for (const stay of englishStays) {
+      expect(frenchStays.find((candidate) => candidate.mapHref === stay.mapHref)?.thumbnail).toEqual(stay.thumbnail);
+    }
+  });
+
   it('provides structured accommodation guidance in both locales', () => {
     expect(accommodationEn.accommodationGuide?.areas).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.stayTypes).toHaveLength(3);
@@ -74,7 +83,7 @@ describe('accommodation topic content', () => {
           stay.address.length > 0 &&
           stay.zoneId.length > 0 &&
           stay.typeId.length > 0 &&
-          Boolean(getStayThumbnailSrc(stay.typeId))
+          stay.thumbnail.src.endsWith('.webp')
         );
       })
     ).toBe(true);
