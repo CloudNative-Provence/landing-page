@@ -29,7 +29,7 @@ export const buildVenueReferenceMapHref = ({
 }): string => {
   const normalizedVenueReference = venueReference?.trim();
   const normalizedDestination = destination.trim();
-  const normalizedFallbackQuery = (fallbackQuery ?? normalizedDestination).trim();
+  const normalizedFallbackQuery = (fallbackQuery || normalizedDestination).trim();
 
   if (normalizedVenueReference && normalizedDestination) {
     return buildGoogleMapsDirectionsHref(normalizedVenueReference, normalizedDestination);
