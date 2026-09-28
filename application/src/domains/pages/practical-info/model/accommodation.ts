@@ -26,8 +26,15 @@ export interface PracticalInfoStayFilterGroup {
   options: readonly PracticalInfoStayFilterOption[];
 }
 
+export interface PracticalInfoStayThumbnail {
+  src: string;
+  sourceHref: string;
+  credit: string;
+}
+
 export interface PracticalInfoStay {
   name: string;
+  thumbnail: PracticalInfoStayThumbnail;
   blurb: string;
   address: string;
   zoneId: string;

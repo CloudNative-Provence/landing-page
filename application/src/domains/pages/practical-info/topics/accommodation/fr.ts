@@ -1,6 +1,7 @@
 import { eventMeta, getEventPlace, getVenueInfo, getVenueName } from '~/domains/event/config/event';
 import type { PracticalInfoTopicData } from '~/domains/pages/practical-info/model/content';
 import { buildVenueReferenceMapHref } from '~/domains/pages/practical-info/shared/google-maps';
+import { stayThumbnails } from './stay-thumbnail';
 
 const venuePlace = getEventPlace('fr');
 const venueInfo = getVenueInfo('fr');
@@ -130,6 +131,7 @@ export default {
       stays: [
         {
           name: 'Odalys City Aix-en-Provence',
+          thumbnail: stayThumbnails['odalys-palais-des-congres'],
           blurb:
             'Studios et appartements équipés près du cours Gambetta, à deux pas du centre des congrès, avec parking sur place.',
           address: '15 cours Gambetta, 13100 Aix-en-Provence',
@@ -145,6 +147,7 @@ export default {
         },
         {
           name: 'Hôtel Cardinal',
+          thumbnail: stayThumbnails['hotel-cardinal'],
           blurb:
             'Hôtel de charme au bon rapport qualité-prix, dans deux immeubles du XVIIIe siècle du quartier Mazarin.',
           address: '24 rue Cardinale, 13100 Aix-en-Provence',
@@ -160,6 +163,7 @@ export default {
         },
         {
           name: 'Villa Saint-Ange',
+          thumbnail: stayThumbnails['villa-saint-ange'],
           blurb: 'Domaine 5 étoiles à quelques pas du lieu, avec parking couvert et sécurisé.',
           address: '7 traverse Saint-Pierre, 13100 Aix-en-Provence',
           zoneId: 'venue-area',
@@ -174,6 +178,7 @@ export default {
         },
         {
           name: 'Hôtel des Arts',
+          thumbnail: stayThumbnails['hotel-des-arts'],
           blurb:
             'Petit hôtel 2 étoiles simple et convivial, à quelques minutes du lieu, du cours Mirabeau et de La Rotonde.',
           address: '3 rue de la Fonderie, 13100 Aix-en-Provence',
@@ -189,6 +194,7 @@ export default {
         },
         {
           name: 'Villa Gallici',
+          thumbnail: stayThumbnails['villa-gallici'],
           blurb: 'Bastide 5 étoiles Relais & Châteaux avec jardins et parking privé, à courte distance du lieu.',
           address: '18 avenue de la Violette, 13100 Aix-en-Provence',
           zoneId: 'venue-area',
@@ -203,6 +209,7 @@ export default {
         },
         {
           name: 'La petite Mazarine',
+          thumbnail: stayThumbnails['la-petite-mazarine'],
           blurb:
             "Maison d'hôtes paisible de 2 chambres avec piscine partagée sur les hauteurs, à quelques minutes du centre en voiture.",
           address: '1135 chemin du vallon des lauriers, 13080 Aix-en-Provence',
@@ -218,6 +225,7 @@ export default {
         },
         {
           name: 'Hôtel Rotonde',
+          thumbnail: stayThumbnails['hotel-rotonde'],
           blurb: 'Hôtel 4 étoiles élégant à côté de La Rotonde et des gares, avec parking privé.',
           address: '15 avenue des Belges, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -232,6 +240,7 @@ export default {
         },
         {
           name: 'Séjours et Affaires Mirabeau',
+          thumbnail: stayThumbnails['sejours-affaires-mirabeau'],
           blurb: 'Studios et deux-pièces prêts à vivre près des gares, avec parking privé couvert.',
           address: '615 avenue Wolfgang Amadeus Mozart, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -247,6 +256,7 @@ export default {
         },
         {
           name: 'Boutique Hôtel Cézanne',
+          thumbnail: stayThumbnails['boutique-hotel-cezanne'],
           blurb: 'Boutique-hôtel design à deux pas des gares, avec parking privé sur réservation.',
           address: '40 avenue Victor Hugo, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -261,6 +271,7 @@ export default {
         },
         {
           name: 'Odalys City Aix-en-Provence Centre Rotonde',
+          thumbnail: stayThumbnails['odalys-centre-rotonde'],
           blurb: 'Appart-hôtel 4 étoiles à deux pas de La Rotonde, avec garage souterrain et piscine.',
           address: '24 boulevard Albert Charrier, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -275,6 +286,7 @@ export default {
         },
         {
           name: 'Hôtel Saint-Christophe',
+          thumbnail: stayThumbnails['hotel-saint-christophe'],
           blurb: 'Adresse provençale classique près de La Rotonde et des gares, avec garage et parking à proximité.',
           address: '2 avenue Victor Hugo, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -289,6 +301,7 @@ export default {
         },
         {
           name: 'Grand Hôtel Roi René - MGallery',
+          thumbnail: stayThumbnails['grand-hotel-roi-rene'],
           blurb: 'Hôtel haut de gamme entre les gares et le cours Mirabeau, avec parking privé sur demande.',
           address: '24 boulevard du Roi René, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -303,6 +316,7 @@ export default {
         },
         {
           name: 'Aparthotel Adagio Aix Centre',
+          thumbnail: stayThumbnails['adagio-aix-centre'],
           blurb: 'Appartements tout équipés près de La Rotonde, rénovés en 2025, avec parking privé couvert.',
           address: '3-5 rue des Chartreux, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -317,6 +331,7 @@ export default {
         },
         {
           name: 'Hôtel Le Pigonnet',
+          thumbnail: stayThumbnails['hotel-le-pigonnet'],
           blurb: 'Écrin 5 étoiles avec jardins au sud du centre, parking privé gratuit et accès facile aux gares.',
           address: '5 avenue du Pigonnet, 13090 Aix-en-Provence',
           zoneId: 'near-stations',
@@ -331,6 +346,7 @@ export default {
         },
         {
           name: 'Villa des Félibres',
+          thumbnail: stayThumbnails['villa-des-felibres'],
           blurb:
             "Maison d'hôtes de charme avec piscine et garage, au calme, avec les gares et le centre accessibles à pied.",
           address: '4 avenue Saint-Michel du Pigonnet, 13090 Aix-en-Provence',
@@ -346,6 +362,7 @@ export default {
         },
         {
           name: 'Hôtel des Augustins',
+          thumbnail: stayThumbnails['hotel-des-augustins'],
           blurb:
             'Hôtel de charme de milieu de gamme dans un ancien couvent, à deux pas du cours Mirabeau en zone piétonne.',
           address: '3 rue de la Masse, 13100 Aix-en-Provence',
@@ -361,6 +378,7 @@ export default {
         },
         {
           name: 'Negrecoste Hôtel & Spa',
+          thumbnail: stayThumbnails['negrecoste'],
           blurb: 'Hôtel 4 étoiles en plein cours Mirabeau, avec spa Nuxe et parking privé sur réservation.',
           address: '33 cours Mirabeau, 13100 Aix-en-Provence',
           zoneId: 'historic-center',
@@ -375,6 +393,7 @@ export default {
         },
         {
           name: 'Hôtel des Quatre Dauphins',
+          thumbnail: stayThumbnails['hotel-des-quatre-dauphins'],
           blurb:
             'Hôtel chaleureux dans un hôtel particulier du XIXe siècle à Mazarin, tout près de la fontaine des Quatre Dauphins.',
           address: '54 rue Roux Alphéran, 13100 Aix-en-Provence',
@@ -390,6 +409,7 @@ export default {
         },
         {
           name: "La Maison d'Aix",
+          thumbnail: stayThumbnails['la-maison-daix'],
           blurb: "Maison d'hôtes de charme dans un hôtel particulier, au calme dans le quartier Mazarin.",
           address: '25 rue du 4 Septembre, 13100 Aix-en-Provence',
           zoneId: 'historic-center',
@@ -404,6 +424,7 @@ export default {
         },
         {
           name: 'Aquabella Hôtel & Spa',
+          thumbnail: stayThumbnails['aquabella'],
           blurb:
             'Hôtel au calme dans le centre ancien, avec jardin et spa sensoriel près des Thermes, parking à proximité.',
           address: '2 rue des Étuves, 13100 Aix-en-Provence',
@@ -419,6 +440,7 @@ export default {
         },
         {
           name: 'Villa Hélène',
+          thumbnail: stayThumbnails['villa-helene'],
           blurb:
             "Maison d'hôtes élégante de 5 chambres avec piscine et table d'hôtes, dans la verdure au nord de la ville.",
           address: '920 chemin du Vallon de Bagnol, 13090 Aix-en-Provence',
