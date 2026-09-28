@@ -49,19 +49,29 @@ const sessions = [
   },
   {
     id: 'cmued2m8g02ff01ptyudr0zhl',
-    title: 'Keynote',
-    description: '',
+    title: 'L\'IA écrit, la production encaisse',
+    description: 'Les gains de productivité annoncés de l\'IA générative sont mesurés là où le code est écrit. Ils sont rarement mesurés là où il atterrit.\n\nDans les organisations cloud native, il atterrit sur la plateforme : les pipelines, les clusters, l\'observabilité, les garde-fous que les équipes plateforme ont construits. Ces équipes, comme les ops et les SRE, n\'ont pas vu leur effectif évoluer, n\'ont pas été consultées, et diagnostiquent désormais en astreinte un code dont personne ne connaît vraiment l\'intention. Les rapports DORA successifs associent l\'adoption de l\'IA à une baisse de la stabilité des livraisons. Sur le terrain, le schéma se répète d\'une organisation à l\'autre : davantage de demandes de fusion, des revues plus superficielles, des incidents plus longs à expliquer, et une charge opérationnelle qui ne figure jamais dans le calcul du retour sur investissement.\n\nLe platform engineering promettait de réduire la charge cognitive des équipes de développement. Il devient l\'endroit où s\'accumule le coût de leur accélération.\n\nCe n\'est pas un effet secondaire, c\'est une décision de gestion qui ne dit pas son nom. Une accélération qui n\'a pas été arbitrée contre la capacité de la production n\'est pas un gain de productivité : c\'est une dette reportée sur d\'autres.\n\nCette keynote s\'adresse à celles et ceux qui tiennent la production, et plus encore à celles et ceux qui choisissent ce qui leur est envoyé sans en porter le coût.',
     startsAt: '2026-12-10T09:15:00.000+01:00',
     endsAt: '2026-12-10T09:45:00.000+01:00',
     roomId: 'amphitheatre',
+    speakers: [
+      { id: 'cmul8q4ul00k901phkmsszzwx', name: 'Katia HIMEUR', bio: 'Katia Himeur est CTO et cofondatrice de Cockpit io. Depuis plus de dix ans, elle travaille au plus près de la production : chaînes CI/CD, plateformes Kubernetes, architectures cloud et organisation des équipes qui les exploitent. Elle a accompagné des dizaines d\'organisations publiques et privées, de la conception jusqu\'à l\'exploitation, et conseille des directions techniques sur leurs arbitrages d\'architecture et d\'organisation. Elle intervient régulièrement dans l\'écosystème francophone (Devoxx, Devfest Nantes…) et publie ses analyses sur le blog de Cockpit io. Son fil conducteur : relier chaque décision technique à ses effets réels sur les organisations qui la mettent en œuvre.', picture: 'https://lh3.googleusercontent.com/a/AEdFTp7w92VWr31bXtx2JMAcUzLGHqjdkU-hsRgzMaow=s96-c' },
+    ],
+    format: 'keynote',
+    tags: ['AI', 'fr'],
   },
   {
     id: 'cmuf6bvuk02zc01pt5m6fyx3z',
-    title: 'Keynote',
-    description: '',
+    title: 'L\'IA écrit, la production encaisse',
+    description: 'Les gains de productivité annoncés de l\'IA générative sont mesurés là où le code est écrit. Ils sont rarement mesurés là où il atterrit.\n\nDans les organisations cloud native, il atterrit sur la plateforme : les pipelines, les clusters, l\'observabilité, les garde-fous que les équipes plateforme ont construits. Ces équipes, comme les ops et les SRE, n\'ont pas vu leur effectif évoluer, n\'ont pas été consultées, et diagnostiquent désormais en astreinte un code dont personne ne connaît vraiment l\'intention. Les rapports DORA successifs associent l\'adoption de l\'IA à une baisse de la stabilité des livraisons. Sur le terrain, le schéma se répète d\'une organisation à l\'autre : davantage de demandes de fusion, des revues plus superficielles, des incidents plus longs à expliquer, et une charge opérationnelle qui ne figure jamais dans le calcul du retour sur investissement.\n\nLe platform engineering promettait de réduire la charge cognitive des équipes de développement. Il devient l\'endroit où s\'accumule le coût de leur accélération.\n\nCe n\'est pas un effet secondaire, c\'est une décision de gestion qui ne dit pas son nom. Une accélération qui n\'a pas été arbitrée contre la capacité de la production n\'est pas un gain de productivité : c\'est une dette reportée sur d\'autres.\n\nCette keynote s\'adresse à celles et ceux qui tiennent la production, et plus encore à celles et ceux qui choisissent ce qui leur est envoyé sans en porter le coût.',
     startsAt: '2026-12-10T09:15:00.000+01:00',
     endsAt: '2026-12-10T09:45:00.000+01:00',
     roomId: 'salle-millau',
+    speakers: [
+      { id: 'cmul8q4ul00k901phkmsszzwx', name: 'Katia HIMEUR', bio: 'Katia Himeur est CTO et cofondatrice de Cockpit io. Depuis plus de dix ans, elle travaille au plus près de la production : chaînes CI/CD, plateformes Kubernetes, architectures cloud et organisation des équipes qui les exploitent. Elle a accompagné des dizaines d\'organisations publiques et privées, de la conception jusqu\'à l\'exploitation, et conseille des directions techniques sur leurs arbitrages d\'architecture et d\'organisation. Elle intervient régulièrement dans l\'écosystème francophone (Devoxx, Devfest Nantes…) et publie ses analyses sur le blog de Cockpit io. Son fil conducteur : relier chaque décision technique à ses effets réels sur les organisations qui la mettent en œuvre.', picture: 'https://lh3.googleusercontent.com/a/AEdFTp7w92VWr31bXtx2JMAcUzLGHqjdkU-hsRgzMaow=s96-c' },
+    ],
+    format: 'keynote',
+    tags: ['AI', 'fr'],
   },
   {
     id: 'cmued3dfq02fi01ptu8e0furu',
@@ -147,7 +157,7 @@ const sessions = [
     endsAt: '2026-12-10T11:30:00.000+01:00',
     roomId: 'amphitheatre',
     speakers: [
-      { id: 'cmpzdlro100yy01ppho1mhvog', name: 'Diane Todea', bio: 'Diana is a Developer Experience Engineer at VictoriaMetrics. She has worked as a Senior Site Reliability Engineer focused on Observability. She is an active member of the OpenTelemetry CNCF open source project, co-organizer of Cloud Native Days Romania, co-lead of Neurodiversity working group, part of CNCF initiative Merge-Forward and supports underrepresented groups in tech.', picture: 'https://lh3.googleusercontent.com/a/ACg8ocLdCqwuZtzrBlbcgEMKH_kKn8DSUXThljyFPaCZtkymXtg=s96-c' },
+      { id: 'cmpzdlro100yy01ppho1mhvog', name: 'Diana Todea', bio: 'Diana is a CNCF Ambassador and Operational Resilience TAG lead, co-leads the Neurodiversity Merge Forward community, and organizes Cloud Native Days Romania. Professionally, she is the Head of Developer Relations Engineering at VictoriaMetrics, where she works at the intersection of developer experience, observability, and open source community engagement.', company: 'VictoriaMetrics', picture: 'https://lh3.googleusercontent.com/a/ACg8ocLdCqwuZtzrBlbcgEMKH_kKn8DSUXThljyFPaCZtkymXtg=s96-c', socialLinks: ['https://www.linkedin.com/in/diana-todea-b2a79968'] },
     ],
     format: 'Conference (30 minutes)',
     tags: ['Observability', 'en'],
@@ -203,7 +213,7 @@ const sessions = [
     endsAt: '2026-12-10T12:00:00.000+01:00',
     roomId: 'salle-millau',
     speakers: [
-      { id: 'cmpcrabsh00zr01p1oodwl8iv', name: 'Jérémy Albrecht' },
+      { id: 'cmpcrabsh00zr01p1oodwl8iv', name: 'Jérémy Albrecht', bio: 'Jérémy is a Platform Engineer working at ITCS, in Luxembourg.', company: 'ITCS', picture: 'https://public-jalbrecht.s3.fr-par.scw.cloud/photo.jpg', socialLinks: ['https://github.com/jeremyalbrecht/'] },
     ],
     format: 'Short talk (10 minutes)',
     tags: ['Security', 'fr'],
@@ -402,13 +412,13 @@ const sessions = [
   },
   {
     id: 'cmuehdj0z02nn01ptx664rrc4',
-    title: '[FR ou EN] From Frankenstein to Kamaji: Lessons in Building a Single CAPI Cluster Across Multiple Providers',
+    title: 'From Frankenstein to Kamaji: Lessons in Building a Single CAPI Cluster Across Multiple Providers',
     description: '[Notez que je peux le faire en Francais si c\'est préférable]\n\nAt Giant Swarm we use Cluster API to provision and bootstrap our k8s clusters. With this setup, control plane (CP) and worker nodes must run on the same infrastructure which was never an issue so far...\n\nHowever, in bare-metal environments, using 128-core servers for CP nodes is luxury. It\'s far more efficient to host them as virtual machines on a hypervisor while keeping workers on physical hardware. But can we get around CAPI\'s limitations?\n\nWe will walk through how we built Frankenstein\'s cluster by mixing vSphere for the CP and Proxmox for workers as a testing ground. While technically functional, this required "hacky engineering". We will share the hurdles we hit and the operational risks of this hybrid cluster setup.\n\nFinally, we will demonstrate how we solved this challenge with a cleaner, upstream-friendly alternative. Kamaji lets us run the CP as pods in a management cluster. We achieved even better resource optimisation with full native community support and no custom hacks.',
     startsAt: '2026-12-10T16:00:00.000+01:00',
     endsAt: '2026-12-10T16:30:00.000+01:00',
     roomId: 'amphitheatre',
     speakers: [
-      { id: 'cmqrs101i02b401kxm9qdo24y', name: 'Xavier Avrillier', bio: 'I work as a Solutions Architect at Giant Swarm, currently working on the managed Kubernetes product in hybrid environments and smart factories. My main focus is around cluster lifecycle and customer implementations.', picture: 'https://lh3.googleusercontent.com/a/ACg8ocI0MYH_MWRx-WR4vMRlRR5rVWoQTfPT5Yjf7BB71wwZtVdGZTvB=s96-c' },
+      { id: 'cmqrs101i02b401kxm9qdo24y', name: 'Xavier Avrillier', bio: 'I work as a Solutions Architect at Giant Swarm, currently working on the managed Kubernetes product in hybrid environments and smart factories. My main focus is around cluster lifecycle and customer implementations.', company: 'Giant Swarm', picture: 'https://lh3.googleusercontent.com/a/ACg8ocI0MYH_MWRx-WR4vMRlRR5rVWoQTfPT5Yjf7BB71wwZtVdGZTvB=s96-c', socialLinks: ['https://www.linkedin.com/in/avrillier/'] },
     ],
     format: 'Conference (30 minutes)',
     tags: ['Infrastructure (k8s, cloud, bare metal)', 'fr'],
