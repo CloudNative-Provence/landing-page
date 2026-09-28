@@ -30,7 +30,7 @@ import type { MetaData } from '~/types';
 
 type LocalizedPageData = {
   metadata: MetaData;
-} & Record<string, unknown>;
+};
 
 export interface LocalizedPageDefinition {
   component: AstroComponentFactory;
@@ -41,22 +41,23 @@ export interface LocalizedPageDefinition {
 
 type LocalizedPageResolver = (lang: AppLang) => LocalizedPageDefinition;
 
-const selectLocalizedData = <TData>(lang: AppLang, variants: { en: TData; fr: TData }): TData =>
+const selectLocalizedData = <TEn, TFr>(lang: AppLang, variants: { en: TEn; fr: TFr }): TEn | TFr =>
   lang === 'en' ? variants.en : variants.fr;
 
-const createPageResolver = (
+const createPageResolver = <TEn extends LocalizedPageData, TFr extends LocalizedPageData>(
   component: AstroComponentFactory,
-  variants: { en: LocalizedPageData; fr: LocalizedPageData },
+  variants: { en: TEn; fr: TFr },
   layout: LocalizedPageDefinition['layout'] = 'page'
 ): LocalizedPageResolver => {
   return (lang) => {
-    const { metadata, ...props } = selectLocalizedData(lang, variants);
+    const data = selectLocalizedData(lang, variants);
+    const { metadata, ...props } = data;
 
     return {
       component,
       layout,
       metadata,
-      props,
+      props: props as Record<string, unknown>,
     };
   };
 };

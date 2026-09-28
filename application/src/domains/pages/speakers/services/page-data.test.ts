@@ -35,8 +35,15 @@ describe('speakers page data', () => {
       },
     ]);
 
-    expect(speakers).toEqual([
-      { id: 'speaker-a', name: 'Alice Cloud', company: 'Cloud Native Provence', socialLinks: undefined },
+    expect(speakers).toStrictEqual([
+      {
+        id: 'speaker-a',
+        name: 'Alice Cloud',
+        bio: undefined,
+        company: 'Cloud Native Provence',
+        picture: undefined,
+        socialLinks: undefined,
+      },
       {
         id: 'speaker-b',
         name: 'Zoé Speaker',
@@ -52,12 +59,24 @@ describe('speakers page data', () => {
     const page = buildSpeakersPageData(
       {
         metadata: { title: 'Speakers' },
-        hero: { tagline: 'Speakers', title: 'Meet the speakers', subtitle: 'Conference speakers' },
-        section: { title: 'Published speakers', subtitle: 'Browse profiles', emptyState: 'No speakers yet.' },
+        hero: {
+          tagline: 'Speakers',
+          title: 'Meet the speakers',
+          subtitle: 'Conference speakers',
+          programLabel: 'Program',
+        },
+        section: { title: 'Published speakers', emptyState: 'No speakers yet.' },
         labels: {
           closeLabel: 'Close',
           speakerProfileLabel: 'View profile: {name}',
           speakerLinksLabel: 'Find this speaker online',
+          viewProfileLabel: 'Meet the speaker',
+          searchLabel: 'Find a speaker',
+          searchPlaceholder: 'Name or company',
+          clearSearchLabel: 'Clear search',
+          resultsLabel: '{count} / {total}',
+          noResultsTitle: 'No speakers found',
+          noResultsText: 'Try another name or company.',
         },
       },
       [
@@ -72,7 +91,16 @@ describe('speakers page data', () => {
       ]
     );
 
-    expect(page.speakers).toEqual([{ id: 'speaker-a', name: 'Alice Cloud', socialLinks: undefined }]);
+    expect(page.speakers).toStrictEqual([
+      {
+        id: 'speaker-a',
+        name: 'Alice Cloud',
+        bio: undefined,
+        company: undefined,
+        picture: undefined,
+        socialLinks: undefined,
+      },
+    ]);
     expect(page.section.title).toBe('Published speakers');
   });
 });

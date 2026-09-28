@@ -1,0 +1,188 @@
+---
+import { Icon } from 'astro-icon/components';
+import ProgramSpeaker from '~/domains/pages/program/components/ProgramSpeaker.astro';
+import type { ProgramSpeaker as Speaker } from '~/domains/pages/program/model/schedule';
+import type { SpeakersPageData } from '../services/page-data';
+
+interface Props {
+  speaker: Speaker;
+  labels: SpeakersPageData['labels'];
+  index: number;
+}
+
+const { speaker, labels, index } = Astro.props;
+// Request enough resolution for the compact avatar on high-density screens.
+const portraitUrl = speaker.picture?.replace(/^(https:\/\/lh\d+\.googleusercontent\.com\/.+)=s\d+(-c)?$/, '$1=s192$2');
+const initials = speaker.name
+  .trim()
+  .split(/\s+/)
+  .filter((_, index, parts) => index === 0 || index === parts.length - 1)
+  .map((part) => [...part][0])
+  .join('')
+  .toLocaleUpperCase();
+---
+
+<ProgramSpeaker speaker={speaker} id={`speaker-${speaker.id}`} labels={labels} variant="card">
+  <span class:list={['portrait', `portrait-tone-${index % 4}`]} aria-hidden="true">
+    <span class="portrait-initials">{initials}</span>
+    {speaker.picture && (
+  <img
+    src={portraitUrl}
+    alt=""
+    width="160"
+    height="160"
+    loading="lazy"
+    decoding="async"
+    referrerpolicy="no-referrer"
+    data-speaker-portrait
+    data-original-portrait={speaker.picture}
+  />
+)}
+  </span>
+  <span class="card-info">
+    <span class="speaker-name">{speaker.name}</span>
+    <span class="speaker-company">{speaker.company || '\u00a0'}</span>
+    <span class="card-action">
+      <span>{labels.viewProfileLabel}</span>
+      <span class="card-arrow"><Icon name="tabler:arrow-up-right" class="h-5 w-5" /></span>
+    </span>
+  </span>
+</ProgramSpeaker>
+
+<style>
+.portrait {
+  position: relative;
+  display: grid;
+  width: 5rem;
+  height: 5rem;
+  flex-shrink: 0;
+  margin: 1.25rem 1.25rem 0;
+  border-radius: 1rem;
+  overflow: hidden;
+  place-items: center;
+  background: #dce8f1;
+  color: #31577b;
+}
+
+.portrait-tone-1 {
+  background: #e9e2f1;
+  color: #75608d;
+}
+.portrait-tone-2 {
+  background: #deebe6;
+  color: #416e62;
+}
+.portrait-tone-3 {
+  background: #f2e5dc;
+  color: #996d50;
+}
+
+.portrait::before,
+.portrait::after {
+  content: "";
+  position: absolute;
+  width: 90%;
+  aspect-ratio: 1;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.16;
+}
+
+.portrait::after {
+  width: 65%;
+}
+
+.portrait-initials {
+  font-size: 1.75rem;
+  font-weight: 600;
+  letter-spacing: -0.08em;
+}
+
+.portrait img {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 35%;
+  transition: transform 400ms ease;
+}
+
+.card-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+  padding: 1.25rem;
+}
+
+.speaker-name {
+  display: block;
+  color: var(--aw-color-text-heading);
+  font-size: 1.125rem;
+  line-height: 1.4;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  overflow-wrap: anywhere;
+}
+
+.speaker-company {
+  display: block;
+  flex: 1;
+  margin-top: 0.375rem;
+  color: var(--aw-color-text-muted);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.card-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid #e9edf2;
+  color: var(--aw-color-primary);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.card-arrow {
+  display: grid;
+  width: 1.875rem;
+  height: 1.875rem;
+  flex-shrink: 0;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf3f8;
+  transition:
+    background 200ms ease,
+    color 200ms ease;
+}
+
+:global(.speaker-card-trigger:hover) .portrait img {
+  transform: scale(1.045);
+}
+:global(.speaker-card-trigger:hover) .card-arrow {
+  background: #004e91;
+  color: white;
+}
+:global(.dark) .card-action {
+  border-color: #3a3b51;
+}
+:global(.dark) .card-arrow {
+  background: #34364e;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portrait img,
+  .card-arrow {
+    transition: none;
+  }
+  :global(.speaker-card-trigger:hover) .portrait img {
+    transform: none;
+  }
+}
+</style>
