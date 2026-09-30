@@ -33,6 +33,16 @@ export const stayThumbnails = {
     sourceHref: 'https://www.aixenprovencetourism.com/fr/fiche/la-petite-mazarine-7579730/',
     credit: 'Gîtes de France',
   },
+  'hotel-le-concorde': {
+    src: '~/assets/images/pages/practical-info/accommodation/hotel-le-concorde.webp',
+    sourceHref: 'https://www.hotel-aixenprovence-concorde.com/',
+    credit: 'Hôtel Le Concorde',
+  },
+  'hotel-la-caravelle': {
+    src: '~/assets/images/pages/practical-info/accommodation/hotel-la-caravelle.webp',
+    sourceHref: 'https://www.lacaravelle-hotel.com/',
+    credit: 'Hôtel La Caravelle',
+  },
   'hotel-rotonde': {
     src: '~/assets/images/pages/practical-info/accommodation/hotel-rotonde.webp',
     sourceHref: 'https://www.hotel-rotonde.com/',
@@ -84,11 +94,6 @@ export const stayThumbnails = {
     src: '~/assets/images/pages/practical-info/accommodation/hotel-des-augustins.webp',
     sourceHref: 'https://hotel-augustins.com/',
     credit: 'Hôtel des Augustins',
-  },
-  negrecoste: {
-    src: '~/assets/images/pages/practical-info/accommodation/negrecoste.webp',
-    sourceHref: 'https://hotelnegrecoste.com/fr/',
-    credit: 'Negrecoste',
   },
   'hotel-des-quatre-dauphins': {
     src: '~/assets/images/pages/practical-info/accommodation/hotel-des-quatre-dauphins.webp',

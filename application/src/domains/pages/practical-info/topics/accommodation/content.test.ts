@@ -33,6 +33,9 @@ describe('accommodation topic content', () => {
   });
 
   it('provides structured accommodation guidance in both locales', () => {
+    const englishStays = accommodationEn.accommodationGuide!.stayFinder.stays;
+    const frenchStays = accommodationFr.accommodationGuide!.stayFinder.stays;
+
     expect(accommodationEn.accommodationGuide?.areas).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.stayTypes).toHaveLength(3);
     expect(accommodationEn.accommodationGuide?.resources.map((resource) => resource.text)).toContain('Venue website');
@@ -43,12 +46,13 @@ describe('accommodation topic content', () => {
     expect(accommodationFr.accommodationGuide?.resources.map((resource) => resource.text)).toContain('Site du lieu');
     expect(accommodationFr.accommodationGuide?.checklist[0]).toContain('Réservez tôt');
 
-    expect(accommodationEn.accommodationGuide?.stayFinder.stays).toHaveLength(21);
-    expect(accommodationFr.accommodationGuide?.stayFinder.stays).toHaveLength(21);
+    expect(accommodationEn.accommodationGuide?.stayFinder.stays).toHaveLength(22);
+    expect(accommodationFr.accommodationGuide?.stayFinder.stays).toHaveLength(22);
     expect(accommodationEn.accommodationGuide?.stayFinder.filters.map((group) => group.id)).toEqual([
       'zone',
       'type',
       'feature',
+      'coupon',
     ]);
     expect(accommodationEn.accommodationGuide?.stayFinder.filters[0]?.options[0]?.searchQuery).toBeUndefined();
     expect(accommodationFr.accommodationGuide?.stayFinder.filters[0]?.options[0]?.searchQuery).toBeUndefined();
@@ -66,6 +70,18 @@ describe('accommodation topic content', () => {
     expect(accommodationFr.accommodationGuide?.stayFinder.venueMapHref).toBe(
       'https://www.google.com/maps/search/?api=1&query=Centre%20des%20Congr%C3%A8s%20d%27Aix-en-Provence%2C%2014%20Boulevard%20Carnot%2C%2013100%20Aix-en-Provence%2C%20France'
     );
+    expect(englishStays.filter((stay) => stay.discountCode)).toHaveLength(1);
+    expect(frenchStays.filter((stay) => stay.discountCode)).toHaveLength(1);
+    expect(englishStays.find((stay) => stay.name === 'Hotel Saint-Christophe')?.discountCode).toEqual({
+      label: 'Discount code',
+      value: 'KCDProvence15',
+    });
+    expect(frenchStays.find((stay) => stay.name === 'Hôtel Saint-Christophe')?.discountCode).toEqual({
+      label: 'Code de réduction',
+      value: 'KCDProvence15',
+    });
+    expect(englishStays.some((stay) => stay.name.includes('Negrecoste'))).toBe(false);
+    expect(frenchStays.some((stay) => stay.name.includes('Negrecoste'))).toBe(false);
 
     expect(
       [
