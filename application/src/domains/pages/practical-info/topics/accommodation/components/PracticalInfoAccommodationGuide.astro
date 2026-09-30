@@ -11,11 +11,11 @@ export interface Props {
 
 const { content, accommodationGuide } = Astro.props as Props;
 const { stayFinder } = accommodationGuide;
-const featureLabelById = new Map(
-  stayFinder.filters.flatMap((group) =>
-    group.id === 'feature' ? group.options.map((option) => [option.id, option.label] as const) : []
-  )
+const filterLabelsByGroup = new Map(
+  stayFinder.filters.map((group) => [group.id, new Map(group.options.map((option) => [option.id, option.label]))])
 );
+const getFilterLabel = (groupId: string, optionId: string) =>
+  filterLabelsByGroup.get(groupId)?.get(optionId) ?? optionId;
 const buildMapsSearchHref = (query: string) =>
   `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
 const defaultMapsSearchHref = stayFinder.venueMapHref ?? buildMapsSearchHref(stayFinder.mapsSearchBaseQuery);
@@ -203,6 +203,7 @@ const typePopoverId = 'accommodation-type-help';
     data-zone={stay.zoneId}
     data-type={stay.typeId}
     data-feature={stay.featureIds.join(',')}
+    data-coupon={stay.discountCode ? 'has-coupon' : ''}
     class="group flex flex-col rounded-3xl border border-black/5 bg-white p-6 shadow-[0_1px_3px_rgba(15,23,42,0.05)] transition hover:-translate-y-0.5 hover:border-amber-300 hover:shadow-[0_16px_44px_-24px_rgba(217,119,6,0.55)] dark:border-white/10 dark:bg-slate-900 dark:hover:border-amber-400"
   >
     <div class="overflow-hidden rounded-2xl border border-black/5 bg-slate-100 dark:border-white/10 dark:bg-slate-800/80">
@@ -230,10 +231,10 @@ const typePopoverId = 'accommodation-type-help';
     <div class="mt-5 flex flex-wrap items-center gap-1.5">
       <span class="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-amber-700 dark:bg-amber-500/10 dark:text-amber-300">
         <Icon name="tabler:map-pin" class="h-3 w-3" />
-        {stay.zoneLabel}
+        {getFilterLabel('zone', stay.zoneId)}
       </span>
       <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-        {stay.typeLabel}
+        {getFilterLabel('type', stay.typeId)}
       </span>
     </div>
 
@@ -244,9 +245,20 @@ const typePopoverId = 'accommodation-type-help';
       <div class="mt-4 flex flex-wrap gap-1.5">
         {stay.featureIds.map((featureId) => (
           <span class="rounded-full border border-black/10 px-2.5 py-0.5 text-xs text-slate-500 dark:border-white/15 dark:text-slate-400">
-            {featureLabelById.get(featureId) ?? featureId}
+            {getFilterLabel('feature', featureId)}
           </span>
         ))}
+      </div>
+    )}
+
+    {stay.discountCode && (
+      <div class="mt-4 rounded-2xl border border-emerald-200/80 bg-emerald-50/80 px-3.5 py-3 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+        <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-emerald-700 dark:text-emerald-300">
+          {stay.discountCode.label}
+        </p>
+        <p class="mt-1 font-mono text-sm font-semibold text-emerald-900 dark:text-emerald-100">
+          {stay.discountCode.value}
+        </p>
       </div>
     )}
 
@@ -262,7 +274,7 @@ const typePopoverId = 'accommodation-type-help';
         target="_blank"
         rel="noreferrer"
       >
-        <span>{stay.websiteLabel}</span>
+        <span>{stayFinder.websiteLabel}</span>
         <Icon name="tabler:arrow-up-right" class="h-4 w-4" />
       </a>
       <a
@@ -271,7 +283,7 @@ const typePopoverId = 'accommodation-type-help';
         target="_blank"
         rel="noreferrer"
       >
-        <span>{stay.mapLabel}</span>
+        <span>{stayFinder.mapLabel}</span>
         <Icon name="tabler:map-2" class="h-4 w-4" />
       </a>
     </div>

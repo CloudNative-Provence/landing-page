@@ -32,19 +32,21 @@ export interface PracticalInfoStayThumbnail {
   credit: string;
 }
 
+export interface PracticalInfoStayDiscountCode {
+  label: string;
+  value: string;
+}
+
 export interface PracticalInfoStay {
   name: string;
   thumbnail: PracticalInfoStayThumbnail;
   blurb: string;
   address: string;
   zoneId: string;
-  zoneLabel: string;
   typeId: string;
-  typeLabel: string;
   featureIds: readonly string[];
-  websiteLabel: string;
   websiteHref: string;
-  mapLabel: string;
+  discountCode?: PracticalInfoStayDiscountCode;
   mapHref: string;
 }
 
@@ -60,6 +62,8 @@ export interface PracticalInfoStayFinder {
   resetLabel: string;
   emptyTitle: string;
   emptyText: string;
+  websiteLabel: string;
+  mapLabel: string;
   stays: readonly PracticalInfoStay[];
 }
 
