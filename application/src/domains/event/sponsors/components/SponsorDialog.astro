@@ -31,9 +31,7 @@ const t = useTranslations(lang).sponsors;
   <div class="dialog-body">
     <p class="dialog-tier">{t.tiers[sponsor.tier]}</p>
     <h2 id={`sponsor-dialog-${sponsor.id}-title`}>{sponsor.name}</h2>
-    <div class="dialog-pitch">
-      {sponsor.pitch[lang].split('\n\n').map((paragraph) => <p>{paragraph}</p>)}
-    </div>
+    <div class="dialog-pitch">{sponsor.pitch[lang].split('\n\n').map((paragraph) => <p>{paragraph}</p>)}</div>
   </div>
   <footer class="dialog-footer">
     <a
