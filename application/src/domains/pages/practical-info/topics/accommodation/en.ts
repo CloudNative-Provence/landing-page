@@ -257,6 +257,11 @@ export default {
           typeId: 'hotel',
           featureIds: ['parking'],
           websiteHref: 'https://boutiquehotelcezanne.com/',
+          discountCode: {
+            label: 'Discount code',
+            value: 'KCDPROVENCE',
+            amount: '10% off',
+          },
           mapHref: mapsPin('43.523353', '5.445922'),
         },
         {
@@ -282,6 +287,7 @@ export default {
           discountCode: {
             label: 'Discount code',
             value: 'KCDProvence15',
+            amount: '15% off',
           },
           mapHref: mapsPin('43.525508', '5.446202'),
         },
@@ -351,6 +357,11 @@ export default {
           typeId: 'hotel',
           featureIds: [],
           websiteHref: 'https://lesquatredauphins.fr/',
+          discountCode: {
+            label: 'Discount code',
+            value: 'DAUPHINS15',
+            amount: '15% off',
+          },
           mapHref: mapsPin('43.524955', '5.450308'),
         },
         {

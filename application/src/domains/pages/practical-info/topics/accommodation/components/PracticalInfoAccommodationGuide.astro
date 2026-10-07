@@ -253,6 +253,9 @@ const typePopoverId = 'accommodation-type-help';
 
     {stay.discountCode && (
       <div class="mt-4 rounded-2xl border border-emerald-200/80 bg-emerald-50/80 px-3.5 py-3 dark:border-emerald-500/20 dark:bg-emerald-500/10">
+        {stay.discountCode.amount?.trim() && (
+          <p class="mb-2 text-base font-bold text-emerald-900 dark:text-emerald-100">{stay.discountCode.amount}</p>
+        )}
         <p class="text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-emerald-700 dark:text-emerald-300">
           {stay.discountCode.label}
         </p>
