@@ -35,6 +35,8 @@ export interface PracticalInfoStayThumbnail {
 export interface PracticalInfoStayDiscountCode {
   label: string;
   value: string;
+  /** Localized savings, including a percentage or currency (e.g. '15% off' or '20 € de réduction'). */
+  amount?: string;
 }
 
 export interface PracticalInfoStay {
