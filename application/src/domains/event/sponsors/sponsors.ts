@@ -1,5 +1,7 @@
 import type { ImageMetadata } from 'astro';
+import apeFactory from '~/assets/images/sponsors/ape-factory.webp';
 import blackswift from '~/assets/images/sponsors/blackswift.svg';
+import castAi from '~/assets/images/sponsors/cast-ai.svg';
 import cncf from '~/assets/images/sponsors/cncf.svg';
 import donow from '~/assets/images/sponsors/donow.svg';
 import exoscale from '~/assets/images/sponsors/exoscale.svg';
@@ -26,6 +28,36 @@ export interface Sponsor {
 
 export const sponsors: readonly Sponsor[] = [
   {
+    id: 'ape-factory',
+    name: 'APE factory',
+    url: 'https://www.apefactory.com',
+    tier: 'gold',
+    logo: apeFactory,
+    pitch: {
+      fr: `ape factory est une société d'ingénierie qui aide les organisations à passer de l'infrastructure à l'intelligence. Nous concevons, construisons et exploitons des plateformes cloud native, modernisons la livraison logicielle et transformons les initiatives en IA et en données en solutions prêtes pour la production.
+
+Nous aimons l'open source et croyons au pouvoir de la communauté. Forts d'une expertise approfondie de Kubernetes et des technologies cloud native, nous nous engageons à partager nos connaissances, à collaborer et à contribuer à l'écosystème qui rend notre travail possible.`,
+      en: `ape factory is an engineering company helping organizations move from infrastructure to intelligence. We design, build and operate cloud-native platforms, modernize software delivery, and turn AI and data initiatives into production-ready solutions.
+
+We love open source and believe in the power of community. With deep expertise in Kubernetes and cloud-native technologies, we’re committed to sharing knowledge, collaborating and contributing to the ecosystem that makes our work possible.`,
+    },
+  },
+  {
+    id: 'cast-ai',
+    name: 'cast ai',
+    url: 'https://cast.ai/',
+    tier: 'gold',
+    logo: castAi,
+    pitch: {
+      fr: `Cast AI accompagne les équipes plateforme, SRE et FinOps dans l'optimisation de leurs environnements Kubernetes. La plateforme analyse les besoins des applications et automatise l'ajustement des ressources CPU et mémoire, la mise à l'échelle des nœuds et l'utilisation des instances Spot.
+
+En associant visibilité sur les coûts et automatisation, Cast AI aide les équipes à réduire le surdimensionnement et les opérations manuelles tout en répondant aux besoins de performance et de fiabilité de leurs applications cloud native.`,
+      en: `Cast AI helps platform, SRE and FinOps teams optimize their Kubernetes environments. The platform analyzes application requirements and automates CPU and memory rightsizing, node scaling and the use of Spot instances.
+
+By combining cost visibility with automation, Cast AI helps teams reduce overprovisioning and manual operations while meeting the performance and reliability needs of their cloud native applications.`,
+    },
+  },
+  {
     id: 'exoscale',
     name: 'Exoscale',
     url: 'https://www.exoscale.com/',
@@ -47,7 +79,7 @@ Our infrastructure is built on open standards, with data hosted in Europe and to
     tier: 'silver',
     logo: blackswift,
     pitch: {
-      fr: `Plateforme Kubernetes simplifiée
+      fr: `Plateforme Kubernetes Simplifiée
 
 Chez BlackSwift, nous révolutionnons la gestion des infrastructures IT avec notre service de namespaces Kubernetes as a Service. Notre offre est conçue pour apporter les meilleures pratiques de Kubernetes à votre entreprise, simplifiant la complexité de la gestion des conteneurs. Profitez d'une solution Kubernetes efficace et fiable, sans les tracas de configuration et de gestion.`,
       en: `Simplified Kubernetes Platform
@@ -77,11 +109,11 @@ Its mission is to make these technologies accessible to everyone. By supporting 
     tier: 'community',
     logo: donow,
     pitch: {
-      fr: `Magiciens du cloud, chasseurs de coûts, architectes de plateformes, DoNow est un cabinet de conseil à fort ADN DevOps. Nous aidons nos clients à construire des plateformes sécurisées et intelligentes qui portent leurs produits tech, (re)donnent aux devs de l'autonomie et livrent aux IA un terrain où elles peuvent exceller.
+      fr: `Magiciens du Cloud, chasseurs de coûts, architectes de plateforme, DoNow est un cabinet de conseil à fort ADN DevOps. Nous aidons nos clients à construire des plateformes sécurisées & intelligentes qui portent leurs produits tech, (re)donnent aux devs de l’autonomie et livrent aux IAs un terrain où elles peuvent exceller.
 
 DoNow rassemble des experts aux compétences complémentaires - sécurité, infra, produit, IA - qui partagent le même état d'esprit : optimisation, transparence et curiosité.
 
-Contributeurs open source dans l'âme, nous voyons dans le sponsoring de KCD Provence l'occasion de soutenir l'écosystème et de participer aux conversations qui dessinent le visage des futures plateformes.`,
+Contributeurs open source dans l'âme, sponsoriser la KCD Provence est pour DoNow l'occasion de soutenir l'écosystème et de participer aux conversations qui dessinent le visage des futures plateformes.`,
       en: `Cloud wizards, cost hunters, platform architects: DoNow is a consultancy with strong DevOps DNA. We help our clients build secure & intelligent platforms that support their tech products, give developers their autonomy back and provide AI with an environment where it can excel.
 
 DoNow brings together experts with complementary skills - security, infrastructure, product, AI - who share the same mindset: optimization, transparency and curiosity.
@@ -146,7 +178,7 @@ We believe technical success is built with people. Mentoring, knowledge transfer
     tier: 'community',
     logo: kraftr,
     pitch: {
-      fr: "Kraftr, c'est Cédric, consultant cloud indépendant, Golden Kubestronaut et praticien Kubernetes au quotidien. Il sponsorise cet événement parce qu'il fait lui-même partie de sa communauté, convaincu que le partage la fait avancer.",
+      fr: "Kraftr, c'est Cédric, consultant cloud indépendant, Golden Kubestronaut et praticien Kubernetes au quotidien. Il sponsorise cet événement parce qu'il en est aussi un membre : convaincu que le partage fait avancer la communauté.",
       en: 'Kraftr is Cédric, an independent cloud consultant, Golden Kubestronaut and daily Kubernetes practitioner. He sponsors this event because he is also part of its community: convinced that sharing helps the community move forward.',
     },
   },
@@ -157,7 +189,7 @@ We believe technical success is built with people. Mentoring, knowledge transfer
     tier: 'community',
     logo: smartTribune,
     pitch: {
-      fr: "Smart Tribune est l'éditeur SaaS français spécialisé dans le selfcare et la gestion des connaissances pour les grandes marques. Nos solutions de bases de connaissances, de chatbots et d'agents IA aident les directions de la relation client à automatiser les réponses, désengorger les services support et offrir une expérience client fluide sur tous les canaux. Plus de 170 grands comptes nous font confiance pour transformer leur relation client à l'ère de l'IA.",
+      fr: "Smart Tribune est l'éditeur SaaS français spécialisé dans le selfcare et la gestion de la connaissance pour les grandes marques. Nos solutions de base de connaissance, chatbots et agents IA aident les directions de la relation client à automatiser les réponses, désengorger les services support et offrir une expérience client fluide sur tous les canaux. Plus de 170 grands comptes nous font confiance pour transformer leur relation client à l'ère de l'IA.",
       en: 'Smart Tribune is a French SaaS publisher specializing in self-service and knowledge management for major brands. Our knowledge base, chatbot and AI agent solutions help customer service departments automate responses, reduce the workload of support teams and deliver a seamless customer experience across all channels. More than 170 major companies trust us to transform their customer relationships in the age of AI.',
     },
   },
