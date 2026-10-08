@@ -27,32 +27,32 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
     aria-label={profileLabel}
     title={profileLabel}
     class:list={[
-  'text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4 dark:focus-visible:ring-offset-slate-950',
-  variant === 'card'
-    ? 'speaker-card-trigger'
-    : 'flex max-w-full items-center gap-2.5 rounded-xl p-1 transition hover:bg-sky-50 dark:hover:bg-slate-800',
-]}
+      'text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-4 dark:focus-visible:ring-offset-slate-950',
+      variant === 'card'
+        ? 'speaker-card-trigger'
+        : 'flex max-w-full items-center gap-2.5 rounded-xl p-1 transition hover:bg-sky-50 dark:hover:bg-slate-800',
+    ]}
   >
     <slot>
       {speaker.picture ? (
-  <img
-    src={speaker.picture}
-    alt=""
-    width="40"
-    height="40"
-    loading="lazy"
-    decoding="async"
-    referrerpolicy="no-referrer"
-    class="h-10 w-10 shrink-0 rounded-full bg-slate-100 object-cover dark:bg-slate-800"
-  />
-) : (
-  <span
-    class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-300"
-    aria-hidden="true"
-  >
-    <Icon name="tabler:user" class="h-5 w-5" />
-  </span>
-)}
+        <img
+          src={speaker.picture}
+          alt=""
+          width="40"
+          height="40"
+          loading="lazy"
+          decoding="async"
+          referrerpolicy="no-referrer"
+          class="h-10 w-10 shrink-0 rounded-full bg-slate-100 object-cover dark:bg-slate-800"
+        />
+      ) : (
+        <span
+          class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-sky-50 text-sky-600 dark:bg-sky-950 dark:text-sky-300"
+          aria-hidden="true"
+        >
+          <Icon name="tabler:user" class="h-5 w-5" />
+        </span>
+      )}
       <span class="min-w-0">
         <span class="block text-sm font-medium text-gray-800 dark:text-slate-100">{speaker.name}</span>
         {speaker.company && <span class="block text-xs text-muted">{speaker.company}</span>}
@@ -70,17 +70,17 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
     <div class="flex items-start justify-between gap-3">
       <div class="flex min-w-0 items-center gap-4">
         {speaker.picture && (
-  <img
-    src={speaker.picture}
-    alt=""
-    width="80"
-    height="80"
-    loading="lazy"
-    decoding="async"
-    referrerpolicy="no-referrer"
-    class="h-20 w-20 shrink-0 rounded-2xl bg-slate-100 object-cover dark:bg-slate-800"
-  />
-)}
+          <img
+            src={speaker.picture}
+            alt=""
+            width="80"
+            height="80"
+            loading="lazy"
+            decoding="async"
+            referrerpolicy="no-referrer"
+            class="h-20 w-20 shrink-0 rounded-2xl bg-slate-100 object-cover dark:bg-slate-800"
+          />
+        )}
         <div class="min-w-0">
           <h4 id={titleId} class="text-xl font-semibold leading-tight">{speaker.name}</h4>
           {speaker.company && <p class="mt-1 text-sm text-muted">{speaker.company}</p>}
@@ -99,26 +99,26 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
     </div>
 
     {speaker.bio && (
-  <div class="mt-6">
-    <ProgramMarkdown content={speaker.bio} />
-  </div>
-)}
+      <div class="mt-6">
+        <ProgramMarkdown content={speaker.bio} />
+      </div>
+    )}
 
     {speaker.socialLinks?.length ? (
-  <nav class="mt-6 flex flex-wrap gap-2" aria-label={labels.speakerLinksLabel}>
-    {speaker.socialLinks.map((link) => (
-      <a
-        href={link}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-sky-700 transition hover:bg-sky-50 dark:border-slate-700 dark:text-sky-300 dark:hover:bg-slate-800"
-      >
-        {new URL(link).hostname.replace(/^www\./, '')}
-        <Icon name="tabler:external-link" class="h-3.5 w-3.5" />
-      </a>
-    ))}
-  </nav>
-) : null}
+      <nav class="mt-6 flex flex-wrap gap-2" aria-label={labels.speakerLinksLabel}>
+        {speaker.socialLinks.map((link) => (
+          <a
+            href={link}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 rounded-full border border-gray-200 px-3 py-1.5 text-sm text-sky-700 transition hover:bg-sky-50 dark:border-slate-700 dark:text-sky-300 dark:hover:bg-slate-800"
+          >
+            {new URL(link).hostname.replace(/^www\./, '')}
+            <Icon name="tabler:external-link" class="h-3.5 w-3.5" />
+          </a>
+        ))}
+      </nav>
+    ) : null}
   </div>
 </div>
 

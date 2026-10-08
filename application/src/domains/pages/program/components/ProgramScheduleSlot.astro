@@ -34,14 +34,14 @@ const roomLabel = room?.label ?? labels.globalLabel;
   data-ends-at={slot.endsAt}
   aria-label={`${roomLabel}: ${formatTime(slot.startsAt)}–${formatTime(slot.endsAt)}`}
   style={{
-  '--program-slot-start': (timeline.lines.get(Date.parse(slot.startsAt)) ?? 1) + 1,
-  '--program-slot-end': (timeline.lines.get(Date.parse(slot.endsAt)) ?? 2) + 1,
-  '--program-room-column': column,
-}}
+    '--program-slot-start': (timeline.lines.get(Date.parse(slot.startsAt)) ?? 1) + 1,
+    '--program-slot-end': (timeline.lines.get(Date.parse(slot.endsAt)) ?? 2) + 1,
+    '--program-room-column': column,
+  }}
   class:list={[
-  'flex min-w-0 flex-col gap-2 rounded-2xl border border-gray-200/70 bg-slate-50/60 p-3 dark:border-slate-800 dark:bg-slate-950/40 md:row-[var(--program-slot-start)/var(--program-slot-end)]',
-  room ? 'md:col-start-[var(--program-room-column)]' : 'md:col-[1/-1]',
-]}
+    'flex min-w-0 flex-col gap-2 rounded-2xl border border-gray-200/70 bg-slate-50/60 p-3 dark:border-slate-800 dark:bg-slate-950/40 md:row-[var(--program-slot-start)/var(--program-slot-end)]',
+    room ? 'md:col-start-[var(--program-room-column)]' : 'md:col-[1/-1]',
+  ]}
 >
   <div class="flex flex-wrap items-center gap-2 px-1 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">
     <span class="sr-only">{labels.timeLabel}</span>
@@ -56,19 +56,19 @@ const roomLabel = room?.label ?? labels.globalLabel;
   </div>
 
   {slot.sessions.map((session) => (
-  <ProgramSessionCard
-    session={session}
-    sourceIds={session.sourceIds}
-    roomIds={session.roomIds}
-    isGlobal={!room}
-    tone={room?.accent ?? 'from-sky-500 to-cyan-400'}
-    roomId={room?.id ?? ''}
-    roomLabel={roomLabel}
-    labels={labels}
-    searchText={ProgramSearchTextNormalizer.compose([
-      ProgramSearchTextNormalizer.fromSession(session, roomLabels),
-      ...session.roomIds.map((id) => roomLabels.get(id)),
-    ])}
-  />
-))}
+    <ProgramSessionCard
+      session={session}
+      sourceIds={session.sourceIds}
+      roomIds={session.roomIds}
+      isGlobal={!room}
+      tone={room?.accent ?? 'from-sky-500 to-cyan-400'}
+      roomId={room?.id ?? ''}
+      roomLabel={roomLabel}
+      labels={labels}
+      searchText={ProgramSearchTextNormalizer.compose([
+        ProgramSearchTextNormalizer.fromSession(session, roomLabels),
+        ...session.roomIds.map((id) => roomLabels.get(id)),
+      ])}
+    />
+  ))}
 </section>

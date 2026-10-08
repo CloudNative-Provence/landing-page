@@ -34,32 +34,32 @@ const timeline = buildProgramTimelineLayout(slots.map(({ slot }) => slot));
 <div
   data-program-room-grid
   style={{
-  '--program-room-count': Math.max(scheduledRooms.length, 1),
-  '--program-time-rows': timeline.rowCount,
-}}
+    '--program-room-count': Math.max(scheduledRooms.length, 1),
+    '--program-time-rows': timeline.rowCount,
+  }}
   class="grid gap-x-5 gap-y-3 md:grid-cols-[repeat(var(--program-room-count),minmax(0,1fr))] md:grid-rows-[auto_repeat(var(--program-time-rows),auto)]"
 >
   {scheduledRooms.map((room, index) => (
-  <h2
-    data-program-room-header
-    data-room-id={room.id}
-    style={{ '--program-room-column': index + 1 }}
-    class="sticky top-24 z-10 hidden items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm md:col-start-[var(--program-room-column)] md:row-start-1 md:flex dark:border-slate-800 dark:bg-slate-950 dark:text-white"
-  >
-    <span class={`h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b ${room.accent}`} aria-hidden="true"></span>
-    {room.label}
-  </h2>
-))}
+    <h2
+      data-program-room-header
+      data-room-id={room.id}
+      style={{ '--program-room-column': index + 1 }}
+      class="sticky top-24 z-10 hidden items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm md:col-start-[var(--program-room-column)] md:row-start-1 md:flex dark:border-slate-800 dark:bg-slate-950 dark:text-white"
+    >
+      <span class={`h-8 w-1.5 shrink-0 rounded-full bg-gradient-to-b ${room.accent}`} aria-hidden="true"></span>
+      {room.label}
+    </h2>
+  ))}
 
   {slots.map(({ roomId, slot }) => (
-  <ProgramScheduleSlot
-    room={rooms.find((room) => room.id === roomId)}
-    column={scheduledRooms.findIndex((room) => room.id === roomId) + 1}
-    timeSlot={slot}
-    timeline={timeline}
-    labels={labels}
-    timezone={timezone}
-    roomLabels={roomLabels}
-  />
-))}
+    <ProgramScheduleSlot
+      room={rooms.find((room) => room.id === roomId)}
+      column={scheduledRooms.findIndex((room) => room.id === roomId) + 1}
+      timeSlot={slot}
+      timeline={timeline}
+      labels={labels}
+      timezone={timezone}
+      roomLabels={roomLabels}
+    />
+  ))}
 </div>

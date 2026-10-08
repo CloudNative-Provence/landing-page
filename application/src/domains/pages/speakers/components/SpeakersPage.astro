@@ -41,10 +41,10 @@ const resultsLabel = labels.resultsLabel
       <div class="orbit orbit-inner"></div>
       <div class="cloud-core"><Icon name="tabler:cloud" class="h-16 w-16" /></div>
       {portraits.map((speaker, index) => (
-  <div class:list={['orbit-portrait', `orbit-portrait-${index}`]}>
-    <img src={speaker.picture} alt="" width="112" height="112" decoding="async" referrerpolicy="no-referrer" />
-  </div>
-))}
+        <div class:list={['orbit-portrait', `orbit-portrait-${index}`]}>
+          <img src={speaker.picture} alt="" width="112" height="112" decoding="async" referrerpolicy="no-referrer" />
+        </div>
+      ))}
       <span class="orbit-spark spark-one">+</span>
       <span class="orbit-spark spark-two">+</span>
       <span class="orbit-dot"></span>
@@ -74,53 +74,53 @@ const resultsLabel = labels.resultsLabel
         </div>
       </div>
       {speakers.length > 0 && (
-  <div class="speaker-search" data-speaker-search hidden>
-    <Icon name="tabler:search" class="h-5 w-5 shrink-0" />
-    <label class="sr-only" for="speaker-search">
-      {labels.searchLabel}
-    </label>
-    <input
-      id="speaker-search"
-      type="search"
-      placeholder={labels.searchPlaceholder}
-      autocomplete="off"
-      aria-controls="speaker-grid"
-    />
-    <button type="button" class="search-clear" aria-label={labels.clearSearchLabel} data-clear-search hidden>
-      <Icon name="tabler:x" class="h-4 w-4" />
-    </button>
-  </div>
-)}
+        <div class="speaker-search" data-speaker-search hidden>
+          <Icon name="tabler:search" class="h-5 w-5 shrink-0" />
+          <label class="sr-only" for="speaker-search">
+            {labels.searchLabel}
+          </label>
+          <input
+            id="speaker-search"
+            type="search"
+            placeholder={labels.searchPlaceholder}
+            autocomplete="off"
+            aria-controls="speaker-grid"
+          />
+          <button type="button" class="search-clear" aria-label={labels.clearSearchLabel} data-clear-search hidden>
+            <Icon name="tabler:x" class="h-4 w-4" />
+          </button>
+        </div>
+      )}
     </div>
 
     {speakers.length ? (
-  <>
-    <div id="speaker-grid" class="speaker-grid">
-      {speakers.map((speaker, index) => (
-        <article
-          data-speaker-card
-          data-search-text={ProgramSearchTextNormalizer.compose([speaker.name, speaker.company])}
-        >
-          <SpeakerCard speaker={speaker} labels={labels} index={index} />
-        </article>
-      ))}
-    </div>
-    <div class="directory-empty" data-no-results hidden>
-      <Icon name="tabler:search" class="mx-auto mb-4 h-8 w-8 text-muted" />
-      <h3>{labels.noResultsTitle}</h3>
-      <p>{labels.noResultsText}</p>
-      <button type="button" class="reset-search" data-clear-search>
-        {labels.clearSearchLabel}
-        <Icon name="tabler:arrow-right" class="h-4 w-4" />
-      </button>
-    </div>
-  </>
-) : (
-  <div class="directory-empty">
-    <Icon name="tabler:microphone-2" class="mx-auto mb-4 h-8 w-8 text-muted" />
-    <p>{section.emptyState}</p>
-  </div>
-)}
+      <>
+        <div id="speaker-grid" class="speaker-grid">
+          {speakers.map((speaker, index) => (
+            <article
+              data-speaker-card
+              data-search-text={ProgramSearchTextNormalizer.compose([speaker.name, speaker.company])}
+            >
+              <SpeakerCard speaker={speaker} labels={labels} index={index} />
+            </article>
+          ))}
+        </div>
+        <div class="directory-empty" data-no-results hidden>
+          <Icon name="tabler:search" class="mx-auto mb-4 h-8 w-8 text-muted" />
+          <h3>{labels.noResultsTitle}</h3>
+          <p>{labels.noResultsText}</p>
+          <button type="button" class="reset-search" data-clear-search>
+            {labels.clearSearchLabel}
+            <Icon name="tabler:arrow-right" class="h-4 w-4" />
+          </button>
+        </div>
+      </>
+    ) : (
+      <div class="directory-empty">
+        <Icon name="tabler:microphone-2" class="mx-auto mb-4 h-8 w-8 text-muted" />
+        <p>{section.emptyState}</p>
+      </div>
+    )}
   </section>
 </speaker-directory>
 
