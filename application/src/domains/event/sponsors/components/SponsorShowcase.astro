@@ -41,100 +41,105 @@ const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community
 
       <nav class="tier-navigation" aria-label={t.navigation}>
         {sponsorTiers.map((tier) => (
-  <a href={`#sponsors-${tier}`} class:list={['tier-link', `tier-link--${tier}`]}>
-    <span class="tier-dot" aria-hidden="true"></span>
-    {t.tiers[tier]}
-    <span class="tier-count">{sponsors.filter((sponsor) => sponsor.tier === tier).length}</span>
-  </a>
-))}
+          <a href={`#sponsors-${tier}`} class:list={['tier-link', `tier-link--${tier}`]}>
+            <span class="tier-dot" aria-hidden="true"></span>
+            {t.tiers[tier]}
+            <span class="tier-count">{sponsors.filter((sponsor) => sponsor.tier === tier).length}</span>
+          </a>
+        ))}
       </nav>
 
       <div class="sponsor-tiers">
         {sponsorTiers.map((tier) => (
-  <section
-    id={`sponsors-${tier}`}
-    class:list={['sponsor-tier', `sponsor-tier--${tier}`]}
-    aria-labelledby={`sponsors-${tier}-title`}
-  >
-    <div class="tier-heading">
-      <TierHeading id={`sponsors-${tier}-title`}>
-        <span class="tier-symbol">
-          <Icon name={tierIcons[tier]} aria-hidden="true" />
-        </span>
-        {t.tiers[tier]}
-      </TierHeading>
-      <span class="tier-rule" aria-hidden="true"></span>
-      <p>{t.tierNotes[tier]}</p>
-    </div>
-    <ul class="sponsor-grid">
-      {sponsors
-        .filter((sponsor) => sponsor.tier === tier)
-        .map((sponsor) => (
-          <li>
-            <article class:list={['sponsor-card', `sponsor-card--${tier}`]}>
-              <div class:list={['sponsor-logo-stage', { 'sponsor-logo-stage--with-name': sponsor.showNameWithLogo }]}>
-                <img
-                  src={sponsor.logo.src}
-                  width={sponsor.logo.width}
-                  height={sponsor.logo.height}
-                  alt={sponsor.name}
-                  loading={tier === 'gold' && headingLevel === 'h1' ? 'eager' : 'lazy'}
-                  decoding="async"
-                />
-                {sponsor.showNameWithLogo && (
-                  <span class="sponsor-logo-name" aria-hidden="true">
-                    {sponsor.name}
-                  </span>
-                )}
-                {tier === 'gold' && (
-                  <span class="gold-caption" aria-hidden="true">
-                    {t.goldCaption}
-                  </span>
-                )}
-              </div>
-              <div class="sponsor-card-content">
-                <NameHeading class:list={{ 'sr-only': tier === 'community' }}>{sponsor.name}</NameHeading>
-                <div class="sponsor-actions">
-                  <button
-                    type="button"
-                    class="sponsor-visit"
-                    data-sponsor-open={`sponsor-dialog-${sponsor.id}`}
-                    aria-controls={`sponsor-dialog-${sponsor.id}`}
-                    aria-haspopup="dialog"
-                    hidden
-                  >
-                    {t.visit} {sponsor.name}
-                    <Icon name="tabler:arrow-right" aria-hidden="true" />
-                  </button>
-                  <noscript>
-                    <details class="sponsor-pitch-fallback">
-                      <summary>
-                        {t.visit} {sponsor.name}
-                      </summary>
-                      {sponsor.pitch[lang].split('\n\n').map((paragraph) => (
-                        <p>{paragraph}</p>
-                      ))}
-                      <a
-                        class="sponsor-visit"
-                        href={sponsor.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={`${t.website} ${sponsor.name} (${t.newTab})`}
+          <section
+            id={`sponsors-${tier}`}
+            class:list={['sponsor-tier', `sponsor-tier--${tier}`]}
+            aria-labelledby={`sponsors-${tier}-title`}
+          >
+            <div class="tier-heading">
+              <TierHeading id={`sponsors-${tier}-title`}>
+                <span class="tier-symbol">
+                  <Icon name={tierIcons[tier]} aria-hidden="true" />
+                </span>
+                {t.tiers[tier]}
+              </TierHeading>
+              <span class="tier-rule" aria-hidden="true"></span>
+              <p>{t.tierNotes[tier]}</p>
+            </div>
+            <ul class="sponsor-grid">
+              {sponsors
+                .filter((sponsor) => sponsor.tier === tier)
+                .map((sponsor) => (
+                  <li>
+                    <article class:list={['sponsor-card', `sponsor-card--${tier}`]}>
+                      <div
+                        class:list={[
+                          'sponsor-logo-stage',
+                          { 'sponsor-logo-stage--with-name': sponsor.showNameWithLogo },
+                        ]}
                       >
-                        {t.website} {sponsor.name}
-                        <Icon name="tabler:arrow-up-right" aria-hidden="true" />
-                      </a>
-                    </details>
-                  </noscript>
-                </div>
-              </div>
-            </article>
-            <SponsorDialog sponsor={sponsor} lang={lang} />
-          </li>
+                        <img
+                          src={sponsor.logo.src}
+                          width={sponsor.logo.width}
+                          height={sponsor.logo.height}
+                          alt={sponsor.name}
+                          loading={tier === 'gold' && headingLevel === 'h1' ? 'eager' : 'lazy'}
+                          decoding="async"
+                        />
+                        {sponsor.showNameWithLogo && (
+                          <span class="sponsor-logo-name" aria-hidden="true">
+                            {sponsor.name}
+                          </span>
+                        )}
+                        {tier === 'gold' && (
+                          <span class="gold-caption" aria-hidden="true">
+                            {t.goldCaption}
+                          </span>
+                        )}
+                      </div>
+                      <div class="sponsor-card-content">
+                        <NameHeading class:list={{ 'sr-only': tier === 'community' }}>{sponsor.name}</NameHeading>
+                        <div class="sponsor-actions">
+                          <button
+                            type="button"
+                            class="sponsor-visit"
+                            data-sponsor-open={`sponsor-dialog-${sponsor.id}`}
+                            aria-controls={`sponsor-dialog-${sponsor.id}`}
+                            aria-haspopup="dialog"
+                            hidden
+                          >
+                            {t.visit} {sponsor.name}
+                            <Icon name="tabler:arrow-right" aria-hidden="true" />
+                          </button>
+                          <noscript>
+                            <details class="sponsor-pitch-fallback">
+                              <summary>
+                                {t.visit} {sponsor.name}
+                              </summary>
+                              {sponsor.pitch[lang].split('\n\n').map((paragraph) => (
+                                <p>{paragraph}</p>
+                              ))}
+                              <a
+                                class="sponsor-visit"
+                                href={sponsor.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={`${t.website} ${sponsor.name} (${t.newTab})`}
+                              >
+                                {t.website} {sponsor.name}
+                                <Icon name="tabler:arrow-up-right" aria-hidden="true" />
+                              </a>
+                            </details>
+                          </noscript>
+                        </div>
+                      </div>
+                    </article>
+                    <SponsorDialog sponsor={sponsor} lang={lang} />
+                  </li>
+                ))}
+            </ul>
+          </section>
         ))}
-    </ul>
-  </section>
-))}
       </div>
 
       <aside class="sponsor-invitation">

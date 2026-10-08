@@ -26,18 +26,18 @@ const initials = speaker.name
   <span class:list={['portrait', `portrait-tone-${index % 4}`]} aria-hidden="true">
     <span class="portrait-initials">{initials}</span>
     {speaker.picture && (
-  <img
-    src={portraitUrl}
-    alt=""
-    width="160"
-    height="160"
-    loading="lazy"
-    decoding="async"
-    referrerpolicy="no-referrer"
-    data-speaker-portrait
-    data-original-portrait={speaker.picture}
-  />
-)}
+      <img
+        src={portraitUrl}
+        alt=""
+        width="160"
+        height="160"
+        loading="lazy"
+        decoding="async"
+        referrerpolicy="no-referrer"
+        data-speaker-portrait
+        data-original-portrait={speaker.picture}
+      />
+    )}
   </span>
   <span class="card-info">
     <span class="speaker-name">{speaker.name}</span>
