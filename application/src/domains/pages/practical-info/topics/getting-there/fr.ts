@@ -1,4 +1,4 @@
-import { eventMeta, getEventPlace, getVenueInfo } from '~/domains/event/config/event';
+import { eventMeta, getCarpoolingInfo, getEventPlace, getVenueInfo } from '~/domains/event/config/event';
 import type { PracticalInfoTopicData } from '~/domains/pages/practical-info/model/content';
 import { getLocalizedPagePath } from '~/i18n/routes';
 
@@ -15,6 +15,22 @@ const venueMapEmbedUrl = venueAddress
   : undefined;
 const venueMapHref =
   venueInfo.mapUrl ?? (venueAddress ? `https://www.google.com/maps?q=${encodeURIComponent(venueAddress)}` : undefined);
+
+const carpoolingInfo = getCarpoolingInfo();
+const carpoolingProvider = carpoolingInfo.provider ?? 'covoiTribu';
+const carpoolingGuide =
+  (carpoolingInfo.embedUrl ?? carpoolingInfo.url)
+    ? {
+        title: 'Partagez un trajet',
+        description: `Vous venez en voiture ? Organisez votre covoiturage avec les autres participants qui se rendent ${travelDestinationLabel} et partagez le trajet via le tableau ${carpoolingProvider} ci-dessous.`,
+        embedTitle: `Covoiturage ${carpoolingProvider} pour ${eventMeta.city}`,
+        embedUrl: carpoolingInfo.embedUrl,
+        providerLabel: `Propulsé par ${carpoolingProvider}`,
+        linkLabel: `Ouvrir la page de covoiturage ${carpoolingProvider}`,
+        linkHref: carpoolingInfo.url,
+        icon: 'tabler:users-group',
+      }
+    : undefined;
 
 const transportResources = {
   officialGuide: 'https://www.aixenprovencetourism.com/acces-transports/',
@@ -235,6 +251,7 @@ export default {
         ],
       },
     ],
+    carpooling: carpoolingGuide,
     tipsTitle: 'Avant de partir',
     tips: [
       'Vérifiez la dernière navette ou liaison locale si vous arrivez très tôt ou tard dans la journée.',

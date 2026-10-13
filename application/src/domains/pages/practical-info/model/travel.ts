@@ -31,6 +31,17 @@ export interface PracticalInfoTravelTip {
 
 export type PracticalInfoTravelTipEntry = string | PracticalInfoTravelTip;
 
+export interface PracticalInfoTravelCarpooling {
+  title: string;
+  description: string;
+  embedTitle: string;
+  embedUrl?: string;
+  providerLabel?: string;
+  linkLabel: string;
+  linkHref?: string;
+  icon: string;
+}
+
 export interface PracticalInfoTravelGuide {
   heroTitle: string;
   heroIntro: string;
@@ -54,6 +65,7 @@ export interface PracticalInfoTravelGuide {
   modesTitle: string;
   modesIntro: string;
   modes: readonly PracticalInfoTravelMode[];
+  carpooling?: PracticalInfoTravelCarpooling;
   tipsTitle: string;
   tips: readonly PracticalInfoTravelTipEntry[];
   resourcesTitle: string;

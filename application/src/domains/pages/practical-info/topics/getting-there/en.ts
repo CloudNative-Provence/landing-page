@@ -1,4 +1,4 @@
-import { eventMeta, getEventPlace, getVenueInfo } from '~/domains/event/config/event';
+import { eventMeta, getCarpoolingInfo, getEventPlace, getVenueInfo } from '~/domains/event/config/event';
 import type { PracticalInfoTopicData } from '~/domains/pages/practical-info/model/content';
 import { getLocalizedPagePath } from '~/i18n/routes';
 
@@ -13,6 +13,22 @@ const venueMapEmbedUrl = venueAddress
   : undefined;
 const venueMapHref =
   venueInfo.mapUrl ?? (venueAddress ? `https://www.google.com/maps?q=${encodeURIComponent(venueAddress)}` : undefined);
+
+const carpoolingInfo = getCarpoolingInfo();
+const carpoolingProvider = carpoolingInfo.provider ?? 'covoiTribu';
+const carpoolingGuide =
+  (carpoolingInfo.embedUrl ?? carpoolingInfo.url)
+    ? {
+        title: 'Share a ride',
+        description: `Driving in? Coordinate carpooling with other attendees heading ${arrivalDestinationLabel} and share the trip through the ${carpoolingProvider} board below.`,
+        embedTitle: `${carpoolingProvider} carpooling for ${eventMeta.city}`,
+        embedUrl: carpoolingInfo.embedUrl,
+        providerLabel: `Powered by ${carpoolingProvider}`,
+        linkLabel: `Open the ${carpoolingProvider} carpooling page`,
+        linkHref: carpoolingInfo.url,
+        icon: 'tabler:users-group',
+      }
+    : undefined;
 
 const transportResources = {
   officialGuide: 'https://www.aixenprovencetourism.com/en/access-transport/',
@@ -230,6 +246,7 @@ export default {
         ],
       },
     ],
+    carpooling: carpoolingGuide,
     tipsTitle: 'Before you leave',
     tips: [
       'Confirm the last shuttle or local transfer if you arrive very early or late in the day.',

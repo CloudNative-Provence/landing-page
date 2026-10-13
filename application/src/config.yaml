@@ -53,6 +53,10 @@ event:
     closesAt: "2026-09-13T23:59:00+02:00"
     speakersNotifiedAt: "2026-09-25T00:00:00+02:00"
     submissionUrl: "https://conference-hall.io/kcd-provence-2026"
+  carpooling:
+    provider: "covoiTribu"
+    url: "https://www.covoitribu.fr/e/kcd-provence-2026"
+    embedUrl: "https://www.covoitribu.fr/e/kcd-provence-2026"
 
 apps:
   blog:

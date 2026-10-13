@@ -6,6 +6,7 @@ import {
   cfpSubmissionUrl,
   isCfpOpen,
 } from '~/domains/event/cfp/presentation';
+import { type CarpoolingInfo, getCarpoolingInfo, hasCarpooling } from './carpooling';
 import {
   composeVenueLabel,
   composeVenueName,
@@ -21,15 +22,18 @@ import {
 export {
   buildCfpImportantDates,
   buildCfpStatuses,
+  type CarpoolingInfo,
   cfpSchedule,
   cfpSubmissionUrl,
   composeVenueLabel,
   composeVenueName,
   type EventLocale,
+  getCarpoolingInfo,
   getEventPlace,
   getVenueInfo,
   getVenueLabel,
   getVenueName,
+  hasCarpooling,
   isCfpOpen,
   resolveLocalizedVenuePlace,
   type VenueInfo,

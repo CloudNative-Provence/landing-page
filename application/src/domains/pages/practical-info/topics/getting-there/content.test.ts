@@ -8,6 +8,11 @@ vi.mock('astrowind:config', () => ({
     place: 'Palais des Congrès',
     venueMapUrl:
       'https://www.google.com/maps/search/?api=1&query=Centre%20des%20Congr%C3%A8s%20d%27Aix-en-Provence%2C%2014%20Boulevard%20Carnot%2C%2013100%20Aix-en-Provence%2C%20France',
+    carpooling: {
+      provider: 'covoiTribu',
+      url: 'https://www.covoitribu.fr/e/kcd-provence-2026',
+      embedUrl: 'https://www.covoitribu.fr/e/kcd-provence-2026',
+    },
     cfp: {
       opensAt: '2026-05-15T00:00:00+02:00',
       closesAt: '2026-07-16T00:00:00+02:00',
@@ -55,5 +60,23 @@ describe('getting-there topic content', () => {
       'https://www.sncf-connect.com/',
     ]);
     expect(gettingThereFr.travelGuide?.tips[0]).toContain('dernière navette');
+  });
+
+  it('embeds the covoiTribu carpooling widget in both locales', () => {
+    const carpoolingEn = gettingThereEn.travelGuide?.carpooling;
+    expect(carpoolingEn).toBeDefined();
+    expect(carpoolingEn?.title).toBe('Share a ride');
+    expect(carpoolingEn?.embedUrl).toBe('https://www.covoitribu.fr/e/kcd-provence-2026');
+    expect(carpoolingEn?.linkHref).toBe('https://www.covoitribu.fr/e/kcd-provence-2026');
+    expect(carpoolingEn?.providerLabel).toBe('Powered by covoiTribu');
+    expect(carpoolingEn?.embedTitle).toContain('covoiTribu');
+    expect(carpoolingEn?.embedTitle).toContain('Aix-en-Provence');
+
+    const carpoolingFr = gettingThereFr.travelGuide?.carpooling;
+    expect(carpoolingFr).toBeDefined();
+    expect(carpoolingFr?.title).toBe('Partagez un trajet');
+    expect(carpoolingFr?.embedUrl).toBe('https://www.covoitribu.fr/e/kcd-provence-2026');
+    expect(carpoolingFr?.linkHref).toBe('https://www.covoitribu.fr/e/kcd-provence-2026');
+    expect(carpoolingFr?.providerLabel).toBe('Propulsé par covoiTribu');
   });
 });
