@@ -23,6 +23,7 @@ const transportResources = {
   railBooking: 'https://www.sncf-connect.com/en-en/',
   localTransit: 'https://www.lametropolemobilite.fr/',
   airport: 'https://www.marseille.aeroport.fr/',
+  carpooling: 'https://www.covoitribu.fr/event/116841/vJdLwCdu0loPss/kcd-provence-2026',
 } as const;
 
 export default {
@@ -191,6 +192,44 @@ export default {
             text: 'Local parking guide',
             href: 'https://www.aixenprovencetourism.com/en/access-transport/car-parks-in-aix-en-provence/',
           },
+          { text: 'Share a ride (Covoitribu)', href: transportResources.carpooling },
+        ],
+      },
+      {
+        title: 'By carpooling',
+        badge: 'Share the ride, cut the cost and CO₂',
+        duration: 'Match an arrival that fits your schedule',
+        summary: hasVenue
+          ? `Share a ride with other attendees through the dedicated Covoitribu event and coordinate a drop-off near ${venuePlace}.`
+          : 'Share a ride with other attendees through the dedicated Covoitribu event and coordinate a drop-off near the city center.',
+        icon: 'tabler:users-group',
+        route: [
+          {
+            title: 'Open the Covoitribu event',
+            detail: 'Visit the dedicated KCD Provence 2026 carpooling page to see available rides.',
+            icon: 'tabler:external-link',
+          },
+          {
+            title: 'Offer or find a ride',
+            detail: 'Post a seat if you drive, or request one that matches your arrival time.',
+            icon: 'tabler:search',
+          },
+          {
+            title: 'Agree on a meeting point',
+            detail: hasVenue
+              ? `Confirm a pickup and a drop-off near ${venuePlace} or your city-center hotel.`
+              : 'Confirm a pickup and a drop-off near the city center or your hotel.',
+            icon: 'tabler:map-pin-check',
+          },
+        ],
+        details: [
+          'Carpooling is a lower-cost, lower-carbon way to reach the venue, especially from nearby Provence cities.',
+          'Drivers can offer spare seats and split fuel and tolls with other attendees.',
+          'Agree on timing and a precise meeting point in advance to keep arrival-day logistics simple.',
+        ],
+        links: [
+          { text: 'KCD Provence 2026 carpooling', href: transportResources.carpooling, primary: true },
+          { text: 'Park-and-ride options', href: transportResources.parkAndRide },
         ],
       },
       {
@@ -254,6 +293,7 @@ export default {
       { text: 'Aix maps', href: transportResources.maps },
       { text: 'La Métropole Mobilité', href: transportResources.localTransit },
       { text: 'SNCF Connect', href: transportResources.railBooking },
+      { text: 'Carpooling (Covoitribu)', href: transportResources.carpooling },
     ],
   },
 } satisfies PracticalInfoTopicData;

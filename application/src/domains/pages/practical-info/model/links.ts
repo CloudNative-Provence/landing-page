@@ -6,4 +6,5 @@ export interface PracticalInfoTravelLink {
 export interface PracticalInfoResourceLink {
   text: string;
   href: string;
+  primary?: boolean;
 }
