@@ -22,7 +22,7 @@ import gettingThereFr from './fr';
 
 describe('getting-there topic content', () => {
   it('provides structured travel guidance and official resources in both locales', () => {
-    expect(gettingThereEn.travelGuide?.modes).toHaveLength(4);
+    expect(gettingThereEn.travelGuide?.modes).toHaveLength(5);
     expect(gettingThereEn.travelGuide?.plannerTitle).toBe('Travel planner');
     expect(gettingThereEn.travelGuide?.modes.every((mode) => mode.route.length === 3)).toBe(true);
     expect(gettingThereEn.travelGuide?.locationMapHref).toBe(
@@ -36,10 +36,11 @@ describe('getting-there topic content', () => {
       'https://www.aixenprovencetourism.com/en/plan-your-trip/aix-maps/',
       'https://www.lametropolemobilite.fr/',
       'https://www.sncf-connect.com/en-en/',
+      'https://www.covoitribu.fr/event/116841/vJdLwCdu0loPss/kcd-provence-2026',
     ]);
     expect(gettingThereEn.travelGuide?.tips[0]).toContain('last shuttle');
 
-    expect(gettingThereFr.travelGuide?.modes).toHaveLength(4);
+    expect(gettingThereFr.travelGuide?.modes).toHaveLength(5);
     expect(gettingThereFr.travelGuide?.plannerTitle).toBe('Planificateur de trajet');
     expect(gettingThereFr.travelGuide?.modes.every((mode) => mode.route.length === 3)).toBe(true);
     expect(gettingThereFr.travelGuide?.locationMapHref).toBe(
@@ -53,6 +54,7 @@ describe('getting-there topic content', () => {
       'https://www.aixenprovencetourism.com/preparer-son-sejour/aix-plans/',
       'https://www.lametropolemobilite.fr/',
       'https://www.sncf-connect.com/',
+      'https://www.covoitribu.fr/event/116841/vJdLwCdu0loPss/kcd-provence-2026',
     ]);
     expect(gettingThereFr.travelGuide?.tips[0]).toContain('dernière navette');
   });

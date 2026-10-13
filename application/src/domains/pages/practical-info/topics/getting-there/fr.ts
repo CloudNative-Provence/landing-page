@@ -25,6 +25,7 @@ const transportResources = {
   railBooking: 'https://www.sncf-connect.com/',
   localTransit: 'https://www.lametropolemobilite.fr/',
   airport: 'https://www.marseille.aeroport.fr/',
+  carpooling: 'https://www.covoitribu.fr/event/116841/vJdLwCdu0loPss/kcd-provence-2026',
 } as const;
 
 export default {
@@ -196,6 +197,45 @@ export default {
           { text: "Guide officiel d'accès", href: transportResources.officialGuide },
           { text: 'Parcs-relais', href: transportResources.parkAndRide },
           { text: 'Guide des parkings', href: 'https://www.aixenprovencetourism.com/acces-transports/parkings/' },
+          { text: 'Partager un trajet (Covoitribu)', href: transportResources.carpooling },
+        ],
+      },
+      {
+        title: 'En covoiturage',
+        badge: 'Partagez le trajet, réduisez coût et CO₂',
+        duration: 'Trouvez une arrivée adaptée à vos horaires',
+        summary: hasVenue
+          ? `Partagez un trajet avec d'autres participants via l'événement Covoitribu dédié et convenez d'une dépose près du ${venuePlace}.`
+          : "Partagez un trajet avec d'autres participants via l'événement Covoitribu dédié et convenez d'une dépose près du centre-ville.",
+        icon: 'tabler:users-group',
+        route: [
+          {
+            title: "Ouvrez l'événement Covoitribu",
+            detail:
+              'Rendez-vous sur la page de covoiturage dédiée à KCD Provence 2026 pour voir les trajets disponibles.',
+            icon: 'tabler:external-link',
+          },
+          {
+            title: 'Proposez ou trouvez un trajet',
+            detail: "Proposez une place si vous conduisez, ou demandez-en une correspondant à votre heure d'arrivée.",
+            icon: 'tabler:search',
+          },
+          {
+            title: "Convenez d'un point de rendez-vous",
+            detail: hasVenue
+              ? `Confirmez un point de prise en charge et une dépose près du ${venuePlace} ou de votre hôtel en centre-ville.`
+              : 'Confirmez un point de prise en charge et une dépose près du centre-ville ou de votre hôtel.',
+            icon: 'tabler:map-pin-check',
+          },
+        ],
+        details: [
+          'Le covoiturage est une option moins chère et moins carbonée pour rejoindre le lieu, surtout depuis les villes voisines de Provence.',
+          'Les conducteurs peuvent proposer des places libres et partager carburant et péages avec les autres participants.',
+          "Convenez des horaires et d'un point de rendez-vous précis à l'avance pour simplifier la logistique du jour J.",
+        ],
+        links: [
+          { text: 'Covoiturage KCD Provence 2026', href: transportResources.carpooling, primary: true },
+          { text: 'Parcs-relais', href: transportResources.parkAndRide },
         ],
       },
       {
@@ -259,6 +299,7 @@ export default {
       { text: "Plans d'Aix-en-Provence", href: transportResources.maps },
       { text: 'La Métropole Mobilité', href: transportResources.localTransit },
       { text: 'SNCF Connect', href: transportResources.railBooking },
+      { text: 'Covoiturage (Covoitribu)', href: transportResources.carpooling },
     ],
   },
 } satisfies PracticalInfoTopicData;
