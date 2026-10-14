@@ -6,9 +6,15 @@ export default {
     introduction:
       'Derrière une journée de rencontres et de partage, des partenaires engagés. Merci de faire vivre KCD Provence à nos côtés.',
     navigation: 'Les niveaux de sponsoring',
+    platinumCaption: 'SPONSOR PLATINUM',
     goldCaption: 'SPONSOR GOLD',
-    tiers: { gold: 'Gold', silver: 'Silver', community: 'Communautaire' },
-    tierNotes: { gold: 'Un soutien précieux', silver: 'À nos côtés', community: 'La force du collectif' },
+    tiers: { platinum: 'Platinum', gold: 'Gold', silver: 'Silver', community: 'Communautaire' },
+    tierNotes: {
+      platinum: 'Un engagement majeur',
+      gold: 'Un soutien précieux',
+      silver: 'À nos côtés',
+      community: 'La force du collectif',
+    },
     visit: 'Découvrir',
     website: 'Visiter le site de',
     close: 'Fermer',

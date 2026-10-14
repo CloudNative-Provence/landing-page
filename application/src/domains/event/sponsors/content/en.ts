@@ -6,9 +6,15 @@ export default {
     introduction:
       'Behind a day of connections and shared ideas are partners who care. Thank you for making KCD Provence possible with us.',
     navigation: 'Sponsorship tiers',
+    platinumCaption: 'PLATINUM SPONSOR',
     goldCaption: 'GOLD SPONSOR',
-    tiers: { gold: 'Gold', silver: 'Silver', community: 'Community' },
-    tierNotes: { gold: 'Making it possible', silver: 'By our side', community: 'Stronger together' },
+    tiers: { platinum: 'Platinum', gold: 'Gold', silver: 'Silver', community: 'Community' },
+    tierNotes: {
+      platinum: 'Leading the way',
+      gold: 'Making it possible',
+      silver: 'By our side',
+      community: 'Stronger together',
+    },
     visit: 'Discover',
     website: 'Visit the website of',
     close: 'Close',
