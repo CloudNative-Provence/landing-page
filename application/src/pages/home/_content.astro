@@ -114,9 +114,23 @@ export interface Props {
 
 const { hero, note, about, cfp, venue, callToAction, countdownLabels } = Astro.props;
 
+const cfpPhase: CfpAvailabilityPhase | undefined = cfp?.availability ? resolveCfpPhase(cfp.availability) : undefined;
+const cfpCtaDisabled = cfpPhase ? cfpPhase !== 'open' : (cfp?.ctaDisabled ?? false);
+
+const cfpLinkAttributes = cfp?.availability
+  ? {
+      'data-cfp-link': '',
+      'data-cfp-opens-at': cfp.availability.opensAt,
+      'data-cfp-closes-at': cfp.availability.closesAt ?? '',
+      hidden: cfpCtaDisabled,
+      'aria-hidden': String(cfpCtaDisabled),
+    }
+  : {};
+
 const heroActionsWithPermalinks = hero.actions.map((action: ActionItem) => ({
   ...action,
   href: getPermalink(action.href),
+  ...(action.href === '#cfp' ? cfpLinkAttributes : {}),
 }));
 
 const callToActionActionsWithPermalinks = callToAction.actions.map((action: ActionItem) => ({
@@ -129,9 +143,7 @@ const venueCtasWithPermalinks = (venue?.ctas ?? []).map((cta: ActionItem) => ({
   href: cta.href?.startsWith('http') ? cta.href : getPermalink(cta.href),
 }));
 
-const cfpPhase: CfpAvailabilityPhase | undefined = cfp?.availability ? resolveCfpPhase(cfp.availability) : undefined;
 const cfpStatus = cfp?.availability && cfpPhase ? cfp.availability.statuses[cfpPhase] : cfp?.status;
-const cfpCtaDisabled = cfpPhase ? cfpPhase !== 'open' : (cfp?.ctaDisabled ?? false);
 const cfpCtaTarget = cfp?.ctaHref?.startsWith('http') ? '_blank' : undefined;
 
 const heroTitleHtml =
@@ -414,8 +426,34 @@ const syncCfpState = (root: HTMLElement) => {
   });
 };
 
+const syncStandaloneCfpLink = (linkElement: HTMLElement) => {
+  const opensAtValue = linkElement.dataset.cfpOpensAt;
+
+  if (!opensAtValue) {
+    return;
+  }
+
+  let phase: CfpAvailabilityPhase;
+
+  try {
+    phase = resolveCfpPhase({
+      opensAt: opensAtValue,
+      closesAt: linkElement.dataset.cfpClosesAt || undefined,
+    });
+  } catch {
+    return;
+  }
+
+  const isDisabled = phase !== 'open';
+  linkElement.hidden = isDisabled;
+  linkElement.setAttribute('aria-hidden', String(isDisabled));
+};
+
 const syncAllCfpStates = () => {
   document.querySelectorAll<HTMLElement>('[data-cfp-root="true"]').forEach((root) => syncCfpState(root));
+  document
+    .querySelectorAll<HTMLElement>('[data-cfp-link][data-cfp-opens-at]')
+    .forEach((link) => syncStandaloneCfpLink(link));
 };
 
 if (document.readyState === 'loading') {
