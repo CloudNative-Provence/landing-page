@@ -19,7 +19,7 @@ const t = useTranslations(lang).sponsors;
   aria-labelledby={`sponsor-dialog-${sponsor.id}-title`}
 >
   <header class="dialog-header">
-    <div class:list={['dialog-logo', { 'dialog-logo--gold': sponsor.tier === 'gold' }]}>
+    <div class:list={['dialog-logo', `dialog-logo--${sponsor.tier}`]}>
       <img src={sponsor.logo.src} width={sponsor.logo.width} height={sponsor.logo.height} alt="" loading="lazy">
     </div>
     <form method="dialog">
@@ -86,6 +86,9 @@ const t = useTranslations(lang).sponsors;
 }
 .dialog-logo--gold {
   background: #17253c;
+}
+.dialog-logo--platinum {
+  background: #10131a;
 }
 .dialog-logo img {
   width: 100%;

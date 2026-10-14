@@ -9,10 +9,13 @@ import gravitek from '~/assets/images/sponsors/gravitek.webp';
 import hoverkraft from '~/assets/images/sponsors/hoverkraft.svg';
 import ikkiLeague from '~/assets/images/sponsors/ikki-league.svg';
 import kraftr from '~/assets/images/sponsors/kraftr.webp';
+import monacoDigital from '~/assets/images/sponsors/monaco-digital.svg';
+import redHat from '~/assets/images/sponsors/red-hat.svg';
 import smartTribune from '~/assets/images/sponsors/smart-tribune.webp';
+import teleport from '~/assets/images/sponsors/teleport.svg';
 import type { AppLang } from '~/i18n/routes';
 
-export const sponsorTiers = ['gold', 'silver', 'community'] as const;
+export const sponsorTiers = ['platinum', 'gold', 'silver', 'community'] as const;
 export type SponsorTier = (typeof sponsorTiers)[number];
 
 export interface Sponsor {
@@ -27,6 +30,21 @@ export interface Sponsor {
 }
 
 export const sponsors: readonly Sponsor[] = [
+  {
+    id: 'monaco-digital',
+    name: 'Monaco Digital',
+    url: 'https://monacodigital.mc/',
+    tier: 'platinum',
+    logo: monacoDigital,
+    pitch: {
+      fr: `Monaco Digital accompagne les entreprises et les institutions publiques dans leur transformation numérique, à Monaco et en France. Ses équipes interviennent en conseil, ingénierie logicielle, intégration d'infrastructures et de réseaux, cybersécurité, cloud hybride, services managés et intelligence artificielle.
+
+De la définition de la stratégie à l'exploitation des systèmes, Monaco Digital associe expertise technique et accompagnement de proximité pour moderniser les applications et les infrastructures de ses clients.`,
+      en: `Monaco Digital supports businesses and public institutions in their digital transformation, in Monaco and France. Its teams work across consulting, software engineering, infrastructure and network integration, cybersecurity, hybrid cloud, managed services and artificial intelligence.
+
+From defining a strategy to operating systems, Monaco Digital combines technical expertise with local support to modernize its customers' applications and infrastructure.`,
+    },
+  },
   {
     id: 'ape-factory',
     name: 'APE factory',
@@ -73,6 +91,17 @@ Our infrastructure is built on open standards, with data hosted in Europe and to
     },
   },
   {
+    id: 'red-hat',
+    name: 'Red Hat',
+    url: 'https://www.redhat.com/',
+    tier: 'gold',
+    logo: redHat,
+    pitch: {
+      fr: "Red Hat développe des solutions open source pour les entreprises, du système d'exploitation à la plateforme applicative et à l'automatisation. Avec Red Hat Enterprise Linux, OpenShift et Ansible Automation Platform, les équipes peuvent moderniser leurs applications et exploiter leurs infrastructures dans des environnements de cloud hybride. Cette approche s'appuie sur la collaboration avec les communautés open source, les clients et les partenaires.",
+      en: 'Red Hat develops open source solutions for businesses, from operating systems to application platforms and automation. With Red Hat Enterprise Linux, OpenShift and Ansible Automation Platform, teams can modernize their applications and run their infrastructure across hybrid cloud environments. This approach builds on collaboration with open source communities, customers and partners.',
+    },
+  },
+  {
     id: 'blackswift',
     name: 'BlackSwift',
     url: 'https://www.blackswift.fr/',
@@ -100,6 +129,25 @@ Sa mission : rendre ces technologies accessibles au plus grand nombre. En souten
       en: `The Cloud Native Computing Foundation (CNCF), part of the Linux Foundation, helps the cloud native open source ecosystem grow. It hosts projects such as Kubernetes, Prometheus and Envoy, bringing developers, end-user organizations and vendors together around open, vendor-neutral technologies.
 
 Its mission is to make these technologies accessible to everyone. By supporting communities, training and gatherings of practitioners, CNCF creates opportunities to learn, contribute and share real-world experience. This commitment reflects the spirit of KCD Provence.`,
+    },
+  },
+  {
+    id: 'teleport',
+    name: 'Teleport',
+    url: 'https://goteleport.com/',
+    tier: 'silver',
+    logo: teleport,
+    pitch: {
+      fr: `Teleport est une plateforme d'accès aux infrastructures conçue pour les équipes Platform Engineering et DevOps. Un seul plan de contrôle pour Kubernetes, les serveurs Linux et Windows, les bases de données, les pipelines CI/CD et les applications internes, avec une politique d'accès commune, définie en YAML et versionnée avec le reste de votre infrastructure as code.
+
+Teleport élimine les secrets à longue durée de vie. Plus de clés SSH partagées, de kubeconfigs statiques ni de mots de passe de bases de données dispersés dans votre environnement. À leur place, des certificats à courte durée de vie délivrés à une identité vérifiée : un développeur, un pipeline, une charge de travail ou, de plus en plus, un agent IA.
+
+Pour les équipes plateforme, cela se traduit par un parcours d'accès simplifié : les développeurs obtiennent les accès nécessaires en quelques secondes, les demandes d'élévation de privilèges sont effectuées juste à temps et approuvées par leurs pairs, et chaque session est enregistrée et peut être rejouée pour l'audit et la conformité.`,
+      en: `Teleport is the infrastructure access platform built for platform engineering and DevOps teams. One control plane for Kubernetes, Linux and Windows servers, databases, CI/CD pipelines, and internal apps — with the same access policy everywhere, defined as YAML and versioned alongside the rest of your infrastructure as code.
+
+Teleport removes long-lived secrets from the equation. No more shared SSH keys, static kubeconfigs, or database passwords floating through your stack. Instead, short-lived certificates issued to a verified identity — a developer, a pipeline, a workload, or, increasingly, an AI agent.
+
+For platform teams, that means a real golden path: developers get the access they need in seconds, elevated access is requested just-in-time and approved by peers, and every session is recorded and replayable for audit and compliance.`,
     },
   },
   {
