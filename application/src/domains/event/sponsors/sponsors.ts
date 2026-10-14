@@ -9,13 +9,12 @@ import gravitek from '~/assets/images/sponsors/gravitek.webp';
 import hoverkraft from '~/assets/images/sponsors/hoverkraft.svg';
 import ikkiLeague from '~/assets/images/sponsors/ikki-league.svg';
 import kraftr from '~/assets/images/sponsors/kraftr.webp';
-import monacoDigital from '~/assets/images/sponsors/monaco-digital.svg';
 import redHat from '~/assets/images/sponsors/red-hat.svg';
 import smartTribune from '~/assets/images/sponsors/smart-tribune.webp';
 import teleport from '~/assets/images/sponsors/teleport.svg';
 import type { AppLang } from '~/i18n/routes';
 
-export const sponsorTiers = ['platinum', 'gold', 'silver', 'community'] as const;
+export const sponsorTiers = ['gold', 'silver', 'community'] as const;
 export type SponsorTier = (typeof sponsorTiers)[number];
 
 export interface Sponsor {
@@ -30,21 +29,6 @@ export interface Sponsor {
 }
 
 export const sponsors: readonly Sponsor[] = [
-  {
-    id: 'monaco-digital',
-    name: 'Monaco Digital',
-    url: 'https://monacodigital.mc/',
-    tier: 'platinum',
-    logo: monacoDigital,
-    pitch: {
-      fr: `Monaco Digital accompagne les entreprises et les institutions publiques dans leur transformation numérique, à Monaco et en France. Ses équipes interviennent en conseil, ingénierie logicielle, intégration d'infrastructures et de réseaux, cybersécurité, cloud hybride, services managés et intelligence artificielle.
-
-De la définition de la stratégie à l'exploitation des systèmes, Monaco Digital associe expertise technique et accompagnement de proximité pour moderniser les applications et les infrastructures de ses clients.`,
-      en: `Monaco Digital supports businesses and public institutions in their digital transformation, in Monaco and France. Its teams work across consulting, software engineering, infrastructure and network integration, cybersecurity, hybrid cloud, managed services and artificial intelligence.
-
-From defining a strategy to operating systems, Monaco Digital combines technical expertise with local support to modernize its customers' applications and infrastructure.`,
-    },
-  },
   {
     id: 'ape-factory',
     name: 'APE factory',
