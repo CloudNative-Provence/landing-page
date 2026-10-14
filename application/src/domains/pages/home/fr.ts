@@ -35,6 +35,11 @@ export default {
       },
       { text: 'Proposer une conférence', href: '#cfp' },
     ],
+    groupBooking: {
+      title: 'Vous venez en équipe ?',
+      description: 'Pour un achat groupé de billets pour votre entreprise, écrivez-nous à',
+      email: 'info@cloudnative-provence.fr',
+    },
     image: {
       light: {
         src: '~/assets/images/logos/logo-kcd-provence-primary.svg',

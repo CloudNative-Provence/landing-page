@@ -28,6 +28,11 @@ type CfpAvailabilityLabels = {
 export interface Props {
   hero: {
     actions: readonly ActionItem[];
+    groupBooking?: {
+      title: string;
+      description: string;
+      email: string;
+    };
     image?: unknown;
     badge?: string;
     title?: string | { main?: string; subtitle?: string; date?: string; location?: string };
@@ -142,6 +147,20 @@ const cfpImage = cfp?.image && typeof cfp.image !== 'string' ? (cfp.image as Ima
   <Fragment slot="title" set:html={heroTitleHtml} />
   <Fragment slot="subtitle" set:text={hero.subtitle} />
   {hero.eventDate && countdownLabels && <CountDown slot="title" eventDate={hero.eventDate} labels={countdownLabels} />}
+  <Fragment slot="content">
+    {hero.groupBooking && (
+      <p class="mt-6 mx-auto max-w-2xl text-base text-muted dark:text-slate-300">
+        <strong class="block mb-1 font-semibold text-default dark:text-slate-100">{hero.groupBooking.title}</strong>
+        {hero.groupBooking.description}{' '}
+        <a
+          href={`mailto:${hero.groupBooking.email}`}
+          class="break-words font-medium text-primary underline underline-offset-4 hover:no-underline"
+        >
+          {hero.groupBooking.email}
+        </a>
+      </p>
+    )}
+  </Fragment>
 </Hero>
 
 <Note title={note.title} description={note.description} />
