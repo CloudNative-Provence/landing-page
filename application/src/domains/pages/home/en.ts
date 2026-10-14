@@ -35,6 +35,11 @@ export default {
       },
       { text: 'Submit a Talk', href: '#cfp' },
     ],
+    groupBooking: {
+      title: 'Bringing your team?',
+      description: 'For bulk ticket purchases for your company, email us at',
+      email: 'info@cloudnative-provence.fr',
+    },
     image: {
       light: {
         src: '~/assets/images/logos/logo-kcd-provence-primary.svg',
