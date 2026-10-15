@@ -119,6 +119,8 @@ const profileLabel = labels.speakerProfileLabel.replace('{name}', speaker.name);
         ))}
       </nav>
     ) : null}
+
+    <slot name="profile-details" />
   </div>
 </div>
 

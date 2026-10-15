@@ -1,7 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { eventMeta, formatEventDate } from '~/domains/event/config/event';
-import type { ProgramSpeaker as Speaker } from '~/domains/pages/program/model/schedule';
 import { ProgramSearchTextNormalizer } from '~/domains/pages/program/services/search-text-normalizer';
 import SpeakerCard from '~/domains/pages/speakers/components/SpeakerCard.astro';
 import type { SpeakersPageData } from '~/domains/pages/speakers/services/page-data';
@@ -13,7 +12,7 @@ export interface Props {
   hero: SpeakersPageData['hero'];
   section: SpeakersPageData['section'];
   labels: SpeakersPageData['labels'];
-  speakers: readonly Speaker[];
+  speakers: SpeakersPageData['speakers'];
 }
 
 const { hero, section, labels, speakers } = Astro.props;

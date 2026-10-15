@@ -1,7 +1,12 @@
 import type { ProgramScheduleLabels } from '~/domains/pages/program/components/program-schedule.types';
 import programSchedule from '~/domains/pages/program/content/schedule';
-import type { ProgramSession, ProgramSpeaker } from '~/domains/pages/program/model/schedule';
+import type { ProgramRoom, ProgramSession, ProgramSpeaker } from '~/domains/pages/program/model/schedule';
+import { mergeSharedProgramSessions } from '~/domains/pages/program/services/shared-sessions';
 import type { MetaData } from '~/types';
+
+export interface SpeakerProfile extends ProgramSpeaker {
+  sessions: readonly ProgramSession[];
+}
 
 export interface SpeakersPageData {
   metadata: MetaData;
@@ -17,6 +22,10 @@ export interface SpeakersPageData {
   };
   labels: Pick<ProgramScheduleLabels, 'closeLabel' | 'speakerProfileLabel' | 'speakerLinksLabel'> & {
     viewProfileLabel: string;
+    talkLabel: string;
+    talksLabel: string;
+    talkDescriptionLabel: string;
+    viewInScheduleLabel: string;
     searchLabel: string;
     searchPlaceholder: string;
     clearSearchLabel: string;
@@ -24,7 +33,7 @@ export interface SpeakersPageData {
     noResultsTitle: string;
     noResultsText: string;
   };
-  speakers: readonly ProgramSpeaker[];
+  speakers: readonly SpeakerProfile[];
 }
 
 type SpeakersPageStaticContent = {
@@ -68,8 +77,16 @@ export const getPublishedProgramSpeakers = (sessions: readonly ProgramSession[])
 
 export const buildSpeakersPageData = (
   content: SpeakersPageStaticContent,
-  sessions: readonly ProgramSession[] = programSchedule.sessions
-): SpeakersPageData => ({
-  ...content,
-  speakers: getPublishedProgramSpeakers(sessions),
-});
+  sessions: readonly ProgramSession[] = programSchedule.sessions,
+  rooms: readonly ProgramRoom[] = programSchedule.rooms
+): SpeakersPageData => {
+  const talks = mergeSharedProgramSessions(sessions, rooms);
+
+  return {
+    ...content,
+    speakers: getPublishedProgramSpeakers(sessions).map((speaker) => ({
+      ...speaker,
+      sessions: talks.filter((session) => session.speakers?.some((presenter) => presenter.id === speaker.id)),
+    })),
+  };
+};

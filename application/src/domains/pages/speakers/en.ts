@@ -5,12 +5,12 @@ import { buildSpeakersPageData } from './services/page-data';
 export default buildSpeakersPageData({
   metadata: {
     title: 'Speakers',
-    description: 'Speaker profiles for KCD Provence 2026: biographies, companies and links.',
+    description: 'Speaker profiles for KCD Provence 2026: biographies, companies and talks.',
   },
   hero: {
     tagline: 'Speakers',
     title: 'Meet the speakers at KCD Provence',
-    subtitle: 'Speaker profiles for KCD Provence 2026. See the program for talks and times.',
+    subtitle: 'Meet the speakers at KCD Provence 2026 and discover the talks they will present.',
     programLabel: 'View program',
   },
   section: {
@@ -22,6 +22,10 @@ export default buildSpeakersPageData({
     speakerProfileLabel: programContent.labels.speakerProfileLabel,
     speakerLinksLabel: programContent.labels.speakerLinksLabel,
     viewProfileLabel: 'View profile',
+    talkLabel: 'Talk',
+    talksLabel: 'Talks',
+    talkDescriptionLabel: 'Talk description',
+    viewInScheduleLabel: 'View in schedule',
     searchLabel: 'Find a speaker',
     searchPlaceholder: 'Search by name or company…',
     clearSearchLabel: 'Clear search',
