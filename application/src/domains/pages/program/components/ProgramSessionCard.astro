@@ -35,6 +35,8 @@ const hasDetails = Boolean(roomLabel || session.description || tags.length || se
 ---
 
 <article
+  id={`program-session-${session.id}`}
+  tabindex="-1"
   data-program-session
   data-session-id={session.id}
   data-source-session-ids={sourceIds.join(',')}
@@ -47,6 +49,7 @@ const hasDetails = Boolean(roomLabel || session.description || tags.length || se
   data-starts-at={session.startsAt}
   data-ends-at={session.endsAt}
   class:list={[
+    'scroll-mt-28 target:outline-2 target:outline-offset-4 target:outline-sky-500 md:scroll-mt-44',
     'group relative flex flex-1 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white pl-4 pr-3 py-3 shadow-sm ring-1 ring-transparent transition duration-200 hover:-translate-y-0.5 hover:border-gray-300 hover:shadow-md dark:border-slate-800 dark:bg-slate-950/70 dark:hover:border-slate-700',
     isGlobal &&
       'bg-gradient-to-br from-sky-50 via-white to-cyan-50 dark:from-sky-950/20 dark:via-slate-950/70 dark:to-cyan-950/20',
