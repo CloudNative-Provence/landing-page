@@ -292,14 +292,22 @@ export default {
           mapHref: mapsPin('43.525508', '5.446202'),
         },
         {
-          name: 'Grand Hotel Roi Rene - MGallery',
+          name: 'Grand Hôtel Roi René - MGallery',
           thumbnail: stayThumbnails['grand-hotel-roi-rene'],
           blurb: 'Upscale hotel between the stations and cours Mirabeau, with private parking on request.',
-          address: '24 boulevard du Roi Rene, 13100 Aix-en-Provence',
+          address: '24 boulevard du Roi René, 13100 Aix-en-Provence',
           zoneId: 'near-stations',
           typeId: 'hotel',
           featureIds: ['parking'],
           websiteHref: 'https://www.grandhotelroirene-aixenprovence.com/',
+          discountCode: {
+            label: 'Discount code',
+            value: 'KCD26',
+            bookingLink: {
+              text: 'Book with this code',
+              href: 'https://all.accor.com/lien_externe.svlt?goto=rech_resa&destination=1169&dayIn=09&monthIn=12&yearIn=2026&nightNb=1&adultNumber=1&preferredCode=KCD26',
+            },
+          },
           mapHref: mapsPin('43.523875', '5.449543'),
         },
         {
