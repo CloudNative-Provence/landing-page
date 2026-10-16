@@ -2,7 +2,8 @@ export type VenueTheme = 'light' | 'dark';
 
 export const venueScenePalettes = {
   light: {
-    wall: '#fffdf9',
+    wall: '#c2c9d4',
+    surface: '#fffdf9',
     furniture: '#d7cee6',
     counter: '#e8e3ef',
     chair: '#a596bf',
@@ -24,6 +25,7 @@ export const venueScenePalettes = {
   },
   dark: {
     wall: '#8a94ab',
+    surface: '#8a94ab',
     furniture: '#716780',
     counter: '#7c7893',
     chair: '#ac9ac8',

@@ -47,6 +47,7 @@ export interface ProjectedRoom {
 export interface VenueSceneOptions {
   container: HTMLElement;
   theme?: VenueTheme;
+  canSelectRoom: (roomId: string) => boolean;
   onSelect: (roomId: string) => void;
   onProject: (positions: ProjectedRoom[]) => void;
   onUnavailable?: () => void;
@@ -57,22 +58,6 @@ export interface VenueSceneOptions {
 const SOURCE_SCALE = 0.012;
 const FLOOR_HEIGHT = 0.28;
 const WALL_HEIGHT = 1.25;
-const PRIMARY_ROOM_IDS = new Set([
-  'entrance',
-  'milhaud',
-  'forbin',
-  'sainte-victoire',
-  'picasso',
-  'terrasse-picasso',
-  'hall',
-  'accueil',
-  'vestiaire',
-  'sponsors',
-  'bar',
-  'amphitheatre-access',
-  'amphitheatre',
-  'lift',
-]);
 
 interface RoomSurface {
   material: MeshStandardMaterial;
@@ -90,12 +75,16 @@ export class VenueScene {
   private readonly eventController = new AbortController();
   private readonly resizeObserver: ResizeObserver;
   private readonly roomSurfaces = new Map<string, RoomSurface>();
-  private readonly pickableFloors: Mesh[] = [];
+  private readonly roomFloors: Mesh[] = [];
   private readonly unitBox = new BoxGeometry(1, 1, 1);
   private readonly model = new Object3D();
   private readonly bounds = new Box3();
   private readonly sourceCenter: PlanPoint = [venueLayout.source.width / 2, venueLayout.source.height / 2];
-  private readonly whiteMaterial = new MeshStandardMaterial({ color: venueScenePalettes.light.wall, roughness: 0.84 });
+  private readonly wallMaterial = new MeshStandardMaterial({ color: venueScenePalettes.light.wall, roughness: 0.84 });
+  private readonly surfaceMaterial = new MeshStandardMaterial({
+    color: venueScenePalettes.light.surface,
+    roughness: 0.84,
+  });
   private readonly furnitureMaterial = new MeshStandardMaterial({
     color: venueScenePalettes.light.furniture,
     roughness: 0.83,
@@ -123,6 +112,7 @@ export class VenueScene {
   private plannedRooms = new Set<string>();
   private hoveredRoom: string | null = null;
   private pointerStart: { x: number; y: number; id: number; dragged: boolean } | null = null;
+  private pendingRoom: string | null = null;
   private frame = 0;
   private disposed = false;
   private unavailable = false;
@@ -183,7 +173,8 @@ export class VenueScene {
     if (this.disposed || this.unavailable || theme === this.theme) return;
     this.theme = theme;
     const palette = venueScenePalettes[theme];
-    this.whiteMaterial.color.set(palette.wall);
+    this.wallMaterial.color.set(palette.wall);
+    this.surfaceMaterial.color.set(palette.surface);
     this.furnitureMaterial.color.set(palette.furniture);
     this.counterMaterial.color.set(palette.counter);
     this.chairMaterial.color.set(palette.chair);
@@ -207,7 +198,7 @@ export class VenueScene {
   }
 
   select(roomId: string | null): void {
-    this.selectedRoom = roomId && this.roomSurfaces.has(roomId) ? roomId : null;
+    this.selectedRoom = roomId && this.roomSurfaces.has(roomId) && this.options.canSelectRoom(roomId) ? roomId : null;
     this.updateRoomAppearance();
   }
 
@@ -265,7 +256,8 @@ export class VenueScene {
 
     const geometries = new Set<BufferGeometry>([this.unitBox]);
     const materials = new Set<Material>([
-      this.whiteMaterial,
+      this.wallMaterial,
+      this.surfaceMaterial,
       this.furnitureMaterial,
       this.counterMaterial,
       this.chairMaterial,
@@ -287,7 +279,7 @@ export class VenueScene {
     this.renderer.forceContextLoss();
     this.renderer.domElement.remove();
     this.roomSurfaces.clear();
-    this.pickableFloors.length = 0;
+    this.roomFloors.length = 0;
   }
 
   private worldPoint(point: PlanPoint, elevation = 0): Vector3 {
@@ -336,7 +328,7 @@ export class VenueScene {
       floor.receiveShadow = true;
       floor.userData.roomId = room.id;
       this.model.add(floor);
-      this.pickableFloors.push(floor);
+      this.roomFloors.push(floor);
 
       const outline = new LineLoop(
         new BufferGeometry().setFromPoints(
@@ -351,7 +343,7 @@ export class VenueScene {
   }
 
   private createWalls(): void {
-    const walls = new InstancedMesh(this.unitBox, this.whiteMaterial, venueLayout.walls.length);
+    const walls = new InstancedMesh(this.unitBox, this.wallMaterial, venueLayout.walls.length);
     const transform = new Object3D();
     for (const [index, wall] of venueLayout.walls.entries()) {
       const start = this.worldPoint(wall.start);
@@ -410,7 +402,7 @@ export class VenueScene {
         [centerX - width * 0.29, rear + depth * 0.25],
       ],
       0.38,
-      this.whiteMaterial
+      this.surfaceMaterial
     );
     stage.name = 'amphitheatre-stage';
 
@@ -419,7 +411,7 @@ export class VenueScene {
       point: PlanPoint,
       elevation: number,
       size: readonly [number, number, number],
-      material = this.whiteMaterial
+      material = this.surfaceMaterial
     ): void => {
       const mesh = new Mesh(this.unitBox, material);
       mesh.name = name;
@@ -460,7 +452,7 @@ export class VenueScene {
       const terrace: PlanPoint[] = [];
       for (let index = 0; index <= 24; index++) terrace.push(rowPoint((index / 24) * 2.08 - 1.04, -depth * 0.03));
       for (let index = 24; index >= 0; index--) terrace.push(rowPoint((index / 24) * 2.08 - 1.04, depth * 0.035));
-      addSurface(terrace, height, this.whiteMaterial);
+      addSurface(terrace, height, this.surfaceMaterial);
       for (const bank of banks) {
         for (let seat = 0; seat < bank.seats; seat++) {
           seats.push({
@@ -490,7 +482,7 @@ export class VenueScene {
       const start = this.worldPoint(startPoint);
       const end = this.worldPoint(endPoint);
       const delta = end.clone().sub(start);
-      const wall = new Mesh(this.unitBox, this.whiteMaterial);
+      const wall = new Mesh(this.unitBox, this.wallMaterial);
       wall.position.copy(start).add(end).multiplyScalar(0.5);
       wall.position.y = base + 0.42;
       wall.rotation.y = -Math.atan2(delta.z, delta.x);
@@ -509,7 +501,7 @@ export class VenueScene {
   ): void {
     const cushions = new InstancedMesh(this.unitBox, this.chairMaterial, seats.length);
     const backs = new InstancedMesh(this.unitBox, this.chairMaterial, seats.length);
-    const bases = new InstancedMesh(this.unitBox, this.whiteMaterial, seats.length);
+    const bases = new InstancedMesh(this.unitBox, this.surfaceMaterial, seats.length);
     cushions.name = 'amphitheatre-seat-cushions';
     backs.name = 'amphitheatre-seat-backs';
     bases.name = 'amphitheatre-seat-bases';
@@ -585,7 +577,7 @@ export class VenueScene {
         table.receiveShadow = true;
         this.model.add(table);
         if (!plant) {
-          const pedestal = new Mesh(roundGeometry, this.whiteMaterial);
+          const pedestal = new Mesh(roundGeometry, this.surfaceMaterial);
           pedestal.position.copy(table.position);
           pedestal.position.y = FLOOR_HEIGHT + 0.25;
           pedestal.scale.set(0.065, 0.5, 0.065);
@@ -615,7 +607,7 @@ export class VenueScene {
     const depth = ((maxY - minY) * SOURCE_SCALE) / steps;
     for (let index = 0; index < steps; index++) {
       const height = 0.06 + ((steps - index) / steps) * 0.72;
-      const step = new Mesh(this.unitBox, this.whiteMaterial);
+      const step = new Mesh(this.unitBox, this.surfaceMaterial);
       step.position.copy(
         this.worldPoint([(minX + maxX) / 2, minY + ((index + 0.5) / steps) * (maxY - minY)], FLOOR_HEIGHT + height / 2)
       );
@@ -630,7 +622,7 @@ export class VenueScene {
     if (!positions.length) return;
     const cushions = new InstancedMesh(this.unitBox, this.chairMaterial, positions.length);
     const backs = new InstancedMesh(this.unitBox, this.chairMaterial, positions.length);
-    const bases = new InstancedMesh(this.unitBox, this.whiteMaterial, positions.length);
+    const bases = new InstancedMesh(this.unitBox, this.surfaceMaterial, positions.length);
     const transform = new Object3D();
     for (const [index, point] of positions.entries()) {
       const position = this.worldPoint(point);
@@ -719,8 +711,10 @@ export class VenueScene {
       -((event.clientY - bounds.top) / bounds.height) * 2 + 1
     );
     this.raycaster.setFromCamera(this.pointer, this.camera);
-    const intersection = this.raycaster.intersectObjects(this.pickableFloors, false)[0];
-    return typeof intersection?.object.userData.roomId === 'string' ? intersection.object.userData.roomId : null;
+    const intersection = this.raycaster.intersectObjects(this.roomFloors, false)[0];
+    // Keep every floor in the hit test so a non-interactive space cannot select a room behind it.
+    const roomId = intersection?.object.userData.roomId;
+    return typeof roomId === 'string' && this.options.canSelectRoom(roomId) ? roomId : null;
   }
 
   private bindEvents(): void {
@@ -729,6 +723,7 @@ export class VenueScene {
     canvas.addEventListener(
       'pointerdown',
       (event) => {
+        this.pendingRoom = null;
         if (!event.isPrimary || event.button !== 0) {
           this.pointerStart = null;
           return;
@@ -761,8 +756,16 @@ export class VenueScene {
       (event) => {
         const start = this.pointerStart;
         this.pointerStart = null;
-        if (!start || start.id !== event.pointerId || start.dragged) return;
-        const roomId = this.pickRoom(event);
+        this.pendingRoom = start && start.id === event.pointerId && !start.dragged ? this.pickRoom(event) : null;
+      },
+      options
+    );
+    canvas.addEventListener(
+      'click',
+      () => {
+        // Open details after pointerup's native popover light-dismiss has finished.
+        const roomId = this.pendingRoom;
+        this.pendingRoom = null;
         if (roomId) this.options.onSelect(roomId);
       },
       options
@@ -771,6 +774,7 @@ export class VenueScene {
       'pointercancel',
       () => {
         this.pointerStart = null;
+        this.pendingRoom = null;
       },
       options
     );
@@ -802,7 +806,7 @@ export class VenueScene {
       const { width, height } = this.options.container.getBoundingClientRect();
       this.options.onProject(
         venuePresentation.rooms
-          .filter((room) => PRIMARY_ROOM_IDS.has(room.id))
+          .filter((room) => this.options.canSelectRoom(room.id))
           .map((room) => {
             const project = (point: PlanPoint, elevation: number): ScreenPoint => {
               const projected = this.worldPoint(point, elevation).project(this.camera);

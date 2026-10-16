@@ -264,9 +264,13 @@ body:has(.venue-map[data-fullscreen="true"]) :is(.site-header, footer) {
   padding: 20px;
 }
 .venue-flat-room {
+  cursor: default;
   fill: var(--venue-flat-fill);
   stroke: var(--venue-flat-stroke);
   stroke-width: 3;
+}
+.venue-flat-room[data-room] {
+  cursor: pointer;
 }
 .venue-flat-room.is-outdoor {
   fill: var(--venue-flat-outdoor);
