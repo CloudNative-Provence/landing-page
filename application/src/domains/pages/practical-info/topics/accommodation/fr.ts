@@ -304,6 +304,14 @@ export default {
           typeId: 'hotel',
           featureIds: ['parking'],
           websiteHref: 'https://www.grandhotelroirene-aixenprovence.com/',
+          discountCode: {
+            label: 'Code de réduction',
+            value: 'KCD26',
+            bookingLink: {
+              text: 'Réserver avec ce code',
+              href: 'https://all.accor.com/lien_externe.svlt?goto=rech_resa&destination=1169&dayIn=09&monthIn=12&yearIn=2026&nightNb=1&adultNumber=1&preferredCode=KCD26',
+            },
+          },
           mapHref: mapsPin('43.523875', '5.449543'),
         },
         {
