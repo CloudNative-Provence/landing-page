@@ -5,31 +5,34 @@ const rooms = [
     id: 'amphitheatre',
     label: 'Amphithéâtre',
     accent: 'from-sky-500 to-cyan-400',
+    kind: 'conference',
+    isMain: true,
+  },
+  {
+    id: 'hallway',
+    label: 'Hallway',
+    accent: 'from-amber-500 to-orange-400',
+    kind: 'hallway',
   },
   {
     id: 'salle-milhaud',
     label: 'Salle Milhaud',
     accent: 'from-emerald-500 to-lime-400',
+    kind: 'conference',
   },
 ] as const;
 
 // biome-ignore format: Preserve deterministic generated schedule source.
 const sessions = [
   {
-    id: 'cmued102q02f901pt5zgvrynz',
-    title: 'Badge & Coffee',
-    description: '',
-    startsAt: '2026-12-10T08:00:00.000+01:00',
-    endsAt: '2026-12-10T09:00:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
     id: 'cmuehh33v02o601ptp3hhvdlu',
     title: 'Badge & Coffee',
     description: '',
     startsAt: '2026-12-10T08:00:00.000+01:00',
     endsAt: '2026-12-10T09:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmued1edu02fe01pttnumuqz2',
@@ -37,7 +40,10 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T09:00:00.000+01:00',
     endsAt: '2026-12-10T09:15:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
   },
   {
     id: 'cmuf6arqw02zb01pt8hmexfaf',
@@ -45,7 +51,10 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T09:00:00.000+01:00',
     endsAt: '2026-12-10T09:15:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
   },
   {
     id: 'cmued2m8g02ff01ptyudr0zhl',
@@ -53,7 +62,10 @@ const sessions = [
     description: 'La souveraineté numérique pose deux questions distinctes. La première est juridique : quel droit s\'applique à nos données. La nationalité du fournisseur y répond. La seconde est architecturale : pouvons-nous partir. Elle n\'y répond pas. Dans beaucoup d\'organisations, ces deux questions ont fusionné, et la réponse à la première tient lieu de réponse à la seconde.\n\nLe résultat, ce sont des organisations rassurées et captives. Une entreprise peut héberger la totalité de ses données chez un acteur qualifié ou sur site, et se trouver dans l\'incapacité de partir : parce que ses services managés n\'ont pas d\'équivalent ailleurs, parce que ses contrats rendent toute évolution prohibitive, parce que ses équipes ne savent opérer qu\'un seul écosystème. Le verrouillage s\'installe on-premises comme dans le cloud public, chez les hyperscalers comme chez les acteurs européens.\n\nKubernetes a rendu les workloads portables. Il n\'a pas rendu les organisations portables. Les conteneurs se déplacent en quelques semaines ; les compétences, les pratiques d\'exploitation et la connaissance intime d\'un écosystème se reconstruisent en années. C\'est là que se loge la dépendance la plus coûteuse, et la moins mesurée.\n\nLa liberté réelle d\'une organisation ne se mesure pas à l\'endroit où tournent ses machines. Elle se mesure au coût et au délai qu\'il lui faudrait pour en changer. Cette réversibilité ne s\'obtient pas avec un label. Elle se construit, et elle commence par les équipes.',
     startsAt: '2026-12-10T09:15:00.000+01:00',
     endsAt: '2026-12-10T09:45:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
     speakers: [
       { id: 'cmul8q4ul00k901phkmsszzwx', name: 'Katia HIMEUR', bio: 'Katia Himeur est CTO et cofondatrice de Cockpit io. Depuis plus de dix ans, elle travaille au plus près de la production : chaînes CI/CD, plateformes Kubernetes, architectures cloud et organisation des équipes qui les exploitent. Elle a accompagné des dizaines d\'organisations publiques et privées, de la conception jusqu\'à l\'exploitation, et conseille des directions techniques sur leurs arbitrages d\'architecture et d\'organisation. Elle intervient régulièrement dans l\'écosystème francophone (Devoxx, Devfest Nantes…) et publie ses analyses sur le blog de Cockpit io. Son fil conducteur : relier chaque décision technique à ses effets réels sur les organisations qui la mettent en œuvre.', picture: 'https://lh3.googleusercontent.com/a/AEdFTp7w92VWr31bXtx2JMAcUzLGHqjdkU-hsRgzMaow=s96-c' },
     ],
@@ -66,7 +78,10 @@ const sessions = [
     description: 'La souveraineté numérique pose deux questions distinctes. La première est juridique : quel droit s\'applique à nos données. La nationalité du fournisseur y répond. La seconde est architecturale : pouvons-nous partir. Elle n\'y répond pas. Dans beaucoup d\'organisations, ces deux questions ont fusionné, et la réponse à la première tient lieu de réponse à la seconde.\n\nLe résultat, ce sont des organisations rassurées et captives. Une entreprise peut héberger la totalité de ses données chez un acteur qualifié ou sur site, et se trouver dans l\'incapacité de partir : parce que ses services managés n\'ont pas d\'équivalent ailleurs, parce que ses contrats rendent toute évolution prohibitive, parce que ses équipes ne savent opérer qu\'un seul écosystème. Le verrouillage s\'installe on-premises comme dans le cloud public, chez les hyperscalers comme chez les acteurs européens.\n\nKubernetes a rendu les workloads portables. Il n\'a pas rendu les organisations portables. Les conteneurs se déplacent en quelques semaines ; les compétences, les pratiques d\'exploitation et la connaissance intime d\'un écosystème se reconstruisent en années. C\'est là que se loge la dépendance la plus coûteuse, et la moins mesurée.\n\nLa liberté réelle d\'une organisation ne se mesure pas à l\'endroit où tournent ses machines. Elle se mesure au coût et au délai qu\'il lui faudrait pour en changer. Cette réversibilité ne s\'obtient pas avec un label. Elle se construit, et elle commence par les équipes.',
     startsAt: '2026-12-10T09:15:00.000+01:00',
     endsAt: '2026-12-10T09:45:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
     speakers: [
       { id: 'cmul8q4ul00k901phkmsszzwx', name: 'Katia HIMEUR', bio: 'Katia Himeur est CTO et cofondatrice de Cockpit io. Depuis plus de dix ans, elle travaille au plus près de la production : chaînes CI/CD, plateformes Kubernetes, architectures cloud et organisation des équipes qui les exploitent. Elle a accompagné des dizaines d\'organisations publiques et privées, de la conception jusqu\'à l\'exploitation, et conseille des directions techniques sur leurs arbitrages d\'architecture et d\'organisation. Elle intervient régulièrement dans l\'écosystème francophone (Devoxx, Devfest Nantes…) et publie ses analyses sur le blog de Cockpit io. Son fil conducteur : relier chaque décision technique à ses effets réels sur les organisations qui la mettent en œuvre.', picture: 'https://lh3.googleusercontent.com/a/AEdFTp7w92VWr31bXtx2JMAcUzLGHqjdkU-hsRgzMaow=s96-c' },
     ],
@@ -79,7 +94,10 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T09:45:00.000+01:00',
     endsAt: '2026-12-10T09:55:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
   },
   {
     id: 'cmuf6c8xw02zd01pt02k1dj82',
@@ -87,15 +105,10 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T09:45:00.000+01:00',
     endsAt: '2026-12-10T09:55:00.000+01:00',
-    roomId: 'salle-milhaud',
-  },
-  {
-    id: 'cmued3s3p02fj01ptuzz0rz7q',
-    title: 'BREAK',
-    description: '',
-    startsAt: '2026-12-10T09:55:00.000+01:00',
-    endsAt: '2026-12-10T10:10:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
   },
   {
     id: 'cmueh59e002m901pt3jpubh2d',
@@ -103,7 +116,9 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T09:55:00.000+01:00',
     endsAt: '2026-12-10T10:10:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmued4f4p02fk01pthwvxn5li',
@@ -111,7 +126,9 @@ const sessions = [
     description: '# Le défi\nDevoir concevoir et déployer une plateforme Cloud Native complète pour traiter les données d\'une flotte de trains légers innovants. Ajoutez à cela trois contraintes majeures : un délai d\'un mois, un budget ultra-serré, et un acteur cloud non maîtrisé par l’équipe de Platform Engineering. Mission impossible ? Pas si vous êtes... 🚆 ***SurDesRails*** 🚆.\n \nDans ce talk, nous vous présenterons comment notre équipe a relevé ce défi d\'ingénierie en s\'appuyant sur l\'Intelligence Artificielle, non pas comme un gadget, mais comme un véritable pair-programmeur structuré. La méthodologie créé et éprouvé pour l\'occasion redéfinit notre DevEx autour de 5 piliers fondamentaux où l\'humain  garde toujours le contrôle.\n🚆 ***SurDesRails*** 🚆 ne consiste pas à demander à un LLM  de "générer une plateforme Cloud Native". La méthode organise la collaboration entre l’humain et l’IA autour de cinq étapes : \n* 📋 clarifier **l’intention** jusqu’à obtenir des spécifications détaillées ; \n* 📐 assurer la **traçabilité** des décisions d’architecture ; \n* 🏗️ préserver **l’adaptabilité** en maintenant l’humain aux commandes ; \n* ✅ faire approuver un plan avant toute **implémentation** ; \n* 🧪 puis confier à plusieurs agents des objectifs **vérifiables** en matière de code, de documentation, de CI/CD et de tests.\n \n# Le résultat \nEn 20 jours de développement réalisés par 1 ingénieur, une plateforme conforme aux besoins a été livrée, **à l\'heure**, respectant les contraintes budgétaires, en ayant acquis une connaissance opérationnelle d’un tout nouvel environnement cloud ☁️.\n\nNous partagerons nos succès (respect des coûts et des délais, amélioration drastique de notre Developer Experience), mais aussi les **limites rencontrées** (intégration d\'un nouveau Clouder, changements d\'architectures). \n\nQue vous soyez Platform Engineer, DevOps ou Tech Lead, vous trouverez dans le framework méthodologique **concret** présenté un moyen d\'intégrer efficacement l\'IA générative dans vos prochains défis de déploiement Cloud Native.',
     startsAt: '2026-12-10T10:10:00.000+01:00',
     endsAt: '2026-12-10T10:40:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmtvm5p0l000y01mvttsf5nof', name: 'Yann Rotilio', bio: 'Dans l\'IT depuis 2007, j\'ai commencé en tant que développeur Java avant d\'embrasser la culture DevOPS dans le but d\'améliorer l\'opérabilité des applications. Depuis 2016 et ma rencontre avec Kubernetes je ne l\'ai plus lâché, et essayé de le mettre partout où j\'ai pu (dans les trains et les gares).\nHeureux propriétaire d\'une girafe en or depuis 2026.\nRavi d\'aider toute personne cherchant un bon restaurant dans la région lyonnaise.', company: 'SNCF', picture: 'https://media.licdn.com/dms/image/v2/D4E03AQFjX2aO91OYbQ/profile-displayphoto-shrink_800_800/B4EZ0nE4MWIQAc-/0/1774477083950?e=1792022400&v=beta&t=nX5XPQ-bgo0nDWzCCVeYBKnoQDZC3GBhE6jg3h3CFEk', socialLinks: ['https://www.linkedin.com/in/yrotilio'] },
       { id: 'cmtvmag01001201mvzx93vc1j', name: 'Tristan Rivoallan', bio: 'Auteur de [Regis](https://github.com/trivoallan/regis) et [knock](https://github.com/trivoallan/knock), deux outils open source pour sécuriser la supply chain des conteneurs : scans et politiques de sécurité, SBOM, provenance OCI et attestations SLSA signées.\n\nAu quotidien, j\'exploite une plateforme Harbor à l\'échelle d\'un grand groupe (~140k dépôts, 13 To d\'images) sur Kubernetes multi-cloud, entièrement gérée en infrastructure as code.\n\nVingt ans de développement, passés par Decathlon Technology, Le Groupe La Poste et Aramisauto.', company: 'Klanik', picture: 'https://avatars.githubusercontent.com/u/23811?v=4', socialLinks: ['https://github.com/trivoallan/', 'https://www.linkedin.com/in/tristanrivoallan/', 'https://trivoallan.raindrop.page/software-engineering-41221553'] },
@@ -126,7 +143,9 @@ const sessions = [
     description: '**Le crime était presque parfait.** Une image vulnérable, glissée discrètement par une main inattentive, et voilà qu\'un Pod suspect s\'installe tranquillement dans votre cluster. Croyait-il vraiment passer inaperçu ?\n\nDans ce talk format "thriller express", nous allons suivre la traque d\'une ressource malveillante à travers un véritable tribunal DevSecOps. Pas de théorie ici : nous allons vivre l\'audience en direct pour comprendre comment votre cluster se défend contre l\'indéfendable.\n\nDécouvrez les acteurs de votre cour de justice Cloud-Native :\n\n🔍 **L\'Inspecteur (Trivy Operator)** : Il fouille les entrailles des Pods en runtime pour débusquer les vices cachés.\n👨‍⚖️ **Le Juge (Kyverno)** : Il applique la loi (les policies) sans trembler et refuse l\'entrée aux récidivistes.\n🚔 **La Police de proximité (Falco)** : Elle surveille les comportements louches en temps réel. Un shell ouvert ? C\'est l\'arrestation immédiate.\n📋 **Le Greffier (Policy Reporter)** : Il consigne chaque verdict pour que rien n\'échappe à l\'audit final.\n\n**En 30 minutes chrono**, nous allons orchestrer une défense en profondeur pour transformer votre cluster d\'une passoire silencieuse en un bastion imprenable.\n\nVous êtes **DevOps** et souhaitez muscler votre sécurité ? Ou peut-être **SRE** à la recherche d\'outils de détection runtime légers et efficaces ? Alors ce talk est fait pour vous ! **Aucune expertise en criminologie n\'est requise** : une connaissance de base de **Kubernetes et de Docker (niveau intermédiaire)** suffira pour suivre l\'enquête. Vous repartirez avec une vision claire et les clés pour rendre vos environnements enfin inattaquables. ⚖️🚔',
     startsAt: '2026-12-10T10:10:00.000+01:00',
     endsAt: '2026-12-10T10:40:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmpp8ixxx01d601qjuznh2omu', name: 'Paul-Alexandre Chrétien', bio: '**Principal Lead chez HoppR** et co-fondateur de la conférence **Cloud Nord** ☁️, je baigne dans l’écosystème Cloud Native avec un penchant assumé pour l\'automatisation et la sécurité Kubernetes. ☸️\n\nGrand fan de **Platform Engineering** 🏗️, j\'adore construire des outils qui facilitent la vie des équipes sans sacrifier la sécurité. Mon approche ? Rendre le DevSecOps pragmatique et (enfin) accessible, sans oublier que derrière chaque plateforme, il y a des humain·e·s. 🤝\n\nCe que je préfère dans les confs tech ? Autant décortiquer une pépite de la CNCF sur scène que refaire le monde avec les autres passionné·e·s autour d\'un verre après les talks. 🍻\n\nToujours partant pour échanger sur vos galères de prod, l\'expérience développeur ou juste pour partager un bon moment avec la commu \\! ✨\n\n**Réseaux sociaux**\n\n[https://www.linkedin.com/in/paulalexandrechretien/](https://www.linkedin.com/in/paulalexandrechretien/)', company: 'HoppR', picture: 'https://lh3.googleusercontent.com/a-/AOh14Gi3oGLwSt7L18UczO3XHNnhEQX_jqIC19t3Y4va', socialLinks: ['https://www.linkedin.com/in/paulalexandrechretien'] },
     ],
@@ -134,20 +153,14 @@ const sessions = [
     tags: ['Security', 'fr'],
   },
   {
-    id: 'cmued603c02fn01pt6yv8715e',
-    title: 'BREAK',
-    description: '',
-    startsAt: '2026-12-10T10:40:00.000+01:00',
-    endsAt: '2026-12-10T11:00:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
     id: 'cmueh4od302m801pt8pxvy38k',
     title: 'BREAK',
     description: '',
     startsAt: '2026-12-10T10:40:00.000+01:00',
     endsAt: '2026-12-10T11:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmued7f1l02fo01ptn10v635a',
@@ -155,7 +168,9 @@ const sessions = [
     description: 'Distributed tracing is a core observability signal in cloud-native systems, but it often comes with a hidden cost: high CPU usage, large memory footprints and complex operational requirements. In Kubernetes environments, this can turn tracing into one of the most expensive parts of an observability stack.\nThis talk explores resource efficiency as a design principle for distributed tracing, and why it matters for the long-term sustainability of cloud-native platforms.\nUsing VictoriaTraces as a concrete open-source example, we will look at how modern tracing systems can be built to ingest and query large volumes of trace data while significantly reducing infrastructure and operational overhead.\nRather than focusing on features, the talk highlights architectural choices, OpenTelemetry compatibility and standard APIs that enable tracing to scale responsibly.\nThis session is aimed at engineers who care about efficient operations, sustainable open source tooling and observability at scale.',
     startsAt: '2026-12-10T11:00:00.000+01:00',
     endsAt: '2026-12-10T11:30:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmpzdlro100yy01ppho1mhvog', name: 'Diana Todea', bio: 'Diana is a CNCF Ambassador and Operational Resilience TAG lead, co-leads the Neurodiversity Merge Forward community, and organizes Cloud Native Days Romania. Professionally, she is the Head of Developer Relations Engineering at VictoriaMetrics, where she works at the intersection of developer experience, observability, and open source community engagement.', company: 'VictoriaMetrics', picture: 'https://lh3.googleusercontent.com/a/ACg8ocLdCqwuZtzrBlbcgEMKH_kKn8DSUXThljyFPaCZtkymXtg=s96-c', socialLinks: ['https://www.linkedin.com/in/diana-todea-b2a79968'] },
     ],
@@ -168,7 +183,9 @@ const sessions = [
     description: 'Pourquoi agentgateway ?\nL\'IA générative s\'impose comme accélérateur opérationnel sur de nombreux cas d\'usage métier. Pour router ce trafic LLM de manière fiable, maîtrisée et économiquement pilotable, agentgateway se présente comme une solution solide : une gateway open source contribuée à l\'Agentic AI Foundation, qui expose une API compatible OpenAI et centralise le routage vers plusieurs providers backend en un point de contrôle unique.\nDans cette session, nous détaillons notre implémentation autour de trois fonctionnalités clés.\n\n- Load balancing — Power of Two Choices : \nAgentgateway implémente l\'algorithme Power of Two Choices. Cette approche réduit significativement la variance de latence par rapport à un round-robin classique. Nous montrons l\'impact concret sur nos distributions de latence en production, avec plusieurs providers actifs simultanément.\n\n-  Failover automatique :\nAgentgateway détecte l\'indisponibilité d\'un provider ou le dépassement de ses limites de débit, et bascule automatiquement vers un backend de secours — de manière transparente pour l\'applicatif appelant. Nous partageons comment nous avons structuré notre pool de backends entre providers cloud et modèles on-premise, et les stratégies de retry configurées pour absorber les pics sans dégrader l\'expérience utilisateur.\n\n- Système de quotas\nLe système de quotas d\'agentgateway nous permet d\'allouer des enveloppes de tokens par équipe ou par projet, avec coupure automatique au dépassement. Ce mécanisme nous donne une imputation précise par usage et la capacité d\'arbitrer en temps réel les ressources LLM entre consommateurs — un enjeu central dans un service public.\n\nRetours d\'expérience\nNous partageons les points de difficultés rencontrés lors du déploiement dans notre infrastructure Kubernetes : intégration avec notre registry interne, contraintes réseau liées au proxy corporate, et gestion des secrets providers. Nous abordons également ce qu\'agentgateway ne couvre pas encore dans notre contexte et comment nous le complétons.\n\nÀ qui s\'adresse cette conférence ?\nAux architectes, platform engineers et tech leads qui pilotent un déploiement IA à l\'échelle dans un SI public ou réglementé. Aucun prérequis sur agentgateway ; une familiarité avec Kubernetes est un plus.',
     startsAt: '2026-12-10T11:00:00.000+01:00',
     endsAt: '2026-12-10T11:30:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmqqgy1d401rn01kx4zi2de79', name: 'Maxime Fournioux', bio: 'Référent MLOps au sein de l\'équipe Plateforme Data/IA de la DGA Tech de France Travail, je participe à l’industrialisation de services d’Intelligence Artificielle, ayant une forte valeur ajoutée métier.' },
     ],
@@ -176,20 +193,14 @@ const sessions = [
     tags: ['AI', 'fr'],
   },
   {
-    id: 'cmued8jy302fq01ptysbesdy5',
-    title: 'Transition time',
-    description: '',
-    startsAt: '2026-12-10T11:30:00.000+01:00',
-    endsAt: '2026-12-10T11:45:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
     id: 'cmueh3kfg02m501pt323dwuij',
     title: 'Transition time',
     description: '',
     startsAt: '2026-12-10T11:30:00.000+01:00',
     endsAt: '2026-12-10T11:45:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmued9uci02fs01ptcs3f30zc',
@@ -197,7 +208,9 @@ const sessions = [
     description: 'We\'ve all felt the pain of waiting for resources, a database, a secret, or a deployment. Tool sprawl makes it worse. Enterprises manage 20+ clusters and 1,000+ nodes. Yet 50% of clusters are snowflakes that resist standardisation, and 9% of organisations are already drowning in three or more CI/CD tools, leaving platform engineers maintaining glue code instead of building reliable platforms.\n\nWhat if teams could provision infrastructure, deploy services, and enforce configurations across an entire fleet automatically, triggered by real events, without adding a single new tool?\n\nIn this talk, we will demonstrate how Sveltos, a Kubernetes add-on controller, makes it possible. The Sveltos Event Framework detects cluster-level events and triggers deployment of services across fleet clusters consistently, scalably, and GitOps-native from day one.\n\nAttendees leave with a practical, reusable pattern for building a self-service reactive platform that scales with demand, without the sprawl.',
     startsAt: '2026-12-10T11:45:00.000+01:00',
     endsAt: '2026-12-10T12:15:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmpqmavll01k901qjiitnd0ib', name: 'Eleni Grosdouli', bio: 'Eleni is your go-to DevOps and GitOps expert, passionate about networking, security, and endpoint management. As a DevOps Consulting Engineer at Cisco Systems, she brings hands-on experience across diverse technical domains.\n\nA lifelong learner, Eleni loves experimenting with cutting-edge technology in her home lab and sharing her discoveries through blog posts. When she is not working on tech projects, you will find her channelling that same energy into sports; she recently joined a local rugby team.', picture: 'https://lh3.googleusercontent.com/a/ACg8ocJgWiygaYR6viu0ouJsOJuXf0WarYJCs86dg6bOl2mXyLkSng=s96-c' },
       { id: 'cmrd7v60i003n12o59uoa919g', name: 'Gianluca Mardente', picture: 'https://lh3.googleusercontent.com/a/ACg8ocKOt8W9OjQI8LKhri6NFSIEyoDBfR5X5PpOW6nmuGl7tCEcHOFY=s96-c' },
@@ -211,7 +224,9 @@ const sessions = [
     description: 'Vous avez commencé modestement : un Pi-hole, un Nextcloud, peut-être un Jellyfin. Et puis, comme tout home-lab enthusiast, vous avez ajouté couche après couche, Grafana, Portainer, Vaultwarden, Home Assistant, Gitea, Immich, Uptime Kuma... et soudain, vous vous retrouvez face à 40 interfaces web, chacune avec son propre système d\'authentification.\n\nLe réflexe "entreprise" serait de déployer Keycloak ou une solution IAM complète. Sauf que Keycloak réclame 512 Mo de RAM minimum, un serveur de base de données dédié, et plusieurs heures de configuration LDAP/SAML avant d\'obtenir un login fonctionnel. Pour un homelab tournant sur un vieux NUC ou un Raspberry Pi, c\'est rédhibitoire.\n\n**Authelia** prend le contre-pied : moins de 30 Mo de RAM, un seul binaire Go, une configuration en YAML, et une intégration native avec Nginx, Traefik ou Caddy via un simple middleware. En 30 minutes, vous avez un SSO avec MFA, PassKeys, des policies d\'accès par sous-domaine, un portail de login simple, et la possibilité de partager certains services à vos proches sans exposer l\'ensemble de votre lab.\n\nDans ce talk, nous verrons :\n- L\'architecture d\'Authelia et son modèle de délégation d\'authentification par forward-auth\n- La configuration pas-à-pas avec Traefik\n- La gestion des utilisateurs, des groupes et des règles d\'accès\n- Le MFA (TOTP, WebAuthn, notifications push)\n- La comparaison avec Authentik et Keycloak\n- Une démo live sur un homelab réel\n\nQue vous soyez débutant en self-hosting ou administrateur système aguerri, vous repartirez avec une solution clé-en-main pour sécuriser votre homelab sans sacrifier vos ressources.',
     startsAt: '2026-12-10T11:50:00.000+01:00',
     endsAt: '2026-12-10T12:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmpcrabsh00zr01p1oodwl8iv', name: 'Jérémy Albrecht', bio: 'Jérémy is a Platform Engineer working at ITCS, in Luxembourg.', company: 'ITCS', picture: 'https://public-jalbrecht.s3.fr-par.scw.cloud/photo.jpg', socialLinks: ['https://github.com/jeremyalbrecht/'] },
     ],
@@ -224,7 +239,9 @@ const sessions = [
     description: 'Il n\'y a qu\'un problème informatique vraiment sérieux : c\'est l\'AI Native. Juger que le Cloud Native est ou n\'est plus nécessaire au profit de l\'AI Native, c\'est répondre à la question fondamentale de l\'informatique de ces dernières années. \n\n[Paraphrase](https://fr.wikipedia.org/wiki/Le_Mythe_de_Sisyphe) passée, dans cette courte présentation nous établirons le lien entre Cloud Native et AI Native au travers d\'une question simple : est-il possible de déployer une stack AI exclusivement à l\'aide d\'outils CNCF ?\t \nDu système d\'exploitation (ex: [Flatcar](https://flatcar.org/)) à l\'inférence (ex: [Kaito](https://kaito-project.netlify.app/)), en passant par systemd-sysext ou le support GPU, nous aborderons les questions principales à se poser lors de l\'idéation pour ne sacrifier ni la sécurité, ni la performance, ni la portabilité.',
     startsAt: '2026-12-10T12:05:00.000+01:00',
     endsAt: '2026-12-10T12:15:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmqgi6kp301ri01qfvr0ceyw4', name: 'Mathieu Tortuyaux', bio: 'Mathieu is a Software Engineer working at Microsoft. With a few other maintainers from Microsoft, Cloudbase and STACKIT, he\'s actively working on Flatcar: an open-source and CNCF operating system designed to run container workloads. His focus areas are releases, cloud provider support, community support, testing and maintaining the OS.\n\nHe\'s co-running the SRE France meetups as well.', company: 'Microsoft', picture: 'https://avatars.githubusercontent.com/u/28657343?v=4', socialLinks: ['https://github.com/tormath1', 'https://x.com/tormath1'] },
     ],
@@ -237,15 +254,9 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T12:15:00.000+01:00',
     endsAt: '2026-12-10T13:30:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
-    id: 'cmueh30yv02m301ptty8ff6ln',
-    title: 'Lunch',
-    description: '',
-    startsAt: '2026-12-10T12:15:00.000+01:00',
-    endsAt: '2026-12-10T13:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmuf6p3r102zh01ptmnj0ithc',
@@ -253,7 +264,9 @@ const sessions = [
     description: 'Aujourd\'hui, un secteur pesant plusieurs milliards d\'euros repose sur un vivier de contributeurs et de mainteneurs dangereusement restreint et surchargé. L\'épuisement des mainteneurs constitue la plus grande menace pour la santé de l\'open source, et un risque direct pour la sécurité de la supply-chain logicielle.\nRegardez les projets comme etcd ou ingress-nginx.\n\nUne solution : attirer et accueillir les talents inexploités qui ont été négligés jusqu\'ici. C\'est la mission de Merge Forward, une initiative communautaire de la CNCF qui rassemble huit groupes dédiés à la diversité, de Women in Cloud Native à Neurodiversity, en passant par Deaf and Hard of Hearing. Nous construisons des réseaux de mentorat et des espaces communautaires pour les contributeurs issus de milieux sous-représentés, ainsi que pour les alliés qui les soutiennent, afin de combler l\'écart entre celles et ceux qui utilisent l\'open source et celles et ceux qui le construisent.\n\nL\'open source n\'est résilient qu\'à la hauteur de la communauté qui le soutient. Venez découvrir comment vous pouvez contribuer.',
     startsAt: '2026-12-10T13:05:00.000+01:00',
     endsAt: '2026-12-10T13:15:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmsgjyeub00540ukwdlilu1u4', name: 'Stéphane Este-Gracias', bio: 'En tant que défenseur des logiciels libres et open source, je me consacre à la promotion de l\'innovation et de la collaboration. Ma passion m\'a conduit à participer à diverses initiatives, en sensibilisant les autres aux avantages de l\'utilisation des logiciels open source.\n\nEn m\'appuyant sur mon expertise des technologies cloud natives, j\'aide les équipes à surmonter les défis, à identifier les axes d\'amélioration et à élaborer des stratégies gagnantes. Je m\'engage à impulser un changement positif et à favoriser une culture de collaboration et d\'apprentissage continu, que ce soit auprès de clients externes ou au sein de notre propre équipe.\n\nEn tant que Cloud Native Ambassadeur, je suis fier de continuer à promouvoir les logiciels open source et à inspirer d\'autres personnes à rejoindre ce mouvement.', picture: 'https://platform-logos-myprofile-api-prod.s3.us-east-2.amazonaws.com/sestegra.png?v=1708174350162', socialLinks: ['https://github.com/sestegra', 'https://bsky.app/profile/sestegra.bsky.social', 'https://openprofile.dev/profile/sestegra'] },
     ],
@@ -266,7 +279,9 @@ const sessions = [
     description: 'Ton cluster est privé. L\'API server n\'est joignable de nulle part, ton RBAC est carré, tes ServiceAccounts au cordeau et tout est géré en GitOps. Tu as bien fait le boulot.\n\nSauf qu\'il reste un chemin d\'écriture vers ton cluster que ton RBAC ne voit pas : Git.\n\nEn 5 minutes, je te montre comment un manifeste banal, le genre qu\'on approuve en diagonale, devient une élévation de privilèges vers cluster-admin, sans jamais toucher ni à l\'API server ni au RBAC. Puis comment refermer le trou et, surtout, traiter ton dépôt GitOps comme le composant de sécurité qu\'il est devenu.\n\nTu repars avec une seule question en tête : chez toi, qui a le droit de merger ?',
     startsAt: '2026-12-10T13:20:00.000+01:00',
     endsAt: '2026-12-10T13:30:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmto4em0400191hqtndzm36f1', name: 'Cédric Moulard', bio: 'Avec un quart de siècle d’expérience dans la tech, j’ai vécu de près l’évolution de nos métiers, du pur développement à l\'avènement du mouvement DevOps. \n\nJe me définis avant tout comme un explorateur : j\'aime mettre les mains dans le cambouis et tester les technologies émergentes pour en comprendre le potentiel. \n\nJe suis également fier d’être le 10ème "Golden Kubestronaut" de France, un titre qui vient valider mon parcours sur les technologies de conteneurisation', company: 'Kraftr', picture: 'https://avatars2.githubusercontent.com/u/7324369?v=4', socialLinks: ['https://github.com/cedricmoulard'] },
     ],
@@ -279,7 +294,9 @@ const sessions = [
     description: 'Chez Doctolib, nous découpons le monolithe historique. En plus de la difficulté métier à faire cela, nous avons dû repenser sur comment déployer de nouveaux services. Il y a un an : **40 pull requests, 3 semaines pour aller en prod. Aujourd\'hui : moins de 3 heures.** \n\nPour cela nous sommes passés d\'une infrastructure gérée par des SRE à une plateforme self-service facilement utilisable par les développeurs. Résultat aujourd\'hui plus de 90% des PRs infrastructure sont écrites et validées par les équipes elles-mêmes.\n\nMais le chemin pour y arriver n\'a pas été évident. Ce talk revient sur les choix faits et les difficultés rencontrées, avec deux points de vue complémentaires : celui d\'un Principal SRE, qui doit garantir la fiabilité, la sécurité et la conformité dans un contexte de santé, et celui d\'un PM, qui doit rendre la plateforme compréhensible, adoptable et réellement utile pour les équipes.\n\n**Description**\n\n- **L\'outil n\'était pas la question.** Quel outil choisir ? Terraform ? Helm?  Kubernetes ? Cette question n\'est pas la plus importante. Le vrai sujet est de trouver le bon niveau d\'abstraction pour les développeurs - et ça ne se décide pas dans un design doc. Nous l\'avons découvert en travaillant avec les premières équipes et en affinant nos descripteurs de deploiment au fil des use cases.\n- **Liberté et garde-fous.** Comment faire du « You build you run it » sans accès à la production dans un domaine aussi contraignant que la santé? Comment satisfaire les contraintes SRE pour garantir la scalabilité et la stabilité de la plateforme, tout en fournissant une interface simple a utiliser et qui permettent aux équipes de continuer à innover?\n- **_L\'avenir ?_** Un fichier YAML est une interface idéale pour un LLM. Le déploiment n\'est plus un sujet. Mais de nombreux sujets restent ouverts. Comment faire évoluer la plateforme pour supporter de nouvelles technologies? Comment permettre aux équipes d\'étre toujours plus autonome pour opérer leur services en production?',
     startsAt: '2026-12-10T13:30:00.000+01:00',
     endsAt: '2026-12-10T14:00:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmtreyxir001v1hmotc9cc2u3', name: 'Bertrand Paquet', bio: 'Après avoir longtemps été consultant chez Octo, s\'occupant plus particulièrement d\'architecture, d\'infra, de performances et de déploiement, après avoir passé deux ans chez Google en tant que SRE sur Google Search, Bertrand est maintenant Principal SRE chez Doctolib, le leader français de la prise de rendez-vous en ligne pour les médecins.', picture: 'https://lh3.googleusercontent.com/a/ACg8ocLDDTc1IVUn9gj3x8TuOezkTh7_FPG_nJ6jouslx6exVs12jFUG=s96-c', socialLinks: ['https://www.linkedin.com/in/bertrand-paquet-1824a03/'] },
       { id: 'cmtreyxj1001x1hmo3ricjy1k', name: 'F S', picture: 'https://lh3.googleusercontent.com/a/ACg8ocLnSrsA-x2A0yNXuJvITxJodKUUBGJOCMpI9dL9GL8HlPEDtw=s96-c' },
@@ -294,7 +311,9 @@ const sessions = [
     description: 'So you finally got your organization to invest in OpenTelemetry. You carefully evaluated observability backends and picked the perfect one. Everything is awesome. Then twelve months later, your costs have skyrocketed and you can’t explain why. What happened?\n\nThis talk examines how to emit meaningful telemetry while keeping costs under control, by exploring the following:\n* Why the easy path isn\'t always the best path\n* What to actually instrument\n* Which metrics to focus on\n* Pipeline efficiency with tools like OTel Arrow\n* Applying sampling, filtering, and intentional instrumentation to cut down on noise\n* Schema management and validation with tools like Weaver\n* Takeaways: what you can do NOW\n\nWe’ll review the ingredients of a mature observability implementation with OpenTelemetry: one that grows with you instead of overwhelming you.\n\nYou’ll learn how to apply cost-effective techniques to achieve meaningful observability.',
     startsAt: '2026-12-10T13:30:00.000+01:00',
     endsAt: '2026-12-10T14:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmpyy1n4i00sn01pp02cfc6ub', name: 'Adriana Villela', bio: 'Adriana Villela is a blogger, host of the [Geeking Out podcast](https://bio.site/geekingout), CNCF & AAIF Ambassador, OpenTelemetry Community Manager, and maintainer of the OpenTelemetry End User SIG. By day, she focuses on Observability and OpenTelemetry, as a Principal Developer Advocate at Dynatrace. By night, she climbs walls. She also loves capybaras, because they make her happy.\n\nIn past lives, Adriana has worked at various large-scale enterprises as both an individual contributor and leader, including Tucows, Bank of Montreal, Ceridian, and Accenture.', company: 'Dynatrace', picture: 'https://cdn.sessionize.com/image/64d6-400o400o2-94YyamXSEpfa2wPkMP51HK.jpg', socialLinks: ['https://linkedin.com/in/adrianavillela', 'https://bsky.app/profile/adrianamvillela.bsky.social', 'https://instagram.com/adrianamvillela', 'https://youtube.com/@adrianamvillela'] },
       { id: 'cmq12wkam01s201pp4oyskvbq', name: 'Josh Lee', picture: 'https://lh3.googleusercontent.com/a/ACg8ocJztafxPkYhNa68yzh7tsqu6jccP2K2rfhG4GtP6I6DlMi4SA=s96-c' },
@@ -303,20 +322,14 @@ const sessions = [
     tags: ['Observability', 'en'],
   },
   {
-    id: 'cmueh8kim02mp01ptu1w6cklt',
-    title: 'Transition time',
-    description: '',
-    startsAt: '2026-12-10T14:00:00.000+01:00',
-    endsAt: '2026-12-10T14:15:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
     id: 'cmueh8vpo02mu01ptvici0gg4',
     title: 'Transition time',
     description: '',
     startsAt: '2026-12-10T14:00:00.000+01:00',
     endsAt: '2026-12-10T14:15:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmuehakdm02n801pth6loux2c',
@@ -324,7 +337,9 @@ const sessions = [
     description: 'Kubernetes est devenu la norme de facto pour déployer et exploiter des applications conteneurisées. Mais sécuriser ses clusters peut être difficile même si l\'on sait quel outil on veut utiliser.\n\nVous avez déjà entendu parler de "Kyverno" mais n\'avez pas très bien compris à quoi cela pouvait servir ? Et quel était son lien avec Kubernetes ?\n\nDans ce talk je vous propose de découvrir Kyverno, de manière visuelle, sous forme de sketchnotes et d\'illustrations.\nNous découvrirons, de manière concrete, ce qu\'est Kyverno, comment il s\'interface avec Kubernetes et quels sont ses pouvoirs magiques (rules et policies).',
     startsAt: '2026-12-10T14:15:00.000+01:00',
     endsAt: '2026-12-10T14:45:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmpbk73sh00l901p1sydtw3us', name: 'Aurélie Vache', bio: 'Aurélie Vache is a Developer Advocate at OVHcloud in Toulouse, France.\n\nShe is recognized as a Docker Captain, a CNCF ambassador, a Google Cloud Developer Expert & a Women techmarkers Ambassador.\n\nShe has been working as a Developer and Ops for over 20 years. Cloud enthusiast and advocates DevOps/Cloud/Golang best practices.\n\nTechnical writer (dev.to/aurelievache), a book author & reviewer, a sketchnoter and a speaker at international conferences.\n\nCreator and maintainer of https://developers.events/, a collaborative, open-source platform that aggregates & list developer/tech-focused conferences/events and call-for-papers (CFP) opportunities worldwide, helping speakers, organizers, sponsors and attendees.\n\nShe created a new visual way for people to learn and understand Cloud technologies: "Understanding Kubernetes/Istio/Docker/Kyverno in a visual way" in sketchnotes, books and videos.\n\nBlog: https://dev.to/aurelievache/\nYouTube: https://www.youtube.com/c/AurelieVache', company: 'OVHcloud', picture: 'https://lh5.googleusercontent.com/-Jx8n2dYA8Ss/AAAAAAAAAAI/AAAAAAAAYLA/oDqXfvM9CfY/photo.jpg', socialLinks: ['https://github.com/scraly', 'https://x.com/aurelievache'] },
     ],
@@ -337,7 +352,9 @@ const sessions = [
     description: 'Il y a deux ans, Ingress NGINX était la réponse par défaut à la question « comment exposer des services dans Kubernetes ? » Puis, en novembre 2025, le projet a été officiellement arrêté et chacun a dû faire un choix.\n  \nChez Giant Swarm, nous exploitons des infrastructures Kubernetes pour des dizaines de clients à travers de multiples environnements. Rester sur un contrôleur d\'ingress abandonné n\'était pas envisageable, mais migrer l\'ensemble de notre plateforme vers une nouvelle implémentation de Gateway API exigeait des preuves solides de sa pertinence, et pas seulement le ressenti de la communauté. Nous avons donc mené des tests de charge à grande échélle.\n\nDans cette présentation, nous verrons comment nous avons construit une pipeline de load testing entièrement automatisée et reproductible à l\'aide de Grafana k6, Tekton et de notre propre stack d\'observabilité (Alloy + Mimir + Grafana). Je vous partagerai les chiffres réels comparant Envoy Gateway et Ingress NGINX Controller sous trafic soutenu, notamment la latence p99, le débit en RPS, l\'utilisation du CPU et de la mémoire ainsi que les taux d\'erreur. Spoiler : les résultats n\'ont pas toujours été ceux que nous attendions.\n\nVous repartirez avec une vision claire des performances d\'Envoy Gateway à grande échelle, un modèle pour construire votre propre dispositif de benchmark de gateway, et un aperçu honnête des compromis que nous avons du faire en migrant une plateforme de production vers Gateway API',
     startsAt: '2026-12-10T14:15:00.000+01:00',
     endsAt: '2026-12-10T14:45:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmqtdzv9d02yk01kxnzlnv8qm', name: 'Thibaud Vaisseau', bio: 'Je suis SRE chez Giant Swarm, où j\'ai fait partie des équipes Observability et Networking.\n\nJe suis passionné par tout ce qui touche à Kubernetes et à l\'open source, et j\'essaie de contribuer autant que possible à ces projets. Je m\'efforce également de rendre les infrastructures informatiques plus durables en animant un SIG dédié à ce sujet au sein de mon entreprise.\n\nEn dehors du travail, je m\'entraîne comme un athlète : je combine trail, ski de randonnée et street lifting, qui occupent l\'essentiel de mon temps libre.', company: 'Giant Swarm', picture: 'https://lh3.googleusercontent.com/a/ACg8ocIY2F2EhGCTQlpec0qW6yEN04lkTaiPuF09Si1mFkTiZ6V7CA=s96-c', socialLinks: ['https://www.linkedin.com/in/thibaud-vaisseau'] },
     ],
@@ -345,20 +362,14 @@ const sessions = [
     tags: ['Networking', 'fr'],
   },
   {
-    id: 'cmuehb65p02na01pt74gu9co8',
-    title: 'Transition time',
-    description: '',
-    startsAt: '2026-12-10T14:45:00.000+01:00',
-    endsAt: '2026-12-10T15:00:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
     id: 'cmuehbgn502nb01ptqj427pz3',
     title: 'Transition time',
     description: '',
     startsAt: '2026-12-10T14:45:00.000+01:00',
     endsAt: '2026-12-10T15:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmuehbypn02nd01ptoq41u3sf',
@@ -366,7 +377,9 @@ const sessions = [
     description: 'You ask a coding agent to build something, grab a coffee, and come back to find it stopped three steps in, asking whether it should continue. Welcome to babysitting your agent.\n\nLast year I got tired of the babysitting and tried the dumbest fix I could think of: a while loop. The Ralph Loop. I gave it a small SaaS to build and left it alone. And it worked, from the application logic to the underlying infrastructure.\n\nRalph turned out to be the first draft of a much bigger idea. The pattern has since caught on, and it\'s now known as loop engineering. So what is this all about, and can you trust a loop enough to let go of the babysitting? That\'s the question this talk takes apart, and the answer will surprise you.\n\nI won\'t pretend it\'s all upside. A loop that works without you can go wrong without you, and code that ships faster than you understand it is a new kind of debt. How much autonomy is actually useful? Come find out where I finally let go, and where I never will.',
     startsAt: '2026-12-10T15:00:00.000+01:00',
     endsAt: '2026-12-10T15:30:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmrg6smci000212oug6690eal', name: 'Engin Diri', bio: 'Engin is a Customer Experience Architect at Pulumi and has been in the IT industry for over 15 years.\n\nHe started as a Java backend developer and later migrated to the fronted development.\n\nThis is where he found his passion for CI/CD, Cloud technologies and in particular Kubernetes.\n\nEngin is a very curious person and loves learning and testing new technologies.', company: 'Pulumi', picture: 'https://avatars.githubusercontent.com/u/38325136?v=4', socialLinks: ['https://github.com/dirien', 'https://x.com/_ediri'] },
     ],
@@ -379,7 +392,9 @@ const sessions = [
     description: 'In this practical session, we’ll explore the fundamentals of prompt engineering and how to communicate effectively with AI systems. We’ll cover how LLMs interpret instructions, the role of context, examples, constraints, and structured outputs, and how to iteratively improve prompts to achieve more reliable results.\nThrough hands-on examples, we’ll transform vague requests into clear, actionable prompts and explore techniques that can be applied to everyday engineering tasks: debugging, documentation, automation, and cloud-native workflows.',
     startsAt: '2026-12-10T15:05:00.000+01:00',
     endsAt: '2026-12-10T15:15:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmrfj0ut100rm12o5mnyfoqro', name: 'Erik', bio: 'I am a DevOps Engineer passionate about cloud-native infrastructure, automation, and AI-powered operations. With experience in Kubernetes, Nomad, Go, Python and modern DevOps ecosystems, I build tools that simplify infrastructure management and bridge the gap between AI and operational systems.', picture: 'https://avatars.githubusercontent.com/u/41591336?v=4' },
     ],
@@ -392,15 +407,9 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T15:20:00.000+01:00',
     endsAt: '2026-12-10T15:30:00.000+01:00',
-    roomId: 'salle-milhaud',
-  },
-  {
-    id: 'cmuehci9i02ni01ptk4kyyknb',
-    title: 'BREAK',
-    description: '',
-    startsAt: '2026-12-10T15:30:00.000+01:00',
-    endsAt: '2026-12-10T16:00:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
   },
   {
     id: 'cmuehctsp02nk01pt5q1t675k',
@@ -408,7 +417,9 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T15:30:00.000+01:00',
     endsAt: '2026-12-10T16:00:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmuehdj0z02nn01ptx664rrc4',
@@ -416,7 +427,9 @@ const sessions = [
     description: '[Notez que je peux le faire en Francais si c\'est préférable]\n\nAt Giant Swarm we use Cluster API to provision and bootstrap our k8s clusters. With this setup, control plane (CP) and worker nodes must run on the same infrastructure which was never an issue so far...\n\nHowever, in bare-metal environments, using 128-core servers for CP nodes is luxury. It\'s far more efficient to host them as virtual machines on a hypervisor while keeping workers on physical hardware. But can we get around CAPI\'s limitations?\n\nWe will walk through how we built Frankenstein\'s cluster by mixing vSphere for the CP and Proxmox for workers as a testing ground. While technically functional, this required "hacky engineering". We will share the hurdles we hit and the operational risks of this hybrid cluster setup.\n\nFinally, we will demonstrate how we solved this challenge with a cleaner, upstream-friendly alternative. Kamaji lets us run the CP as pods in a management cluster. We achieved even better resource optimisation with full native community support and no custom hacks.',
     startsAt: '2026-12-10T16:00:00.000+01:00',
     endsAt: '2026-12-10T16:30:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmqrs101i02b401kxm9qdo24y', name: 'Xavier Avrillier', bio: 'I work as a Solutions Architect at Giant Swarm, currently working on the managed Kubernetes product in hybrid environments and smart factories. My main focus is around cluster lifecycle and customer implementations.', company: 'Giant Swarm', picture: 'https://lh3.googleusercontent.com/a/ACg8ocI0MYH_MWRx-WR4vMRlRR5rVWoQTfPT5Yjf7BB71wwZtVdGZTvB=s96-c', socialLinks: ['https://www.linkedin.com/in/avrillier/'] },
     ],
@@ -429,7 +442,9 @@ const sessions = [
     description: '# Contexte\n\nGateway API est souvent présentée comme le successeur naturel des Ingress. Sur le papier, la migration semble simple : remplacer des objets Ingress par des HTTPRoute et déployer un contrôleur compatible.\nEn production, la réalité est plus nuancée. Dans cette session, je partagerai le retour d’expérience de la migration d’Ingress NGINX et ModSecurity vers Envoy Gateway, Gateway API et Coraza WAF. Cette évolution ne s’est pas limitée au remplacement du point d’entrée de nos clusters : elle a aussi impliqué une adaptation de l’écosystème autour de la plateforme.\n\n# Migration vers Gateway API\n\nSi Gateway API était prête, l’ensemble de l’écosystème ne l’était pas toujours. Nous verrons les points de friction rencontrés au cours de la migration : compatibilité des versions des CRD, support des ListenerSets, intégration avec cert-manager pour la gestion des certificats, prise en charge par ExternalDNS, ainsi que la maturité variable des fonctionnalités selon les contrôleurs Gateway.\n\nCette partie mettra en lumière les choix d’architecture réalisés pour avancer malgré ces contraintes, ainsi que les compromis nécessaires pour mener une migration progressive sans interruption de service.\n\n# Sécurité WAF\n\nÀ cette migration de la couche d’exposition s’est ajoutée une évolution de la couche de sécurité, avec le remplacement de ModSecurity par Coraza. Nous verrons les différences entre ces deux approches, les adaptations nécessaires des règles WAF et les points d’attention pour conserver un niveau de protection équivalent tout au long de la transition.\nCette dimension sécurité a été un sujet central de la migration, car elle a demandé de concilier continuité de protection, compatibilité applicative et modernisation de la plateforme.\n\n# Retours d’expérience\n\nAu-delà des aspects techniques, cette présentation partagera les enseignements tirés de cette migration menée en production : ce qui a bien fonctionné, ce qui a été plus complexe que prévu, et les erreurs à éviter si vous envisagez une démarche similaire.\n\nVous repartirez avec une vision concrète de l’état actuel de l’écosystème Gateway API, une meilleure compréhension des interactions entre Gateway, Envoy et Coraza, ainsi que des recommandations pratiques pour moderniser votre propre plateforme sans découvrir ces obstacles au dernier moment.',
     startsAt: '2026-12-10T16:00:00.000+01:00',
     endsAt: '2026-12-10T16:30:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmrhvuzqk002q12ouksy621h0', name: 'Clement Phu', bio: 'Platform Engineer chez NumSpot et Golden Kubestronaut, j’accompagne depuis plus de six ans la conception, l’exploitation et l’évolution de plateformes Kubernetes en environnements on-premises et cloud. Passionné par l’écosystème CNCF, je m’intéresse particulièrement à la sécurité, au GitOps, au networking et aux plateformes self-service.', company: 'NumSpot', picture: 'https://github.com/cncf/people/blob/main/images/clement-phu.jpg?raw=true', socialLinks: ['https://www.linkedin.com/in/clement-phu-67a2b414b'] },
     ],
@@ -437,20 +452,14 @@ const sessions = [
     tags: ['Networking', 'fr'],
   },
   {
-    id: 'cmuehe9yl02nv01ptj5zk6uhz',
-    title: 'Transition time',
-    description: '',
-    startsAt: '2026-12-10T16:30:00.000+01:00',
-    endsAt: '2026-12-10T16:45:00.000+01:00',
-    roomId: 'amphitheatre',
-  },
-  {
     id: 'cmuehekbf02ny01pthjbqkyv7',
     title: 'Transition time',
     description: '',
     startsAt: '2026-12-10T16:30:00.000+01:00',
     endsAt: '2026-12-10T16:45:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'hallway' },
+    ],
   },
   {
     id: 'cmuehf04002o101ptqxluhsso',
@@ -458,7 +467,9 @@ const sessions = [
     description: 'Many organizations still treat observability as a tooling decision: select a vendor, deploy agents, and expect insight to follow. Yet teams continue to struggle with fragmented signals, rising complexity, and slow incident response. The real issue is rarely the tool itself - it’s the absence of a shared foundation and a coherent product experience.\n\nThis talk reframes observability as an internal platform product, designed with clear users, sane defaults, and long-term evolution in mind. Drawing parallels to Kubernetes and platform engineering, we’ll explore why powerful primitives are not enough - and why standardization, correlation, and paved paths matter more than features.\n\nWe’ll look at how OpenTelemetry provides a vendor-neutral foundation for structured telemetry, decoupling instrumentation from backends and enabling correlation by default. This structured approach not only reduces cognitive load and improves reliability, it also lays the groundwork for AI-assisted debugging and natural language interaction with production systems.\n\nObservability isn’t just about collecting more data. It’s about designing a platform that makes understanding systems easier - for both humans and machines.',
     startsAt: '2026-12-10T16:45:00.000+01:00',
     endsAt: '2026-12-10T17:15:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre' },
+    ],
     speakers: [
       { id: 'cmpmz77x200jo01qja21wmkpi', name: 'Kasper Nissen', bio: 'Kasper is a CNCF Ambassador, former KubeCon+CloudNativeCon Co-Chair, Golden Kubestronaut, KCD Organizer, and CNCG Group Organizer. He co-founded Cloud Native Nordics to unite meetups across the region. As a Principal Developer Advocate at Dash0, he helps make observability easy for developers by advocating for better tooling, best practices, and seamless integrations. Bridging observability and platform engineering, he ensures developers stay productive and gain actionable insights exactly when needed.', picture: 'https://lh3.googleusercontent.com/a/ACg8ocLswJjppJvQNoymPLyTcSL_A_pRxx8KPkdfToQajArV9WljUjtswg=s96-c' },
     ],
@@ -471,7 +482,9 @@ const sessions = [
     description: 'Derrière chaque cluster Kubernetes se cache le même composant critique : ETCD. Tout y passe : la configuration, l\'état des pods, les secrets, et la moindre seconde d\'indisponibilité fait vaciller le control-plane. Pourtant, quand on opère du Kubernetes managé à grande échelle, ce data-store peut rapidement devenir un goulot d\'étranglement.\n\nAprès des années à opérer ETCD chez différents cloud providers, nous nous sommes rendus à l\'évidence : on ne peut pas se contenter d\'empiler des clusters standalones. Plutôt que de continuer à contourner ses limites, nous avons choisi chez Clever Cloud de le réécrire. Plus précisément, construire une couche stateless compatible avec son protocole, en s\'appuyant sur FoundationDB pour le stockage, le Key-Value distribué transactionnel utilisé par Apple pour iCloud et OpenAI.\n\nLors de ce deep-dive, nous partagerons notre retour d\'expérience : pourquoi ETCD nous a poussés à le réécrire, ce qu\'on découvre quand on plonge dans ses internals (watchers, révisions, ce qui se passe à chaque kubectl apply), et comment cette réécriture en couche stateless au-dessus de FoundationDB change la donne pour servir du Kubernetes à grande échelle.',
     startsAt: '2026-12-10T16:45:00.000+01:00',
     endsAt: '2026-12-10T17:15:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'salle-milhaud' },
+    ],
     speakers: [
       { id: 'cmrathbtz01ro12oyrur57heo', name: 'Alexandre Burgoni', bio: 'Site Reliabilty Engineer, je travaille avec des systèmes distribués au quotidien. \n \nJe suis aussi co-organisateur de conférence (Sunny Tech) et de meetups sur Montpellier.', company: 'Clever Cloud', picture: 'https://avatars.githubusercontent.com/u/23573685?v=4', socialLinks: ['https://github.com/AlexandreBrg', 'https://www.linkedin.com/in/alexandre-burgoni/', 'https://bsky.app/profile/brotocole.bsky.social'] },
     ],
@@ -484,7 +497,10 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T17:15:00.000+01:00',
     endsAt: '2026-12-10T17:45:00.000+01:00',
-    roomId: 'amphitheatre',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
   },
   {
     id: 'cmuehgj1w02o401pt0dllp8to',
@@ -492,7 +508,10 @@ const sessions = [
     description: '',
     startsAt: '2026-12-10T17:15:00.000+01:00',
     endsAt: '2026-12-10T17:45:00.000+01:00',
-    roomId: 'salle-milhaud',
+    locations: [
+      { roomId: 'amphitheatre', role: 'main' },
+      { roomId: 'salle-milhaud', role: 'broadcast' },
+    ],
   },
 ] as const;
 

@@ -10,7 +10,7 @@ export default buildSpeakersPageData({
   hero: {
     tagline: 'Intervenants',
     title: 'Découvrez les intervenants de KCD Provence',
-    subtitle: 'Découvrez les parcours des intervenants de KCD Provence 2026 et les talks qu’ils présenteront.',
+    subtitle: "Découvrez les parcours des intervenants de KCD Provence 2026 et les talks qu'ils présenteront.",
     programLabel: 'Voir le programme',
   },
   section: {

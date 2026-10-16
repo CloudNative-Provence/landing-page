@@ -3,44 +3,66 @@ import { describe, expect, it } from 'vitest';
 import type { ProgramSession } from '../model/schedule';
 import { mergeSharedProgramSessions } from './shared-sessions';
 
-const rooms = [
-  { id: 'left', label: 'Left room', accent: 'blue' },
-  { id: 'right', label: 'Right room', accent: 'green' },
-];
 const session: ProgramSession = {
   id: 'left-break',
-  roomId: 'left',
+  locations: [{ roomId: 'left' }],
   title: 'Coffee break',
   description: '',
   startsAt: '2026-12-10T10:40:00+01:00',
   endsAt: '2026-12-10T11:00:00+01:00',
 };
-const matching = { ...session, id: 'right-break', roomId: 'right' };
+const matching = { ...session, id: 'right-break' };
 
 describe('shared program sessions', () => {
-  it('renders one entry when the same session runs in every room', () => {
-    const source = [session, matching];
+  it('keeps the single Hallway location while preserving duplicate source IDs as saved aliases', () => {
+    const locations = [{ roomId: 'hallway' }];
+    const source = [
+      { ...session, locations },
+      { ...matching, locations },
+    ];
     const original = structuredClone(source);
-    const display = mergeSharedProgramSessions(source, rooms);
-    expect(display).toEqual([
-      {
-        ...session,
-        roomId: undefined,
-        isGlobal: true,
-        sourceIds: ['left-break', 'right-break'],
-        roomIds: ['left', 'right'],
-      },
-    ]);
+    const display = mergeSharedProgramSessions(source);
+    expect(display).toHaveLength(1);
+    expect(display[0]).toMatchObject({
+      sourceIds: ['left-break', 'right-break'],
+      roomIds: ['hallway'],
+      locations,
+    });
+    expect(display[0]).not.toHaveProperty('roomId');
+    expect(display[0]).not.toHaveProperty('isGlobal');
+    expect(mergeSharedProgramSessions([...source].reverse())).toEqual(display);
     expect(source).toEqual(original);
-    expect(mergeSharedProgramSessions([...source].reverse(), rooms)).toEqual(display);
+  });
+
+  it('preserves main and broadcast roles, even when matching locations are ordered differently', () => {
+    const locations = [
+      { roomId: 'left', role: 'main' as const },
+      { roomId: 'right', role: 'broadcast' as const },
+    ];
+    const display = mergeSharedProgramSessions([
+      { ...session, locations },
+      { ...matching, locations: [...locations].reverse() },
+    ]);
+    expect(display).toHaveLength(1);
+    expect(display[0]).toMatchObject({ locations, sourceIds: ['left-break', 'right-break'] });
+  });
+
+  it.each<{ locations: ProgramSession['locations'] }>([
+    { locations: [{ roomId: 'right' }] },
+    { locations: [{ roomId: 'left', role: 'main' }] },
+    { locations: [{ roomId: 'left' }, { roomId: 'right' }] },
+  ])('does not merge matching content with different locations or roles: %j', ({ locations }) => {
+    const display = mergeSharedProgramSessions([session, { ...matching, locations }]);
+    expect(display).toHaveLength(2);
+    expect(display.every((entry) => entry.sourceIds.length === 1)).toBe(true);
   });
 
   it('compares timestamp instants so equivalent timezone offsets still merge', () => {
     expect(
-      mergeSharedProgramSessions(
-        [session, { ...matching, startsAt: '2026-12-10T09:40:00Z', endsAt: '2026-12-10T10:00:00Z' }],
-        rooms
-      )
+      mergeSharedProgramSessions([
+        session,
+        { ...matching, startsAt: '2026-12-10T09:40:00Z', endsAt: '2026-12-10T10:00:00Z' },
+      ])
     ).toHaveLength(1);
   });
 
@@ -53,48 +75,36 @@ describe('shared program sessions', () => {
     { format: 'Talk' },
     { tags: ['Cloud'] },
   ])('keeps sessions separate when their content or timing differs: %j', (difference) => {
-    const display = mergeSharedProgramSessions([session, { ...matching, ...difference }], rooms);
+    const display = mergeSharedProgramSessions([session, { ...matching, ...difference }]);
     expect(display).toHaveLength(2);
-    expect(display.every((entry) => !entry.isGlobal && entry.sourceIds.length === 1)).toBe(true);
+    expect(display.every((entry) => entry.sourceIds.length === 1)).toBe(true);
   });
 
-  it('requires every configured room, even when a subset has matching sessions', () => {
-    const threeRooms = [...rooms, { id: 'third', label: 'Third room', accent: 'pink' }];
-    expect(mergeSharedProgramSessions([session, matching], threeRooms)).toHaveLength(2);
-    expect(
-      mergeSharedProgramSessions([session, matching, { ...session, id: 'third-break', roomId: 'third' }], threeRooms)
-    ).toHaveLength(1);
+  it('keeps identical talks in distinct rooms separate without inferring a broadcast', () => {
+    const display = mergeSharedProgramSessions([session, { ...matching, locations: [{ roomId: 'right' }] }]);
+    expect(display.map((entry) => entry.locations)).toEqual([[{ roomId: 'left' }], [{ roomId: 'right' }]]);
   });
 
-  it('does not mistake duplicate entries in one room for coverage of every room', () => {
-    expect(mergeSharedProgramSessions([session, { ...session, id: 'duplicate' }], rooms)).toHaveLength(2);
-    expect(mergeSharedProgramSessions([session, matching, { ...session, id: 'duplicate' }], rooms)).toHaveLength(3);
+  it('retains aliases for exact duplicates in a single room', () => {
+    const [display] = mergeSharedProgramSessions([session, matching]);
+    expect(display).toMatchObject({ locations: [{ roomId: 'left' }], sourceIds: ['left-break', 'right-break'] });
   });
 
-  it('keeps a single-room session assigned to its room', () => {
-    const [display] = mergeSharedProgramSessions([session], [rooms[0]]);
-    expect(display.roomId).toBe('left');
-    expect(display.isGlobal).not.toBe(true);
-  });
-
-  it('keeps repeated breaks at different times as separate shared rows', () => {
+  it('keeps repeated breaks at different times as separate rows', () => {
     const later = { startsAt: '2026-12-10T15:30:00+01:00', endsAt: '2026-12-10T16:00:00+01:00' };
-    const display = mergeSharedProgramSessions(
-      [{ ...matching, ...later, id: 'right-later' }, session, { ...session, ...later, id: 'left-later' }, matching],
-      rooms
-    );
+    const display = mergeSharedProgramSessions([
+      { ...matching, ...later, id: 'right-later' },
+      session,
+      { ...session, ...later, id: 'left-later' },
+      matching,
+    ]);
     expect(display).toHaveLength(2);
     expect(display.map((entry) => entry.startsAt)).toEqual([session.startsAt, later.startsAt]);
   });
 
-  it('preserves explicit global entries and tolerates an empty schedule', () => {
-    const [display] = mergeSharedProgramSessions([{ ...session, isGlobal: true }], rooms);
-    expect(display).toMatchObject({
-      isGlobal: true,
-      roomId: undefined,
-      sourceIds: ['left-break'],
-      roomIds: ['left', 'right'],
-    });
-    expect(mergeSharedProgramSessions([], rooms)).toEqual([]);
+  it('does not invent destinations for unassigned sessions and tolerates an empty schedule', () => {
+    const [display] = mergeSharedProgramSessions([{ ...session, locations: [] }]);
+    expect(display).toMatchObject({ locations: [], roomIds: [], sourceIds: ['left-break'] });
+    expect(mergeSharedProgramSessions([])).toEqual([]);
   });
 });

@@ -14,6 +14,7 @@ export default {
     speakers: 'Speakers',
     sponsoring: 'Sponsoring',
     practicalInfo: 'Practical Information',
+    venueMap: 'Venue map',
     about: 'About',
     contact: 'Contact',
     brandGuidelines: 'Brand Guidelines',

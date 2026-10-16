@@ -6,22 +6,22 @@ import ProgramLanguageBadge from './ProgramLanguageBadge.astro';
 import ProgramMarkdown from './ProgramMarkdown.astro';
 import ProgramSpeaker from './ProgramSpeaker.astro';
 import type { ProgramScheduleLabels } from './program-schedule.types';
+import './session-reminder.css';
 
 interface Props {
   session: ProgramSession;
-  roomId: string;
   roomLabel: string;
   tone: string;
-  isGlobal: boolean;
   labels: ProgramScheduleLabels;
   searchText: string;
   sourceIds?: readonly string[];
-  roomIds?: readonly string[];
+  timeLabel?: string;
 }
 
-const { session, roomId, roomLabel, tone, isGlobal, labels, searchText } = Astro.props;
+const { session, roomLabel, tone, labels, searchText } = Astro.props;
 const sourceIds = Astro.props.sourceIds ?? [session.id];
-const roomIds = Astro.props.roomIds ?? [roomId];
+const roomIds = session.locations.map((location) => location.roomId);
+const isGlobal = roomIds.length > 1;
 const detailsPopoverId = `program-session-details-${session.id}`;
 const detailsTitleId = `${detailsPopoverId}-title`;
 const tags = session.tags ?? [];
@@ -44,7 +44,6 @@ const hasDetails = Boolean(roomLabel || session.description || tags.length || se
   data-session-description={session.description}
   data-session-location={roomLabel}
   data-search-text={searchText}
-  data-room-id={roomId}
   data-room-ids={roomIds.join(',')}
   data-starts-at={session.startsAt}
   data-ends-at={session.endsAt}
@@ -77,7 +76,18 @@ const hasDetails = Boolean(roomLabel || session.description || tags.length || se
     </button>
   </div>
 
+  <span class="session-reminder-label mt-2" data-session-starting-soon hidden>
+    <Icon name="tabler:clock" class="h-3 w-3" />{labels.startingSoonLabel}
+  </span>
+
   <div class="mt-auto pt-3">
+    {Astro.props.timeLabel && <p class="mb-2 text-xs font-semibold tabular-nums">{Astro.props.timeLabel}</p>}
+    {isGlobal && (
+      <p class="mb-2 flex items-start gap-1.5 text-xs text-muted" aria-label={labels.roomLabel}>
+        <Icon name="tabler:map-pin" class="mt-0.5 h-3.5 w-3.5 shrink-0" />
+        <span>{roomLabel}</span>
+      </p>
+    )}
     {session.format || topicTags.length || languages.length ? (
       <div class="flex flex-wrap items-center gap-x-3 gap-y-1.5 text-xs text-muted xl:text-[0.8rem]">
         {session.format && (

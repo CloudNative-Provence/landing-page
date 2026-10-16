@@ -60,12 +60,14 @@ describe('page route feature flags', () => {
     expect(isProgramEnabled()).toBe(false);
     expect(isLocalizedPageEnabled('program')).toBe(false);
     expect(isLocalizedPageEnabled('speakers')).toBe(false);
+    expect(isLocalizedPageEnabled('venue-map')).toBe(true);
     expect(getEnabledLocalizedRouteKeys()).not.toContain('program');
     expect(getEnabledLocalizedRouteKeys()).not.toContain('speakers');
     expect(getEnabledLocalizedRouteKeys()).toEqual([
       'about',
       'contact',
       'practical-info',
+      'venue-map',
       'sponsoring',
       'brand-guidelines',
       'terms',
@@ -74,6 +76,7 @@ describe('page route feature flags', () => {
     expect(getEnabledStandaloneLocalizedRouteKeys()).toEqual([
       'about',
       'contact',
+      'venue-map',
       'sponsoring',
       'brand-guidelines',
       'terms',

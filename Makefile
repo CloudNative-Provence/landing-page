@@ -12,7 +12,7 @@ setup: ## Prepare stack to run
 start: ## Start application in dev mode
 	npm --prefix application run start
 
-fetch-schedule: ## Update the program from Conference Hall (requires CONFERENCEHALL_API_KEY)
+fetch-schedule: ## Update the program from Conference Hall (requires CONFERENCE_HALL_API_KEY)
 	node --experimental-strip-types scripts/fetch-schedule/cli.mjs
 
 lint: ## Run linters

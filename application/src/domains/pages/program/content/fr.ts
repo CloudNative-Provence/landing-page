@@ -14,6 +14,9 @@ const programContent = {
     rooms: 'Salles',
     sessions: 'Sessions',
   },
+  roomNames: {
+    hallway: 'Espace rencontres',
+  },
   filters: {
     searchLabel: 'Rechercher dans le programme',
     searchPlaceholder: 'Chercher par titre, intervenant, résumé, sujet…',
@@ -51,8 +54,11 @@ const programContent = {
     languageLabel: 'Langue de la session',
     languageNames: { en: 'Anglais', fr: 'Français' },
     globalLabel: 'Toutes les salles',
+    mainRoomLabel: 'Salle principale',
+    broadcastRoomLabel: 'Retransmission',
     liveNowLabel: 'En direct',
     upcomingLabel: 'À venir',
+    startingSoonLabel: 'Commence bientôt',
     addLabel: 'Ajouter à mon agenda',
     removeLabel: 'Enregistré',
     detailsLabel: 'Détails',

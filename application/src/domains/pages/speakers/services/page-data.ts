@@ -1,6 +1,6 @@
 import type { ProgramScheduleLabels } from '~/domains/pages/program/components/program-schedule.types';
 import programSchedule from '~/domains/pages/program/content/schedule';
-import type { ProgramRoom, ProgramSession, ProgramSpeaker } from '~/domains/pages/program/model/schedule';
+import type { ProgramSession, ProgramSpeaker } from '~/domains/pages/program/model/schedule';
 import { mergeSharedProgramSessions } from '~/domains/pages/program/services/shared-sessions';
 import type { MetaData } from '~/types';
 
@@ -77,10 +77,9 @@ export const getPublishedProgramSpeakers = (sessions: readonly ProgramSession[])
 
 export const buildSpeakersPageData = (
   content: SpeakersPageStaticContent,
-  sessions: readonly ProgramSession[] = programSchedule.sessions,
-  rooms: readonly ProgramRoom[] = programSchedule.rooms
+  sessions: readonly ProgramSession[] = programSchedule.sessions
 ): SpeakersPageData => {
-  const talks = mergeSharedProgramSessions(sessions, rooms);
+  const talks = mergeSharedProgramSessions(sessions);
 
   return {
     ...content,

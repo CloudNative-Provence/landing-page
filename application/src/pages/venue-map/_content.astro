@@ -1,0 +1,12 @@
+---
+import VenueMap from '~/domains/pages/venue-map/components/VenueMap.astro';
+import type { AppLang } from '~/i18n/routes';
+
+export interface Props {
+  lang: AppLang;
+}
+
+const { lang } = Astro.props;
+---
+
+<VenueMap lang={lang} />

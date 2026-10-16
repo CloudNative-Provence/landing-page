@@ -6,7 +6,7 @@ try {
   await fetchSchedule({
     core: { info: console.log },
     io: { mkdirP: (path) => mkdir(path, { recursive: true }) },
-    apiKey: process.env.CONFERENCEHALL_API_KEY,
+    apiKey: process.env.CONFERENCE_HALL_API_KEY,
     apiBase: 'https://conference-hall.io',
     workspaceDir: fileURLToPath(new URL('../../', import.meta.url)),
   });

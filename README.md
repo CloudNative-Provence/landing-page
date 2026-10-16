@@ -192,6 +192,7 @@ All application source code lives under `application/src`. If you are adding or 
 ### Similar names, different roles
 
 - `layouts/composition/` composes header and footer structures for the Astro layouts. `domains/navigation/` stores localized navigation copy only.
+- Header dropdowns and footer columns share Event, Practical Information and Organization sections. The venue map stays in the footer's Event section. The header promotes Programme and Sponsoring normally, then Programme and Venue map for the whole event day in `event.timeZone`; sponsoring returns to Event during that day. `header-navigation` checks the configured date in the browser and at minute boundaries, so static deployments and pages left open switch without rebuilding. Programme visibility still follows its publishing flag.
 - `shared/content/` contains Markdown and Astro content pipeline helpers. `domains/pages/*/content/` contains business content owned by a specific page domain.
 - `domains/pages/routing/` contains page-routing support. `pages/` contains framework route entrypoints only.
 - `domains/pages/*/components/` owns page-specific UI. `shared/components/` is reserved for truly shared UI used across domains.
@@ -260,10 +261,35 @@ Everything else should live under `domains/`, `shared/`, `pages/`, `layouts/`, `
 
 ## Program schedule
 
+### Preview a date and time in development
+
+With `npm run dev` running, use the browser console on any page:
+
+```js
+devClock.set('2026-12-10T09:20:00+01:00'); // Opening keynote
+devClock.set('2026-12-10T12:30:00+01:00'); // Lunch
+devClock.now();                          // Inspect the application clock
+devClock.reset();                        // Return to the real time
+```
+
+Use an ISO timestamp with `Z` or an explicit timezone offset (`+01:00` for December in France).
+The clock keeps ticking and persists in local storage for the site's origin, surviving reloads,
+navigation, new tabs and browser restarts. `devClock.reset()` clears the saved override.
+Changing or resetting it also updates other open tabs for the same origin immediately.
+The map, saved-session highlights, programme live mode, fullscreen clock, event-day navigation and
+countdown refresh immediately. Enable the programme's live mode (`?live=true`) to see its live badges.
+Resetting clears the override. If browser storage is blocked, the override lasts only for the current document.
+A small DEV indicator shows the simulated date and ticking time in the event's timezone on every page,
+including fullscreen views. Click its timestamp to choose another date and time, then apply or cancel.
+The editor uses the event's timezone, rejects nonexistent daylight-saving times, and uses the first
+occurrence of repeated autumn times. Its reset button returns to real time and hides the indicator.
+The console helper and indicator are excluded from production builds. They change the browser's application clock only;
+native `Date`, generated schedule times, event configuration and server-rendered content remain unchanged.
+
 ### Program schedule import
 
 The program content is generated from Conference Hall's `/api/v1/event/:event/schedule` export.
-To refresh it locally, export `CONFERENCEHALL_API_KEY` in your shell and run:
+To refresh it locally, export `CONFERENCE_HALL_API_KEY` in your shell and run:
 
 ```bash
 make fetch-schedule
@@ -272,9 +298,24 @@ make fetch-schedule
 This uses the same importer as the daily `fetch-schedule` workflow and updates
 `application/src/domains/pages/program/content/schedule.ts`. Both locales use this one file, preserving the
 source titles, descriptions, speaker profiles, room names, session IDs, and session times, including
-breaks and other entries without a talk proposal. Sessions refer directly to rooms; the
-Conference Hall export calls the room name `track`. Empty or invalid responses fail before
+breaks and other entries without a talk proposal. Each session has a required `locations` array
+(`{ roomId, role? }`), the only room assignment used by both the programme and venue map.
+Sessions have no top-level `roomId`; source tracks are resolved into locations during import.
+The Conference Hall export identifies the programme track in `track`. Empty or invalid responses fail before
 replacing the existing schedule. Keep session edits in Conference Hall, then regenerate.
+
+The importer adds programme metadata (`kind`, `isMain`) and per-session `locations`.
+`scripts/fetch-schedule/program-rooms.mjs` identifies the main conference room and the Hallway track.
+Each published track stays one programme room: Amphithéâtre, Salle Milhaud and Hallway. Hallway
+sessions have only `{ roomId: 'hallway' }`; the schedule contains no physical venue bindings.
+Exact matching sessions published in every conference room receive `main` / `broadcast` locations.
+A session's published track determines its programme location, independently of its format or title.
+
+Hallway has its own first timetable column, room filter and calendar location (localized as
+“Espace rencontres” in French). Overlapping entries retain their individual times and saved IDs
+within one cell. Physical mapping lives only in `venue-map/model/venue-presentation.ts`: Hallway
+maps to Forbin, Sainte-Victoire, Picasso and Zone sponsors. The map uses the generated broadcast
+roles without inferring them again.
 
 Each room has its own chronological schedule and time labels. Side-by-side rooms share time
 boundaries: matching slots align and have equal heights, while longer sessions span the shorter

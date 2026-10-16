@@ -13,6 +13,9 @@ const programContent = {
     rooms: 'Rooms',
     sessions: 'Sessions',
   },
+  roomNames: {
+    hallway: 'Hallway',
+  },
   filters: {
     searchLabel: 'Search the schedule',
     searchPlaceholder: 'Search by title, speaker, abstract, topic…',
@@ -51,8 +54,11 @@ const programContent = {
     languageLabel: 'Session language',
     languageNames: { en: 'English', fr: 'French' },
     globalLabel: 'All rooms',
+    mainRoomLabel: 'Main room',
+    broadcastRoomLabel: 'Broadcast',
     liveNowLabel: 'Live now',
     upcomingLabel: 'Upcoming',
+    startingSoonLabel: 'Starts soon',
     addLabel: 'Save to my schedule',
     removeLabel: 'Saved',
     detailsLabel: 'Details',

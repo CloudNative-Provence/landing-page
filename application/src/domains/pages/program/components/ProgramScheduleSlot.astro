@@ -9,6 +9,7 @@ import type { ProgramScheduleLabels } from './program-schedule.types';
 interface Props {
   room?: ProgramRoom;
   column: number;
+  columnIds: readonly string[];
   timeSlot: ProgramSlot<ProgramDisplaySession>;
   timeline: ProgramTimelineLayout;
   labels: ProgramScheduleLabels;
@@ -16,20 +17,29 @@ interface Props {
   roomLabels: ReadonlyMap<string, string>;
 }
 
-const { room, column, timeSlot: slot, timeline, labels, timezone, roomLabels } = Astro.props;
+const { room, column, columnIds, timeSlot: slot, timeline, labels, timezone, roomLabels } = Astro.props;
 const timeFormatter = new Intl.DateTimeFormat('en-GB', {
   hour: '2-digit',
   minute: '2-digit',
   timeZone: timezone,
 });
 const formatTime = (value: string) => timeFormatter.format(new Date(value));
-const roomLabel = room?.label ?? labels.globalLabel;
+const sessionRoomLabel = (session: ProgramDisplaySession) =>
+  session.roomIds
+    .map((id) => {
+      const role = session.locations.find((location) => location.roomId === id)?.role;
+      const qualifier = role === 'main' ? labels.mainRoomLabel : role === 'broadcast' ? labels.broadcastRoomLabel : '';
+      return `${roomLabels.get(id) ?? id}${qualifier ? ` (${qualifier})` : ''}`;
+    })
+    .join(' · ') || labels.globalLabel;
+const roomLabel = room?.label ?? sessionRoomLabel(slot.sessions[0]);
 ---
 
 <section
   data-program-slot
   data-program-shared-slot={!room ? true : undefined}
   data-room-id={room?.id ?? ''}
+  data-column-ids={JSON.stringify(columnIds)}
   data-starts-at={slot.startsAt}
   data-ends-at={slot.endsAt}
   aria-label={`${roomLabel}: ${formatTime(slot.startsAt)}–${formatTime(slot.endsAt)}`}
@@ -37,10 +47,11 @@ const roomLabel = room?.label ?? labels.globalLabel;
     '--program-slot-start': (timeline.lines.get(Date.parse(slot.startsAt)) ?? 1) + 1,
     '--program-slot-end': (timeline.lines.get(Date.parse(slot.endsAt)) ?? 2) + 1,
     '--program-room-column': column,
+    '--program-room-span': Math.max(columnIds.length, 1),
   }}
   class:list={[
     'flex min-w-0 flex-col gap-2 rounded-2xl border border-gray-200/70 bg-slate-50/60 p-3 dark:border-slate-800 dark:bg-slate-950/40 md:row-[var(--program-slot-start)/var(--program-slot-end)]',
-    room ? 'md:col-start-[var(--program-room-column)]' : 'md:col-[1/-1]',
+    'md:col-[var(--program-room-column)/span_var(--program-room-span)]',
   ]}
 >
   <div class="flex flex-wrap items-center gap-2 px-1 text-sm font-semibold tabular-nums text-gray-900 dark:text-white">
@@ -59,16 +70,11 @@ const roomLabel = room?.label ?? labels.globalLabel;
     <ProgramSessionCard
       session={session}
       sourceIds={session.sourceIds}
-      roomIds={session.roomIds}
-      isGlobal={!room}
+      timeLabel={slot.sessions.length > 1 ? `${formatTime(session.startsAt)}–${formatTime(session.endsAt)}` : undefined}
       tone={room?.accent ?? 'from-sky-500 to-cyan-400'}
-      roomId={room?.id ?? ''}
-      roomLabel={roomLabel}
+      roomLabel={sessionRoomLabel(session)}
       labels={labels}
-      searchText={ProgramSearchTextNormalizer.compose([
-        ProgramSearchTextNormalizer.fromSession(session, roomLabels),
-        ...session.roomIds.map((id) => roomLabels.get(id)),
-      ])}
+      searchText={ProgramSearchTextNormalizer.fromSession(session, roomLabels)}
     />
   ))}
 </section>

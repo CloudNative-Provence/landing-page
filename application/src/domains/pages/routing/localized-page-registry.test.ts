@@ -24,6 +24,7 @@ vi.mock('~/pages/program/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/speakers/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/sponsoring/_content.astro', () => ({ default: {} }));
 vi.mock('~/pages/terms/_content.astro', () => ({ default: {} }));
+vi.mock('~/pages/venue-map/_content.astro', () => ({ default: {} }));
 
 import { routeSlugs } from '~/i18n/routes';
 
@@ -58,6 +59,18 @@ describe('LocalizedPageRegistry', () => {
     expect(pageDefinition.props.speakers).toEqual(
       expect.arrayContaining([expect.objectContaining({ id: expect.any(String), name: expect.any(String) })])
     );
+  });
+
+  it.each([
+    { lang: 'fr' as const, title: 'Plan du lieu' },
+    { lang: 'en' as const, title: 'Venue map' },
+  ])('resolves the venue map in $lang within the shared page layout', ({ lang, title }) => {
+    const pageDefinition = LocalizedPageRegistry.resolve('venue-map', lang);
+
+    expect(pageDefinition.layout).toBe('page');
+    expect(pageDefinition.metadata.title).toBe(title);
+    expect(pageDefinition.props.lang).toBe(lang);
+    expect('metadata' in pageDefinition.props).toBe(false);
   });
 
   it('resolves standalone pages without duplicating metadata in props', () => {

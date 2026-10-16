@@ -1,73 +1,40 @@
-import type { ProgramRoom, ProgramSession } from '../model/schedule';
+import type { ProgramSession } from '../model/schedule';
+import { ProgramSessionGroups } from '../model/session-groups';
 
 export interface ProgramDisplaySession extends ProgramSession {
   sourceIds: readonly string[];
   roomIds: readonly string[];
 }
 
-function contentKey(session: ProgramSession): string {
-  return JSON.stringify([
-    Date.parse(session.startsAt),
-    Date.parse(session.endsAt),
-    session.title,
-    session.description,
-    session.format ?? '',
-    session.tags ?? [],
-    (session.speakers ?? []).map((speaker) => [
-      speaker.id,
-      speaker.name,
-      speaker.bio ?? '',
-      speaker.company ?? '',
-      speaker.picture ?? '',
-      speaker.socialLinks ?? [],
-    ]),
-  ]);
-}
-
-/** Merge only an exact match with one published entry in every configured room. */
-export function mergeSharedProgramSessions(
-  sessions: readonly ProgramSession[],
-  rooms: readonly ProgramRoom[]
-): ProgramDisplaySession[] {
-  const roomIds = rooms.map((room) => room.id);
-  const groups = new Map<string, ProgramSession[]>();
+/** Merge identical sessions only when their generated destinations and roles match. */
+export function mergeSharedProgramSessions(sessions: readonly ProgramSession[]): ProgramDisplaySession[] {
   const result: ProgramDisplaySession[] = [];
-
-  for (const session of sessions) {
-    if (session.isGlobal || !session.roomId) {
-      result.push({ ...session, isGlobal: true, roomId: undefined, sourceIds: [session.id], roomIds });
-      continue;
+  for (const group of ProgramSessionGroups.byContent(sessions)) {
+    const destinations = new Map<string, ProgramSession[]>();
+    for (const session of group) {
+      const key = JSON.stringify(
+        session.locations
+          .map(({ roomId, role }) => [roomId, role ?? ''])
+          .sort(([left], [right]) => left.localeCompare(right))
+      );
+      const matching = destinations.get(key) ?? [];
+      matching.push(session);
+      destinations.set(key, matching);
     }
-    const key = contentKey(session);
-    const group = groups.get(key) ?? [];
-    group.push(session);
-    groups.set(key, group);
-  }
-
-  for (const group of groups.values()) {
-    const coversEveryRoom =
-      roomIds.length > 1 &&
-      group.length === roomIds.length &&
-      roomIds.every((id) => group.some((session) => session.roomId === id));
-    if (coversEveryRoom) {
-      const ordered = [...group].sort((left, right) => left.id.localeCompare(right.id));
+    for (const matching of destinations.values()) {
+      const ordered = [...matching].sort((left, right) => left.id.localeCompare(right.id));
       result.push({
         ...ordered[0],
-        roomId: undefined,
-        isGlobal: true,
         sourceIds: ordered.map((session) => session.id),
-        roomIds,
+        roomIds: ordered[0].locations.map((location) => location.roomId),
       });
-    } else {
-      result.push(...group.map((session) => ({ ...session, sourceIds: [session.id], roomIds: [session.roomId!] })));
     }
   }
-
   return result.sort(
     (left, right) =>
       Date.parse(left.startsAt) - Date.parse(right.startsAt) ||
       Date.parse(left.endsAt) - Date.parse(right.endsAt) ||
-      (left.roomId ?? '').localeCompare(right.roomId ?? '') ||
+      (left.roomIds[0] ?? '').localeCompare(right.roomIds[0] ?? '') ||
       left.id.localeCompare(right.id)
   );
 }

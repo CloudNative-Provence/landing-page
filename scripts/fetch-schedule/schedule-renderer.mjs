@@ -43,8 +43,15 @@ export function renderSession(session) {
     '    description: ' + renderString(session.description) + ',',
     '    startsAt: ' + renderString(session.startsAt) + ',',
     '    endsAt: ' + renderString(session.endsAt) + ',',
-    '    roomId: ' + renderString(session.roomId) + ',',
   ];
+
+  lines.push('    locations: [');
+  for (const location of session.locations) {
+    const fields = ['roomId: ' + renderString(location.roomId)];
+    if (location.role) fields.push('role: ' + renderString(location.role));
+    lines.push('      { ' + fields.join(', ') + ' },');
+  }
+  lines.push('    ],');
 
   if (session.speakers?.length) {
     lines.push('    speakers: [');
@@ -87,6 +94,8 @@ export function renderScheduleFile(model) {
         '    id: ' + renderString(room.id) + ',',
         '    label: ' + renderString(room.label) + ',',
         '    accent: ' + renderString(room.accent) + ',',
+        ...(room.kind ? ['    kind: ' + renderString(room.kind) + ','] : []),
+        ...(room.isMain ? ['    isMain: true,'] : []),
         '  },',
       ].join('\n')
     )

@@ -52,8 +52,11 @@ export interface ProgramScheduleLabels {
   languageLabel: string;
   languageNames: Readonly<Record<'en' | 'fr', string>>;
   globalLabel: string;
+  mainRoomLabel: string;
+  broadcastRoomLabel: string;
   liveNowLabel: string;
   upcomingLabel: string;
+  startingSoonLabel: string;
   addLabel: string;
   removeLabel: string;
   detailsLabel: string;

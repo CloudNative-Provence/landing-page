@@ -46,7 +46,7 @@ function sourceSchedule() {
         title: 'BREAK',
         start: '2026-12-10T09:55:00.000+01:00',
         end: '2026-12-10T10:10:00.000+01:00',
-        track: 'Salle Millau',
+        track: 'Hallway',
         language: null,
         proposal: null,
       },
@@ -109,7 +109,7 @@ test('imports the official schema into one complete, deterministic schedule modu
   assert.equal(generated.sessions.length, source.sessions.length);
   assert.deepEqual(
     generated.rooms.map((room) => room.label),
-    ['Amphithéâtre', 'Salle Millau']
+    ['Amphithéâtre', 'Hallway']
   );
   assert.equal('tracks' in generated, false);
   for (const room of generated.rooms) {
@@ -123,11 +123,14 @@ test('imports the official schema into one complete, deterministic schedule modu
     assert.equal(session.startsAt, slot.start);
     assert.equal(session.endsAt, slot.end);
     assert.equal(session.description, slot.proposal?.abstract ?? '');
-    assert.equal(generated.rooms.find((room) => room.id === session.roomId).label, slot.track);
+    assert.equal(Object.hasOwn(session, 'roomId'), false);
     assert.equal('trackId' in session, false);
     if (slot.proposal) {
       assert.deepEqual(session.speakers, slot.proposal.speakers);
       assert.equal(session.format, slot.proposal.formats[0]);
+      assert.deepEqual(session.locations, [{ roomId: 'amphitheatre' }]);
+    } else {
+      assert.deepEqual(session.locations, [{ roomId: 'hallway' }]);
     }
   }
 

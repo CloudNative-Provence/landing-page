@@ -24,7 +24,10 @@ const session = {
   ].join('\n'),
   startsAt: '2026-10-09T07:00:00.000Z',
   endsAt: '2026-10-09T07:45:00.000Z',
-  roomId: 'room-source-id',
+  locations: [
+    { roomId: 'room-source-id', role: 'main' },
+    { roomId: 'broadcast-room', role: 'broadcast' },
+  ],
   speakers: [
     {
       id: 'speaker-a',
@@ -48,6 +51,8 @@ const model = {
       id: 'room-source-id',
       label: "Salle de l'Innovation",
       accent: '#1A70C7',
+      kind: 'conference',
+      isMain: true,
     },
   ],
   sessions: [session],
@@ -105,7 +110,7 @@ describe('renderSession', () => {
       description: specialText,
       startsAt: specialText,
       endsAt: specialText,
-      roomId: specialText,
+      locations: [{ roomId: specialText, role: 'main' }],
       speakers: [
         {
           id: specialText,
@@ -128,6 +133,7 @@ describe('renderSession', () => {
     const output = runInNewContext('(' + renderSession(minimalSession) + ')');
     assert.deepEqual(JSON.parse(JSON.stringify(output)), minimalSession);
     assert.equal('isGlobal' in output, false);
+    assert.equal('roomId' in output, false);
     assert.equal('startsAtTime' in output, false);
   });
 

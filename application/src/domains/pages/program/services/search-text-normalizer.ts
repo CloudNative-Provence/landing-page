@@ -27,7 +27,7 @@ export class ProgramSearchTextNormalizer {
       session.format,
       ...(session.speakers ?? []).flatMap((speaker) => [speaker.name, speaker.company]),
       ...(session.tags ?? []),
-      ...(session.roomId ? [roomLabels.get(session.roomId) ?? ''] : []),
+      ...session.locations.map((location) => roomLabels.get(location.roomId) ?? ''),
     ]);
   }
 }
