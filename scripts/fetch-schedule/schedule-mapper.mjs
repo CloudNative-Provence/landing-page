@@ -1,5 +1,6 @@
 import { mapRooms } from './rooms-mapper.mjs';
 import { mapSessionsFromSchedule } from './sessions-mapper.mjs';
+import { assignSessionLocations } from './session-locations-mapper.mjs';
 
 /**
  * @typedef {Object} ScheduleModel
@@ -130,11 +131,15 @@ function validateSchedule(schedule) {
 export function mapScheduleToModel(schedule) {
   validateSchedule(schedule);
   const rooms = mapRooms(schedule.sessions);
-  const sessions = mapSessionsFromSchedule(schedule);
+  const sourceSessions = mapSessionsFromSchedule(schedule);
   const compare = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
-  sessions.sort(
-    (a, b) => Date.parse(a.startsAt) - Date.parse(b.startsAt) || compare(a.roomId, b.roomId) || compare(a.id, b.id)
+  sourceSessions.sort(
+    (a, b) =>
+      Date.parse(a.startsAt) - Date.parse(b.startsAt) ||
+      compare(a.locations[0].roomId, b.locations[0].roomId) ||
+      compare(a.id, b.id)
   );
+  const sessions = assignSessionLocations(sourceSessions, rooms);
 
   return { timeZone: schedule.timeZone, days: [...schedule.days], rooms, sessions };
 }

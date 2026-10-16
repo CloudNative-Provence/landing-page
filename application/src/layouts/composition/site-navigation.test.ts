@@ -52,87 +52,107 @@ import { getFooterData, getHeaderData } from './site-navigation';
 describe('navigation', () => {
   const cfpOpenDate = new Date('2026-05-18T10:00:00+02:00');
   const cfpClosedDate = new Date('2026-08-01T10:00:00+02:00');
+  const eventDate = new Date('2026-12-10T10:00:00+01:00');
 
   afterEach(() => {
     astrowindConfig.config.APP_PROGRAM.isEnabled = true;
   });
 
-  it('returns localized header links including the CFP when it is open', () => {
-    const header = getHeaderData('fr', cfpOpenDate);
-    expect(header.links).toHaveLength(7);
-    expect(header.links[0].href).toBe('/fr/programme');
-    expect(header.links[1].href).toBe('/fr/intervenants');
-    expect(header.links[2]).toEqual({ text: 'CFP', href: '/fr#cfp' });
-    expect(header.links[3].href).toBe('/fr/sponsoring');
-    expect(header.links[4]).toEqual({
-      text: 'Infos pratiques',
-      links: [
-        { text: 'Hébergement', href: '/fr/infos-pratiques/hebergement' },
-        { text: 'Comment venir', href: '/fr/infos-pratiques/venir' },
-        { text: 'Parkings', href: '/fr/infos-pratiques/parkings' },
-        { text: 'Activités', href: '/fr/infos-pratiques/activites' },
-      ],
-    });
-    expect(header.links[5].href).toBe('/fr/a-propos');
-    expect(header.links[6].href).toBe('/fr/contact');
+  it.each(['fr', 'en'] as const)('shares section names and links with the %s footer', (locale) => {
+    for (const date of [cfpOpenDate, cfpClosedDate, eventDate]) {
+      const header = getHeaderData(locale, date);
+      const footer = getFooterData(locale, date);
+      const groups = header.links.filter((link) => link.links);
+      const promoted = header.links.filter((link) => link.href);
+      expect(groups.map((group) => group.text)).toEqual(footer.links.map((section) => section.title));
+      for (const [index, section] of footer.links.entries()) {
+        const group = groups[index];
+        expect(group.links?.map((link) => link.href)).toEqual(
+          section.links.filter((link) => !promoted.some((item) => item.href === link.href)).map((link) => link.href)
+        );
+      }
+      const headerUrls = header.links.flatMap((link) => link.links?.map((child) => child.href) ?? [link.href]);
+      expect(new Set(headerUrls).size).toBe(headerUrls.length);
+      expect(headerUrls.toSorted()).toEqual(
+        footer.links.flatMap((section) => section.links.map((link) => link.href)).toSorted()
+      );
+    }
   });
 
-  it('returns localized footer data and favicon note', () => {
-    const footer = getFooterData('en');
-
-    expect(footer.links).toHaveLength(3);
-    expect(footer.links[0]?.links.map((item) => item.href)).toEqual(['/en/program', '/en/speakers', '/en/sponsoring']);
-    expect(footer.links[1]?.title).toBe('Practical Information');
-    expect(footer.links[1]?.links.map((item) => item.href)).toEqual([
-      '/en/practical-information/accommodation',
-      '/en/practical-information/getting-there',
-      '/en/practical-information/parking',
-      '/en/practical-information/activities',
+  it('puts programme and sponsoring first outside the event day', () => {
+    const header = getHeaderData('fr', cfpClosedDate);
+    expect(header.links.map((link) => link.text)).toEqual([
+      'Programme',
+      'Sponsoring',
+      'Événement',
+      'Infos pratiques',
+      'Organisation',
     ]);
-    expect(footer.secondaryLinks.map((item) => item.href)).toEqual(['/en/terms-of-service', '/en/privacy-policy']);
-    expect(footer.footNote).toContain('/favicon.svg');
-    expect(footer.footNote).toContain('Cloud Native Provence');
+    expect(header.links.slice(0, 2).map((link) => link.href)).toEqual(['/fr/programme', '/fr/sponsoring']);
+    expect(header.links[2].links?.map((link) => link.href)).toEqual(['/fr/intervenants', '/fr/plan-du-lieu']);
+    expect(header.links[4].links?.map((link) => link.href)).toEqual([
+      '/fr/a-propos',
+      '/fr/contact',
+      '/fr/charte-graphique',
+    ]);
   });
 
-  it('omits program links when the program page is disabled', () => {
+  it.each([
+    ['2026-12-09T22:59:59Z', '/en/sponsoring', '/en/venue-map'],
+    ['2026-12-09T23:00:00Z', '/en/venue-map', '/en/sponsoring'],
+    ['2026-12-10T22:59:59Z', '/en/venue-map', '/en/sponsoring'],
+    ['2026-12-10T23:00:00Z', '/en/sponsoring', '/en/venue-map'],
+  ])('promotes the map only during the event day at %s', (date, promoted, nested) => {
+    const header = getHeaderData('en', new Date(date));
+    expect(header.links.slice(0, 2).map((link) => link.href)).toEqual(['/en/program', promoted]);
+    expect(header.links.find((link) => link.id === 'event')?.links?.map((link) => link.href)).toEqual([
+      '/en/speakers',
+      nested,
+    ]);
+  });
+
+  it('keeps the plan in the footer event section on every date', () => {
+    for (const date of [cfpClosedDate, eventDate]) {
+      const footer = getFooterData('en', date);
+      expect(footer.links[0]?.links.map((item) => item.href)).toEqual([
+        '/en/program',
+        '/en/speakers',
+        '/en/venue-map',
+        '/en/sponsoring',
+      ]);
+      expect(footer.links[1]?.links.map((item) => item.href)).toEqual([
+        '/en/practical-information/accommodation',
+        '/en/practical-information/getting-there',
+        '/en/practical-information/parking',
+        '/en/practical-information/activities',
+      ]);
+      expect(footer.secondaryLinks.map((item) => item.href)).toEqual(['/en/terms-of-service', '/en/privacy-policy']);
+      expect(footer.footNote).toContain('/favicon.svg');
+      expect(footer.footNote).toContain('Cloud Native Provence');
+    }
+  });
+
+  it('keeps the CFP in the event section only while submissions are open', () => {
+    expect(getHeaderData('fr', cfpOpenDate).links.find((link) => link.id === 'event')?.links).toContainEqual(
+      expect.objectContaining({ text: 'CFP', href: '/fr#cfp' })
+    );
+    expect(getHeaderData('fr', cfpClosedDate).links.flatMap((link) => link.links ?? [])).not.toContainEqual(
+      expect.objectContaining({ href: '/fr#cfp' })
+    );
+  });
+
+  it.each([cfpClosedDate, eventDate])('respects disabled programme pages at %s', (date) => {
     astrowindConfig.config.APP_PROGRAM.isEnabled = false;
-
-    const header = getHeaderData('en', cfpClosedDate);
-    const footer = getFooterData('fr');
-
-    expect(header.links).toEqual([
-      { text: 'Sponsors', href: '/en/sponsoring' },
-      {
-        text: 'Practical Information',
-        links: [
-          { text: 'Accommodation', href: '/en/practical-information/accommodation' },
-          { text: 'Getting there', href: '/en/practical-information/getting-there' },
-          { text: 'Parking', href: '/en/practical-information/parking' },
-          { text: 'Activities', href: '/en/practical-information/activities' },
-        ],
-      },
-      { text: 'About', href: '/en/about' },
-      { text: 'Contact', href: '/en/contact' },
+    const header = getHeaderData('en', date);
+    const urls = header.links.flatMap((link) => link.links?.map((child) => child.href) ?? [link.href]);
+    expect(urls).not.toContain('/en/program');
+    expect(urls).not.toContain('/en/speakers');
+    expect(urls).toContain('/en/venue-map');
+    expect(urls).toContain('/en/sponsoring');
+    expect(header.links[0].href).toBe(date === eventDate ? '/en/venue-map' : '/en/sponsoring');
+    expect(getFooterData('fr', date).links[0]?.links.map((link) => link.href)).toEqual([
+      '/fr/plan-du-lieu',
+      '/fr/sponsoring',
     ]);
-    expect(footer.links[0]?.links.map((link) => link.href)).toEqual(['/fr/sponsoring']);
-  });
-
-  it('omits the CFP link when the CFP is not open', () => {
-    const header = getHeaderData('en', cfpClosedDate);
-
-    expect(header.links[0]?.href).toBe('/en/program');
-    expect(header.links[1]?.href).toBe('/en/speakers');
-    expect(header.links[2]?.href).toBe('/en/sponsoring');
-    expect(header.links[3]).toEqual({
-      text: 'Practical Information',
-      links: [
-        { text: 'Accommodation', href: '/en/practical-information/accommodation' },
-        { text: 'Getting there', href: '/en/practical-information/getting-there' },
-        { text: 'Parking', href: '/en/practical-information/parking' },
-        { text: 'Activities', href: '/en/practical-information/activities' },
-      ],
-    });
-    expect(header.links[4]?.href).toBe('/en/about');
-    expect(header.links[5]?.href).toBe('/en/contact');
   });
 });

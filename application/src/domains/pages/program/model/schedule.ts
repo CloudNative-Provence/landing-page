@@ -2,6 +2,13 @@ export interface ProgramRoom {
   id: string;
   label: string;
   accent: string;
+  kind?: 'conference' | 'hallway';
+  isMain?: boolean;
+}
+
+export interface ProgramSessionLocation {
+  roomId: string;
+  role?: 'main' | 'broadcast';
 }
 
 export interface ProgramSpeaker {
@@ -19,10 +26,9 @@ export interface ProgramSession {
   description: string;
   startsAt: string;
   endsAt: string;
-  roomId?: string;
+  locations: readonly ProgramSessionLocation[];
   speakers?: readonly ProgramSpeaker[];
   format?: string;
-  isGlobal?: boolean;
   tags?: readonly string[];
 }
 
@@ -109,7 +115,7 @@ export const groupProgramSessionsByRoom = <Session extends ProgramSession>(
   const rooms = new Map<string, Session[]>();
 
   for (const session of sessions) {
-    const roomId = session.isGlobal ? '' : (session.roomId ?? '');
+    const roomId = session.locations.length === 1 ? session.locations[0].roomId : '';
     const roomSessions = rooms.get(roomId) ?? [];
     roomSessions.push(session);
     rooms.set(roomId, roomSessions);

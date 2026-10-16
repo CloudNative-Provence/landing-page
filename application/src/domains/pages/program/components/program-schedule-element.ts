@@ -1,10 +1,13 @@
 import { type ProgramCalendarEvent, ProgramCalendarExporter } from '~/domains/pages/program/services/calendar-exporter';
-import { ProgramFullscreenView } from '~/domains/pages/program/services/fullscreen-view';
 import { ProgramLiveView } from '~/domains/pages/program/services/live-view';
 import { ProgramSearchTextNormalizer } from '~/domains/pages/program/services/search-text-normalizer';
 import { ProgramSelectionCodec } from '~/domains/pages/program/services/selection-codec';
 import { ProgramSelectionSourceResolver } from '~/domains/pages/program/services/selection-source-resolver';
+import { ProgramSelectionStore } from '~/domains/pages/program/services/selection-store';
+import { ProgramSessionReminder } from '~/domains/pages/program/services/session-reminder';
 import { buildProgramTimelineLayout } from '~/domains/pages/program/services/timeline-layout';
+import { AppClock } from '~/shared/time/app-clock';
+import { FullscreenView } from '~/shared/url/fullscreen-view';
 
 // Safari (iOS and older desktop) still exposes the Fullscreen API under a webkit prefix.
 type WebkitFullscreenDocument = Document & {
@@ -17,7 +20,7 @@ type WebkitFullscreenElement = HTMLElement & {
   webkitRequestFullscreen?: () => void;
 };
 
-class ProgramScheduleElement extends HTMLElement {
+export class ProgramScheduleElement extends HTMLElement {
   storageKey = 'cnp-program-selection';
   validIds: string[] = [];
   selectedIds = new Set<string>();
@@ -44,8 +47,13 @@ class ProgramScheduleElement extends HTMLElement {
   clockTimer: number | null = null;
   liveEnabled = false;
   liveRefreshTimer: number | null = null;
+  selectionStore: ProgramSelectionStore | null = null;
+  unsubscribeSelection: (() => void) | null = null;
+  private connectionVersion = 0;
+  private selectionConflictAbort: AbortController | null = null;
 
   connectedCallback() {
+    const connectionVersion = ++this.connectionVersion;
     this.storageKey = this.dataset.storageKey || 'cnp-program-selection';
     this.validIds = (this.dataset.sessionIds || '').split(',').filter(Boolean);
     this.selectedIds = new Set<string>();
@@ -57,6 +65,11 @@ class ProgramScheduleElement extends HTMLElement {
           .map((id) => [id, card.dataset.sessionId || ''] as const)
       )
     );
+    this.selectionStore = new ProgramSelectionStore({
+      validIds: this.validIds,
+      canonicalIds: this.canonicalIds,
+      storageKey: this.storageKey,
+    });
     this.slots = [...this.querySelectorAll<HTMLElement>('[data-program-slot]')];
     this.roomHeaders = [...this.querySelectorAll<HTMLElement>('[data-program-room-header]')];
     this.roomGrid = this.querySelector<HTMLElement>('[data-program-room-grid]');
@@ -96,12 +109,19 @@ class ProgramScheduleElement extends HTMLElement {
     this.addEventListener('click', this.handleCardClick);
     this.shareButton?.addEventListener('click', this.handleShare);
     this.exportButton?.addEventListener('click', this.handleExport);
+    window.addEventListener(AppClock.changeEvent, this.handleClockChange);
+    document.addEventListener('visibilitychange', this.handleVisibilityChange);
     this.setupFullscreen();
 
-    void this.initializeState();
+    void this.initializeState(connectionVersion);
   }
 
   disconnectedCallback() {
+    this.connectionVersion++;
+    this.selectionConflictAbort?.abort();
+    this.selectionConflictAbort = null;
+    this.unsubscribeSelection?.();
+    this.unsubscribeSelection = null;
     this.searchInput?.removeEventListener('input', this.handleFilters);
     this.roomSelect?.removeEventListener('change', this.handleFilters);
     this.selectedToggle?.removeEventListener('change', this.handleFilters);
@@ -111,6 +131,8 @@ class ProgramScheduleElement extends HTMLElement {
     this.removeEventListener('click', this.handleCardClick);
     this.shareButton?.removeEventListener('click', this.handleShare);
     this.exportButton?.removeEventListener('click', this.handleExport);
+    window.removeEventListener(AppClock.changeEvent, this.handleClockChange);
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange);
     this.fullscreenToggles.forEach((button) => button.removeEventListener('click', this.handleFullscreenToggle));
     document.removeEventListener('fullscreenchange', this.handleFullscreenChange);
     document.removeEventListener('webkitfullscreenchange', this.handleFullscreenChange);
@@ -120,7 +142,7 @@ class ProgramScheduleElement extends HTMLElement {
     window.removeEventListener('keydown', this.handleFullscreenGesture);
     this.stopClock();
     if (this.liveRefreshTimer) {
-      window.clearInterval(this.liveRefreshTimer);
+      window.clearTimeout(this.liveRefreshTimer);
       this.liveRefreshTimer = null;
     }
   }
@@ -148,7 +170,7 @@ class ProgramScheduleElement extends HTMLElement {
 
   loadFullscreenState() {
     const searchParams = new URL(window.location.href).searchParams;
-    if (!ProgramFullscreenView.isEnabled(searchParams.get(ProgramFullscreenView.fullscreenParam))) {
+    if (!FullscreenView.isEnabled(searchParams.get(FullscreenView.fullscreenParam))) {
       return;
     }
 
@@ -204,7 +226,7 @@ class ProgramScheduleElement extends HTMLElement {
   }
 
   syncFullscreenUrl(enabled: boolean) {
-    const url = ProgramFullscreenView.updateUrl(new URL(window.location.href), enabled);
+    const url = FullscreenView.updateUrl(new URL(window.location.href), enabled);
     window.history.replaceState({}, '', url);
   }
 
@@ -258,17 +280,30 @@ class ProgramScheduleElement extends HTMLElement {
     if (!this.fullscreenClock || this.clockTimer) {
       return;
     }
-    const render = () => {
-      if (this.fullscreenClock) {
-        this.fullscreenClock.textContent = new Intl.DateTimeFormat(undefined, {
-          hour: '2-digit',
-          minute: '2-digit',
-        }).format(new Date());
-      }
-    };
-    render();
-    this.clockTimer = window.setInterval(render, 1000);
+    this.renderClock();
+    this.clockTimer = window.setInterval(() => this.renderClock(), 1000);
   }
+
+  private renderClock() {
+    if (this.fullscreenClock) {
+      this.fullscreenClock.textContent = new Intl.DateTimeFormat(undefined, {
+        hour: '2-digit',
+        minute: '2-digit',
+      }).format(AppClock.now());
+    }
+  }
+
+  private handleClockChange = () => {
+    this.applyLiveState();
+    this.handleFilters();
+    this.renderClock();
+    this.syncLiveRefreshTimer();
+  };
+
+  private handleVisibilityChange = () => {
+    if (document.hidden) this.syncLiveRefreshTimer();
+    else this.handleClockChange();
+  };
 
   stopClock() {
     if (this.clockTimer) {
@@ -277,8 +312,15 @@ class ProgramScheduleElement extends HTMLElement {
     }
   }
 
-  async initializeState() {
-    await this.loadSelection();
+  async initializeState(connectionVersion = this.connectionVersion) {
+    await this.loadSelection(connectionVersion);
+    if (!this.isConnected || connectionVersion !== this.connectionVersion) return;
+    this.unsubscribeSelection?.();
+    this.unsubscribeSelection =
+      this.selectionStore?.subscribe((ids) => {
+        this.selectedIds = new Set(ids);
+        this.handleFilters();
+      }) ?? null;
     this.loadLiveState();
     this.loadFullscreenState();
     this.applySelectionState();
@@ -286,9 +328,9 @@ class ProgramScheduleElement extends HTMLElement {
     this.handleFilters();
   }
 
-  async loadSelection() {
+  async loadSelection(connectionVersion = this.connectionVersion) {
     const fromQuery = new URL(window.location.href).searchParams.get('agenda');
-    const fromStorage = window.localStorage.getItem(this.storageKey);
+    const fromStorage = this.selectionStore?.getStoredValue();
     const resolution = ProgramSelectionSourceResolver.resolve({
       queryValue: fromQuery,
       storageValue: fromStorage,
@@ -298,6 +340,7 @@ class ProgramScheduleElement extends HTMLElement {
 
     if (resolution.type === 'conflict') {
       const useQueryAgenda = await this.promptSelectionConflict();
+      if (!this.isConnected || connectionVersion !== this.connectionVersion) return;
 
       this.selectedIds = new Set(useQueryAgenda ? resolution.querySelectedIds : resolution.storageSelectedIds);
       this.persistSelection(!useQueryAgenda);
@@ -319,12 +362,27 @@ class ProgramScheduleElement extends HTMLElement {
       );
     }
 
+    this.selectionConflictAbort?.abort();
+    const controller = new AbortController();
+    this.selectionConflictAbort = controller;
     return new Promise<boolean>((resolve) => {
+      const finish = (useQuery: boolean) => {
+        dialog.removeEventListener('close', handleClose);
+        controller.signal.removeEventListener('abort', handleAbort);
+        if (this.selectionConflictAbort === controller) this.selectionConflictAbort = null;
+        resolve(useQuery);
+      };
       const handleClose = () => {
-        resolve(dialog.returnValue === 'query');
+        // A close event queued before reconnecting must not resolve a newly reopened dialog.
+        if (!dialog.open) finish(dialog.returnValue === 'query');
+      };
+      const handleAbort = () => {
+        finish(false);
+        if (dialog.open) dialog.close();
       };
 
-      dialog.addEventListener('close', handleClose, { once: true });
+      dialog.addEventListener('close', handleClose);
+      controller.signal.addEventListener('abort', handleAbort, { once: true });
       dialog.showModal();
     });
   }
@@ -340,7 +398,7 @@ class ProgramScheduleElement extends HTMLElement {
   }
 
   persistSelection(updateUrl = false) {
-    window.localStorage.setItem(this.storageKey, ProgramSelectionCodec.serialize(this.selectedIds));
+    this.selectionStore?.setIds(this.selectedIds);
     if (!updateUrl) {
       return;
     }
@@ -359,16 +417,15 @@ class ProgramScheduleElement extends HTMLElement {
     const query = ProgramSearchTextNormalizer.normalize(this.searchInput?.value || '');
     const room = this.roomSelect?.value || '';
     const selectedOnly = Boolean(this.selectedToggle?.checked);
-    const now = new Date();
+    const now = AppClock.now();
 
     let visibleCards = 0;
 
     this.cards.forEach((card) => {
       const searchText = card.dataset.searchText || '';
-      const roomIds = (card.dataset.roomIds || card.dataset.roomId || '').split(',');
+      const roomIds = (card.dataset.roomIds || '').split(',');
       const isSelected = this.selectedIds.has(card.dataset.sessionId || '');
-      const slot = card.closest<HTMLElement>('[data-program-slot]');
-      const liveState = slot ? this.getSlotLiveState(slot, now) : 'upcoming';
+      const liveState = this.getSlotLiveState(card, now);
 
       const matchesQuery = !query || searchText.includes(query);
       const matchesRoom = !room || roomIds.includes(room);
@@ -395,7 +452,8 @@ class ProgramScheduleElement extends HTMLElement {
     const roomColumns = new Map<string, number>();
     this.roomHeaders.forEach((header) => {
       const id = header.dataset.roomId || '';
-      header.hidden = !visibleRoomIds.has(id) || Boolean(room && room !== id);
+      const ids = (header.dataset.roomIds || id).split(',');
+      header.hidden = !ids.some((id) => visibleRoomIds.has(id)) || Boolean(room && !ids.includes(room));
       if (!header.hidden) {
         roomColumns.set(id, roomColumns.size + 1);
         header.style.setProperty('--program-room-column', String(roomColumns.size));
@@ -419,7 +477,10 @@ class ProgramScheduleElement extends HTMLElement {
           '--program-slot-end',
           String((timeline.lines.get(Date.parse(slot.dataset.endsAt || '')) ?? 2) + 1)
         );
-        slot.style.setProperty('--program-room-column', String(roomColumns.get(slot.dataset.roomId || '') ?? 1));
+        const ids: string[] = slot.dataset.columnIds ? JSON.parse(slot.dataset.columnIds) : [slot.dataset.roomId || ''];
+        const columns = ids.flatMap((id) => (roomColumns.has(id) ? [roomColumns.get(id)!] : []));
+        slot.style.setProperty('--program-room-column', String(Math.min(...columns, roomColumns.size || 1)));
+        slot.style.setProperty('--program-room-span', String(Math.max(columns.length, 1)));
       });
     }
 
@@ -487,6 +548,7 @@ class ProgramScheduleElement extends HTMLElement {
   }
 
   applySelectionState() {
+    const now = AppClock.now();
     this.cards.forEach((card) => {
       const id = card.dataset.sessionId || '';
       const toggle = card.querySelector<HTMLButtonElement>('[data-program-toggle]');
@@ -494,6 +556,14 @@ class ProgramScheduleElement extends HTMLElement {
 
       card.classList.toggle('ring-2', isSelected);
       card.classList.toggle('ring-sky-400', isSelected);
+      const startingSoon =
+        isSelected &&
+        ProgramSessionReminder.isStartingSoon(
+          { startsAt: card.dataset.startsAt || '', endsAt: card.dataset.endsAt || '' },
+          now
+        );
+      card.classList.toggle('session-starting-soon', startingSoon);
+      card.querySelector('[data-session-starting-soon]')?.toggleAttribute('hidden', !startingSoon);
 
       if (toggle) {
         const label = isSelected ? toggle.dataset.removeLabel || '' : toggle.dataset.addLabel || '';
@@ -534,7 +604,7 @@ class ProgramScheduleElement extends HTMLElement {
   applyLiveState() {
     const liveNowLabel = this.dataset.liveNow || '';
     const upcomingLabel = this.dataset.upcoming || '';
-    const now = new Date();
+    const now = AppClock.now();
 
     this.slots.forEach((slot) => {
       const badge = slot.querySelector<HTMLElement>('[data-slot-live-badge]');
@@ -625,21 +695,30 @@ class ProgramScheduleElement extends HTMLElement {
 
   syncLiveRefreshTimer() {
     if (this.liveRefreshTimer) {
-      window.clearInterval(this.liveRefreshTimer);
+      window.clearTimeout(this.liveRefreshTimer);
       this.liveRefreshTimer = null;
     }
-
-    if (!this.liveEnabled) {
-      return;
-    }
-
-    this.liveRefreshTimer = window.setInterval(() => {
-      this.applyLiveState();
-      this.handleFilters();
-    }, 60_000);
+    if (document.hidden) return;
+    const now = AppClock.now();
+    const next = ProgramSessionReminder.getNextBoundary(
+      [...this.cards, ...(this.liveEnabled ? this.slots : [])].map((element) => ({
+        startsAt: element.dataset.startsAt || '',
+        endsAt: element.dataset.endsAt || '',
+      })),
+      now
+    );
+    if (!next) return;
+    this.liveRefreshTimer = window.setTimeout(
+      () => {
+        this.applyLiveState();
+        this.handleFilters();
+        this.syncLiveRefreshTimer();
+      },
+      Math.min(86_400_000, Math.max(100, next.getTime() - now.getTime() + 50))
+    );
   }
 
-  private getSlotLiveState(slot: HTMLElement, referenceTime: Date = new Date()) {
+  private getSlotLiveState(slot: HTMLElement, referenceTime: Date = AppClock.now()) {
     return ProgramLiveView.getState(
       {
         startsAt: slot.dataset.startsAt || '',

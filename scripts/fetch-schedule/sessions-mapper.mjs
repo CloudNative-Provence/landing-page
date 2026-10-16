@@ -7,7 +7,7 @@ import { slugify } from './time-utils.mjs';
  * @property {string} description
  * @property {string} startsAt
  * @property {string} endsAt
- * @property {string} roomId
+ * @property {import('../../application/src/domains/pages/program/model/schedule.ts').ProgramSessionLocation[]} locations
  * @property {import('../../application/src/domains/pages/program/model/schedule.ts').ProgramSpeaker[]} [speakers]
  * @property {string} [format]
  * @property {string[]} [tags]
@@ -30,7 +30,7 @@ export function mapSessionsFromSchedule(schedule) {
       description: proposal?.abstract ?? '',
       startsAt: slot.start,
       endsAt: slot.end,
-      roomId: slugify(slot.track),
+      locations: [{ roomId: slugify(slot.track) }],
     };
     if (proposal?.speakers?.length) {
       session.speakers = proposal.speakers.map((speaker) => {

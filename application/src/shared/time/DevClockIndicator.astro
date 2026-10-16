@@ -1,0 +1,41 @@
+---
+import { Icon } from 'astro-icon/components';
+import en from './content/en';
+import fr from './content/fr';
+
+interface Props {
+  lang: 'fr' | 'en';
+  timeZone: string;
+}
+
+const { lang, timeZone } = Astro.props;
+const copy = lang === 'fr' ? fr : en;
+---
+
+<dev-clock-indicator hidden data-time-zone={timeZone} lang={lang} aria-label={copy.simulatedTime}>
+  <span class="dev-clock-label"><strong>DEV</strong> {copy.simulatedTime}</span>
+  <button type="button" data-dev-clock-edit title={copy.edit} aria-expanded="false" aria-controls="dev-clock-editor">
+    <time data-dev-clock-time></time>
+    <Icon name="tabler:pencil" />
+  </button>
+  <button type="button" data-dev-clock-reset aria-label={copy.reset} title={copy.reset}>
+    <Icon name="tabler:clock-x" />
+  </button>
+  <form id="dev-clock-editor" data-dev-clock-editor hidden>
+    <label for="dev-clock-input">{copy.dateTime} <span>({timeZone})</span></label>
+    <input
+      id="dev-clock-input"
+      data-dev-clock-input
+      data-invalid-time={copy.invalidTime}
+      type="datetime-local"
+      min="0001-01-01T00:00"
+      max="9999-12-31T23:59"
+      step="60"
+      required
+    >
+    <div class="dev-clock-actions">
+      <button type="button" data-dev-clock-cancel>{copy.cancel}</button>
+      <button type="submit">{copy.apply}</button>
+    </div>
+  </form>
+</dev-clock-indicator>

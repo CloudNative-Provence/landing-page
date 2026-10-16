@@ -22,6 +22,7 @@ type ProgramPageStaticContent = {
     rooms: string;
     sessions: string;
   };
+  roomNames: Readonly<Record<string, string>>;
   filters: ProgramScheduleFilters;
   selection: ProgramScheduleSelection;
   labels: ProgramScheduleLabels;
@@ -51,13 +52,13 @@ const buildProgramPageData = (
       { label: content.highlightLabels.rooms, value: String(schedule.rooms.length) },
       {
         label: content.highlightLabels.sessions,
-        value: String(mergeSharedProgramSessions(schedule.sessions, schedule.rooms).length),
+        value: String(mergeSharedProgramSessions(schedule.sessions).length),
       },
     ],
     filters: content.filters,
     selection: content.selection,
     labels: content.labels,
-    rooms: schedule.rooms,
+    rooms: schedule.rooms.map((room) => ({ ...room, label: content.roomNames[room.id] ?? room.label })),
     sessions: schedule.sessions,
   };
 };

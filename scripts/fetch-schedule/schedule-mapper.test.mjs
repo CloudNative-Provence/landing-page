@@ -65,16 +65,65 @@ function scheduleFixture() {
 describe('mapScheduleToModel', () => {
   it('maps published room names to rooms with display labels and accents', () => {
     const model = mapScheduleToModel(scheduleFixture());
-    assert.deepEqual(model.rooms, [
-      { id: 'amphitheatre', label: 'Amphithéâtre', accent: 'from-sky-500 to-cyan-400' },
-      { id: 'atelier', label: 'Atelier', accent: 'from-emerald-500 to-lime-400' },
-    ]);
+    assert.deepEqual(
+      model.rooms.filter((room) => room.kind === 'conference'),
+      [
+        {
+          id: 'amphitheatre',
+          label: 'Amphithéâtre',
+          accent: 'from-sky-500 to-cyan-400',
+          kind: 'conference',
+          isMain: true,
+        },
+        { id: 'atelier', label: 'Atelier', accent: 'from-emerald-500 to-lime-400', kind: 'conference' },
+      ]
+    );
+    assert.deepEqual(
+      model.rooms.filter((room) => room.kind === 'hallway').map((room) => room.id),
+      []
+    );
     assert.equal('tracks' in model, false);
     for (const session of model.sessions) {
-      assert.ok(model.rooms.some((room) => room.id === session.roomId));
+      assert.ok(session.locations.every((location) => model.rooms.some((room) => room.id === location.roomId)));
+      assert.equal(Object.hasOwn(session, 'roomId'), false);
       assert.equal('trackId' in session, false);
     }
   });
+
+  for (const formats of [[], ['Workshop']]) {
+    it(`uses the Hallway track regardless of format (${JSON.stringify(formats)})`, () => {
+      const source = scheduleFixture();
+      source.sessions.push({
+        ...source.sessions[0],
+        id: 'hallway-activity',
+        track: 'Hallway',
+        proposal: { ...source.sessions[0].proposal, formats },
+      });
+      const model = mapScheduleToModel(source);
+      const hallwayRoomIds = ['hallway'];
+      assert.deepEqual(
+        model.rooms.map((room) => room.id),
+        ['amphitheatre', 'atelier', 'hallway']
+      );
+      assert(model.rooms.every((room) => !Object.hasOwn(room, 'venueRoomId')));
+      assert.deepEqual(
+        model.rooms.filter((room) => room.kind === 'hallway').map((room) => room.id),
+        hallwayRoomIds
+      );
+      assert.equal(
+        model.rooms.some((room) => room.id === 'hallway'),
+        true
+      );
+      assert.deepEqual(
+        model.sessions.find((session) => session.id === 'hallway-activity').locations,
+        hallwayRoomIds.map((roomId) => ({ roomId }))
+      );
+      assert.deepEqual(model.sessions.find((session) => session.id === 'slot-talk-a').locations, [
+        { roomId: 'amphitheatre' },
+      ]);
+      assert.deepEqual(mapScheduleToModel({ ...source, sessions: [...source.sessions].reverse() }), model);
+    });
+  }
 
   it('preserves full timestamps, metadata, description, speaker names, format names and tags', () => {
     const schedule = scheduleFixture();
@@ -89,7 +138,7 @@ describe('mapScheduleToModel', () => {
         description: schedule.sessions[0].proposal.abstract,
         startsAt: '2026-12-10T10:00:00.000+01:00',
         endsAt: '2026-12-10T10:30:00.000+01:00',
-        roomId: 'amphitheatre',
+        locations: [{ roomId: 'amphitheatre' }],
         speakers: [{ id: 'speaker-a', name: 'Example Speaker' }],
         format: 'Conference (30 minutes) · Demo',
         tags: ['AI', 'Cloud Native', 'FR'],
@@ -154,7 +203,10 @@ describe('mapScheduleToModel', () => {
       description: '',
       startsAt: '2026-12-10T09:30:00.000+01:00',
       endsAt: '2026-12-10T10:00:00.000+01:00',
-      roomId: 'amphitheatre',
+      locations: [
+        { roomId: 'amphitheatre', role: 'main' },
+        { roomId: 'atelier', role: 'broadcast' },
+      ],
     });
     assert.equal(sessions[1].id, 'slot-break-b');
     assert.ok(sessions.every((session) => !('isGlobal' in session)));
@@ -208,7 +260,7 @@ describe('mapScheduleToModel', () => {
     schedule.sessions[0].proposal = { abstract: null, categories: [], formats: [], speakers: [] };
     schedule.sessions[0].language = null;
     const mapped = mapScheduleToModel(schedule).sessions.find(({ id }) => id === 'slot-talk-a');
-    assert.equal(mapped.roomId, 'amphitheatre');
+    assert.deepEqual(mapped.locations, [{ roomId: 'amphitheatre' }]);
     assert.equal(mapped.description, '');
     assert.equal(mapped.format, undefined);
     assert.equal(mapped.tags, undefined);

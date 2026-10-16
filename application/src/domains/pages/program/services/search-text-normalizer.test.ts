@@ -15,12 +15,18 @@ describe('ProgramSearchTextNormalizer', () => {
         description: 'Une session pour l’équipe plateforme',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:40:00+01:00',
-        roomId: 'salle-millau',
+        locations: [
+          { roomId: 'amphitheatre', role: 'main' },
+          { roomId: 'salle-millau', role: 'broadcast' },
+        ],
         speakers: [{ id: 'emilien', name: 'Émilien Escalle', company: 'Société Cloud' }],
         format: 'Talk',
         tags: ['résilience'],
       },
-      new Map([['salle-millau', 'Salle Millau']])
+      new Map([
+        ['salle-millau', 'Salle Millau'],
+        ['amphitheatre', 'Amphithéâtre'],
+      ])
     );
 
     expect(searchText).toContain('keynote douverture');
@@ -29,5 +35,6 @@ describe('ProgramSearchTextNormalizer', () => {
     expect(searchText).toContain('societe cloud');
     expect(searchText).toContain('resilience');
     expect(searchText).toContain('salle millau');
+    expect(searchText).toContain('amphitheatre');
   });
 });

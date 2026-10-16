@@ -1,3 +1,5 @@
+import { AppClock } from '~/shared/time/app-clock';
+
 export type ProgramLiveState = 'past' | 'live' | 'upcoming';
 
 export class ProgramLiveView {
@@ -19,7 +21,7 @@ export class ProgramLiveView {
     return next;
   }
 
-  static getState(slot: { startsAt: string; endsAt: string }, referenceTime: Date = new Date()): ProgramLiveState {
+  static getState(slot: { startsAt: string; endsAt: string }, referenceTime: Date = AppClock.now()): ProgramLiveState {
     const startsAt = Date.parse(slot.startsAt);
     const endsAt = Date.parse(slot.endsAt);
 

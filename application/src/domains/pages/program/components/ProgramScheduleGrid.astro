@@ -1,9 +1,6 @@
 ---
-import {
-  groupProgramSessionsByRoom,
-  type ProgramRoom,
-  type ProgramSession,
-} from '~/domains/pages/program/model/schedule';
+import { type ProgramRoom, type ProgramSession } from '~/domains/pages/program/model/schedule';
+import { ProgramRoomColumns } from '~/domains/pages/program/services/room-columns';
 import { mergeSharedProgramSessions } from '~/domains/pages/program/services/shared-sessions';
 import { buildProgramTimelineLayout } from '~/domains/pages/program/services/timeline-layout';
 import ProgramScheduleSlot from './ProgramScheduleSlot.astro';
@@ -18,16 +15,8 @@ interface Props {
 
 const { labels, rooms, sessions, timezone } = Astro.props;
 const roomLabels = new Map(rooms.map((room) => [room.id, room.label]));
-const displaySessions = mergeSharedProgramSessions(sessions, rooms);
-const scheduledRooms = rooms.filter((room) => displaySessions.some((session) => session.roomIds.includes(room.id)));
-const schedules = groupProgramSessionsByRoom(displaySessions);
-const slots = [...schedules].flatMap(([roomId, roomSlots]) => roomSlots.map((slot) => ({ roomId, slot })));
-slots.sort(
-  (left, right) =>
-    Date.parse(left.slot.startsAt) - Date.parse(right.slot.startsAt) ||
-    Date.parse(left.slot.endsAt) - Date.parse(right.slot.endsAt) ||
-    left.roomId.localeCompare(right.roomId)
-);
+const displaySessions = mergeSharedProgramSessions(sessions);
+const { columns: scheduledRooms, slots } = ProgramRoomColumns.build(rooms, displaySessions);
 const timeline = buildProgramTimelineLayout(slots.map(({ slot }) => slot));
 ---
 
@@ -43,6 +32,7 @@ const timeline = buildProgramTimelineLayout(slots.map(({ slot }) => slot));
     <h2
       data-program-room-header
       data-room-id={room.id}
+      data-room-ids={room.roomIds.join(',')}
       style={{ '--program-room-column': index + 1 }}
       class="sticky top-24 z-10 hidden items-center gap-3 rounded-2xl border border-gray-200 bg-slate-50 px-4 py-3 text-sm font-semibold text-gray-900 shadow-sm md:col-start-[var(--program-room-column)] md:row-start-1 md:flex dark:border-slate-800 dark:bg-slate-950 dark:text-white"
     >
@@ -51,10 +41,11 @@ const timeline = buildProgramTimelineLayout(slots.map(({ slot }) => slot));
     </h2>
   ))}
 
-  {slots.map(({ roomId, slot }) => (
+  {slots.map(({ columnIds, slot }) => (
     <ProgramScheduleSlot
-      room={rooms.find((room) => room.id === roomId)}
-      column={scheduledRooms.findIndex((room) => room.id === roomId) + 1}
+      room={columnIds.length === 1 ? scheduledRooms.find((room) => room.id === columnIds[0]) : undefined}
+      column={scheduledRooms.findIndex((room) => room.id === columnIds[0]) + 1}
+      columnIds={columnIds}
       timeSlot={slot}
       timeline={timeline}
       labels={labels}

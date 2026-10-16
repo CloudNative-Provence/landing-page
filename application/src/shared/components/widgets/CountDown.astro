@@ -52,18 +52,29 @@ const {
 </style>
 
 <script>
+import { AppClock } from '~/shared/time/app-clock';
+
 class AstroCountdown extends HTMLElement {
   private _timer: NodeJS.Timeout | null = null;
 
   connectedCallback() {
-    this.update();
-    this._timer = setInterval(() => this.update(), 1000);
+    this.handleClockChange();
+    window.addEventListener(AppClock.changeEvent, this.handleClockChange);
   }
 
   disconnectedCallback() {
-    if (this._timer) {
-      clearInterval(this._timer);
-    }
+    window.removeEventListener(AppClock.changeEvent, this.handleClockChange);
+    this.stopTimer();
+  }
+
+  private handleClockChange = () => {
+    this.update();
+    if (!this.hidden && this._timer === null) this._timer = setInterval(() => this.update(), 1000);
+  };
+
+  private stopTimer() {
+    if (this._timer !== null) clearInterval(this._timer);
+    this._timer = null;
   }
 
   update() {
@@ -72,14 +83,12 @@ class AstroCountdown extends HTMLElement {
       return;
     }
     const eventDate = new Date(eventDateStr);
-    const now = new Date();
+    const now = AppClock.now();
     const t = eventDate.getTime() - now.getTime();
 
-    if (t <= 0) {
-      this.innerHTML = '';
-      if (this._timer) {
-        clearInterval(this._timer);
-      }
+    this.hidden = t <= 0;
+    if (this.hidden) {
+      this.stopTimer();
       return;
     }
 

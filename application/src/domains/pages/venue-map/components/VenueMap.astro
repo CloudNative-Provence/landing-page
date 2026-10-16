@@ -1,0 +1,301 @@
+---
+import { Icon } from 'astro-icon/components';
+import { eventMeta, formatEventDate } from '~/domains/event/config/event';
+import programSchedule from '~/domains/pages/program/content/schedule';
+import { isProgramEnabled } from '~/domains/pages/routing/page-flags';
+import { venueInterface } from '~/domains/pages/venue-map/content/interface';
+import { venueLayout } from '~/domains/pages/venue-map/model/venue-layout';
+import { venuePresentation } from '~/domains/pages/venue-map/model/venue-presentation';
+import { type AppLang, getLocalizedPagePath } from '~/i18n/routes';
+import './venue-map.css';
+import '../../program/components/session-reminder.css';
+
+interface Props {
+  lang: AppLang;
+}
+const { lang } = Astro.props;
+const copy = venueInterface[lang];
+const programEnabled = isProgramEnabled();
+const programUrl = getLocalizedPagePath(lang, 'program');
+const primaryRooms = venuePresentation.rooms.filter((room) => copy.roomDetails[room.id]);
+const conferenceRoomIds = new Set<string>(
+  programSchedule.rooms.filter((room) => room.kind === 'conference').map((room) => room.id)
+);
+const sessionRooms = programEnabled
+  ? primaryRooms.filter((room) => room.programRoomId && conferenceRoomIds.has(room.programRoomId))
+  : [];
+const mapLabels = primaryRooms.filter((room) => !sessionRooms.includes(room));
+const name = (room: (typeof primaryRooms)[number]) => copy.roomNames[room.id] ?? room.name;
+const payload = JSON.stringify({
+  lang,
+  timeZone: eventMeta.timeZone,
+  programEnabled,
+  rooms: programSchedule.rooms,
+  sessions: programEnabled ? programSchedule.sessions : [],
+}).replace(/</g, '\\u003c');
+---
+
+<venue-map class="venue-map" data-lang={lang}>
+  <script is:inline type="application/json" data-venue-config set:html={payload} />
+  <section class="venue-stage" aria-label={copy.mapLabel}>
+    <header class="venue-toolbar">
+      <div class="venue-heading" title={copy.subtitle}>
+        <h1>{copy.title}</h1>
+        <p class="venue-subtitle">{copy.subtitle}</p>
+      </div>
+      {programEnabled && (
+        <div class="venue-next-session" data-next-strip hidden>
+          <Icon name="tabler:bookmark-filled" />
+          <span class="venue-next-caption">{copy.nextSaved}</span>
+          <div data-next-saved class="venue-next-content"></div>
+        </div>
+      )}
+      <div class="venue-page-actions">
+        <details class="venue-room-list">
+          <summary title={copy.rooms}>
+            <Icon name="tabler:layout-grid" /><span class="venue-action-label">{copy.rooms}</span>
+          </summary>
+          <div>
+            {primaryRooms.map((room) => (
+              <button type="button" data-room={room.id} aria-pressed="false">
+                <span>
+                  {name(room)}
+                  {room.level ? ` · ${copy.firstFloor}` : ''}
+                </span>
+                <span class="venue-planned-marker" data-room-planned hidden>
+                  <Icon name="tabler:bookmark-filled" />
+                  <span class="sr-only">{copy.plannedSession}</span>
+                </span>
+                <span class="session-reminder-label" data-room-starting-soon hidden>
+                  {copy.startingSoon}
+                </span>
+              </button>
+            ))}
+          </div>
+        </details>
+        {programEnabled && (
+          <a href={programUrl} title={copy.program}>
+            <Icon name="tabler:calendar-event" />
+            <span class="venue-action-label">{copy.program}</span>
+          </a>
+        )}
+        {programEnabled && (
+          <button type="button" data-action="agenda" title={copy.agenda}>
+            <Icon name="tabler:bookmark" />
+            <span class="venue-agenda-label">{copy.agenda}</span>
+            <span data-agenda-count class="venue-count">
+              0
+            </span>
+          </button>
+        )}
+      </div>
+    </header>
+
+    <div class="venue-canvas-wrap">
+      <div class="venue-session-cards" data-session-cards hidden>
+        {sessionRooms.map((room) => (
+          <button type="button" class="venue-room-label venue-room-card" data-room={room.id} aria-pressed="false">
+            <span class="venue-room-name">
+              <span>
+                {name(room)}
+                {room.level && <span class="venue-label-level"> · {copy.firstFloor}</span>}
+              </span>
+              <span class="venue-planned-marker" data-room-planned hidden title={copy.plannedSession}>
+                <Icon name="tabler:bookmark-filled" />
+                <span class="sr-only">{copy.plannedSession}</span>
+              </span>
+            </span>
+            <span class="session-reminder-label" data-room-starting-soon hidden>
+              {copy.startingSoon}
+            </span>
+            <span class="venue-label-status" data-label-live={room.id} hidden>
+              <span class="sr-only">{copy.current} : </span>
+              <span>
+                <span class="venue-label-next-time" data-live-location hidden></span>
+                <span class="venue-label-session-title" data-live-title></span>
+              </span>
+            </span>
+            <span class="venue-label-next" data-label-next hidden>
+              <span class="venue-label-next-time" data-next-time></span>
+              <span class="venue-label-session-title" data-next-title></span>
+            </span>
+          </button>
+        ))}
+      </div>
+      <svg class="venue-room-connectors" data-connectors aria-hidden="true">
+        {sessionRooms.map((room) => (
+          <g data-room-connector={room.id}>
+            <path />
+            <circle r="3" />
+          </g>
+        ))}
+      </svg>
+      {programEnabled && (
+        <svg class="venue-global-connectors" data-global-connectors aria-hidden="true" style="display: none">
+          {primaryRooms
+            .filter((room) => room.programRoomId)
+            .map((room) => (
+              <g data-global-connector={room.id} display="none">
+                <path />
+                <circle r="3" />
+              </g>
+            ))}
+        </svg>
+      )}
+      <div class="venue-model-viewport" data-model-viewport>
+        <div class="venue-renderer" data-renderer aria-hidden="true"></div>
+        <svg
+          class="venue-fallback"
+          data-fallback
+          viewBox={venuePresentation.viewBox}
+          role="img"
+          aria-label={copy.mapLabel}
+        >
+          <title>{copy.mapLabel}</title>
+          {venuePresentation.rooms.map((room) => (
+            <polygon
+              data-room={room.id}
+              points={room.polygon.map((point) => point.join(',')).join(' ')}
+              class:list={['venue-flat-room', { 'is-outdoor': room.kind === 'outdoor' }]}
+            />
+          ))}
+          {venueLayout.walls.map((wall) => (
+            <line
+              x1={wall.start[0]}
+              y1={wall.start[1]}
+              x2={wall.end[0]}
+              y2={wall.end[1]}
+              stroke="var(--venue-flat-wall)"
+              stroke-width={wall.thickness ?? 14}
+            />
+          ))}
+          {primaryRooms.map((room) => (
+            <a href="#venue-room-details" data-room={room.id}>
+              {room.id === 'entrance' && (
+                <rect
+                  class="venue-flat-entrance-marker"
+                  x={room.label[0] - 390}
+                  y={room.label[1] - 65}
+                  width="780"
+                  height="130"
+                  rx="24"
+                />
+              )}
+              <text x={room.label[0]} y={room.label[1]} text-anchor="middle" dominant-baseline="middle">
+                {name(room)}
+                {room.level && (
+                  <tspan x={room.label[0]} dy="48" class="venue-flat-level">
+                    {copy.firstFloor}
+                  </tspan>
+                )}
+                <tspan x={room.label[0]} dy="42" class="venue-flat-planned-label" data-room-planned>
+                  {copy.plannedSession}
+                </tspan>
+              </text>
+            </a>
+          ))}
+        </svg>
+        <div class="venue-labels" data-labels hidden>
+          {mapLabels.map((room) => (
+            <button type="button" class="venue-room-label" data-room={room.id} aria-pressed="false">
+              {room.id === 'entrance' && <Icon name="tabler:door-enter" />}
+              <span>{name(room)}</span>
+              {room.level && <span class="venue-label-level">{copy.firstFloor}</span>}
+              {programEnabled && room.programRoomId && (
+                <>
+                  <span class="venue-planned-marker" data-room-planned hidden>
+                    <Icon name="tabler:bookmark-filled" />
+                    <span class="sr-only">{copy.plannedSession}</span>
+                  </span>
+                  <span class="session-reminder-label" data-room-starting-soon hidden>
+                    {copy.startingSoon}
+                  </span>
+                </>
+              )}
+            </button>
+          ))}
+        </div>
+        <p class="venue-load-status" data-load-status role="status" hidden>{copy.loading}</p>
+        <div class="venue-view-controls" data-view-controls hidden>
+          <div class="venue-scene-controls" data-scene-controls hidden>
+            <button
+              type="button"
+              class="venue-touch-toggle"
+              data-action="interact"
+              aria-pressed="false"
+              aria-label={copy.interact}
+              title={copy.interact}
+              hidden
+            >
+              <Icon name="tabler:hand-move" /><span>3D</span>
+            </button>
+            <button type="button" data-action="reset" aria-label={copy.reset} title={copy.reset}>
+              <Icon name="tabler:rotate-clockwise" />
+            </button>
+            <span></span>
+            <button type="button" data-action="zoom-out" aria-label={copy.zoomOut} title={copy.zoomOut}>
+              <Icon name="tabler:minus" />
+            </button>
+            <button type="button" data-action="zoom-in" aria-label={copy.zoomIn} title={copy.zoomIn}>
+              <Icon name="tabler:plus" />
+            </button>
+            <span></span>
+          </div>
+          <button
+            type="button"
+            data-action="fullscreen"
+            aria-pressed="false"
+            aria-label={copy.fullscreen}
+            title={copy.fullscreen}
+          >
+            <span data-fullscreen-enter><Icon name="tabler:maximize" /></span>
+            <span data-fullscreen-exit hidden><Icon name="tabler:minimize" /></span>
+          </button>
+        </div>
+      </div>
+      {programEnabled && (
+        <div class="venue-global-card" data-global-card role="status" hidden>
+          <span class="venue-global-kicker">
+            <span class="venue-global-live" data-global-live aria-hidden="true" hidden />
+            <span data-global-status></span>
+            <span class="venue-global-time" data-global-time></span>
+          </span>
+          <span class="venue-global-title" data-global-title></span>
+          <span class="venue-global-rooms" data-global-rooms></span>
+          <span class="session-reminder-label" data-global-starting-soon hidden>
+            {copy.startingSoon}
+          </span>
+        </div>
+      )}
+    </div>
+
+    <section
+      class="venue-panel"
+      data-panel
+      id="venue-room-details"
+      popover="auto"
+      role="dialog"
+      aria-labelledby="venue-room-title"
+    >
+      <div class="venue-panel-heading">
+        <span class="venue-panel-eyebrow" data-panel-eyebrow>{formatEventDate(lang)}</span
+        ><button type="button" data-action="close" aria-label={copy.close}><Icon name="tabler:x" /></button>
+      </div>
+      <h2 id="venue-room-title" data-room-title tabindex="-1"></h2>
+      <p class="venue-room-note" data-room-note hidden></p>
+      <p class="venue-room-description" data-room-description></p>
+      <button type="button" class="venue-related-room" data-related-room hidden></button>
+      <div data-room-sessions class="venue-session-list"></div>
+      <details class="venue-all-sessions" data-all-sessions hidden>
+        <summary>{copy.allSessions}</summary>
+        <div data-all-session-list></div>
+      </details>
+      <p class="venue-live-note" data-live-note hidden>{copy.liveNote}</p>
+    </section>
+  </section>
+  <span class="sr-only" data-announcement role="status" aria-live="polite"></span>
+</venue-map>
+
+<script>
+import './venue-map-element';
+</script>

@@ -11,7 +11,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAtTime: '09:00',
         endsAtTime: '09:30',
-        roomId: 'main',
+        locations: [{ roomId: 'main' }],
       },
     ]);
 
@@ -22,7 +22,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:30:00+01:00',
-        roomId: 'main',
+        locations: [{ roomId: 'main' }],
       },
     ]);
   });
@@ -35,7 +35,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAtTime: '09:00',
         endsAtTime: '09:30',
-        roomId: 'main',
+        locations: [{ roomId: 'main' }],
       },
     ]);
 
@@ -51,7 +51,7 @@ describe('program utilities', () => {
         description: 'Intro',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:30:00+01:00',
-        roomId: 'main',
+        locations: [{ roomId: 'main' }],
       },
       {
         id: 'b',
@@ -59,7 +59,7 @@ describe('program utilities', () => {
         description: 'Talk',
         startsAt: '2026-12-10T09:00:00+01:00',
         endsAt: '2026-12-10T09:30:00+01:00',
-        roomId: 'platform',
+        locations: [{ roomId: 'platform' }],
       },
       {
         id: 'c',
@@ -67,7 +67,7 @@ describe('program utilities', () => {
         description: 'Coffee',
         startsAt: '2026-12-10T09:30:00+01:00',
         endsAt: '2026-12-10T10:00:00+01:00',
-        isGlobal: true,
+        locations: [{ roomId: 'main' }, { roomId: 'platform' }],
       },
     ]);
 
@@ -84,7 +84,7 @@ describe('program utilities', () => {
         description: 'Room stays busy',
         startsAt: '2026-12-10T11:45:00+01:00',
         endsAt: '2026-12-10T12:15:00+01:00',
-        roomId: 'left-room',
+        locations: [{ roomId: 'left-room' }],
       },
       {
         id: 'right-short-one',
@@ -92,7 +92,7 @@ describe('program utilities', () => {
         description: 'Other room',
         startsAt: '2026-12-10T11:50:00+01:00',
         endsAt: '2026-12-10T12:00:00+01:00',
-        roomId: 'right-room',
+        locations: [{ roomId: 'right-room' }],
       },
       {
         id: 'right-short-two',
@@ -100,7 +100,7 @@ describe('program utilities', () => {
         description: 'Other room',
         startsAt: '2026-12-10T12:05:00+01:00',
         endsAt: '2026-12-10T12:15:00+01:00',
-        roomId: 'right-room',
+        locations: [{ roomId: 'right-room' }],
       },
     ];
 
@@ -120,7 +120,7 @@ describe('program utilities', () => {
   });
 
   it('sorts each room chronologically by instant without changing the source sessions', () => {
-    const session = { title: 'Talk', description: '', roomId: 'main' };
+    const session = { title: 'Talk', description: '', locations: [{ roomId: 'main' }] };
     const sessions = [
       { ...session, id: 'later', startsAt: '2026-12-10T09:00:00Z', endsAt: '2026-12-10T09:30:00Z' },
       { ...session, id: 'earlier', startsAt: '2026-12-10T10:30:00+02:00', endsAt: '2026-12-10T10:45:00+02:00' },
@@ -135,7 +135,7 @@ describe('program utilities', () => {
     expect(sessions).toEqual(original);
   });
 
-  it('preserves global sessions once without duplicating them into room timelines', () => {
+  it('preserves multiroom sessions once without duplicating them into room timelines', () => {
     const session = {
       title: 'Opening',
       description: '',
@@ -143,9 +143,9 @@ describe('program utilities', () => {
       endsAt: '2026-12-10T09:30:00+01:00',
     };
     const rooms = groupProgramSessionsByRoom([
-      { ...session, id: 'unassigned' },
-      { ...session, id: 'global', roomId: 'main', isGlobal: true },
-      { ...session, id: 'room-talk', roomId: 'main' },
+      { ...session, id: 'unassigned', locations: [] },
+      { ...session, id: 'global', locations: [{ roomId: 'main' }, { roomId: 'platform' }] },
+      { ...session, id: 'room-talk', locations: [{ roomId: 'main' }] },
     ]);
 
     expect(rooms.get('')?.flatMap((slot) => slot.sessions.map((entry) => entry.id))).toEqual(['unassigned', 'global']);

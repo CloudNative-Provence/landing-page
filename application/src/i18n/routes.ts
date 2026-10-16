@@ -6,6 +6,7 @@ export const routeSlugs = {
   about: { en: 'about', fr: 'a-propos' },
   contact: { en: 'contact', fr: 'contact' },
   'practical-info': { en: 'practical-information', fr: 'infos-pratiques' },
+  'venue-map': { en: 'venue-map', fr: 'plan-du-lieu' },
   program: { en: 'program', fr: 'programme' },
   speakers: { en: 'speakers', fr: 'intervenants' },
   sponsoring: { en: 'sponsoring', fr: 'sponsoring' },

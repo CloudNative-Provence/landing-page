@@ -16,6 +16,8 @@ import sponsoringEn from '~/domains/pages/sponsoring/en';
 import sponsoringFr from '~/domains/pages/sponsoring/fr';
 import termsEn from '~/domains/pages/terms/en';
 import termsFr from '~/domains/pages/terms/fr';
+import venueMapEn from '~/domains/pages/venue-map/content/en';
+import venueMapFr from '~/domains/pages/venue-map/content/fr';
 import type { AppLang, RouteKey } from '~/i18n/routes';
 import AboutContent from '~/pages/about/_content.astro';
 import BrandGuidelinesContent from '~/pages/brand-guidelines/_content.astro';
@@ -26,6 +28,7 @@ import ProgramContent from '~/pages/program/_content.astro';
 import SpeakersContent from '~/pages/speakers/_content.astro';
 import SponsoringContent from '~/pages/sponsoring/_content.astro';
 import TermsContent from '~/pages/terms/_content.astro';
+import VenueMapContent from '~/pages/venue-map/_content.astro';
 import type { MetaData } from '~/types';
 
 type LocalizedPageData = {
@@ -66,6 +69,7 @@ const localizedPageResolvers = {
   about: createPageResolver(AboutContent, { en: aboutEn, fr: aboutFr }),
   contact: createPageResolver(ContactContent, { en: contactEn, fr: contactFr }),
   'practical-info': createPageResolver(PracticalInfoContent, { en: practicalInfoEn, fr: practicalInfoFr }),
+  'venue-map': createPageResolver(VenueMapContent, { en: venueMapEn, fr: venueMapFr }),
   program: createPageResolver(ProgramContent, { en: programEnPageData, fr: programFrPageData }),
   speakers: createPageResolver(SpeakersContent, { en: speakersEn, fr: speakersFr }),
   sponsoring: createPageResolver(SponsoringContent, { en: sponsoringEn, fr: sponsoringFr }),

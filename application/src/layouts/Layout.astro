@@ -5,6 +5,7 @@ import { Font } from 'astro:assets';
 // Comment the line below to disable View Transitions
 import { ClientRouter } from 'astro:transitions';
 import { I18N } from 'astrowind:config';
+import { eventMeta } from '~/domains/event/config/event';
 import { getLangFromUrl } from '~/i18n/utils';
 import CustomStyles from '~/shared/components/CustomStyles.astro';
 import Analytics from '~/shared/components/common/Analytics.astro';
@@ -15,6 +16,7 @@ import LanguageAlternates from '~/shared/components/common/LanguageAlternates.as
 import Metadata from '~/shared/components/common/Metadata.astro';
 import SiteVerification from '~/shared/components/common/SiteVerification.astro';
 import Favicons from '~/shared/components/Favicons.astro';
+import DevClockIndicator from '~/shared/time/DevClockIndicator.astro';
 import type { MetaData as MetaDataType } from '~/types';
 
 export interface Props {
@@ -47,5 +49,6 @@ const textDirection = I18N?.textDirection || 'ltr';
     <slot />
 
     <BasicScripts />
+    {import.meta.env.DEV && <DevClockIndicator lang={currentLang} timeZone={eventMeta.timeZone} />}
   </body>
 </html>

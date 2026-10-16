@@ -1,4 +1,4 @@
-export class ProgramFullscreenView {
+export class FullscreenView {
   static readonly fullscreenParam = 'fullscreen';
 
   static isEnabled(value: string | null | undefined): boolean {

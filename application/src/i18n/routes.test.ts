@@ -14,6 +14,8 @@ describe('i18n routes helpers', () => {
   it('builds localized page path from route key', () => {
     expect(getLocalizedPagePath('fr', 'about')).toBe('/fr/a-propos');
     expect(getLocalizedPagePath('fr', 'practical-info')).toBe('/fr/infos-pratiques');
+    expect(getLocalizedPagePath('fr', 'venue-map')).toBe('/fr/plan-du-lieu');
+    expect(getLocalizedPagePath('en', 'venue-map')).toBe('/en/venue-map');
     expect(getLocalizedPagePath('fr', 'practical-info', 'parking')).toBe('/fr/infos-pratiques/parkings');
     expect(getLocalizedPagePath('fr', 'program')).toBe('/fr/programme');
     expect(getLocalizedPagePath('fr', 'speakers')).toBe('/fr/intervenants');
@@ -23,6 +25,8 @@ describe('i18n routes helpers', () => {
   it('resolves route key from slug with and without extra slashes', () => {
     expect(getRouteKeyFromSlug('fr', '/charte-graphique/')).toBe('brand-guidelines');
     expect(getRouteKeyFromSlug('fr', 'infos-pratiques')).toBe('practical-info');
+    expect(getRouteKeyFromSlug('fr', 'plan-du-lieu')).toBe('venue-map');
+    expect(getRouteKeyFromSlug('en', 'venue-map')).toBe('venue-map');
     expect(getRouteKeyFromSlug('en', 'program')).toBe('program');
     expect(getRouteKeyFromSlug('fr', 'intervenants')).toBe('speakers');
     expect(getRouteKeyFromSlug('en', 'terms-of-service')).toBe('terms');
@@ -39,6 +43,8 @@ describe('i18n routes helpers', () => {
   it('translates localized route to target language', () => {
     expect(translatePathToLang('/fr/a-propos', 'en')).toBe('/en/about');
     expect(translatePathToLang('/fr/infos-pratiques', 'en')).toBe('/en/practical-information');
+    expect(translatePathToLang('/fr/plan-du-lieu', 'en')).toBe('/en/venue-map');
+    expect(translatePathToLang('/en/venue-map', 'fr')).toBe('/fr/plan-du-lieu');
     expect(translatePathToLang('/fr/infos-pratiques/parkings', 'en')).toBe('/en/practical-information/parking');
     expect(translatePathToLang('/fr/programme', 'en')).toBe('/en/program');
     expect(translatePathToLang('/fr/intervenants', 'en')).toBe('/en/speakers');
@@ -68,6 +74,7 @@ describe('i18n routes helpers', () => {
       'about',
       'contact',
       'practical-info',
+      'venue-map',
       'program',
       'speakers',
       'sponsoring',

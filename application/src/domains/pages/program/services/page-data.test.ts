@@ -10,7 +10,7 @@ const { schedule } = vi.hoisted(() => ({
         description: 'A talk from the published schedule.',
         startsAt: '2026-12-09T20:30:00Z',
         endsAt: '2026-12-09T21:00:00Z',
-        roomId: 'room-1',
+        locations: [{ roomId: 'room-1' }],
       },
       {
         id: 'break-1',
@@ -18,7 +18,7 @@ const { schedule } = vi.hoisted(() => ({
         description: '',
         startsAt: '2026-12-09T21:00:00Z',
         endsAt: '2026-12-09T21:15:00Z',
-        roomId: 'room-1',
+        locations: [{ roomId: 'room-1' }],
       },
     ],
   },
@@ -41,6 +41,7 @@ vi.mock('astrowind:config', () => ({
 vi.mock('~/domains/pages/program/content/schedule', () => ({ default: schedule }));
 
 afterEach(() => {
+  schedule.rooms.splice(1);
   schedule.sessions[0].startsAt = '2026-12-09T20:30:00Z';
   schedule.sessions[0].endsAt = '2026-12-09T21:00:00Z';
   vi.resetModules();
@@ -51,7 +52,7 @@ describe('program page data', () => {
     const { programEnPageData, programFrPageData } = await import('./page-data');
 
     expect(programEnPageData.sessions).toBe(programFrPageData.sessions);
-    expect(programEnPageData.rooms).toBe(programFrPageData.rooms);
+    expect(programEnPageData.rooms).toEqual(programFrPageData.rooms);
     for (const page of [programEnPageData, programFrPageData]) {
       expect(page.sessions).toEqual(schedule.sessions);
       expect(page).not.toHaveProperty('tracks');
@@ -67,6 +68,18 @@ describe('program page data', () => {
     expect(programFrPageData.hero.date).toBe('10 décembre 2026');
     expect(programEnPageData.hero.timezone).toBe('Pacific/Auckland');
     expect(programFrPageData.hero.timezone).toBe('Pacific/Auckland');
+  });
+
+  it('localizes the single Hallway room without changing its generated identity or source label', async () => {
+    const hallway = { id: 'hallway', label: 'Hallway', accent: 'from-amber-500 to-orange-400' };
+    schedule.rooms.push(hallway);
+    const { programEnPageData, programFrPageData } = await import('./page-data');
+    expect(programEnPageData.rooms.find((room) => room.id === hallway.id)).toEqual(hallway);
+    expect(programFrPageData.rooms.find((room) => room.id === hallway.id)).toEqual({
+      ...hallway,
+      label: 'Espace rencontres',
+    });
+    expect(schedule.rooms[1].label).toBe('Hallway');
   });
 
   it('rejects stale generated sessions on a different day from the configured event', async () => {

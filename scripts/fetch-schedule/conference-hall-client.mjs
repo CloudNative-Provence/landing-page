@@ -13,7 +13,7 @@
  * @property {string} id
  * @property {string} start
  * @property {string} end
- * @property {string} track Room name in the Conference Hall export.
+ * @property {string} track Programme track name in the Conference Hall export.
  * @property {string} title
  * @property {string | null} language
  * @property {{ id: string, abstract: string, formats: string[], categories: string[], speakers: ConferenceHallSpeaker[] } | null} proposal

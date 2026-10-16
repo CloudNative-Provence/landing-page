@@ -35,6 +35,7 @@ describe('speakers page data', () => {
     const speakers = getPublishedProgramSpeakers([
       {
         id: 'session-1',
+        locations: [],
         title: 'Session one',
         description: 'Description',
         startsAt: '2026-12-10T08:00:00Z',
@@ -46,6 +47,7 @@ describe('speakers page data', () => {
       },
       {
         id: 'session-2',
+        locations: [],
         title: 'Session two',
         description: 'Description',
         startsAt: '2026-12-10T09:00:00Z',
@@ -87,6 +89,7 @@ describe('speakers page data', () => {
     const page = buildSpeakersPageData(content, [
       {
         id: 'session-1',
+        locations: [],
         title: 'Session one',
         description: 'Description',
         startsAt: '2026-12-10T08:00:00Z',
@@ -115,6 +118,7 @@ describe('speakers page data', () => {
     const namesake = { id: 'other-alice', name: 'Alice Cloud' };
     const morning: ProgramSession = {
       id: 'morning',
+      locations: [],
       title: 'Shared talk',
       description: 'Presented together',
       startsAt: '2026-12-10T08:00:00Z',
@@ -148,25 +152,20 @@ describe('speakers page data', () => {
   });
 
   it('shows a talk broadcast in every room only once for its speaker', () => {
-    const rooms = [
-      { id: 'main', label: 'Main room', accent: 'blue' },
-      { id: 'second', label: 'Second room', accent: 'green' },
-    ];
     const keynote: ProgramSession = {
       id: 'keynote-main',
       title: 'Opening keynote',
       description: 'Keynote description',
       startsAt: '2026-12-10T08:00:00Z',
       endsAt: '2026-12-10T08:30:00Z',
-      roomId: 'main',
+      locations: [
+        { roomId: 'main', role: 'main' },
+        { roomId: 'second', role: 'broadcast' },
+      ],
       speakers: [{ id: 'alice', name: 'Alice Cloud' }],
     };
 
-    const page = buildSpeakersPageData(
-      content,
-      [keynote, { ...keynote, id: 'keynote-second', roomId: 'second' }],
-      rooms
-    );
+    const page = buildSpeakersPageData(content, [keynote, { ...keynote, id: 'keynote-second' }]);
 
     expect(page.speakers).toHaveLength(1);
     expect(page.speakers[0].sessions).toHaveLength(1);
