@@ -89,6 +89,7 @@ vi.mock('three/addons/controls/OrbitControls.js', async () => {
   };
 });
 
+import { venueInterfaceFr } from '../content/fr';
 import { venueLayout } from '../model/venue-layout';
 import { detachedAmphitheatre } from '../model/venue-presentation';
 import { type ProjectedRoom, VenueScene } from './venue-scene';
@@ -165,7 +166,12 @@ const lastFrame = (): RenderedFrame => {
   return { scene: call[0], camera: call[1] };
 };
 
-const createView = (width = 1120, height = 680, theme: VenueTheme = 'light'): TestView => {
+const createView = (
+  width = 1120,
+  height = 680,
+  theme: VenueTheme = 'light',
+  canSelectRoom = (id: string) => !!venueInterfaceFr.roomDetails[id]?.trim()
+): TestView => {
   const container = new TestContainer(width, height);
   const canvas = new TestCanvas();
   boundary.createCanvas.mockReturnValue(canvas);
@@ -175,6 +181,7 @@ const createView = (width = 1120, height = 680, theme: VenueTheme = 'light'): Te
   const view = new VenueScene({
     container: container as unknown as HTMLElement,
     theme,
+    canSelectRoom,
     onSelect,
     onProject,
     onUnavailable,
@@ -427,8 +434,23 @@ describe('VenueScene', () => {
 
     pointer(testView.canvas, 'pointerdown', point);
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
 
     expect(testView.onSelect).toHaveBeenCalledExactlyOnceWith(roomId);
+  });
+
+  it('opens room details on click, after pointerup light-dismiss, and consumes each tap once', () => {
+    const testView = createView();
+    const point = projectedRoom(testView, 'milhaud');
+    pointer(testView.canvas, 'pointerdown', point);
+    pointer(testView.canvas, 'pointerup', point);
+
+    // Native popovers opened during pointerup can be dismissed by that same gesture.
+    expect(testView.onSelect).not.toHaveBeenCalled();
+    pointer(testView.canvas, 'click', point);
+    expect(testView.onSelect).toHaveBeenCalledExactlyOnceWith('milhaud');
+    pointer(testView.canvas, 'click', point);
+    expect(testView.onSelect).toHaveBeenCalledTimes(1);
   });
 
   it('keeps the detached auditorium elevated, selectable and visible in the permanent overview', () => {
@@ -445,6 +467,7 @@ describe('VenueScene', () => {
 
     pointer(testView.canvas, 'pointerdown', point);
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
     expect(testView.onSelect).toHaveBeenCalledExactlyOnceWith('amphitheatre');
 
     const { camera, scene } = lastFrame();
@@ -562,19 +585,68 @@ describe('VenueScene', () => {
     pointer(testView.canvas, 'pointerdown', point);
     pointer(testView.canvas, 'pointermove', { ...point, x: point.x + 25 }, { buttons: 1 });
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
     pointer(testView.canvas, 'pointerdown', point);
     testView.canvas.dispatchEvent(new Event('pointercancel'));
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
     pointer(testView.canvas, 'pointerdown', point, { isPrimary: false });
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
     pointer(testView.canvas, 'pointerdown', point, { button: 2 });
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
     pointer(testView.canvas, 'pointerdown', point);
     pointer(testView.canvas, 'pointerup', point, { pointerId: 2 });
+    pointer(testView.canvas, 'click', point, { pointerId: 2 });
     pointer(testView.canvas, 'pointerdown', { x: 1, y: 1 });
     pointer(testView.canvas, 'pointerup', { x: 1, y: 1 });
+    pointer(testView.canvas, 'click', { x: 1, y: 1 });
 
     expect(testView.onSelect).not.toHaveBeenCalled();
+  });
+
+  it.each(venueLayout.rooms.filter((room) => !venueInterfaceFr.roomDetails[room.id]).map((room) => room.id))(
+    'keeps %s visible without click, hover or selection feedback when it has no room information',
+    (roomId) => {
+      const testView = createView();
+      const floor = roomFloor(roomId);
+      const originalColor = floor.material.color.clone();
+      const center = new Box3().setFromObject(floor).getCenter(new Vector3()).project(lastFrame().camera);
+      const point = { x: ((center.x + 1) / 2) * 1120, y: ((1 - center.y) / 2) * 680 };
+
+      pointer(testView.canvas, 'pointermove', point);
+      flushFrame();
+      expect(testView.canvas.style.cursor).toBe('grab');
+      expect(floor.material.color.equals(originalColor)).toBe(true);
+      pointer(testView.canvas, 'pointerdown', point);
+      pointer(testView.canvas, 'pointerup', point);
+      pointer(testView.canvas, 'click', point);
+      expect(testView.onSelect).not.toHaveBeenCalled();
+      testView.view.select(roomId);
+      flushFrame();
+      expect(floor.material.color.equals(originalColor)).toBe(true);
+      expect(floor.visible).toBe(true);
+      expect(testView.onProject.mock.lastCall?.[0].some((room) => room.id === roomId)).toBe(false);
+      testView.view.setInteractive(false);
+      pointer(testView.canvas, 'pointermove', point);
+      expect(testView.canvas.style.cursor).toBe('default');
+    }
+  );
+
+  it('uses the supplied room-information eligibility for both picking and projected controls', () => {
+    const testView = createView(1120, 680, 'light', () => false);
+    const floor = roomFloor('milhaud');
+    const center = new Box3().setFromObject(floor).getCenter(new Vector3()).project(lastFrame().camera);
+    const point = { x: ((center.x + 1) / 2) * 1120, y: ((1 - center.y) / 2) * 680 };
+    pointer(testView.canvas, 'pointermove', point);
+    pointer(testView.canvas, 'pointerdown', point);
+    pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
+    expect(testView.canvas.style.cursor).toBe('grab');
+    expect(testView.onSelect).not.toHaveBeenCalled();
+    expect(testView.onProject).toHaveBeenLastCalledWith([]);
+    expect(floor.visible).toBe(true);
   });
 
   it('shows temporary mouse hover feedback while preserving an active selection', () => {
@@ -613,6 +685,7 @@ describe('VenueScene', () => {
     pointer(testView.canvas, 'pointermove', point, { pointerType: 'touch' });
     pointer(testView.canvas, 'pointerdown', point, { pointerType: 'touch' });
     pointer(testView.canvas, 'pointerup', point, { pointerType: 'touch' });
+    pointer(testView.canvas, 'click', point, { pointerType: 'touch' });
     expect(testView.onSelect).toHaveBeenCalledWith('milhaud');
 
     testView.view.setInteractive(true);
@@ -695,6 +768,7 @@ describe('VenueScene', () => {
       () =>
         new VenueScene({
           container: container as unknown as HTMLElement,
+          canSelectRoom: () => false,
           onSelect: vi.fn(),
           onProject: vi.fn(),
           onUnavailable,
@@ -727,6 +801,7 @@ describe('VenueScene', () => {
     boundary.controls?.change();
     pointer(testView.canvas, 'pointerdown', point);
     pointer(testView.canvas, 'pointerup', point);
+    pointer(testView.canvas, 'click', point);
     testView.canvas.dispatchEvent(new Event('webglcontextlost'));
 
     for (const dispose of disposals) expect(dispose).toHaveBeenCalledOnce();

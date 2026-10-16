@@ -17,7 +17,7 @@ const { lang } = Astro.props;
 const copy = venueInterface[lang];
 const programEnabled = isProgramEnabled();
 const programUrl = getLocalizedPagePath(lang, 'program');
-const primaryRooms = venuePresentation.rooms.filter((room) => copy.roomDetails[room.id]);
+const primaryRooms = venuePresentation.rooms.filter((room) => copy.roomDetails[room.id]?.trim());
 const conferenceRoomIds = new Set<string>(
   programSchedule.rooms.filter((room) => room.kind === 'conference').map((room) => room.id)
 );
@@ -154,7 +154,7 @@ const payload = JSON.stringify({
           <title>{copy.mapLabel}</title>
           {venuePresentation.rooms.map((room) => (
             <polygon
-              data-room={room.id}
+              data-room={primaryRooms.includes(room) ? room.id : undefined}
               points={room.polygon.map((point) => point.join(',')).join(' ')}
               class:list={['venue-flat-room', { 'is-outdoor': room.kind === 'outdoor' }]}
             />

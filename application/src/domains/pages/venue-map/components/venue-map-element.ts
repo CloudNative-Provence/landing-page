@@ -151,6 +151,7 @@ class VenueMapElement extends HTMLElement {
       this.scene = new VenueScene({
         container,
         theme: this.currentTheme(),
+        canSelectRoom: (id) => this.isPublicRoom(id),
         onSelect: (id) => this.selectRoom(id),
         onProject: (positions) => this.positionLabels(positions),
         onUnavailable: () => this.showFallback(),
@@ -481,7 +482,7 @@ class VenueMapElement extends HTMLElement {
   }
 
   private isPublicRoom(id: string | null): id is string {
-    return !!id && !!this.copy.roomDetails[id] && venuePresentation.rooms.some((room) => room.id === id);
+    return !!id && !!this.copy.roomDetails[id]?.trim() && venuePresentation.rooms.some((room) => room.id === id);
   }
 
   private roomName(id: string): string {
