@@ -19,7 +19,7 @@ type ProgramPageStaticContent = {
   metadata: MetaData;
   hero: Omit<ProgramScheduleHero, 'date' | 'venue' | 'timezone'>;
   highlightLabels: {
-    rooms: string;
+    speakers: string;
     sessions: string;
   };
   roomNames: Readonly<Record<string, string>>;
@@ -32,6 +32,9 @@ type ProgramScheduleStaticContent = {
   rooms: readonly ProgramRoom[];
   sessions: readonly ProgramSession[];
 };
+
+const countPublishedSpeakers = (sessions: readonly ProgramSession[]) =>
+  new Set(sessions.flatMap((session) => session.speakers?.map((speaker) => speaker.id) ?? [])).size;
 
 const buildProgramPageData = (
   locale: ProgramLocale,
@@ -49,7 +52,7 @@ const buildProgramPageData = (
       timezone: eventMeta.timeZone,
     },
     highlights: [
-      { label: content.highlightLabels.rooms, value: String(schedule.rooms.length) },
+      { label: content.highlightLabels.speakers, value: String(countPublishedSpeakers(schedule.sessions)) },
       {
         label: content.highlightLabels.sessions,
         value: String(mergeSharedProgramSessions(schedule.sessions).length),

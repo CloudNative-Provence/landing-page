@@ -11,7 +11,7 @@ const programContent = {
       'Explorez le programme complet, enregistrez vos sessions favorites, partagez votre agenda personnel et exportez-le dans votre calendrier.',
   },
   highlightLabels: {
-    rooms: 'Salles',
+    speakers: 'Intervenants',
     sessions: 'Sessions',
   },
   roomNames: {
