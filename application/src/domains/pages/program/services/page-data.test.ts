@@ -1,29 +1,36 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-const { schedule } = vi.hoisted(() => ({
-  schedule: {
-    rooms: [{ id: 'room-1', label: 'Main room', accent: 'from-sky-500 to-cyan-400' }],
-    sessions: [
-      {
-        id: 'talk-1',
-        title: 'Morning talk',
-        description: 'A talk from the published schedule.',
-        startsAt: '2026-12-09T20:30:00Z',
-        endsAt: '2026-12-09T21:00:00Z',
-        locations: [{ roomId: 'room-1' }],
-        speakers: [{ id: 'speaker-1', name: 'Alice Cloud' }],
-      },
-      {
-        id: 'break-1',
-        title: 'Morning break',
-        description: '',
-        startsAt: '2026-12-09T21:00:00Z',
-        endsAt: '2026-12-09T21:15:00Z',
-        locations: [{ roomId: 'room-1' }],
-      },
-    ],
-  },
-}));
+const { baseRooms, baseSessions, schedule } = vi.hoisted(() => {
+  const baseRooms = [{ id: 'room-1', label: 'Main room', accent: 'from-sky-500 to-cyan-400' }];
+  const baseSessions = [
+    {
+      id: 'talk-1',
+      title: 'Morning talk',
+      description: 'A talk from the published schedule.',
+      startsAt: '2026-12-09T20:30:00Z',
+      endsAt: '2026-12-09T21:00:00Z',
+      locations: [{ roomId: 'room-1' }],
+      speakers: [{ id: 'speaker-1', name: 'Alice Cloud' }],
+    },
+    {
+      id: 'break-1',
+      title: 'Morning break',
+      description: '',
+      startsAt: '2026-12-09T21:00:00Z',
+      endsAt: '2026-12-09T21:15:00Z',
+      locations: [{ roomId: 'room-1' }],
+    },
+  ];
+
+  return {
+    baseRooms,
+    baseSessions,
+    schedule: {
+      rooms: structuredClone(baseRooms),
+      sessions: structuredClone(baseSessions),
+    },
+  };
+});
 
 vi.mock('astrowind:config', () => ({
   EVENT: {
@@ -42,11 +49,8 @@ vi.mock('astrowind:config', () => ({
 vi.mock('~/domains/pages/program/content/schedule', () => ({ default: schedule }));
 
 afterEach(() => {
-  schedule.rooms.splice(1);
-  schedule.sessions.splice(2);
-  schedule.sessions[0].startsAt = '2026-12-09T20:30:00Z';
-  schedule.sessions[0].endsAt = '2026-12-09T21:00:00Z';
-  schedule.sessions[0].speakers = [{ id: 'speaker-1', name: 'Alice Cloud' }];
+  schedule.rooms.splice(0, schedule.rooms.length, ...structuredClone(baseRooms));
+  schedule.sessions.splice(0, schedule.sessions.length, ...structuredClone(baseSessions));
   vi.resetModules();
 });
 
