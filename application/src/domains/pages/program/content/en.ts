@@ -10,7 +10,7 @@ const programContent = {
       'Explore the full schedule, save your favorite sessions, share your personal agenda, and export it to your calendar in one click.',
   },
   highlightLabels: {
-    rooms: 'Rooms',
+    speakers: 'Speakers',
     sessions: 'Sessions',
   },
   roomNames: {

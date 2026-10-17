@@ -11,6 +11,7 @@ const { schedule } = vi.hoisted(() => ({
         startsAt: '2026-12-09T20:30:00Z',
         endsAt: '2026-12-09T21:00:00Z',
         locations: [{ roomId: 'room-1' }],
+        speakers: [{ id: 'speaker-1', name: 'Alice Cloud' }],
       },
       {
         id: 'break-1',
@@ -42,8 +43,10 @@ vi.mock('~/domains/pages/program/content/schedule', () => ({ default: schedule }
 
 afterEach(() => {
   schedule.rooms.splice(1);
+  schedule.sessions.splice(2);
   schedule.sessions[0].startsAt = '2026-12-09T20:30:00Z';
   schedule.sessions[0].endsAt = '2026-12-09T21:00:00Z';
+  schedule.sessions[0].speakers = [{ id: 'speaker-1', name: 'Alice Cloud' }];
   vi.resetModules();
 });
 
@@ -59,6 +62,8 @@ describe('program page data', () => {
       expect(page.rooms).toEqual(schedule.rooms);
       expect(page.highlights.map((highlight) => highlight.value)).toEqual(['1', '2']);
     }
+    expect(programEnPageData.highlights.map((highlight) => highlight.label)).toEqual(['Speakers', 'Sessions']);
+    expect(programFrPageData.highlights.map((highlight) => highlight.label)).toEqual(['Intervenants', 'Sessions']);
   });
 
   it('uses the configured event date and timezone without schedule date metadata', async () => {
@@ -80,6 +85,28 @@ describe('program page data', () => {
       label: 'Espace rencontres',
     });
     expect(schedule.rooms[1].label).toBe('Hallway');
+  });
+
+  it('counts each published speaker once across repeated appearances', async () => {
+    schedule.sessions.push({
+      id: 'talk-2',
+      title: 'Closing talk',
+      description: 'Another session by the same speaker with a guest.',
+      startsAt: '2026-12-09T21:30:00Z',
+      endsAt: '2026-12-09T22:00:00Z',
+      locations: [{ roomId: 'room-1' }],
+      speakers: [
+        { id: 'speaker-1', name: 'Alice Cloud' },
+        { id: 'speaker-2', name: 'Bob Cloud' },
+      ],
+    });
+
+    const { programEnPageData } = await import('./page-data');
+
+    expect(programEnPageData.highlights).toMatchObject([
+      { label: 'Speakers', value: '2' },
+      { label: 'Sessions', value: '3' },
+    ]);
   });
 
   it('rejects stale generated sessions on a different day from the configured event', async () => {
