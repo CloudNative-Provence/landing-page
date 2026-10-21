@@ -26,7 +26,7 @@ export interface Sponsor {
   tier: SponsorTier;
   logo: ImageMetadata;
   /** A partner sharing this sponsorship entry and tier. */
-  coSponsor?: { name: string; logo: ImageMetadata };
+  coSponsor?: { name: string; logo: ImageMetadata; url: string; pitch: Record<AppLang, string> };
   /** Show the sponsor name alongside a logo that contains only a symbol. */
   showNameWithLogo?: boolean;
   pitch: Record<AppLang, string>;
@@ -39,7 +39,19 @@ export const sponsors: readonly Sponsor[] = [
     url: 'https://monacodigital.mc/',
     tier: 'platinum',
     logo: monacoDigital,
-    coSponsor: { name: 'Dell Technologies', logo: dellTechnologies },
+    coSponsor: {
+      name: 'Dell Technologies',
+      logo: dellTechnologies,
+      url: 'https://www.dell.com/',
+      pitch: {
+        fr: `Dell Technologies accompagne les organisations dans la modernisation de leurs infrastructures IT et de leurs applications. Son offre associe serveurs, stockage et réseau à des solutions de cloud hybride, d'intelligence artificielle et de sécurité.
+
+Pour les équipes cloud native, Dell propose des infrastructures pour Kubernetes et Red Hat OpenShift, des outils de stockage avec Dell Container Storage Modules et des solutions de protection des données avec PowerProtect Data Manager. Ces technologies aident les équipes à déployer, exploiter et protéger leurs applications conteneurisées.`,
+        en: `Dell Technologies helps organizations modernize their IT infrastructure and applications. Its portfolio combines servers, storage and networking with solutions for hybrid cloud, artificial intelligence and security.
+
+For cloud native teams, Dell provides infrastructure for Kubernetes and Red Hat OpenShift, storage tools through Dell Container Storage Modules, and data protection with PowerProtect Data Manager. These technologies help teams deploy, operate and protect their containerized applications.`,
+      },
+    },
     pitch: {
       fr: `Depuis 2013, Monaco Digital aide les organisations à relever leurs défis de transformation numérique en conjuguant expertise technologique, excellence opérationnelle et culture du résultat.
 

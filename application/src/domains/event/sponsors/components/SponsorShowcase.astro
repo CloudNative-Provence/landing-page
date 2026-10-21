@@ -139,19 +139,28 @@ const tierIcons = {
                               <summary>
                                 {t.visit} {sponsor.name}
                               </summary>
-                              {sponsor.pitch[lang].split('\n\n').map((paragraph) => (
-                                <p>{paragraph}</p>
+                              {(sponsor.coSponsor ? [sponsor, sponsor.coSponsor] : [sponsor]).map((participant) => (
+                                <div>
+                                  {sponsor.coSponsor && (
+                                    <p>
+                                      <strong>{participant.name}</strong>
+                                    </p>
+                                  )}
+                                  {participant.pitch[lang].split('\n\n').map((paragraph) => (
+                                    <p>{paragraph}</p>
+                                  ))}
+                                  <a
+                                    class="sponsor-visit"
+                                    href={participant.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    aria-label={`${t.website} ${participant.name} (${t.newTab})`}
+                                  >
+                                    {t.website} {participant.name}
+                                    <Icon name="tabler:arrow-up-right" aria-hidden="true" />
+                                  </a>
+                                </div>
                               ))}
-                              <a
-                                class="sponsor-visit"
-                                href={sponsor.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={`${t.website} ${sponsor.name} (${t.newTab})`}
-                              >
-                                {t.website} {sponsor.name}
-                                <Icon name="tabler:arrow-up-right" aria-hidden="true" />
-                              </a>
                             </details>
                           </noscript>
                         </div>
