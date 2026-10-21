@@ -9,12 +9,13 @@ import gravitek from '~/assets/images/sponsors/gravitek.webp';
 import hoverkraft from '~/assets/images/sponsors/hoverkraft.svg';
 import ikkiLeague from '~/assets/images/sponsors/ikki-league.svg';
 import kraftr from '~/assets/images/sponsors/kraftr.webp';
+import monacoDigital from '~/assets/images/sponsors/monaco-digital.png';
 import redHat from '~/assets/images/sponsors/red-hat.svg';
 import smartTribune from '~/assets/images/sponsors/smart-tribune.webp';
 import teleport from '~/assets/images/sponsors/teleport.svg';
 import type { AppLang } from '~/i18n/routes';
 
-export const sponsorTiers = ['gold', 'silver', 'community'] as const;
+export const sponsorTiers = ['platinum', 'gold', 'silver', 'community'] as const;
 export type SponsorTier = (typeof sponsorTiers)[number];
 
 export interface Sponsor {
@@ -29,6 +30,37 @@ export interface Sponsor {
 }
 
 export const sponsors: readonly Sponsor[] = [
+  {
+    id: 'monaco-digital',
+    name: 'Monaco Digital',
+    url: 'https://monacodigital.mc/',
+    tier: 'platinum',
+    logo: monacoDigital,
+    pitch: {
+      fr: `Depuis 2013, Monaco Digital aide les organisations à relever leurs défis de transformation numérique en conjuguant expertise technologique, excellence opérationnelle et culture du résultat.
+
+Avec 350 experts et un chiffre d'affaires de 73 M€ en 2025, en croissance de 92 % depuis 2020, le groupe intervient autour de trois domaines stratégiques :
+
+Intelligence artificielle pour accélérer la performance et transformer les usages ;
+
+Hybrid Cloud pour bâtir des infrastructures flexibles, résilientes et évolutives ;
+
+Cybersécurité pour sécuriser les systèmes d'information et préserver la confiance.
+
+Cette expertise est complétée par des activités d'infogérance, d'ingénierie logicielle, de conseil et d'accompagnement à la transformation, permettant à Monaco Digital d'intervenir comme partenaire de confiance sur l'ensemble du cycle de vie des projets numériques.`,
+      en: `Since 2013, Monaco Digital has helped organizations tackle their digital transformation challenges by combining technological expertise, operational excellence and a results-driven culture.
+
+With 350 experts and revenue of €73 million in 2025, up 92% since 2020, the group focuses on three strategic areas:
+
+Artificial intelligence to accelerate performance and transform how people work;
+
+Hybrid Cloud to build flexible, resilient and scalable infrastructure;
+
+Cybersecurity to secure information systems and preserve trust.
+
+This expertise is complemented by managed IT services, software engineering, consulting and transformation support, enabling Monaco Digital to act as a trusted partner throughout the digital project lifecycle.`,
+    },
+  },
   {
     id: 'ape-factory',
     name: 'APE factory',

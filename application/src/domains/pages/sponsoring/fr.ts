@@ -4,7 +4,7 @@ export default {
   metadata: {
     title: 'Nos sponsors - Cloud Native Provence',
     description:
-      "Découvrez les sponsors Gold, Silver et communautaires qui font vivre KCD Provence et rejoignez l'aventure.",
+      "Découvrez les sponsors Platinum, Gold, Silver et communautaires qui font vivre KCD Provence et rejoignez l'aventure.",
   },
   hero: {
     tagline: 'Sponsoring',
