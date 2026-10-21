@@ -20,7 +20,12 @@ const {
 const Heading = headingLevel;
 const TierHeading = headingLevel === 'h1' ? 'h2' : 'h3';
 const NameHeading = headingLevel === 'h1' ? 'h3' : 'h4';
-const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community: 'tabler:heart-handshake' };
+const tierIcons = {
+  platinum: 'tabler:crown',
+  gold: 'tabler:sparkles',
+  silver: 'tabler:diamond',
+  community: 'tabler:heart-handshake',
+};
 ---
 
 <sponsor-showcase>
@@ -83,7 +88,7 @@ const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community
                           width={sponsor.logo.width}
                           height={sponsor.logo.height}
                           alt={sponsor.name}
-                          loading={tier === 'gold' && headingLevel === 'h1' ? 'eager' : 'lazy'}
+                          loading={(tier === 'platinum' || tier === 'gold') && headingLevel === 'h1' ? 'eager' : 'lazy'}
                           decoding="async"
                         />
                         {sponsor.showNameWithLogo && (
@@ -91,9 +96,9 @@ const tierIcons = { gold: 'tabler:sparkles', silver: 'tabler:diamond', community
                             {sponsor.name}
                           </span>
                         )}
-                        {tier === 'gold' && (
-                          <span class="gold-caption" aria-hidden="true">
-                            {t.goldCaption}
+                        {(tier === 'platinum' || tier === 'gold') && (
+                          <span class="featured-caption" aria-hidden="true">
+                            {t.featuredCaptions[tier]}
                           </span>
                         )}
                       </div>
@@ -273,6 +278,9 @@ sponsor-showcase {
   border-radius: 50%;
   background: #b88327;
 }
+.tier-link--platinum .tier-dot {
+  background: #087bbb;
+}
 .tier-link--silver .tier-dot {
   background: #7c90aa;
 }
@@ -318,6 +326,10 @@ sponsor-showcase {
 .tier-symbol :global(svg) {
   width: 1.1rem;
   height: 1.1rem;
+}
+.sponsor-tier--platinum .tier-symbol {
+  color: #004e91;
+  background: #eaf4fc;
 }
 .sponsor-tier--silver .tier-symbol {
   color: #536b87;
@@ -451,40 +463,47 @@ sponsor-showcase {
 .sponsor-card:hover .sponsor-visit :global(svg) {
   transform: translate(2px, -2px);
 }
-.sponsor-card--gold {
+:is(.sponsor-card--platinum, .sponsor-card--gold) {
   display: grid;
   grid-template-columns: 1fr 1.15fr;
   border-color: #d6be82;
   box-shadow: 0 5px 20px #b78b2510;
 }
-.sponsor-card--gold .sponsor-logo-stage {
+:is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-logo-stage {
   position: relative;
   min-height: 16.5rem;
   flex-direction: column;
   gap: 1.8rem;
   background: radial-gradient(ellipse at 15% 100%, #2d4660, transparent 70%), #17253c;
 }
-.sponsor-card--gold img {
+:is(.sponsor-card--platinum, .sponsor-card--gold) img {
   max-width: 20rem;
   height: 4.5rem;
 }
-.gold-caption {
+.featured-caption {
   color: #e3c681;
   font-size: 0.65rem;
   font-weight: 600;
   letter-spacing: 0.24em;
 }
-.sponsor-card--gold .sponsor-card-content {
+.sponsor-card--platinum {
+  border-color: #91afc9;
+  box-shadow: 0 5px 20px #087bbb10;
+}
+.sponsor-card--platinum .featured-caption {
+  color: #b8dded;
+}
+:is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-card-content {
   justify-content: center;
   padding: 2.25rem 2.75rem;
   border-top: 0;
 }
-.sponsor-card--gold .sponsor-card-content h3,
-.sponsor-card--gold .sponsor-card-content h4 {
+:is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-card-content h3,
+:is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-card-content h4 {
   font-size: 1.8rem;
   letter-spacing: -0.035em;
 }
-.sponsor-card--gold .sponsor-visit {
+:is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-visit {
   margin-top: 0.4rem;
   padding-top: 0.8rem;
   border-top: 1px solid var(--sponsor-border);
@@ -641,10 +660,10 @@ sponsor-showcase {
   .tier-navigation {
     margin-bottom: 2.25rem;
   }
-  .sponsor-card--gold .sponsor-card-content {
+  :is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-card-content {
     padding: 1.5rem;
   }
-  .sponsor-card--gold img {
+  :is(.sponsor-card--platinum, .sponsor-card--gold) img {
     max-width: 15rem;
   }
   .sponsor-invitation {
@@ -657,7 +676,7 @@ sponsor-showcase {
 }
 @media (max-width: 540px) {
   .sponsor-tier--silver .sponsor-grid,
-  .sponsor-card--gold {
+  :is(.sponsor-card--platinum, .sponsor-card--gold) {
     grid-template-columns: 1fr;
   }
   .sponsor-tier--community .sponsor-grid {
@@ -672,7 +691,7 @@ sponsor-showcase {
     max-width: 7rem;
     text-align: right;
   }
-  .sponsor-card--gold .sponsor-logo-stage {
+  :is(.sponsor-card--platinum, .sponsor-card--gold) .sponsor-logo-stage {
     min-height: 11rem;
   }
   .sponsor-tier--silver .sponsor-logo-stage {
