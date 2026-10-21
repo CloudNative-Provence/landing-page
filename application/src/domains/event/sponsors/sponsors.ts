@@ -3,6 +3,7 @@ import apeFactory from '~/assets/images/sponsors/ape-factory.webp';
 import blackswift from '~/assets/images/sponsors/blackswift.svg';
 import castAi from '~/assets/images/sponsors/cast-ai.svg';
 import cncf from '~/assets/images/sponsors/cncf.svg';
+import dellTechnologies from '~/assets/images/sponsors/dell-technologies.png';
 import donow from '~/assets/images/sponsors/donow.svg';
 import exoscale from '~/assets/images/sponsors/exoscale.svg';
 import gravitek from '~/assets/images/sponsors/gravitek.webp';
@@ -24,6 +25,8 @@ export interface Sponsor {
   url: string;
   tier: SponsorTier;
   logo: ImageMetadata;
+  /** A partner sharing this sponsorship entry and tier. */
+  coSponsor?: { name: string; logo: ImageMetadata };
   /** Show the sponsor name alongside a logo that contains only a symbol. */
   showNameWithLogo?: boolean;
   pitch: Record<AppLang, string>;
@@ -36,6 +39,7 @@ export const sponsors: readonly Sponsor[] = [
     url: 'https://monacodigital.mc/',
     tier: 'platinum',
     logo: monacoDigital,
+    coSponsor: { name: 'Dell Technologies', logo: dellTechnologies },
     pitch: {
       fr: `Depuis 2013, Monaco Digital aide les organisations à relever leurs défis de transformation numérique en conjuguant expertise technologique, excellence opérationnelle et culture du résultat.
 

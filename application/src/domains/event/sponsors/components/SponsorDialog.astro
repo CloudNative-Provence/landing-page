@@ -20,9 +20,24 @@ const t = useTranslations(lang).sponsors;
 >
   <header class="dialog-header">
     <div
-      class:list={['dialog-logo', { 'dialog-logo--featured': sponsor.tier === 'platinum' || sponsor.tier === 'gold' }]}
+      class:list={[
+        'dialog-logo',
+        {
+          'dialog-logo--featured': sponsor.tier === 'platinum' || sponsor.tier === 'gold',
+          'dialog-logo--paired': sponsor.coSponsor,
+        },
+      ]}
     >
       <img src={sponsor.logo.src} width={sponsor.logo.width} height={sponsor.logo.height} alt="" loading="lazy">
+      {sponsor.coSponsor && (
+        <img
+          src={sponsor.coSponsor.logo.src}
+          width={sponsor.coSponsor.logo.width}
+          height={sponsor.coSponsor.logo.height}
+          alt=""
+          loading="lazy"
+        />
+      )}
     </div>
     <form method="dialog">
       <button type="submit" class="dialog-close" aria-label={t.close} autofocus>
@@ -32,7 +47,9 @@ const t = useTranslations(lang).sponsors;
   </header>
   <div class="dialog-body">
     <p class="dialog-tier">{t.tiers[sponsor.tier]}</p>
-    <h2 id={`sponsor-dialog-${sponsor.id}-title`}>{sponsor.name}</h2>
+    <h2 id={`sponsor-dialog-${sponsor.id}-title`}>
+      {sponsor.coSponsor ? `${sponsor.name} & ${sponsor.coSponsor.name}` : sponsor.name}
+    </h2>
     <div class="dialog-pitch">{sponsor.pitch[lang].split('\n\n').map((paragraph) => <p>{paragraph}</p>)}</div>
   </div>
   <footer class="dialog-footer">
@@ -89,8 +106,16 @@ const t = useTranslations(lang).sponsors;
 .dialog-logo--featured {
   background: #17253c;
 }
+.dialog-logo--paired {
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 0;
+  max-width: 26rem;
+}
 .dialog-logo img {
   width: 100%;
+  min-width: 0;
   height: 3rem;
   object-fit: contain;
 }
