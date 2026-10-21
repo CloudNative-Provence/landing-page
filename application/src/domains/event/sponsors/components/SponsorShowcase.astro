@@ -83,14 +83,30 @@ const tierIcons = {
                           { 'sponsor-logo-stage--with-name': sponsor.showNameWithLogo },
                         ]}
                       >
-                        <img
-                          src={sponsor.logo.src}
-                          width={sponsor.logo.width}
-                          height={sponsor.logo.height}
-                          alt={sponsor.name}
-                          loading={(tier === 'platinum' || tier === 'gold') && headingLevel === 'h1' ? 'eager' : 'lazy'}
-                          decoding="async"
-                        />
+                        <div class:list={['sponsor-logos', { 'sponsor-logos--paired': sponsor.coSponsor }]}>
+                          <img
+                            src={sponsor.logo.src}
+                            width={sponsor.logo.width}
+                            height={sponsor.logo.height}
+                            alt={sponsor.name}
+                            loading={
+                              (tier === 'platinum' || tier === 'gold') && headingLevel === 'h1' ? 'eager' : 'lazy'
+                            }
+                            decoding="async"
+                          />
+                          {sponsor.coSponsor && (
+                            <img
+                              src={sponsor.coSponsor.logo.src}
+                              width={sponsor.coSponsor.logo.width}
+                              height={sponsor.coSponsor.logo.height}
+                              alt={sponsor.coSponsor.name}
+                              loading={
+                                (tier === 'platinum' || tier === 'gold') && headingLevel === 'h1' ? 'eager' : 'lazy'
+                              }
+                              decoding="async"
+                            />
+                          )}
+                        </div>
                         {sponsor.showNameWithLogo && (
                           <span class="sponsor-logo-name" aria-hidden="true">
                             {sponsor.name}
@@ -103,7 +119,9 @@ const tierIcons = {
                         )}
                       </div>
                       <div class="sponsor-card-content">
-                        <NameHeading class:list={{ 'sr-only': tier === 'community' }}>{sponsor.name}</NameHeading>
+                        <NameHeading class:list={{ 'sr-only': tier === 'community' }}>
+                          {sponsor.coSponsor ? `${sponsor.name} & ${sponsor.coSponsor.name}` : sponsor.name}
+                        </NameHeading>
                         <div class="sponsor-actions">
                           <button
                             type="button"
@@ -402,6 +420,19 @@ sponsor-showcase {
   max-width: 13rem;
   height: 4rem;
   object-fit: contain;
+}
+.sponsor-logos {
+  display: contents;
+}
+.sponsor-logos--paired {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+}
+.sponsor-logos--paired img {
+  min-width: 0;
 }
 .sponsor-tier--silver .sponsor-logo-stage {
   min-height: 10rem;
