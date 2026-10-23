@@ -24,7 +24,7 @@ jobs:
       # and their merges trigger the main CI/deployment workflow.
       - name: Create schedule GitHub App token
         id: schedule-app-token
-        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         with:
           client-id: ${{ vars.CI_BOT_APP_CLIENT_ID }}
           private-key: ${{ secrets.CI_BOT_APP_PRIVATE_KEY }}
@@ -45,7 +45,7 @@ jobs:
           api-base: https://conference-hall.io
 
       - name: Create and merge pull request with updated schedule
-        uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@3a27d31e9ccefbe9609cc9165017ed100ff34a22 # 0.38.0
+        uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@ab69f41f76e77ec84e733dedb03492b3ee95a05f # 0.39.0
         with:
           github-token: ${{ steps.schedule-app-token.outputs.token }}
           branch: chore/update-schedule
