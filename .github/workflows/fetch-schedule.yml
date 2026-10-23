@@ -39,7 +39,7 @@ jobs:
           persist-credentials: false
 
       - name: Fetch schedule from Conference Hall API
-        uses: ./.github/actions/fetch-schedule
+        uses: $/.github/actions/fetch-schedule
         with:
           api-key: ${{ secrets.CONFERENCEHALL_API_KEY }}
           api-base: https://conference-hall.io

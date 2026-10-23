@@ -1,6 +1,6 @@
 import type { PracticalInfoStayThumbnail } from '~/domains/pages/practical-info/model/accommodation';
 
-// Photo provenance and original image URLs are recorded in the accommodation assets README.
+// Each photo records its source page and credit here; see docs/development/content.md for updates.
 export const stayThumbnails = {
   'odalys-palais-des-congres': {
     src: '~/assets/images/pages/practical-info/accommodation/odalys-palais-des-congres.webp',
