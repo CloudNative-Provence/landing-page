@@ -22,15 +22,15 @@
     "lint:biome": "biome check --assist-enabled=false .",
     "lint:fix": "npm run lint:fix:biome && npm run lint:astro",
     "lint:fix:biome": "biome check --assist-enabled=false --write .",
-    "lint:ci:astro": "astro check | tee astro-report.txt",
-    "lint:ci:biome": "biome check --assist-enabled=false . --reporter=sarif | tee biome-report.sarif",
+    "lint:ci:astro": "bash -o pipefail -c 'astro check 2>&1 | tee astro-report.txt'",
+    "lint:ci:biome": "biome check --assist-enabled=false . --reporter=sarif --reporter-file=biome-report.sarif --reporter=default",
     "lint:ci": "npm run lint:ci:astro && npm run lint:ci:biome"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource/montserrat": "^5.3.0",
-    "astro": "^7.3.8",
+    "astro": "^7.4.2",
     "astro-icon": "^1.2.0",
     "fflate": "^0.8.3",
     "limax": "4.2.3",
@@ -39,11 +39,11 @@
     "unpic": "^4.2.2"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@astrojs/markdown-remark": "^7.3.2",
-    "@astrojs/mdx": "^8.0.3",
-    "@astrojs/partytown": "^2.1.8",
-    "@biomejs/biome": "^2.5.15",
+    "@astrojs/check": "^0.9.12",
+    "@astrojs/markdown-remark": "^7.3.4",
+    "@astrojs/mdx": "^8.1.1",
+    "@astrojs/partytown": "^2.1.9",
+    "@biomejs/biome": "^2.6.2",
     "@iconify-json/flat-color-icons": "^1.2.3",
     "@iconify-json/tabler": "^1.2.42",
     "@tailwindcss/typography": "^0.5.20",
@@ -52,9 +52,9 @@
     "@types/lodash.merge": "^4.6.9",
     "@types/mdx": "^2.0.14",
     "@types/three": "^0.186.0",
-    "@vitest/coverage-v8": "^5.0.3",
+    "@vitest/coverage-v8": "^5.0.5",
     "astro-compress": "2.4.3",
-    "js-yaml": "^5.4.3",
+    "js-yaml": "^5.5.0",
     "mdast-util-to-string": "^4.0.0",
     "reading-time": "^1.5.0",
     "rehype-sanitize": "^6.0.0",
@@ -63,7 +63,7 @@
     "tailwindcss": "^4.3.3",
     "typescript": "^6.0.3",
     "unist-util-visit": "^5.1.0",
-    "vitest": "^5.0.3"
+    "vitest": "^5.0.5"
   },
   "allowScripts": {
     "sharp@0.34.5": true,

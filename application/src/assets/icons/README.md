@@ -1,3 +1,3 @@
 # Icons
 
-Local SVG icons for astro-icon belong in this directory.
+Local SVG icons loaded by the application. See the [icon guide](../../../../docs/development/content.md#icons) for configuration and usage.
