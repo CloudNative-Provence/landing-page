@@ -403,13 +403,18 @@ const sessions = [
   },
   {
     id: 'cmuf6h8j902zf01ptrc5965ww',
-    title: 'Lightning talk 4',
-    description: '',
+    title: 'De 1759 CVEs à quasi-zéro : anatomie d’une supply chain compromise',
+    description: 'Vendredi 16h, un scan Grype remonte 1759 CVEs sur une image python:3.9-buster, dont 311 High et 15 Critical. Dans les attaques supply chain récentes, deux choses reviennent souvent : on détourne la confiance, et on vise le process de build plutôt que le code source. Avec l’IA qui fait exploser le volume de code et de dépendances, le problème ne fait que grandir.\nEn 10 minutes, démo en direct sur une application Python :\n\nScan de l’image avec Grype (et inventaire SBOM avec Syft)\nExploitation réelle : lecture de /app/.env et de /etc/passwd via une CVE ImageMagick, puis une path traversal aiohttp\nRemédiation avec un Dockerfile multi-stage sur une image minimale construite à partir de Wolfi, apko et melange. On rescanne avec Grype, et on retente les exploits, qui échouent cette fois\nVérification de l’intégrité : signatures Cosign / Sigstore et provenance SLSA niveau 3\nLe fil rouge, c’est « moins de code = moins de CVEs ». Vous repartez avec une marche à suivre 100 % open source à appliquer dès lundi dans votre CI/CD.',
     startsAt: '2026-12-10T15:20:00.000+01:00',
     endsAt: '2026-12-10T15:30:00.000+01:00',
     locations: [
       { roomId: 'salle-milhaud' },
     ],
+    speakers: [
+      { id: 'cmvse5hbl000o01qgrhygcpxa', name: 'Mouhamad Koreissi', company: 'Chainguard' },
+    ],
+    format: 'Short talk (10 minutes)',
+    tags: ['Security', 'fr'],
   },
   {
     id: 'cmuehctsp02nk01pt5q1t675k',
