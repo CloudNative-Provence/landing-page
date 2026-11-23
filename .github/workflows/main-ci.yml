@@ -15,11 +15,14 @@ jobs:
   ci:
     uses: $/.github/workflows/__shared-ci.yml
     permissions:
+      actions: read
       contents: read
       id-token: write
+      issues: write
       packages: read
       pull-requests: write
       security-events: write
+      statuses: write
 
   deploy:
     if: github.ref_name == github.event.repository.default_branch
@@ -36,7 +39,7 @@ jobs:
       url: ${{ steps.deployment.outputs.url }}
     steps:
       - id: deployment
-        uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@a0a9d185c51c10710a5987822e78feb2b5ce1932 # 0.29.0
+        uses: hoverkraft-tech/ci-github-publish/actions/deploy/github-pages@d034b96d52f6f32c58a93bcd87a06932f50d8b26 # 3.1.0
         with:
           build-path: application/dist
           build-artifact-id: ${{ needs.ci.outputs.build-artifact-id }}

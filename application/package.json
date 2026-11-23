@@ -16,7 +16,7 @@
     "test:schedule": "node --experimental-strip-types --test ../scripts/fetch-schedule/*.test.mjs",
     "test:watch": "vitest",
     "test:coverage": "vitest run --coverage",
-    "test:ci": "npm run test -- --reporter=default --reporter=junit --outputFile=junit.xml --coverage.enabled --coverage.reporter=lcov --coverage.reporter=text",
+    "test:ci": "npm run test -- --reporter=default --reporter=junit --outputFile.junit=junit.xml --coverage.enabled --coverage.reportOnFailure --coverage.reporter=lcov --coverage.reporter=text",
     "lint": "npm run lint:astro && npm run lint:biome",
     "lint:astro": "astro check",
     "lint:biome": "biome check --assist-enabled=false .",

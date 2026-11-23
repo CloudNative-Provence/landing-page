@@ -6,7 +6,7 @@
       "configureZshAsDefaultShell": true
     },
     "ghcr.io/devcontainers/features/node:2": {
-      "version": "22"
+      "version": "lts"
     },
     "ghcr.io/devcontainers/features/docker-in-docker:4": {
       "moby": false
