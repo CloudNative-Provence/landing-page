@@ -11,7 +11,8 @@ The venue map combines editable geometry, programme locations and the shared sav
 - Compare geometry edits with an orthographic trace over the original `plan-v1.png`. Curves are sampled and raster tracing has a few pixels of uncertainty. Heights and materials are illustrative.
 - Keep the source raster outside public assets. Obtain the organiser's reference before reviewing geometry accuracy.
 
-[`venue-presentation.ts`](../../application/src/domains/pages/venue-map/model/venue-presentation.ts) adds programme bindings and the detached first-floor auditorium without altering the ground-floor trace. The auditorium and its stair access link to each other; programme sessions belong to the auditorium. Its footprint, position, elevation and seat count are illustrative and must not imply measured dimensions or capacity. The map uses one overview, without floor switching.
+[`venue-presentation.ts`](../../application/src/domains/pages/venue-map/model/venue-presentation.ts) adds programme bindings and the detached first-floor auditorium without altering the ground-floor trace.
+The auditorium and its stair access link to each other; programme sessions belong to the auditorium. Its footprint, position, elevation and seat count are illustrative and must not imply measured dimensions or capacity. The map uses one overview, without floor switching.
 
 ## Programme and agenda contracts
 

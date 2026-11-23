@@ -8,8 +8,7 @@ enabled supports saving sessions, sharing an agenda, and interactive map control
 
 1. Browse the programme and filter by room or search for a session.
 2. Open a session for its description and speaker profiles.
-3. Save sessions to your agenda. Use "Share my schedule" to create a link or
-   "Export to calendar" to download your selected sessions.
+3. Save sessions to your agenda. Use "Share my schedule" to create a link or "Export to calendar" to download your selected sessions.
 
 Your selection is stored in your browser and shared between the programme, map,
 and other tabs on the same site. Use a share link to carry it to another browser

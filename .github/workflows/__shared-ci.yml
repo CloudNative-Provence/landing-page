@@ -10,8 +10,25 @@ on:
 permissions: {}
 
 jobs:
+  lint:
+    name: Repository lint
+    uses: hoverkraft-tech/ci-github-common/.github/workflows/linter.yml@f165c0ca3e88604611481e1408ace1e0e3a5ee47 # 4.3.1
+    permissions:
+      actions: read
+      contents: read
+      issues: write
+      packages: read
+      pull-requests: write
+      security-events: write
+      statuses: write
+    with:
+      comment: false
+      action-files: |
+        ./.github/workflows/**/*.yml
+        ./.github/actions/**/action.yml
+
   continuous-integration:
-    uses: hoverkraft-tech/ci-github-nodejs/.github/workflows/continuous-integration.yml@df348077afa4e79725151d50606e9dc63f86dcb6 # 0.24.4
+    uses: hoverkraft-tech/ci-github-nodejs/.github/workflows/continuous-integration.yml@98d91b1cc347efc64cd5fb20bc0ebc076acad114 # 3.1.0
     permissions:
       contents: read
       id-token: write
@@ -20,7 +37,26 @@ jobs:
       security-events: write
     with:
       working-directory: application
+      ignore-scripts: true
       build: |
         {
           "artifact": ["dist"]
         }
+      test: |
+        {
+          "command": "test:ci",
+          "report-file": "junit.xml,coverage/lcov.info",
+          "comment": false,
+          "report-group": "continuous-integration"
+        }
+
+  reports:
+    needs: [lint, continuous-integration]
+    if: always()
+    uses: hoverkraft-tech/ci-github-common/.github/workflows/ci-reports.yml@f165c0ca3e88604611481e1408ace1e0e3a5ee47 # 4.3.1
+    permissions:
+      contents: read
+      pull-requests: write
+    with:
+      comment: ${{ github.event_name == 'pull_request' && github.actor != 'dependabot[bot]' && github.event.pull_request.head.repo.full_name == github.repository }}
+      job-results: ${{ toJSON(needs) }}

@@ -22,6 +22,7 @@ This record preserves the source and approval statements documented before the 2
 
 Public venue plans and generated mockups were excluded as layout authorities because the organiser's event plan controls the event arrangement. Showing only the traced amphitheatre access would omit the auditorium interior; the approved detached representation makes it available without claiming a measured first-floor plan.
 
-The model separates the [source trace](../../application/src/domains/pages/venue-map/model/venue-layout.ts) from [presentation additions and programme bindings](../../application/src/domains/pages/venue-map/model/venue-presentation.ts). Curved boundaries are sampled; raster tracing introduces a few pixels of uncertainty. The source supplies no wall heights, so extrusion, furniture heights, shadows and materials are illustrative.
+The model separates the [source trace](../../application/src/domains/pages/venue-map/model/venue-layout.ts) from [presentation additions and programme bindings](../../application/src/domains/pages/venue-map/model/venue-presentation.ts).
+Curved boundaries are sampled; raster tracing introduces a few pixels of uncertainty. The source supplies no wall heights, so extrusion, furniture heights, shadows and materials are illustrative.
 
 Geometry review requires comparison with the organiser's source at matching dimensions. Tests can protect data and rendering contracts but cannot prove that a wall matches the raster. Current contributor requirements live in [Venue map development](../development/venue-map.md). If the source authority or presentation assumptions change, add a linked superseding ADR and update that guide.

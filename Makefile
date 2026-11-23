@@ -1,13 +1,18 @@
-.PHONY: help
+SHELL := /bin/bash
+
+.PHONY: help setup start fetch-schedule lint lint-repository lint-fix build test ci npm-update npm-audit-fix
 
 MAKEFLAGS += --silent
 .DEFAULT_GOAL := help
+
+FILTER ?=
+LINTER_IMAGE := cloudnative-provence-landing-page-linter:local
 
 help: ## Show help message
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m\033[0m\n"} /^[$$()% a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 } /^##@/ { printf "\n\033[1m%s\033[0m\n", substr($$0, 5) } ' $(MAKEFILE_LIST)
 
 setup: ## Prepare stack to run
-	npm --prefix application install
+	npm --prefix application ci --ignore-scripts
 
 start: ## Start application in dev mode
 	npm --prefix application run start
@@ -16,27 +21,14 @@ fetch-schedule: ## Update the program from Conference Hall (requires CONFERENCE_
 	node --experimental-strip-types scripts/fetch-schedule/cli.mjs
 
 lint: ## Run linters
-	npm --prefix application run lint:ci -- $(filter-out $@,$(MAKECMDGOALS))
+	npm --prefix application run lint:ci
+	$(MAKE) lint-repository
+
+lint-repository: ## Run repository checks (optional FILTER=regex)
 	$(call run_linter,)
 
-lint-fix: ## Run linters
+lint-fix: ## Apply application and repository lint fixes
 	npm --prefix application run lint:fix
-	$(MAKE) linter-fix
-
-build: ## Build libs and applications
-	npm --prefix application run build
-
-test: ## Run tests
-	npm --prefix application run test:ci
-
-ci: ## Run tests in CI mode
-	npm --prefix application audit fix || true
-	cd application && npx -y update-browserslist-db@latest
-	$(MAKE) lint-fix
-	$(MAKE) build
-	$(MAKE) test
-
-linter-fix: ## Execute linting and fix
 	$(call run_linter, \
 		-e FIX_SPELL_CODESPELL=true \
 		-e FIX_MARKDOWN=true \
@@ -48,37 +40,37 @@ linter-fix: ## Execute linting and fix
 		-e FIX_BIOME_FORMAT=true \
 	)
 
+build: ## Build libs and applications
+	npm --prefix application run build
+
+test: ## Run tests
+	npm --prefix application run test:ci
+
+ci: ## Run lint, build, and tests without fixers or dependency updates
+	$(MAKE) lint
+	$(MAKE) build
+	$(MAKE) test
+
+npm-update: ## Update application dependencies within their declared ranges
+	npm --prefix application update
+
+npm-audit-fix: ## Apply npm security fixes and update the lockfile
+	npm --prefix application audit fix
+
 define run_linter
+	set -eu; \
 	DEFAULT_WORKSPACE="$(CURDIR)"; \
-	LINTER_IMAGE="linter:latest"; \
-	VOLUME="$$DEFAULT_WORKSPACE:$$DEFAULT_WORKSPACE"; \
-	DEFAULT_BRANCH="$$(git -C "$$DEFAULT_WORKSPACE" rev-parse --abbrev-ref HEAD 2>/dev/null)"; \
-	docker build --platform=linux/amd64 --build-arg UID=$(shell id -u) --build-arg GID=$(shell id -g) --tag $$LINTER_IMAGE . && \
+	DEFAULT_BRANCH="$$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD || git branch --show-current)"; \
+	DEFAULT_BRANCH="$${DEFAULT_BRANCH#origin/}"; \
+	docker build --platform=linux/amd64 --build-arg UID=$(shell id -u) --build-arg GID=$(shell id -g) --tag "$(LINTER_IMAGE)" .; \
 	docker run \
 	--platform=linux/amd64 \
-	-v $$VOLUME \
+	-v "$$DEFAULT_WORKSPACE:$$DEFAULT_WORKSPACE" \
 	--rm \
 	-e DEFAULT_WORKSPACE="$$DEFAULT_WORKSPACE" \
 	-e DEFAULT_BRANCH="$$DEFAULT_BRANCH" \
 	-e USE_FIND_ALGORITHM=false \
-	-e FILTER_REGEX_INCLUDE="$(filter-out $@,$(MAKECMDGOALS))" \
+	-e FILTER_REGEX_INCLUDE="$(FILTER)" \
 	$(1) \
-	$$LINTER_IMAGE
+	"$(LINTER_IMAGE)"
 endef
-
-define docker-compose
-	COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1 docker-compose -f docker-compose.yml -f docker-compose.local.yml -f docker-compose.$(1).yml $(2)
-endef
-
-define open-in-browser
-	@if command -v x-www-browser &> /dev/null ; then x-www-browser $(1); \
-	elif command -v xdg-open &> /dev/null ; then xdg-open $(1); \
-	elif command -v open &> /dev/null ; then open $(1); \
-	elif command -v start &> /dev/null ; then	start $(1);	fi;
-endef
-
-#############################
-# Argument fix workaround
-#############################
-%:
-	@:

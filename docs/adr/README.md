@@ -8,6 +8,7 @@ instructions belong in the [usage and development guides](../README.md).
 | [0001: Documentation ownership](0001-documentation-ownership.md)                     | Accepted |
 | [0002: Venue map source and presentation](0002-venue-map-source-and-presentation.md) | Accepted |
 | [0003: Sponsor content sources](0003-sponsor-content-sources.md)                     | Accepted |
+| [0004: Shared CI and local validation](0004-shared-ci-and-local-validation.md)       | Accepted |
 
 Keep accepted records. When a decision changes, add a numbered ADR and link the
 superseding record from the earlier one. Use the recording date for retrospective

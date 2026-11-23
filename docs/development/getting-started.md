@@ -19,6 +19,8 @@ Open `http://localhost:4321`. To use the configured container, open the reposito
 in Visual Studio Code, run "Dev Containers: Reopen in Container", then run the same
 commands. The [Dev Container configuration](../../.devcontainer/devcontainer.json)
 provides Node.js, Docker, GitHub CLI, editor extensions, and port forwarding.
+The container and CI select the current Node.js LTS release. `make setup` installs
+the committed lockfile with dependency lifecycle scripts disabled, matching CI.
 
 ## Commands
 
@@ -32,15 +34,32 @@ provides Node.js, Docker, GitHub CLI, editor extensions, and port forwarding.
 | `npm --prefix application run lint`       | Runs Astro checks and Biome without fixers.                             |
 | `make lint`                               | Runs application checks and the Docker-based repository linter.         |
 | `make lint-fix`                           | Applies application and repository lint fixes.                          |
+| `make lint-repository`                    | Runs the shared Hoverkraft repository linter.                           |
+| `make ci`                                 | Runs lint, build, and tests without fixers or dependency updates.       |
+| `make npm-update`                         | Updates dependencies within their declared ranges and the lockfile.     |
+| `make npm-audit-fix`                      | Applies npm security fixes and updates the lockfile.                    |
 
 The [Makefile](../../Makefile) and [npm scripts](../../application/package.json)
-define the commands. `make ci` runs dependency maintenance (`npm audit fix` and a
-Browserslist database update), lint fixers, build, and tests; it can modify files.
-Use the individual check commands when you need validation without fixers.
+define the commands. Run `make ci` before opening a pull request. Checks can write
+build outputs and reports, but do not intentionally change source or dependency
+files. Use the explicit fixer and dependency-maintenance targets when needed,
+review their diffs, and rerun the affected checks.
+
+To restrict repository linting to changed areas, pass a regular expression:
+
+```bash
+make lint-repository FILTER='(\.github/|docs/|Makefile|Dockerfile)'
+```
+
+The repository linter uses the same digest-pinned image as the shared CI linter.
+Its Docker build context contains only the Dockerfile; source is mounted when
+the checks run. Unknown Make targets fail instead of silently succeeding.
 
 Markdown formatting belongs to the repository's Prettier check; Biome formats
 application code. CI lint commands stream diagnostics to the terminal, preserve
 Astro text and Biome SARIF reports, and return a failure status when a check fails.
+`make test` writes `application/junit.xml` and `application/coverage/lcov.info` for
+CI reporting. Application coverage is also collected when Vitest tests fail.
 
 ## Validate changes
 
