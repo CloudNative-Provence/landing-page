@@ -45,7 +45,7 @@ jobs:
           api-base: https://conference-hall.io
 
       - name: Create and merge pull request with updated schedule
-        uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@f165c0ca3e88604611481e1408ace1e0e3a5ee47 # 4.3.1
+        uses: hoverkraft-tech/ci-github-common/actions/create-and-merge-pull-request@af0bdd6313bd49aaf4a8a7f0de005fb0db856b03 # 4.3.3
         with:
           github-token: ${{ steps.schedule-app-token.outputs.token }}
           branch: chore/update-schedule
