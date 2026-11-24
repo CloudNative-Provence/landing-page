@@ -12,7 +12,7 @@ permissions: {}
 jobs:
   lint:
     name: Repository lint
-    uses: hoverkraft-tech/ci-github-common/.github/workflows/linter.yml@f165c0ca3e88604611481e1408ace1e0e3a5ee47 # 4.3.1
+    uses: hoverkraft-tech/ci-github-common/.github/workflows/linter.yml@af0bdd6313bd49aaf4a8a7f0de005fb0db856b03 # 4.3.3
     permissions:
       actions: read
       contents: read
@@ -53,7 +53,7 @@ jobs:
   reports:
     needs: [lint, continuous-integration]
     if: always()
-    uses: hoverkraft-tech/ci-github-common/.github/workflows/ci-reports.yml@f165c0ca3e88604611481e1408ace1e0e3a5ee47 # 4.3.1
+    uses: hoverkraft-tech/ci-github-common/.github/workflows/ci-reports.yml@af0bdd6313bd49aaf4a8a7f0de005fb0db856b03 # 4.3.3
     permissions:
       contents: read
       pull-requests: write
