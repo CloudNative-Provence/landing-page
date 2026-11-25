@@ -2,7 +2,7 @@ import type { ImageMetadata } from 'astro';
 import apeFactory from '~/assets/images/sponsors/ape-factory.webp';
 import blackswift from '~/assets/images/sponsors/blackswift.svg';
 import castAi from '~/assets/images/sponsors/cast-ai.svg';
-import chainguard from '~/assets/images/sponsors/chainguard.png';
+import chainguard from '~/assets/images/sponsors/chainguard.svg';
 import cncf from '~/assets/images/sponsors/cncf.svg';
 import dellTechnologies from '~/assets/images/sponsors/dell-technologies.png';
 import donow from '~/assets/images/sponsors/donow.svg';
@@ -32,8 +32,6 @@ export interface Sponsor {
   coSponsor?: { name: string; logo: ImageMetadata; url: string; pitch: Record<AppLang, string> };
   /** Show the sponsor name alongside a logo that contains only a symbol. */
   showNameWithLogo?: boolean;
-  /** Keep dark or full-color logos legible on featured cards and dialogs. */
-  useLightLogoBackground?: boolean;
   pitch: Record<AppLang, string>;
 }
 
@@ -118,7 +116,6 @@ By combining cost visibility with automation, Cast AI helps teams reduce overpro
     url: 'https://www.chainguard.dev/',
     tier: 'gold',
     logo: chainguard,
-    useLightLogoBackground: true,
     pitch: {
       fr: 'Moins de CVE, plus de code : Chainguard fournit des images de conteneurs minimales et sécurisées pour que les équipes DevOps et plateforme passent moins de temps à corriger des vulnérabilités et plus de temps à livrer.',
       en: 'Fewer CVEs, more code: Chainguard provides minimal, secure container images so DevOps and platform teams spend less time fixing vulnerabilities and more time shipping.',
