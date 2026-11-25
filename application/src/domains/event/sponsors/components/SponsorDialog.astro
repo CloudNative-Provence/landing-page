@@ -24,8 +24,7 @@ const participants = sponsor.coSponsor ? [sponsor, sponsor.coSponsor] : [sponsor
       class:list={[
         'dialog-logo',
         {
-          'dialog-logo--featured':
-            (sponsor.tier === 'platinum' || sponsor.tier === 'gold') && !sponsor.useLightLogoBackground,
+          'dialog-logo--featured': sponsor.tier === 'platinum' || sponsor.tier === 'gold',
           'dialog-logo--paired': sponsor.coSponsor,
         },
       ]}

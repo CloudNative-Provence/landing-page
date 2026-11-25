@@ -57,7 +57,7 @@ for logos and supplied pitches.
 2. Add a unique `id`, `name`, `url`, `tier`, `logo` and a `pitch` in both `fr` and `en`. Use a tier from `sponsorTiers`.
 3. Set `showNameWithLogo` when a symbol-only logo needs the sponsor name beside it.
 4. For a shared sponsorship, add `coSponsor` with its own `name`, `logo`, `url` and bilingual `pitch`. Both brands share one card and count as one sponsorship in the tier.
-5. Set `useLightLogoBackground` for a dark or full-color logo that needs a white background on a Platinum or Gold card. The dialog uses the same background choice.
+5. Use a logo variant that is legible on its tier's background. All sponsors in the same tier use the same card and dialog styling.
 
 Pitches are plain text, with empty lines separating paragraphs. The dialog displays each participant's pitch and site link; expandable details provide the same information without JavaScript. Review the home and sponsoring pages in both languages after editing.
 
