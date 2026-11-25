@@ -12,6 +12,7 @@ import hoverkraft from '~/assets/images/sponsors/hoverkraft.svg';
 import ikkiLeague from '~/assets/images/sponsors/ikki-league.svg';
 import kraftr from '~/assets/images/sponsors/kraftr.webp';
 import monacoDigital from '~/assets/images/sponsors/monaco-digital.png';
+import nutanix from '~/assets/images/sponsors/nutanix.svg';
 import redHat from '~/assets/images/sponsors/red-hat.svg';
 import smartTribune from '~/assets/images/sponsors/smart-tribune.webp';
 import teleport from '~/assets/images/sponsors/teleport.svg';
@@ -136,6 +137,17 @@ Notre infrastructure repose sur des standards ouverts, avec des données héberg
       en: `Exoscale is a European cloud provider helping teams deploy their applications. Virtual machines, storage, networking, databases and managed Kubernetes: we bring together the essential services to build and operate your cloud native platforms.
 
 Our infrastructure is built on open standards, with data hosted in Europe and tools designed for automation. APIs, Terraform and Kubernetes integrations keep you in control of your deployments. Our engineers help you grow your projects with simplicity, control and freedom of choice.`,
+    },
+  },
+  {
+    id: 'nutanix',
+    name: 'Nutanix',
+    url: 'https://www.nutanix.com/',
+    tier: 'gold',
+    logo: nutanix,
+    pitch: {
+      fr: "Nutanix Kubernetes Platform (NKP) aide les équipes à déployer et à gérer Kubernetes dans leurs environnements hybrides et multicloud. La plateforme vise à simplifier les opérations et à harmoniser la gestion des clusters, pour accompagner les équipes de Platform Engineering dans l'exploitation de leurs applications cloud native.",
+      en: 'Nutanix Kubernetes Platform (NKP) helps teams deploy and manage Kubernetes across hybrid and multicloud environments. The platform simplifies operations and provides consistent cluster management, supporting platform engineering teams as they run their cloud native applications.',
     },
   },
   {
