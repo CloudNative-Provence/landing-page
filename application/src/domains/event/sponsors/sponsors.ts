@@ -2,6 +2,7 @@ import type { ImageMetadata } from 'astro';
 import apeFactory from '~/assets/images/sponsors/ape-factory.webp';
 import blackswift from '~/assets/images/sponsors/blackswift.svg';
 import castAi from '~/assets/images/sponsors/cast-ai.svg';
+import chainguard from '~/assets/images/sponsors/chainguard.png';
 import cncf from '~/assets/images/sponsors/cncf.svg';
 import dellTechnologies from '~/assets/images/sponsors/dell-technologies.png';
 import donow from '~/assets/images/sponsors/donow.svg';
@@ -14,6 +15,7 @@ import monacoDigital from '~/assets/images/sponsors/monaco-digital.png';
 import redHat from '~/assets/images/sponsors/red-hat.svg';
 import smartTribune from '~/assets/images/sponsors/smart-tribune.webp';
 import teleport from '~/assets/images/sponsors/teleport.svg';
+import waays from '~/assets/images/sponsors/waays.svg';
 import type { AppLang } from '~/i18n/routes';
 
 export const sponsorTiers = ['platinum', 'gold', 'silver', 'community'] as const;
@@ -29,6 +31,8 @@ export interface Sponsor {
   coSponsor?: { name: string; logo: ImageMetadata; url: string; pitch: Record<AppLang, string> };
   /** Show the sponsor name alongside a logo that contains only a symbol. */
   showNameWithLogo?: boolean;
+  /** Keep dark or full-color logos legible on featured cards and dialogs. */
+  useLightLogoBackground?: boolean;
   pitch: Record<AppLang, string>;
 }
 
@@ -108,6 +112,18 @@ By combining cost visibility with automation, Cast AI helps teams reduce overpro
     },
   },
   {
+    id: 'chainguard',
+    name: 'Chainguard',
+    url: 'https://www.chainguard.dev/',
+    tier: 'gold',
+    logo: chainguard,
+    useLightLogoBackground: true,
+    pitch: {
+      fr: 'Moins de CVE, plus de code : Chainguard fournit des images de conteneurs minimales et sécurisées pour que les équipes DevOps et plateforme passent moins de temps à corriger des vulnérabilités et plus de temps à livrer.',
+      en: 'Fewer CVEs, more code: Chainguard provides minimal, secure container images so DevOps and platform teams spend less time fixing vulnerabilities and more time shipping.',
+    },
+  },
+  {
     id: 'exoscale',
     name: 'Exoscale',
     url: 'https://www.exoscale.com/',
@@ -180,6 +196,17 @@ Pour les équipes plateforme, cela se traduit par un parcours d'accès simplifi�
 Teleport removes long-lived secrets from the equation. No more shared SSH keys, static kubeconfigs, or database passwords floating through your stack. Instead, short-lived certificates issued to a verified identity — a developer, a pipeline, a workload, or, increasingly, an AI agent.
 
 For platform teams, that means a real golden path: developers get the access they need in seconds, elevated access is requested just-in-time and approved by peers, and every session is recorded and replayable for audit and compliance.`,
+    },
+  },
+  {
+    id: 'waays',
+    name: 'Waays',
+    url: 'https://waays.fr/',
+    tier: 'silver',
+    logo: waays,
+    pitch: {
+      fr: "Waays accompagne les équipes dans l'exploitation et l'amélioration de leurs plateformes web à fort trafic. Ses ingénieurs SRE et DevOps travaillent aux côtés des développeurs sur la performance, la fiabilité, la supervision et l'astreinte 24/7. Leur approche part des mesures et de l'analyse pour améliorer les plateformes en continu.",
+      en: 'Waays helps teams operate and improve high-traffic web platforms. Its SRE and DevOps engineers work alongside developers on performance, reliability, monitoring and 24/7 on-call support. Their approach uses measurement and analysis to continuously improve platforms.',
     },
   },
   {

@@ -46,10 +46,18 @@ The [collection schema](../../application/src/domains/pages/blog/content/post-co
 
 The [sponsor registry](../../application/src/domains/event/sponsors/sponsors.ts) owns the displayed roster, tiers, URLs and pitches.
 
+Reconcile the roster and tiers with the current
+[sponsor tracker](https://docs.google.com/spreadsheets/d/1SNPW56YzLBaMgcgxKNZkTebaB238GGztlKPqgyGQQ5U/edit),
+displaying only entries marked `Payé`. A signed contract alone does not qualify a
+sponsor for display. Use the shared
+[sponsors-assets folder](https://drive.google.com/drive/folders/1KQyKalaEjowSyF4AbuGqwWkhEiDUb9N3)
+for logos and supplied pitches.
+
 1. Add the logo to [sponsor assets](../../application/src/assets/images/sponsors) and import it into the registry.
 2. Add a unique `id`, `name`, `url`, `tier`, `logo` and a `pitch` in both `fr` and `en`. Use a tier from `sponsorTiers`.
 3. Set `showNameWithLogo` when a symbol-only logo needs the sponsor name beside it.
 4. For a shared sponsorship, add `coSponsor` with its own `name`, `logo`, `url` and bilingual `pitch`. Both brands share one card and count as one sponsorship in the tier.
+5. Set `useLightLogoBackground` for a dark or full-color logo that needs a white background on a Platinum or Gold card. The dialog uses the same background choice.
 
 Pitches are plain text, with empty lines separating paragraphs. The dialog displays each participant's pitch and site link; expandable details provide the same information without JavaScript. Review the home and sponsoring pages in both languages after editing.
 
