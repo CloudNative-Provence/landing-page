@@ -1,5 +1,6 @@
 import type { ImageMetadata } from 'astro';
 import apeFactory from '~/assets/images/sponsors/ape-factory.webp';
+import aviatrix from '~/assets/images/sponsors/aviatrix.svg';
 import blackswift from '~/assets/images/sponsors/blackswift.svg';
 import castAi from '~/assets/images/sponsors/cast-ai.svg';
 import chainguard from '~/assets/images/sponsors/chainguard.svg';
@@ -93,6 +94,17 @@ Nous aimons l'open source et croyons au pouvoir de la communauté. Forts d'une e
       en: `ape factory is an engineering company helping organizations move from infrastructure to intelligence. We design, build and operate cloud-native platforms, modernize software delivery, and turn AI and data initiatives into production-ready solutions.
 
 We love open source and believe in the power of community. With deep expertise in Kubernetes and cloud-native technologies, we’re committed to sharing knowledge, collaborating and contributing to the ecosystem that makes our work possible.`,
+    },
+  },
+  {
+    id: 'aviatrix',
+    name: 'Aviatrix',
+    url: 'https://aviatrix.ai/',
+    tier: 'gold',
+    logo: aviatrix,
+    pitch: {
+      fr: 'Aviatrix propose une solution de sécurité basée sur le réseau plus simple, plus sûre, plus rapide : insertion sans agent dans le réseau existant, chaque workload atteint uniquement les ressources nécessaires, la politique de sécurité est appliquée en une seconde dans chaque cloud.',
+      en: 'Aviatrix provides simpler, safer and faster network-based security: agentless integration into existing networks, each workload can access only the resources it needs, and security policy is enforced within one second in every cloud.',
     },
   },
   {
